@@ -83,7 +83,7 @@ export default function Pricing() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-[#FAF8F4] noise accent-top relative py-24 sm:py-32 px-6" id="tarifs">
+    <section ref={sectionRef} className="bg-[#F2EFE9] noise accent-top relative py-24 sm:py-32 px-6" id="tarifs">
       <div className="max-w-6xl mx-auto">
         <div ref={headingRef} className="text-center mb-16">
           <span className="text-[#B88A5A] font-semibold text-sm tracking-widest uppercase">

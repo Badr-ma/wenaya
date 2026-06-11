@@ -31,7 +31,7 @@ export default function WenayaApproach() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative bg-[#FAF8F4] py-28 sm:py-36 px-6 overflow-hidden">
+    <section ref={sectionRef} className="relative bg-[#F2EFE9] py-28 sm:py-36 px-6 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <svg className="w-full h-full opacity-[0.03]" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
           <defs>

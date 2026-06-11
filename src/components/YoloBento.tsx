@@ -27,7 +27,7 @@ const sizes: Record<number, string> = {
 
 export default function YoloBento() {
   return (
-    <section className="bg-[#F7F5F2] min-h-screen py-28 sm:py-36 px-6 relative overflow-hidden">
+    <section className="bg-[#F2EFE9] min-h-screen py-28 sm:py-36 px-6 relative overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

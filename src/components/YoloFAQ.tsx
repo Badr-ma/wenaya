@@ -16,7 +16,7 @@ export default function YoloFAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="bg-[#F7F5F2] py-28 sm:py-36 px-6">
+    <section className="bg-[#F2EFE9] py-28 sm:py-36 px-6">
       <div className="max-w-3xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

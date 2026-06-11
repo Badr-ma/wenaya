@@ -15,7 +15,7 @@ const item = { hidden: { opacity: 0, y: 40, scale: 0.95 }, show: { opacity: 1, y
 
 export default function YoloHowItWorks() {
   return (
-    <section id="how" className="bg-[#F7F5F2] min-h-screen py-28 sm:py-36 px-6 relative overflow-hidden flex items-center">
+    <section id="how" className="bg-[#F2EFE9] min-h-screen py-28 sm:py-36 px-6 relative overflow-hidden flex items-center">
       <div className="absolute inset-0 pointer-events-none">
         <svg className="w-full h-full opacity-[0.02]" viewBox="0 0 1440 600">
           <defs>

@@ -133,7 +133,7 @@ export default function TestimonialsSection() {
   const setRef = (i: number) => (el: HTMLDivElement | null) => { cardsRef.current[i] = el; };
 
   return (
-    <section ref={sectionRef} className="bg-[#F7F4EE] noise accent-top relative py-32 sm:py-40 px-6" id="avis-google">
+    <section ref={sectionRef} className="bg-[#F2EFE9] noise accent-top relative py-32 sm:py-40 px-6" id="avis-google">
       <div className="max-w-[1200px] mx-auto">
         <div ref={headingRef} className="flex justify-center text-center mb-24">
           <h2 className="text-4xl sm:text-5xl font-serif font-bold text-[#0B1220] leading-[1.1] tracking-tight">

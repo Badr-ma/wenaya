@@ -72,7 +72,7 @@ export default function VideoTestimonials() {
   const setCardRef = (i: number) => (el: HTMLDivElement | null) => { cardsRef.current[i] = el; };
 
   return (
-    <section ref={sectionRef} className="relative bg-[#FAF8F4] noise py-28 sm:py-36 px-6 overflow-hidden" id="equipe">
+    <section ref={sectionRef} className="relative bg-[#F2EFE9] noise py-28 sm:py-36 px-6 overflow-hidden" id="equipe">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#B88A5A]/20 to-transparent" />
       </div>
