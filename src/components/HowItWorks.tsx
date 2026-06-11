@@ -60,35 +60,22 @@ function HorizBars() {
         @keyframes hw1 { 0%{width:42} 100%{width:118} }
         @keyframes hw2 { 0%{width:28} 100%{width:82} }
         @keyframes hw3 { 0%{width:58} 100%{width:142} }
-        @keyframes hw4 { 0%{width:36} 100%{width:98} }
-        @keyframes hw5 { 0%{width:52} 100%{width:130} }
       `}</style>
-      <g opacity="0.35">
-        <text x="0" y="21" fill="#2B2F36" fontSize="7.5" fontFamily="inherit" fontWeight="500">Alimentation</text>
-        <rect x="82" y="14" height="7" rx="3.5" fill="#EEEBE5" width="118" />
-        <rect x="82" y="14" height="7" rx="3.5" fill="url(#h1)" width="42" opacity="0.7" style={{ animation: "hw1 2.2s ease-in-out infinite alternate" }} />
-      </g>
-      <g opacity="0.35">
-        <text x="0" y="39" fill="#2B2F36" fontSize="7.5" fontFamily="inherit" fontWeight="500">Activité</text>
-        <rect x="82" y="32" height="7" rx="3.5" fill="#EEEBE5" width="118" />
-        <rect x="82" y="32" height="7" rx="3.5" fill="url(#h2)" width="28" opacity="0.65" style={{ animation: "hw2 2.4s ease-in-out infinite alternate" }} />
+      <g>
+        <text x="0" y="26" fill="#2B2F36" fontSize="8" fontFamily="inherit" fontWeight="500" opacity="0.5">Alimentation</text>
+        <rect x="76" y="19" height="8" rx="4" fill="#EEEBE5" width="124" />
+        <rect x="76" y="19" height="8" rx="4" fill="url(#h1)" width="42" opacity="0.7" style={{ animation: "hw1 2.2s ease-in-out infinite alternate" }} />
       </g>
       <g>
-        <text x="0" y="57" fill="#2B2F36" fontSize="7.5" fontFamily="inherit" fontWeight="500">Sommeil</text>
-        <rect x="82" y="50" height="7" rx="3.5" fill="#EEEBE5" width="118" />
-        <rect x="82" y="50" height="7" rx="3.5" fill="url(#h3)" width="58" opacity="0.5" style={{ animation: "hw3 2s ease-in-out infinite alternate" }} />
+        <text x="0" y="50" fill="#2B2F36" fontSize="8" fontFamily="inherit" fontWeight="500" opacity="0.5">Activité</text>
+        <rect x="76" y="43" height="8" rx="4" fill="#EEEBE5" width="124" />
+        <rect x="76" y="43" height="8" rx="4" fill="url(#h2)" width="28" opacity="0.65" style={{ animation: "hw2 2.4s ease-in-out infinite alternate" }} />
       </g>
       <g>
-        <text x="0" y="75" fill="#2B2F36" fontSize="7.5" fontFamily="inherit" fontWeight="500">Stress</text>
-        <rect x="82" y="68" height="7" rx="3.5" fill="#EEEBE5" width="118" />
-        <rect x="82" y="68" height="7" rx="3.5" fill="url(#h1)" width="36" opacity="0.6" style={{ animation: "hw4 2.6s ease-in-out infinite alternate" }} />
+        <text x="0" y="74" fill="#2B2F36" fontSize="8" fontFamily="inherit" fontWeight="500">Sommeil</text>
+        <rect x="76" y="67" height="8" rx="4" fill="#EEEBE5" width="124" />
+        <rect x="76" y="67" height="8" rx="4" fill="url(#h3)" width="58" opacity="0.5" style={{ animation: "hw3 2s ease-in-out infinite alternate" }} />
       </g>
-      <g>
-        <text x="0" y="93" fill="#2B2F36" fontSize="7.5" fontFamily="inherit" fontWeight="500">Biochimie</text>
-        <rect x="82" y="86" height="7" rx="3.5" fill="#EEEBE5" width="118" />
-        <rect x="82" y="86" height="7" rx="3.5" fill="url(#h2)" width="52" opacity="0.6" style={{ animation: "hw5 2.8s ease-in-out infinite alternate" }} />
-      </g>
-      <line x1="82" y1="104" x2="200" y2="104" stroke="#159AA9" strokeWidth="0.3" opacity="0.06" />
     </svg>
   );
 }
