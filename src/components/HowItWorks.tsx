@@ -6,167 +6,125 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function RadarScan() {
+function DonutChart() {
   return (
     <svg viewBox="0 0 200 130" className="w-full h-full">
-      <defs>
-        <linearGradient id="rg1" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#159AA9" stopOpacity="0.35" />
-          <stop offset="100%" stopColor="#159AA9" stopOpacity="0" />
-        </linearGradient>
-        <radialGradient id="rg2" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#159AA9" stopOpacity="0.08" />
-          <stop offset="100%" stopColor="#159AA9" stopOpacity="0" />
-        </radialGradient>
-      </defs>
-      <circle cx="100" cy="65" r="52" fill="url(#rg2)" />
-      <circle cx="100" cy="65" r="52" stroke="#159AA9" strokeWidth="0.4" opacity="0.12" />
-      <circle cx="100" cy="65" r="39" stroke="#159AA9" strokeWidth="0.4" opacity="0.1" />
-      <circle cx="100" cy="65" r="26" stroke="#159AA9" strokeWidth="0.4" opacity="0.1" />
-      <circle cx="100" cy="65" r="13" stroke="#159AA9" strokeWidth="0.4" opacity="0.08" />
-      <line x1="100" y1="13" x2="100" y2="117" stroke="#159AA9" strokeWidth="0.3" strokeDasharray="2 4" opacity="0.1" />
-      <line x1="48" y1="65" x2="152" y2="65" stroke="#159AA9" strokeWidth="0.3" strokeDasharray="2 4" opacity="0.1" />
-      <circle cx="100" cy="65" r="3" fill="#A67C52" />
-      <circle cx="100" cy="65" r="7" fill="#A67C52" opacity="0.12" />
-      <g style={{ transformOrigin: "100px 65px", animation: "rs 3s linear infinite" }}>
-        <path d="M100 65 L100 13 A52 52 0 0 1 152 65 Z" fill="url(#rg1)" />
-        <circle cx="100" cy="13" r="3.5" fill="#159AA9" opacity="0.7" />
-        <circle cx="100" cy="13" r="6" fill="#159AA9" opacity="0.15" />
-      </g>
-      <g style={{ transformOrigin: "100px 65px", animation: "rs 4.5s linear infinite" }}>
-        <circle cx="139" cy="39" r="2" fill="#A67C52" opacity="0.5" />
-      </g>
-      <g style={{ transformOrigin: "100px 65px", animation: "rs 3.8s linear infinite" }}>
-        <circle cx="87" cy="117" r="1.5" fill="#A67C52" opacity="0.4" />
-      </g>
-      <style>{`@keyframes rs { to { transform: rotate(360deg); } }`}</style>
-    </svg>
-  );
-}
-
-function VennAnimated() {
-  return (
-    <svg viewBox="0 0 200 130" className="w-full h-full">
-      <defs>
-        <radialGradient id="vgL" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#159AA9" stopOpacity="0.15" />
-          <stop offset="100%" stopColor="#159AA9" stopOpacity="0" />
-        </radialGradient>
-        <radialGradient id="vgR" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#A67C52" stopOpacity="0.12" />
-          <stop offset="100%" stopColor="#A67C52" stopOpacity="0" />
-        </radialGradient>
-      </defs>
       <style>{`
-        @keyframes vfL { 0%,100%{transform:translateX(0)} 50%{transform:translateX(-5px)} }
-        @keyframes vfR { 0%,100%{transform:translateX(0)} 50%{transform:translateX(5px)} }
-        @keyframes vp { 0%,100%{opacity:0.5;transform:scale(1)} 50%{opacity:0.8;transform:scale(1.12)} }
-        @keyframes vd1 { 0%,100%{opacity:0} 20%{opacity:0.5} 80%{opacity:0.5} 100%{opacity:0} }
-        @keyframes vd2 { 0%,100%{opacity:0} 30%{opacity:0.4} 70%{opacity:0.4} 100%{opacity:0} }
+        @keyframes dfill { 0%{stroke-dashoffset:251} 100%{stroke-dashoffset:88} }
+        @keyframes dpulse { 0%,100%{opacity:0.4} 50%{opacity:0.7} }
       `}</style>
-      <circle cx="100" cy="65" r="50" fill="url(#vgL)" opacity="0.3" />
-      <circle cx="100" cy="65" r="50" fill="url(#vgR)" opacity="0.3" />
-      <g style={{ transformOrigin: "83px 65px", animation: "vfL 3s ease-in-out infinite" }}>
-        <circle cx="83" cy="65" r="36" fill="#159AA9" opacity="0.08" />
-        <circle cx="83" cy="65" r="36" stroke="#159AA9" strokeWidth="0.5" opacity="0.25" />
-      </g>
-      <g style={{ transformOrigin: "117px 65px", animation: "vfR 3s ease-in-out infinite" }}>
-        <circle cx="117" cy="65" r="36" fill="#A67C52" opacity="0.06" />
-        <circle cx="117" cy="65" r="36" stroke="#A67C52" strokeWidth="0.5" opacity="0.2" />
-      </g>
-      <ellipse cx="100" cy="65" rx="10" ry="36" fill="#0B1220" opacity="0.05" />
-      <ellipse cx="100" cy="65" rx="10" ry="36" stroke="#0B1220" strokeWidth="0.4" opacity="0.12" />
-      <circle cx="100" cy="65" r="3.5" fill="#159AA9" style={{ animation: "vp 2s ease-in-out infinite" }} />
-      <circle cx="100" cy="65" r="9" fill="#159AA9" opacity="0.1" style={{ animation: "vp 2s ease-in-out infinite" }} />
-      <circle cx="78" cy="50" r="2" fill="#159AA9" opacity="0.5" style={{ animation: "vd1 3s ease-in-out infinite" }} />
-      <circle cx="122" cy="78" r="2" fill="#A67C52" opacity="0.4" style={{ animation: "vd2 3.5s ease-in-out infinite" }} />
-      <circle cx="75" cy="80" r="1.5" fill="#159AA9" opacity="0.3" style={{ animation: "vd2 4s ease-in-out infinite" }} />
-      <circle cx="125" cy="50" r="1.5" fill="#A67C52" opacity="0.3" style={{ animation: "vd1 3.8s ease-in-out infinite" }} />
+      <circle cx="100" cy="65" r="40" stroke="#E5E2DC" strokeWidth="6" opacity="0.5" />
+      <circle cx="100" cy="65" r="40" stroke="#159AA9" strokeWidth="6" strokeLinecap="round" strokeDasharray="251" strokeDashoffset="251" fill="none" transform="rotate(-90 100 65)" style={{ animation: "dfill 2.5s ease-out infinite alternate" }} />
+      <circle cx="100" cy="65" r="40" stroke="#159AA9" strokeWidth="6" strokeLinecap="round" strokeDasharray="251" strokeDashoffset="251" fill="none" transform="rotate(-90 100 65)" opacity="0.08" />
+      <text x="100" y="60" textAnchor="middle" fill="#0B1220" fontSize="22" fontFamily="inherit" fontWeight="700">65%</text>
+      <text x="100" y="76" textAnchor="middle" fill="#2B2F36" fontSize="9" fontFamily="inherit" opacity="0.5">Score global</text>
+      <circle cx="66" cy="98" r="2.5" fill="#159AA9" style={{ animation: "dpulse 2s ease-in-out infinite" }} />
+      <circle cx="134" cy="98" r="2.5" fill="#A67C52" style={{ animation: "dpulse 2.5s ease-in-out infinite" }} />
+      <text x="74" y="101" fill="#2B2F36" fontSize="7" fontFamily="inherit" opacity="0.4">Bio 84%</text>
+      <text x="142" y="101" fill="#2B2F36" fontSize="7" fontFamily="inherit" opacity="0.4">Clin 72%</text>
     </svg>
   );
 }
 
-function BarChart() {
+function HorizBars() {
+  return (
+    <svg viewBox="0 0 200 130" className="w-full h-full">
+      <style>{`
+        @keyframes hb1 { 0%{width:48} 100%{width:124} }
+        @keyframes hb2 { 0%{width:32} 100%{width:88} }
+        @keyframes hb3 { 0%{width:64} 100%{width:148} }
+        @keyframes hb4 { 0%{width:40} 100%{width:104} }
+        @keyframes hbs { 0%,100%{opacity:0.05} 50%{opacity:0.12} }
+      `}</style>
+      <text x="0" y="22" fill="#2B2F36" fontSize="8" fontFamily="inherit" opacity="0.5">Physique</text>
+      <rect x="52" y="14" height="8" rx="4" fill="#E5E2DC" opacity="0.5" width="148" />
+      <rect x="52" y="14" height="8" rx="4" fill="#159AA9" opacity="0.6" width="48" style={{ animation: "hb1 2s ease-in-out infinite alternate" }} />
+
+      <text x="0" y="42" fill="#2B2F36" fontSize="8" fontFamily="inherit" opacity="0.5">Mental</text>
+      <rect x="52" y="34" height="8" rx="4" fill="#E5E2DC" opacity="0.5" width="148" />
+      <rect x="52" y="34" height="8" rx="4" fill="#A67C52" opacity="0.5" width="32" style={{ animation: "hb2 2.2s ease-in-out infinite alternate" }} />
+
+      <text x="0" y="62" fill="#2B2F36" fontSize="8" fontFamily="inherit" opacity="0.5">Nutrition</text>
+      <rect x="52" y="54" height="8" rx="4" fill="#E5E2DC" opacity="0.5" width="148" />
+      <rect x="52" y="54" height="8" rx="4" fill="#159AA9" opacity="0.5" width="64" style={{ animation: "hb3 1.8s ease-in-out infinite alternate" }} />
+
+      <text x="0" y="82" fill="#2B2F36" fontSize="8" fontFamily="inherit" opacity="0.5">Sommeil</text>
+      <rect x="52" y="74" height="8" rx="4" fill="#E5E2DC" opacity="0.5" width="148" />
+      <rect x="52" y="74" height="8" rx="4" fill="#0B1220" opacity="0.35" width="40" style={{ animation: "hb4 2.4s ease-in-out infinite alternate" }} />
+
+      <text x="0" y="102" fill="#2B2F36" fontSize="8" fontFamily="inherit" opacity="0.5">Biochimie</text>
+      <rect x="52" y="94" height="8" rx="4" fill="#E5E2DC" opacity="0.5" width="148" />
+      <rect x="52" y="94" height="8" rx="4" fill="#159AA9" opacity="0.55" width="48" style={{ animation: "hb1 2.6s ease-in-out infinite alternate" }} />
+
+      <line x1="52" y1="110" x2="200" y2="110" stroke="#159AA9" strokeWidth="0.3" opacity="0.08" style={{ animation: "hbs 2s ease-in-out infinite" }} />
+    </svg>
+  );
+}
+
+function MiniLineChart() {
   return (
     <svg viewBox="0 0 200 130" className="w-full h-full">
       <defs>
-        <linearGradient id="bg1" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#159AA9" stopOpacity="0.7" />
-          <stop offset="100%" stopColor="#159AA9" stopOpacity="0.3" />
-        </linearGradient>
-        <linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#A67C52" stopOpacity="0.7" />
-          <stop offset="100%" stopColor="#A67C52" stopOpacity="0.3" />
-        </linearGradient>
-        <linearGradient id="bg3" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#0B1220" stopOpacity="0.5" />
-          <stop offset="100%" stopColor="#0B1220" stopOpacity="0.15" />
+        <linearGradient id="lg1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#159AA9" stopOpacity="0.2" />
+          <stop offset="100%" stopColor="#159AA9" stopOpacity="0" />
         </linearGradient>
       </defs>
       <style>{`
-        @keyframes bc1 { 0%,100%{height:28px;y:92} 50%{height:52px;y:68} }
-        @keyframes bc2 { 0%,100%{height:40px;y:80} 50%{height:66px;y:54} }
-        @keyframes bc3 { 0%,100%{height:54px;y:66} 50%{height:82px;y:38} }
-        @keyframes bc4 { 0%,100%{height:66px;y:54} 50%{height:98px;y:22} }
-        @keyframes bc5 { 0%,100%{height:78px;y:42} 50%{height:112px;y:8} }
-        @keyframes bl { 0%,100%{opacity:0.08} 50%{opacity:0.18} }
+        @keyframes lc1 { 0%{d:path("M10,100 L10,100 L30,90 L50,95 L70,80 L90,70 L110,75 L130,55 L150,60 L170,40 L190,42")} 100%{d:path("M10,100 L10,60 L30,55 L50,70 L70,45 L90,35 L110,40 L130,20 L150,25 L170,10 L190,12")} }
+        @keyframes lc2 { 0%{d:path("M10,100 C40,95 60,85 90,82 C120,78 150,70 190,72")} 100%{d:path("M10,100 C40,78 60,65 90,60 C120,55 150,45 190,48")} }
+        @keyframes ldot { 0%{transform:translateX(10px)} 100%{transform:translateX(180px)} }
       `}</style>
-      <line x1="20" y1="100" x2="188" y2="100" stroke="#159AA9" strokeWidth="0.3" opacity="0.12" />
-      <line x1="20" y1="76" x2="188" y2="76" stroke="#159AA9" strokeWidth="0.3" strokeDasharray="2 4" opacity="0.08" style={{ animation: "bl 2s ease-in-out infinite" }} />
-      <line x1="20" y1="52" x2="188" y2="52" stroke="#159AA9" strokeWidth="0.3" strokeDasharray="2 4" opacity="0.08" style={{ animation: "bl 2.4s ease-in-out infinite" }} />
-      <line x1="20" y1="28" x2="188" y2="28" stroke="#159AA9" strokeWidth="0.3" strokeDasharray="2 4" opacity="0.08" style={{ animation: "bl 2.8s ease-in-out infinite" }} />
-      <rect x="28" y="92" width="22" rx="3" fill="url(#bg1)" style={{ animation: "bc1 1.6s ease-in-out infinite" }} />
-      <rect x="56" y="80" width="22" rx="3" fill="url(#bg2)" style={{ animation: "bc2 1.6s ease-in-out 0.15s infinite" }} />
-      <rect x="84" y="66" width="22" rx="3" fill="url(#bg3)" style={{ animation: "bc3 1.6s ease-in-out 0.3s infinite" }} />
-      <rect x="112" y="54" width="22" rx="3" fill="url(#bg1)" style={{ animation: "bc4 1.6s ease-in-out 0.45s infinite" }} />
-      <rect x="140" y="42" width="22" rx="3" fill="url(#bg2)" style={{ animation: "bc5 1.6s ease-in-out 0.6s infinite" }} />
-      <rect x="168" y="66" width="20" rx="3" fill="url(#bg3)" style={{ animation: "bc3 1.6s ease-in-out 0.75s infinite" }} />
+      <line x1="10" y1="105" x2="195" y2="105" stroke="#E5E2DC" strokeWidth="0.5" opacity="0.5" />
+      <line x1="10" y1="78" x2="195" y2="78" stroke="#E5E2DC" strokeWidth="0.3" strokeDasharray="2 4" opacity="0.3" />
+      <line x1="10" y1="51" x2="195" y2="51" stroke="#E5E2DC" strokeWidth="0.3" strokeDasharray="2 4" opacity="0.3" />
+      <line x1="10" y1="24" x2="195" y2="24" stroke="#E5E2DC" strokeWidth="0.3" strokeDasharray="2 4" opacity="0.3" />
+      <path fill="url(#lg1)" d="M10 105 L10 100 L30 90 L50 95 L70 80 L90 70 L110 75 L130 55 L150 60 L170 40 L190 42 L190 105 Z" opacity="0.4" style={{ animation: "lc1 3s ease-in-out infinite alternate" }} />
+      <path fill="none" stroke="#159AA9" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" d="M10,100 L30,90 L50,95 L70,80 L90,70 L110,75 L130,55 L150,60 L170,40 L190,42" style={{ animation: "lc1 3s ease-in-out infinite alternate" }} />
+      <g style={{ animation: "ldot 3s ease-in-out infinite alternate" }}>
+        <circle cx="10" cy="42" r="3" fill="#159AA9" />
+        <circle cx="10" cy="42" r="6" fill="#159AA9" opacity="0.12" />
+      </g>
     </svg>
   );
 }
 
-function WaveGraph() {
+function AreaChart() {
   return (
     <svg viewBox="0 0 200 130" className="w-full h-full">
       <defs>
-        <linearGradient id="wg1" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#159AA9" stopOpacity="0.25" />
+        <linearGradient id="ag1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#159AA9" stopOpacity="0.18" />
           <stop offset="100%" stopColor="#159AA9" stopOpacity="0" />
         </linearGradient>
-        <linearGradient id="wg2" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#A67C52" stopOpacity="0.15" />
+        <linearGradient id="ag2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#A67C52" stopOpacity="0.1" />
           <stop offset="100%" stopColor="#A67C52" stopOpacity="0" />
         </linearGradient>
       </defs>
       <style>{`
-        @keyframes wm1 { 0%{transform:translateX(0)} 100%{transform:translateX(-120px)} }
-        @keyframes wm2 { 0%{transform:translateX(-120px)} 100%{transform:translateX(0)} }
-        @keyframes wd { 0%{transform:translateX(-40px);opacity:0} 15%{opacity:0.8} 85%{opacity:0.8} 100%{transform:translateX(240px);opacity:0} }
-        @keyframes wp { 0%,100%{transform:scale(1);opacity:0.3} 50%{transform:scale(1.3);opacity:0.7} }
+        @keyframes aw1 { 0%{d:path("M10,85 C30,75 50,80 70,70 C90,60 110,65 130,55 C150,45 170,50 190,42")} 100%{d:path("M10,85 C30,68 50,72 70,60 C90,50 110,55 130,45 C150,35 170,40 190,32")} }
+        @keyframes aw2 { 0%{d:path("M10,95 C30,88 50,92 70,85 C90,78 110,82 130,75 C150,68 170,72 190,68")} 100%{d:path("M10,95 C30,82 50,86 70,78 C90,70 110,74 130,66 C150,58 170,62 190,56")} }
+        @keyframes adot { 0%,100%{opacity:0.3;r:2} 50%{opacity:0.7;r:3} }
       `}</style>
-      <line x1="0" y1="100" x2="200" y2="100" stroke="#159AA9" strokeWidth="0.3" opacity="0.1" />
-      <line x1="0" y1="74" x2="200" y2="74" stroke="#159AA9" strokeWidth="0.3" strokeDasharray="2 4" opacity="0.07" />
-      <line x1="0" y1="48" x2="200" y2="48" stroke="#159AA9" strokeWidth="0.3" strokeDasharray="2 4" opacity="0.07" />
-      <g style={{ animation: "wm1 3.5s linear infinite" }}>
-        <path d="M0 100 C16 40,32 40,48 100 C64 55,80 55,96 100 C112 40,128 40,144 100 C160 55,176 55,192 100 C208 40,224 40,240 100" fill="none" stroke="#159AA9" strokeWidth="0.9" opacity="0.2" />
-        <path d="M0 100 C16 40,32 40,48 100 C64 55,80 55,96 100 C112 40,128 40,144 100 C160 55,176 55,192 100 C208 40,224 40,240 100 L240 100 L0 100 Z" fill="url(#wg1)" />
-      </g>
-      <g style={{ animation: "wm2 4s linear infinite" }}>
-        <path d="M-40 100 C-24 60,-8 60,8 100 C24 70,40 70,56 100 C72 60,88 60,104 100 C120 70,136 70,152 100 C168 60,184 60,200 100 C216 70,232 70,248 100" fill="none" stroke="#A67C52" strokeWidth="0.6" opacity="0.15" />
-        <path d="M-40 100 C-24 60,-8 60,8 100 C24 70,40 70,56 100 C72 60,88 60,104 100 C120 70,136 70,152 100 C168 60,184 60,200 100 C216 70,232 70,248 100 L248 100 L-40 100 Z" fill="url(#wg2)" />
-      </g>
-      <g style={{ animation: "wd 3s linear infinite" }}>
-        <circle cx="0" cy="40" r="3.5" fill="#159AA9" />
-        <circle cx="0" cy="40" r="7" fill="#159AA9" opacity="0.12" />
-      </g>
-      <circle cx="48" cy="100" r="2" fill="#159AA9" style={{ animation: "wp 2s ease-in-out infinite" }} />
-      <circle cx="96" cy="100" r="2" fill="#A67C52" style={{ animation: "wp 2.5s ease-in-out 0.5s infinite" }} />
-      <circle cx="144" cy="100" r="2" fill="#0B1220" style={{ animation: "wp 2.2s ease-in-out 1s infinite" }} />
+      <line x1="10" y1="105" x2="195" y2="105" stroke="#E5E2DC" strokeWidth="0.5" opacity="0.5" />
+      <line x1="10" y1="80" x2="195" y2="80" stroke="#E5E2DC" strokeWidth="0.3" strokeDasharray="2 4" opacity="0.3" />
+      <line x1="10" y1="55" x2="195" y2="55" stroke="#E5E2DC" strokeWidth="0.3" strokeDasharray="2 4" opacity="0.3" />
+      <line x1="10" y1="30" x2="195" y2="30" stroke="#E5E2DC" strokeWidth="0.3" strokeDasharray="2 4" opacity="0.3" />
+      <path fill="url(#ag1)" d="M10 105 C30 75,50 80,70 70 C90 60,110 65,130 55 C150 45,170 50,190 42 L190 105 Z" opacity="0.5" style={{ animation: "aw1 3s ease-in-out infinite alternate" }} />
+      <path fill="none" stroke="#159AA9" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" d="M10,85 C30,75 50,80 70,70 C90,60 110,65 130,55 C150,45 170,50 190,42" style={{ animation: "aw1 3s ease-in-out infinite alternate" }} />
+      <path fill="url(#ag2)" d="M10 105 C30,88 50,92 70,85 C90,78 110,82 130,75 C150,68 170,72 190,68 L190 105 Z" opacity="0.4" style={{ animation: "aw2 3.5s ease-in-out infinite alternate" }} />
+      <path fill="none" stroke="#A67C52" strokeWidth="0.7" strokeLinecap="round" strokeLinejoin="round" d="M10,95 C30,88 50,92 70,85 C90,78 110,82 130,75 C150,68 170,72 190,68" style={{ animation: "aw2 3.5s ease-in-out infinite alternate" }} />
+      <circle cx="190" cy="42" r="3" fill="#159AA9" />
+      <circle cx="190" cy="42" r="7" fill="#159AA9" opacity="0.08" />
+      <circle cx="190" cy="68" r="2.5" fill="#A67C52" />
+      <circle cx="70" cy="70" r="2" fill="#159AA9" style={{ animation: "adot 2s ease-in-out infinite" }} />
+      <circle cx="130" cy="55" r="2" fill="#A67C52" style={{ animation: "adot 2.5s ease-in-out 0.3s infinite" }} />
     </svg>
   );
 }
 
-const icons = [RadarScan, VennAnimated, BarChart, WaveGraph];
+const icons = [DonutChart, HorizBars, MiniLineChart, AreaChart];
 
 const steps = [
   { number: "01", title: "Assess", subtitle: "Comprendre où vous en êtes." },
@@ -205,13 +163,13 @@ export default function HowItWorks() {
           start: "top 80%",
           toggleActions: "play none none none",
         },
-        defaults: { ease: "back.out(1.7)", duration: 0.4 },
+        defaults: { ease: "power3.out", duration: 0.5 },
       });
 
       tl
-        .to(headingRef.current, { opacity: 1, y: 0 })
-        .to(subheadingRef.current, { opacity: 1, y: 0, duration: 0.3 }, "-=0.15")
-        .to(cards, { opacity: 1, y: 0, scale: 1, stagger: 0.06, duration: 0.35 }, "-=0.05");
+        .to(headingRef.current, { opacity: 1, y: 0, duration: 0.4 })
+        .to(subheadingRef.current, { opacity: 1, y: 0, duration: 0.35 }, "-=0.2")
+        .to(cards, { opacity: 1, y: 0, scale: 1, stagger: 0.08, duration: 0.4 }, "-=0.1");
     }, el);
 
     return () => ctx.revert();
@@ -245,29 +203,29 @@ export default function HowItWorks() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-4 gap-5">
           {steps.map((step, i) => (
             <div
               key={i}
               ref={setStepRef(i)}
-              className="bg-white rounded-2xl overflow-hidden border border-[#0B1220]/[0.06] will-change-transform transition-all duration-500 hover:border-[#159AA9]/25 hover:shadow-[0_8px_40px_rgba(21,154,169,0.08)] flex flex-col"
-              style={{ boxShadow: "0 2px 24px rgba(0,0,0,0.03)" }}
+              className="bg-white rounded-xl overflow-hidden border border-[#0B1220]/[0.05] will-change-transform transition-all duration-500 hover:border-[#159AA9]/15 hover:shadow-[0_4px_24px_rgba(21,154,169,0.06)] flex flex-col"
+              style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.02)" }}
             >
-              <div className="h-1 bg-gradient-to-r from-[#159AA9] via-[#159AA9]/60 to-[#159AA9]/20 shrink-0" />
+              <div className="h-[2px] bg-[#159AA9]/40 shrink-0" />
 
-              <div className="px-6 pt-5 pb-3 flex flex-col gap-2 items-center text-center">
-                <span className="w-7 h-7 rounded-full bg-[#159AA9]/10 flex items-center justify-center text-[10px] font-bold text-[#159AA9] tracking-wider">
-                  {step.number}
+              <div className="px-5 pt-4 pb-2 flex flex-col gap-1.5 items-center text-center">
+                <span className="text-[10px] font-semibold text-[#159AA9]/50 tracking-[0.12em] uppercase">
+                  Étape {step.number}
                 </span>
-                <h3 className="font-heading text-[17px] font-bold text-[#0B1220] tracking-[-0.02em] leading-tight">
+                <h3 className="font-heading text-base font-bold text-[#0B1220] tracking-[-0.02em] leading-tight">
                   {step.title}
                 </h3>
-                <p className="text-[12px] text-[#2B2F36] leading-relaxed font-light max-w-[160px]">
+                <p className="text-[11px] text-[#2B2F36] leading-relaxed font-light max-w-[150px]">
                   {step.subtitle}
                 </p>
               </div>
 
-              <div className="flex-1 flex items-end px-4 pb-4">
+              <div className="flex-1 flex items-end px-3 pb-3">
                 <div className="w-full">
                   {(() => {
                     const Icon = icons[i];
@@ -279,16 +237,16 @@ export default function HowItWorks() {
           ))}
         </div>
 
-        <div className="flex items-center justify-center gap-5 mt-16">
+        <div className="flex items-center justify-center gap-4 mt-14">
           <a
             href="#"
-            className="inline-flex items-center justify-center px-8 h-[50px] bg-[#0B1220] text-white rounded-full font-medium text-sm tracking-wide transition-all duration-300 hover:bg-[#2B2F36] hover:shadow-lg"
+            className="inline-flex items-center justify-center px-7 h-11 bg-[#0B1220] text-white rounded-lg font-medium text-[13px] tracking-wide transition-all duration-300 hover:bg-[#2B2F36]"
           >
             Découvrir votre parcours
           </a>
           <a
             href="#"
-            className="inline-flex items-center justify-center px-7 h-[50px] bg-transparent text-[#159AA9] border border-[#159AA9]/30 rounded-full font-medium text-sm tracking-wide transition-all duration-300 hover:border-[#159AA9] hover:bg-[rgba(21,154,169,0.04)]"
+            className="inline-flex items-center justify-center px-6 h-11 bg-transparent text-[#159AA9] border border-[#159AA9]/25 rounded-lg font-medium text-[13px] tracking-wide transition-all duration-300 hover:border-[#159AA9]/50"
           >
             Commencer votre évaluation
           </a>
