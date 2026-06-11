@@ -6,6 +6,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const colors = {
+  teal: "#159AA9",
+  bronze: "#A67C52",
+  navy: "#0B1220",
+  graphite: "#2B2F36",
+};
+
 const steps = [
   {
     number: "01",
@@ -13,13 +20,15 @@ const steps = [
     subtitle: "Comprendre où vous en êtes.",
     icon: (
       <svg viewBox="0 0 200 100" className="w-full h-auto" fill="none">
-        <circle cx="100" cy="50" r="38" stroke="#159AA9" strokeWidth="0.6" opacity="0.2" />
-        <circle cx="100" cy="50" r="26" stroke="#159AA9" strokeWidth="0.5" opacity="0.12" />
-        <circle cx="100" cy="50" r="14" stroke="#159AA9" strokeWidth="0.5" opacity="0.12" />
-        <circle cx="100" cy="50" r="2.5" fill="#159AA9" opacity="0.5" />
-        <path data-gsap="assess-sweep" d="M100 12 A38 38 0 0 1 138 50" stroke="#159AA9" strokeWidth="0.7" strokeLinecap="round" opacity="0.6" />
-        <line data-gsap="assess-line" x1="100" y1="50" x2="100" y2="12" stroke="#159AA9" strokeWidth="0.6" strokeLinecap="round" opacity="0.5" />
-        <line data-gsap="assess-line" x1="100" y1="50" x2="138" y2="50" stroke="#159AA9" strokeWidth="0.6" strokeLinecap="round" opacity="0.5" />
+        <circle cx="100" cy="50" r="40" stroke={colors.teal} strokeWidth="0.5" opacity="0.15" />
+        <circle cx="100" cy="50" r="28" stroke={colors.teal} strokeWidth="0.5" opacity="0.12" />
+        <circle cx="100" cy="50" r="16" stroke={colors.teal} strokeWidth="0.5" opacity="0.12" />
+        <circle cx="100" cy="50" r="10" fill={colors.teal} opacity="0.06" />
+        <circle cx="100" cy="50" r="3" fill={colors.bronze} />
+        <circle cx="100" cy="50" r="5" fill={colors.bronze} opacity="0.2" />
+        <line x1="100" y1="10" x2="100" y2="90" stroke={colors.teal} strokeWidth="0.3" strokeDasharray="2 4" opacity="0.15" />
+        <line x1="10" y1="50" x2="190" y2="50" stroke={colors.teal} strokeWidth="0.3" strokeDasharray="2 4" opacity="0.15" />
+        <path d="M100 10 L140 50 L100 90" stroke={colors.teal} strokeWidth="0.6" strokeLinecap="round" strokeLinejoin="round" opacity="0.08" />
       </svg>
     ),
   },
@@ -29,10 +38,14 @@ const steps = [
     subtitle: "Construire un parcours qui vous ressemble.",
     icon: (
       <svg viewBox="0 0 200 100" className="w-full h-auto" fill="none">
-        <circle data-gsap="align-left" cx="86" cy="50" r="24" stroke="#159AA9" strokeWidth="0.6" opacity="0.25" />
-        <circle data-gsap="align-right" cx="114" cy="50" r="24" stroke="#159AA9" strokeWidth="0.6" opacity="0.25" />
-        <path data-gsap="align-overlap" d="M86 26 A24 24 0 0 1 114 26 A24 24 0 0 1 114 74 A24 24 0 0 1 86 74" stroke="#159AA9" strokeWidth="0.7" opacity="0" />
-        <circle cx="100" cy="50" r="2" fill="#159AA9" opacity="0.4" />
+        <circle cx="80" cy="50" r="26" fill={colors.teal} opacity="0.08" />
+        <circle cx="120" cy="50" r="26" fill={colors.bronze} opacity="0.08" />
+        <circle cx="80" cy="50" r="26" stroke={colors.teal} strokeWidth="0.5" opacity="0.3" />
+        <circle cx="120" cy="50" r="26" stroke={colors.bronze} strokeWidth="0.5" opacity="0.3" />
+        <ellipse cx="100" cy="50" rx="14" ry="26" fill={colors.navy} opacity="0.08" />
+        <ellipse cx="100" cy="50" rx="14" ry="26" stroke={colors.navy} strokeWidth="0.5" opacity="0.25" />
+        <circle cx="100" cy="50" r="3" fill={colors.teal} />
+        <circle cx="100" cy="50" r="6" fill={colors.teal} opacity="0.15" />
       </svg>
     ),
   },
@@ -42,12 +55,16 @@ const steps = [
     subtitle: "Passer à l'action, ensemble.",
     icon: (
       <svg viewBox="0 0 200 100" className="w-full h-auto" fill="none">
-        <line data-gsap="act-line-1" x1="50" y1="63" x2="80" y2="63" stroke="#159AA9" strokeWidth="0.6" strokeLinecap="round" />
-        <line data-gsap="act-line-2" x1="50" y1="50" x2="100" y2="50" stroke="#159AA9" strokeWidth="0.6" strokeLinecap="round" />
-        <line data-gsap="act-line-3" x1="50" y1="37" x2="120" y2="37" stroke="#159AA9" strokeWidth="0.6" strokeLinecap="round" />
-        <circle data-gsap="act-dot" cx="140" cy="37" r="2" fill="#159AA9" opacity="0" />
-        <line data-gsap="act-arrow" x1="130" y1="28" x2="145" y2="37" stroke="#159AA9" strokeWidth="0.6" strokeLinecap="round" strokeLinejoin="round" opacity="0" />
-        <line data-gsap="act-arrow" x1="130" y1="46" x2="145" y2="37" stroke="#159AA9" strokeWidth="0.6" strokeLinecap="round" strokeLinejoin="round" opacity="0" />
+        <rect x="30" y="58" width="20" height="28" rx="2" fill={colors.teal} opacity="0.15" />
+        <rect x="30" y="58" width="20" height="28" rx="2" stroke={colors.teal} strokeWidth="0.5" opacity="0.3" />
+        <rect x="58" y="46" width="20" height="40" rx="2" fill={colors.bronze} opacity="0.15" />
+        <rect x="58" y="46" width="20" height="40" rx="2" stroke={colors.bronze} strokeWidth="0.5" opacity="0.3" />
+        <rect x="86" y="34" width="20" height="52" rx="2" fill={colors.navy} opacity="0.12" />
+        <rect x="86" y="34" width="20" height="52" rx="2" stroke={colors.navy} strokeWidth="0.5" opacity="0.2" />
+        <rect x="114" y="22" width="20" height="64" rx="2" fill={colors.teal} opacity="0.2" />
+        <rect x="114" y="22" width="20" height="64" rx="2" stroke={colors.teal} strokeWidth="0.5" opacity="0.35" />
+        <rect x="142" y="10" width="20" height="76" rx="2" fill={colors.bronze} opacity="0.2" />
+        <rect x="142" y="10" width="20" height="76" rx="2" stroke={colors.bronze} strokeWidth="0.5" opacity="0.35" />
       </svg>
     ),
   },
@@ -57,10 +74,15 @@ const steps = [
     subtitle: "Prévenir, performer, durer.",
     icon: (
       <svg viewBox="0 0 200 100" className="w-full h-auto" fill="none">
-        <circle cx="100" cy="50" r="30" stroke="#159AA9" strokeWidth="0.6" opacity="0.18" />
-        <path data-gsap="sustain-wave" d="M74 50 C82 34, 92 34, 100 50 C108 66, 118 66, 126 50" stroke="#159AA9" strokeWidth="0.7" strokeLinecap="round" opacity="0" />
-        <path data-gsap="sustain-wave-2" d="M74 50 C82 44, 92 44, 100 50 C108 56, 118 56, 126 50" stroke="#159AA9" strokeWidth="0.5" strokeLinecap="round" opacity="0" />
-        <circle data-gsap="sustain-dot" cx="100" cy="30" r="2" fill="#159AA9" opacity="0" />
+        <circle cx="100" cy="50" r="34" stroke={colors.teal} strokeWidth="0.5" opacity="0.12" />
+        <path d="M34 50 C50 24, 64 24, 80 50 C96 76, 110 76, 126 50 C142 24, 156 24, 172 50" stroke={colors.teal} strokeWidth="0.6" strokeLinecap="round" opacity="0.15" />
+        <path d="M44 50 C58 30, 72 30, 86 50 C100 70, 114 70, 128 50 C142 30, 156 30, 170 50" stroke={colors.bronze} strokeWidth="0.4" strokeLinecap="round" opacity="0.12" />
+        <circle cx="100" cy="50" r="4" fill={colors.teal} opacity="0.25" />
+        <circle cx="100" cy="50" r="2" fill={colors.bronze} />
+        <circle cx="34" cy="50" r="3" fill={colors.teal} opacity="0.3" />
+        <circle cx="172" cy="50" r="3" fill={colors.bronze} opacity="0.3" />
+        <line x1="0" y1="50" x2="34" y2="50" stroke={colors.teal} strokeWidth="0.3" strokeDasharray="2 4" opacity="0.1" />
+        <line x1="172" y1="50" x2="200" y2="50" stroke={colors.bronze} strokeWidth="0.3" strokeDasharray="2 4" opacity="0.1" />
       </svg>
     ),
   },
@@ -90,61 +112,19 @@ export default function HowItWorks() {
       gsap.set(headingRef.current, { opacity: 0, y: 16 });
       gsap.set(subheadingRef.current, { opacity: 0, y: 12 });
 
-      gsap.set('[data-gsap="assess-sweep"]', { strokeDasharray: 76, strokeDashoffset: 76 });
-      gsap.set('[data-gsap="assess-line"]', { scaleY: 0, transformOrigin: "bottom" });
-
-      gsap.set('[data-gsap="align-left"]', { x: -3, opacity: 0.15 });
-      gsap.set('[data-gsap="align-right"]', { x: 3, opacity: 0.15 });
-      gsap.set('[data-gsap="align-overlap"]', { opacity: 0 });
-
-      gsap.set('[data-gsap="act-line-1"]', { scaleX: 0, transformOrigin: "left" });
-      gsap.set('[data-gsap="act-line-2"]', { scaleX: 0, transformOrigin: "left" });
-      gsap.set('[data-gsap="act-line-3"]', { scaleX: 0, transformOrigin: "left" });
-      gsap.set('[data-gsap="act-dot"]', { opacity: 0, scale: 0 });
-      gsap.set('[data-gsap="act-arrow"]', { opacity: 0, strokeDasharray: 10, strokeDashoffset: 10 });
-
-      gsap.set('[data-gsap="sustain-wave"]', { opacity: 0, strokeDasharray: 56, strokeDashoffset: 56 });
-      gsap.set('[data-gsap="sustain-wave-2"]', { opacity: 0, strokeDasharray: 56, strokeDashoffset: 56 });
-      gsap.set('[data-gsap="sustain-dot"]', { opacity: 0, scale: 0 });
-
-      const q0 = gsap.utils.selector(cards[0]);
-      const q1 = gsap.utils.selector(cards[1]);
-      const q2 = gsap.utils.selector(cards[2]);
-      const q3 = gsap.utils.selector(cards[3]);
-
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: el,
           start: "top 80%",
           toggleActions: "play none none none",
         },
-        defaults: { ease: "power3.out", duration: 0.6 },
+        defaults: { ease: "back.out(1.7)", duration: 0.4 },
       });
 
       tl
-        .to(headingRef.current, { opacity: 1, y: 0, duration: 0.35 })
-        .to(subheadingRef.current, { opacity: 1, y: 0, duration: 0.25 }, "-=0.2")
-
-        .to(cards[0], { opacity: 1, y: 0, scale: 1, boxShadow: "0 6px 40px rgba(21,154,169,0.06)", duration: 0.25 }, "-=0.05")
-        .to(q0('[data-gsap="assess-sweep"]'), { strokeDashoffset: 0, duration: 0.4, ease: "power2.inOut" }, "-=0.1")
-        .to(q0('[data-gsap="assess-line"]'), { scaleY: 1, stagger: 0.05, duration: 0.15, ease: "power3.out" }, "-=0.25")
-
-        .to(cards[1], { opacity: 1, y: 0, scale: 1, boxShadow: "0 6px 40px rgba(21,154,169,0.06)", duration: 0.25 }, "-=0.05")
-        .to(q1('[data-gsap="align-left"]'), { x: 0, opacity: 0.25, duration: 0.2 }, "-=0.15")
-        .to(q1('[data-gsap="align-right"]'), { x: 0, opacity: 0.25, duration: 0.2 }, "-=0.15")
-        .to(q1('[data-gsap="align-overlap"]'), { opacity: 0.5, duration: 0.25 }, "-=0.1")
-
-        .to(cards[2], { opacity: 1, y: 0, scale: 1, boxShadow: "0 6px 40px rgba(21,154,169,0.06)", duration: 0.25 }, "-=0.05")
-        .to(q2('[data-gsap="act-line-1"]'), { scaleX: 1, duration: 0.12 }, "-=0.15")
-        .to(q2('[data-gsap="act-line-2"]'), { scaleX: 1, duration: 0.12 }, "-=0.1")
-        .to(q2('[data-gsap="act-line-3"]'), { scaleX: 1, duration: 0.12 }, "-=0.05")
-        .to(q2('[data-gsap="act-dot"]'), { opacity: 1, scale: 1, duration: 0.08 }, "-=0.02")
-        .to(q2('[data-gsap="act-arrow"]'), { opacity: 0.6, strokeDashoffset: 0, duration: 0.15 }, "-=0.05")
-
-        .to(cards[3], { opacity: 1, y: 0, scale: 1, boxShadow: "0 6px 40px rgba(21,154,169,0.06)", duration: 0.25 }, "-=0.05")
-        .to(q3('[data-gsap="sustain-wave"]'), { opacity: 0.5, strokeDashoffset: 0, duration: 0.35, ease: "power2.inOut" }, "-=0.15")
-        .to(q3('[data-gsap="sustain-wave-2"]'), { opacity: 0.3, strokeDashoffset: 0, duration: 0.35, ease: "power2.inOut" }, "-=0.25")
-        .to(q3('[data-gsap="sustain-dot"]'), { opacity: 1, scale: 1, duration: 0.1 }, "-=0.15");
+        .to(headingRef.current, { opacity: 1, y: 0 })
+        .to(subheadingRef.current, { opacity: 1, y: 0, duration: 0.3 }, "-=0.15")
+        .to(cards, { opacity: 1, y: 0, scale: 1, stagger: 0.06, duration: 0.35 }, "-=0.05");
     }, el);
 
     return () => ctx.revert();
@@ -188,8 +168,8 @@ export default function HowItWorks() {
             >
               <div className="h-1 bg-gradient-to-r from-[#159AA9] to-[#159AA9]/20" />
 
-              <div className="px-6 py-6 flex flex-col gap-4">
-                <div className="flex items-center gap-3">
+              <div className="px-6 py-6 flex flex-col gap-4 items-center text-center">
+                <div className="flex items-center gap-3 justify-center">
                   <span className="w-7 h-7 rounded-full bg-[#159AA9]/10 flex items-center justify-center text-[10px] font-bold text-[#159AA9] tracking-wider">
                     {step.number}
                   </span>
