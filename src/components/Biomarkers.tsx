@@ -43,24 +43,6 @@ const categories = [
     description:
       "Prise en charge des troubles du langage oral et écrit (dysphasie, dyslexie), de la voix (dysphonie), de la déglutition (dysphagie) et des apprentissages chez l'enfant et l'adulte orthophonique à Casablanca.",
   },
-  {
-    name: "Naturopathie",
-    count: "6 soins",
-    description:
-      "Approche holistique de la santé : phytothérapie, aromathérapie, iridologie, conseils en hygiène de vie, détoxination et nutrition naturelle pour renforcer les capacités d'auto-guérison de l'organisme.",
-  },
-  {
-    name: "Psychomotricité",
-    count: "3 soins",
-    description:
-      "Développement psychomoteur de l'enfant, relaxation thérapeutique, accompagnement des troubles du mouvement, du schéma corporel et de la coordination chez l'enfant (retards psychomoteurs) et l'adulte (maladies neurologiques).",
-  },
-  {
-    name: "Thérapies Complémentaires",
-    count: "7 soins",
-    description:
-      "Sophrologie pour la gestion du stress, hypnose thérapeutique (arrêt tabac, phobies), réflexologie plantaire, drainage lymphatique et approches intégratives pour un bien-être physique et mental global.",
-  },
 ];
 
 export default function Biomarkers() {
@@ -99,37 +81,37 @@ export default function Biomarkers() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-[#F2EFE9] noise py-24 sm:py-32 px-6" id="specialites">
+    <section ref={sectionRef} className="bg-[#F2EFE9] noise py-16 sm:py-32 px-4 sm:px-6" id="specialites">
       <div className="max-w-7xl mx-auto">
-        <div ref={headingRef} className="text-center mb-16">
-          <span className="text-[#B88A5A] font-semibold text-sm tracking-widest uppercase">
-            Kinésithérapie &bull; Ostéopathie &bull; Psychologie &bull; Neuropsychologie &bull; Nutrition
+        <div ref={headingRef} className="text-center mb-10 sm:mb-16">
+          <span className="text-[#B88A5A] font-semibold text-[11px] sm:text-sm tracking-widest uppercase">
+            Kinésithérapie &bull; Ostéopathie &bull; Psychologie &bull; Neuropsychologie &bull; Nutrition &bull; Orthophonie
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-[#0B1220] mt-4 tracking-tight">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-serif font-bold text-[#0B1220] mt-3 sm:mt-4 tracking-tight">
             Une approche pluridisciplinaire <br className="hidden sm:block" />
-            en 9 spécialités santé
+             en 6 spécialités santé
           </h2>
           <p className="text-[#6B6B6B] text-sm sm:text-base mt-4 max-w-2xl mx-auto">
-            Wenaya Clinic Casablanca réunit kinésithérapeutes, ostéopathes, psychologues, neuropsychologues, nutritionnistes, orthophonistes, naturopathes, psychomotriciens et thérapeutes complémentaires pour une prise en charge globale de votre santé physique, mentale et cognitive.
+            Wenaya Clinic Casablanca réunit kinésithérapeutes, ostéopathes, psychologues, neuropsychologues, nutritionnistes et orthophonistes pour une prise en charge globale de votre santé physique, mentale et cognitive.
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {categories.map((cat, i) => (
             <div
               key={cat.name}
               ref={(el) => { cardsRef.current[i] = el; }}
-              className="bg-white rounded-2xl border border-[rgba(184,138,90,0.1)] p-6 transition-all duration-300 hover:border-[rgba(184,138,90,0.25)] hover:shadow-md hover:shadow-[rgba(184,138,90,0.06)] hover:-translate-y-0.5"
+               className="bg-white rounded-xl sm:rounded-2xl border border-[rgba(184,138,90,0.1)] p-4 sm:p-6 transition-all duration-300 hover:border-[rgba(184,138,90,0.25)] hover:shadow-md hover:shadow-[rgba(184,138,90,0.06)] hover:-translate-y-0.5"
             >
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-serif font-bold text-[#0B1220] text-base">
+              <div className="flex items-center justify-between mb-2 sm:mb-3">
+                <h3 className="font-serif font-bold text-[#0B1220] text-[13px] sm:text-base">
                   {cat.name}
                 </h3>
-                <span className="text-xs font-semibold text-[#B88A5A] bg-[rgba(184,138,90,0.08)] px-2.5 py-1 rounded-full">
+                <span className="text-[10px] sm:text-xs font-semibold text-[#B88A5A] bg-[rgba(184,138,90,0.08)] px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full">
                   {cat.count}
                 </span>
               </div>
-              <p className="text-[#6B6B6B] text-sm leading-relaxed">
+              <p className="text-[#6B6B6B] text-[11px] sm:text-sm leading-relaxed line-clamp-4 sm:line-clamp-none">
                 {cat.description}
               </p>
             </div>
