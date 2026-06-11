@@ -3,88 +3,30 @@
 import { useRef, useEffect, useCallback } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import HiggsField from "./HiggsField";
 
 gsap.registerPlugin(ScrollTrigger);
-
-const colors = {
-  teal: "#159AA9",
-  bronze: "#A67C52",
-  navy: "#0B1220",
-  graphite: "#2B2F36",
-};
 
 const steps = [
   {
     number: "01",
     title: "Assess",
     subtitle: "Comprendre où vous en êtes.",
-    icon: (
-      <svg viewBox="0 0 200 100" className="w-full h-auto" fill="none">
-        <circle cx="100" cy="50" r="40" stroke={colors.teal} strokeWidth="0.5" opacity="0.15" />
-        <circle cx="100" cy="50" r="28" stroke={colors.teal} strokeWidth="0.5" opacity="0.12" />
-        <circle cx="100" cy="50" r="16" stroke={colors.teal} strokeWidth="0.5" opacity="0.12" />
-        <circle cx="100" cy="50" r="10" fill={colors.teal} opacity="0.06" />
-        <circle cx="100" cy="50" r="3" fill={colors.bronze} />
-        <circle cx="100" cy="50" r="5" fill={colors.bronze} opacity="0.2" />
-        <line x1="100" y1="10" x2="100" y2="90" stroke={colors.teal} strokeWidth="0.3" strokeDasharray="2 4" opacity="0.15" />
-        <line x1="10" y1="50" x2="190" y2="50" stroke={colors.teal} strokeWidth="0.3" strokeDasharray="2 4" opacity="0.15" />
-        <path d="M100 10 L140 50 L100 90" stroke={colors.teal} strokeWidth="0.6" strokeLinecap="round" strokeLinejoin="round" opacity="0.08" />
-      </svg>
-    ),
   },
   {
     number: "02",
     title: "Align",
     subtitle: "Construire un parcours qui vous ressemble.",
-    icon: (
-      <svg viewBox="0 0 200 100" className="w-full h-auto" fill="none">
-        <circle cx="80" cy="50" r="26" fill={colors.teal} opacity="0.08" />
-        <circle cx="120" cy="50" r="26" fill={colors.bronze} opacity="0.08" />
-        <circle cx="80" cy="50" r="26" stroke={colors.teal} strokeWidth="0.5" opacity="0.3" />
-        <circle cx="120" cy="50" r="26" stroke={colors.bronze} strokeWidth="0.5" opacity="0.3" />
-        <ellipse cx="100" cy="50" rx="14" ry="26" fill={colors.navy} opacity="0.08" />
-        <ellipse cx="100" cy="50" rx="14" ry="26" stroke={colors.navy} strokeWidth="0.5" opacity="0.25" />
-        <circle cx="100" cy="50" r="3" fill={colors.teal} />
-        <circle cx="100" cy="50" r="6" fill={colors.teal} opacity="0.15" />
-      </svg>
-    ),
   },
   {
     number: "03",
     title: "Activate",
     subtitle: "Passer à l'action, ensemble.",
-    icon: (
-      <svg viewBox="0 0 200 100" className="w-full h-auto" fill="none">
-        <rect x="30" y="58" width="20" height="28" rx="2" fill={colors.teal} opacity="0.15" />
-        <rect x="30" y="58" width="20" height="28" rx="2" stroke={colors.teal} strokeWidth="0.5" opacity="0.3" />
-        <rect x="58" y="46" width="20" height="40" rx="2" fill={colors.bronze} opacity="0.15" />
-        <rect x="58" y="46" width="20" height="40" rx="2" stroke={colors.bronze} strokeWidth="0.5" opacity="0.3" />
-        <rect x="86" y="34" width="20" height="52" rx="2" fill={colors.navy} opacity="0.12" />
-        <rect x="86" y="34" width="20" height="52" rx="2" stroke={colors.navy} strokeWidth="0.5" opacity="0.2" />
-        <rect x="114" y="22" width="20" height="64" rx="2" fill={colors.teal} opacity="0.2" />
-        <rect x="114" y="22" width="20" height="64" rx="2" stroke={colors.teal} strokeWidth="0.5" opacity="0.35" />
-        <rect x="142" y="10" width="20" height="76" rx="2" fill={colors.bronze} opacity="0.2" />
-        <rect x="142" y="10" width="20" height="76" rx="2" stroke={colors.bronze} strokeWidth="0.5" opacity="0.35" />
-      </svg>
-    ),
   },
   {
     number: "04",
     title: "Sustain",
     subtitle: "Prévenir, performer, durer.",
-    icon: (
-      <svg viewBox="0 0 200 100" className="w-full h-auto" fill="none">
-        <circle cx="100" cy="50" r="34" stroke={colors.teal} strokeWidth="0.5" opacity="0.12" />
-        <path d="M34 50 C50 24, 64 24, 80 50 C96 76, 110 76, 126 50 C142 24, 156 24, 172 50" stroke={colors.teal} strokeWidth="0.6" strokeLinecap="round" opacity="0.15" />
-        <path d="M44 50 C58 30, 72 30, 86 50 C100 70, 114 70, 128 50 C142 30, 156 30, 170 50" stroke={colors.bronze} strokeWidth="0.4" strokeLinecap="round" opacity="0.12" />
-        <circle cx="100" cy="50" r="4" fill={colors.teal} opacity="0.25" />
-        <circle cx="100" cy="50" r="2" fill={colors.bronze} />
-        <circle cx="34" cy="50" r="3" fill={colors.teal} opacity="0.3" />
-        <circle cx="172" cy="50" r="3" fill={colors.bronze} opacity="0.3" />
-        <line x1="0" y1="50" x2="34" y2="50" stroke={colors.teal} strokeWidth="0.3" strokeDasharray="2 4" opacity="0.1" />
-        <line x1="172" y1="50" x2="200" y2="50" stroke={colors.bronze} strokeWidth="0.3" strokeDasharray="2 4" opacity="0.1" />
-      </svg>
-    ),
   },
 ];
 
@@ -93,10 +35,17 @@ export default function HowItWorks() {
   const headingRef = useRef<HTMLDivElement>(null);
   const subheadingRef = useRef<HTMLDivElement>(null);
   const stepRefs = useRef<(HTMLDivElement | null)[]>([null, null, null, null]);
+  const cardRefs = [
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+  ];
 
   const setStepRef = useCallback(
     (i: number) => (el: HTMLDivElement | null) => {
       stepRefs.current[i] = el;
+      (cardRefs[i] as React.MutableRefObject<HTMLDivElement | null>).current = el;
     },
     []
   );
@@ -163,12 +112,13 @@ export default function HowItWorks() {
             <div
               key={i}
               ref={setStepRef(i)}
-              className="bg-white rounded-2xl overflow-hidden border border-[#0B1220]/[0.06] will-change-transform transition-all duration-300 hover:border-[#159AA9]/20"
+              className="bg-white rounded-2xl overflow-hidden border border-[#0B1220]/[0.06] will-change-transform transition-all duration-300 hover:border-[#159AA9]/20 relative"
               style={{ boxShadow: "0 2px 24px rgba(0,0,0,0.03)" }}
             >
-              <div className="h-1 bg-gradient-to-r from-[#159AA9] to-[#159AA9]/20" />
+              <HiggsField parentRef={cardRefs[i]} />
+              <div className="h-1 bg-gradient-to-r from-[#159AA9] to-[#159AA9]/20 relative z-10" />
 
-              <div className="px-6 py-6 flex flex-col gap-4 items-center text-center">
+              <div className="px-6 py-6 flex flex-col gap-4 items-center text-center relative z-10">
                 <div className="flex items-center gap-3 justify-center">
                   <span className="w-7 h-7 rounded-full bg-[#159AA9]/10 flex items-center justify-center text-[10px] font-bold text-[#159AA9] tracking-wider">
                     {step.number}
@@ -187,9 +137,7 @@ export default function HowItWorks() {
                   </p>
                 </div>
 
-                <div className="mt-auto">
-                  {step.icon}
-                </div>
+                <div className="mt-auto" />
               </div>
             </div>
           ))}

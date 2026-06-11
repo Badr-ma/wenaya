@@ -14,7 +14,7 @@ interface Particle {
   connections: number;
 }
 
-export default function HiggsField({ className = "" }: { className?: string }) {
+export default function HiggsField({ className = "", parentRef }: { className?: string; parentRef?: React.RefObject<HTMLElement | null> }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: 0, y: 0, active: false });
 
@@ -26,20 +26,26 @@ export default function HiggsField({ className = "" }: { className?: string }) {
     if (!ctx) return;
 
     const dpr = window.devicePixelRatio || 1;
-    let w = window.innerWidth;
-    let h = window.innerHeight;
+    const getSize = () => {
+      if (parentRef?.current) {
+        const rect = parentRef.current.getBoundingClientRect();
+        return { w: rect.width, h: rect.height };
+      }
+      return { w: window.innerWidth, h: window.innerHeight };
+    };
+    let { w, h } = getSize();
     canvas.width = w * dpr;
     canvas.height = h * dpr;
     ctx.scale(dpr, dpr);
-
-    const particles: Particle[] = [];
-    const count = Math.min(80, Math.floor((w * h) / 18000));
 
     const palette = [
       [184, 138, 90],
       [21, 154, 169],
       [170, 65, 42],
     ];
+
+    const particles: Particle[] = [];
+    const count = Math.min(80, Math.floor((w * h) / 18000));
 
     for (let i = 0; i < count; i++) {
       const mass = 0.2 + Math.random() * 1.8;
@@ -56,23 +62,30 @@ export default function HiggsField({ className = "" }: { className?: string }) {
       });
     }
 
-    const onMouse = (e: MouseEvent) => {
-      mouseRef.current.x = e.clientX;
-      mouseRef.current.y = e.clientY;
+    const onMouse = (e: Event) => {
+      const me = e as MouseEvent;
+      if (parentRef?.current) {
+        const rect = parentRef.current.getBoundingClientRect();
+        mouseRef.current.x = me.clientX - rect.left;
+        mouseRef.current.y = me.clientY - rect.top;
+      } else {
+        mouseRef.current.x = me.clientX;
+        mouseRef.current.y = me.clientY;
+      }
       mouseRef.current.active = true;
     };
     const onLeave = () => {
       mouseRef.current.active = false;
     };
 
-    window.addEventListener("mousemove", onMouse);
-    window.addEventListener("mouseleave", onLeave);
+    const eventTarget = parentRef?.current || window;
+    eventTarget.addEventListener("mousemove", onMouse);
+    eventTarget.addEventListener("mouseleave", onLeave);
 
     let animId: number;
 
     const draw = () => {
-      const ww = window.innerWidth;
-      const hh = window.innerHeight;
+      const { w: ww, h: hh } = getSize();
 
       ctx.clearRect(0, 0, ww, hh);
 
@@ -170,8 +183,9 @@ export default function HiggsField({ className = "" }: { className?: string }) {
     draw();
 
     const resize = () => {
-      w = window.innerWidth;
-      h = window.innerHeight;
+      const size = getSize();
+      w = size.w;
+      h = size.h;
       canvas.width = w * dpr;
       canvas.height = h * dpr;
       ctx.scale(dpr, dpr);
@@ -180,8 +194,8 @@ export default function HiggsField({ className = "" }: { className?: string }) {
 
     return () => {
       cancelAnimationFrame(animId);
-      window.removeEventListener("mousemove", onMouse);
-      window.removeEventListener("mouseleave", onLeave);
+      eventTarget.removeEventListener("mousemove", onMouse);
+      eventTarget.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("resize", resize);
     };
   }, []);
