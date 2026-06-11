@@ -23,7 +23,7 @@ export default function YoloWhatIs() {
               Un Compagnon de Santé et de Bien-être <span className="text-[#AA412A]">Disponible 24/7</span>
             </h2>
 
-            <div className="mt-8 space-y-5 text-[#6B6B6B] text-sm sm:text-base leading-relaxed">
+            <div className="mt-8 space-y-5 text-[#2B2F36] text-sm sm:text-base leading-relaxed">
               <p>
                 Yolo est un agent IA spécialisé dans la longévité et le bien-être, conçu pour accompagner chaque collaborateur dans son parcours de santé au quotidien.
               </p>

@@ -65,7 +65,7 @@ export default function YoloBento() {
                   <span className="text-[10px] font-mono text-[#AA412A]/40 uppercase tracking-wider">{cap.meta}</span>
                   <h3 className="text-lg font-heading font-bold text-[#083241] mt-1.5 group-hover:text-[#AA412A] transition-colors duration-300">{cap.title}</h3>
                 </div>
-                <p className="text-sm text-[#6B6B6B]/70 leading-relaxed mt-3">{cap.desc}</p>
+                <p className="text-sm text-[#2B2F36]/70 leading-relaxed mt-3">{cap.desc}</p>
               </div>
             </motion.div>
           ))}

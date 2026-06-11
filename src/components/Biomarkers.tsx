@@ -6,42 +6,57 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const categories = [
+const univers = [
   {
-    name: "Kinésithérapie",
-    count: "6 soins",
-    description:
-      "Rééducation fonctionnelle post-opératoire, thérapie manuelle, TECAR (Transfert Énergétique Capacitif et Résistif), soins post-AVC et réadaptation neurologique pour retrouver mobilité et autonomie à Casablanca.",
+    name: "Prevent",
+    subtitle: "La prévention comme priorité quotidienne.",
+    icon: (
+      <svg viewBox="0 0 48 48" className="w-10 h-10" fill="none">
+        <circle cx="24" cy="24" r="18" stroke="currentColor" strokeWidth="1" />
+        <path d="M24 14v10l6 6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
   },
   {
-    name: "Ostéopathie",
-    count: "5 soins",
-    description:
-      "Traitement des douleurs musculo-squelettiques (lombalgies, cervicalgies), troubles fonctionnels digestifs et crâniens, accompagnement de la grossesse et du nourrisson par des techniques ostéopathiques structurelles et fasciales.",
+    name: "Perform",
+    subtitle: "La performance physique et mentale, au juste niveau.",
+    icon: (
+      <svg viewBox="0 0 48 48" className="w-10 h-10" fill="none">
+        <path d="M8 40V28l8-4 8 8 8-16 8 8v16" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
   },
   {
-    name: "Psychologie",
-    count: "8 soins",
-    description:
-      "Suivi psychologique pour adultes et enfants, thérapies cognitives et comportementales (TCC), gestion du stress chronique, des troubles anxieux et des émotions par des psychologues cliniciennes diplômées à Casablanca.",
+    name: "Recover",
+    subtitle: "Récupérer, régénérer, repartir.",
+    icon: (
+      <svg viewBox="0 0 48 48" className="w-10 h-10" fill="none">
+        <path d="M24 8v16l8 8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="24" cy="24" r="16" stroke="currentColor" strokeWidth="1" />
+      </svg>
+    ),
   },
   {
-    name: "Neuropsychologie",
-    count: "4 soins",
-    description:
-      "Évaluation des fonctions cognitives (mémoire, attention, langage), rééducation cognitive après lésion cérébrale, accompagnement des troubles de l'apprentissage (dyslexie, TDAH) et des pathologies neurodégénératives.",
+    name: "Balance",
+    subtitle: "Équilibrer le système nerveux et l'esprit.",
+    icon: (
+      <svg viewBox="0 0 48 48" className="w-10 h-10" fill="none">
+        <circle cx="24" cy="24" r="16" stroke="currentColor" strokeWidth="1" />
+        <path d="M24 16v8l5 5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="24" cy="24" r="4" fill="currentColor" opacity="0.2" />
+      </svg>
+    ),
   },
   {
-    name: "Nutrition",
-    count: "5 soins",
-    description:
-      "Consultations nutritionnelles personnalisées, rééquilibrage alimentaire, suivi du poids, gestion des intolérances alimentaires et accompagnement diététique pour pathologies métaboliques (diabète, cholestérol).",
-  },
-  {
-    name: "Orthophonie",
-    count: "4 soins",
-    description:
-      "Prise en charge des troubles du langage oral et écrit (dysphasie, dyslexie), de la voix (dysphonie), de la déglutition (dysphagie) et des apprentissages chez l'enfant et l'adulte orthophonique à Casablanca.",
+    name: "Longevity",
+    subtitle: "Allonger les années en bonne santé.",
+    icon: (
+      <svg viewBox="0 0 48 48" className="w-10 h-10" fill="none">
+        <path d="M24 8c-8 0-16 6-16 16s8 16 16 16 16-6 16-16" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+        <path d="M24 18v8l6 6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M24 8v4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+      </svg>
+    ),
   },
 ];
 
@@ -81,38 +96,35 @@ export default function Biomarkers() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-[#F2EFE9] noise py-16 sm:py-32 px-4 sm:px-6" id="specialites">
+    <section ref={sectionRef} className="bg-[#0B1220] py-24 sm:py-32 px-6" id="univers">
       <div className="max-w-7xl mx-auto">
-        <div ref={headingRef} className="text-center mb-10 sm:mb-16">
-          <span className="text-[#B88A5A] font-semibold text-[11px] sm:text-sm tracking-widest uppercase">
-            Kinésithérapie &bull; Ostéopathie &bull; Psychologie &bull; Neuropsychologie &bull; Nutrition &bull; Orthophonie
+        <div ref={headingRef} className="text-center mb-16">
+          <span className="text-[#159AA9] font-semibold text-sm tracking-widest uppercase">
+            Prévenir &bull; Performer &bull; Récupérer &bull; Équilibrer &bull; Durer
           </span>
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-serif font-bold text-[#0B1220] mt-3 sm:mt-4 tracking-tight">
-            Une approche pluridisciplinaire <br className="hidden sm:block" />
-             en 6 spécialités santé
+          <h2 className="text-[clamp(2rem,4vw,3.5rem)] font-heading font-bold text-white mt-4 tracking-[-0.03em]">
+            Cinq univers, une santé.
           </h2>
-          <p className="text-[#6B6B6B] text-sm sm:text-base mt-4 max-w-2xl mx-auto">
-            Wenaya Clinic Casablanca réunit kinésithérapeutes, ostéopathes, psychologues, neuropsychologues, nutritionnistes et orthophonistes pour une prise en charge globale de votre santé physique, mentale et cognitive.
+          <p className="text-white/40 text-sm sm:text-base mt-4 max-w-2xl mx-auto">
+            Notre approche couvre l&apos;ensemble du spectre de la santé proactive.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-          {categories.map((cat, i) => (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          {univers.map((u, i) => (
             <div
-              key={cat.name}
+              key={u.name}
               ref={(el) => { cardsRef.current[i] = el; }}
-               className="bg-white rounded-xl sm:rounded-2xl border border-[rgba(184,138,90,0.1)] p-4 sm:p-6 transition-all duration-300 hover:border-[rgba(184,138,90,0.25)] hover:shadow-md hover:shadow-[rgba(184,138,90,0.06)] hover:-translate-y-0.5"
+              className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-8 transition-all duration-300 hover:bg-white/[0.06] hover:border-[#159AA9]/30 group"
             >
-              <div className="flex items-center justify-between mb-2 sm:mb-3">
-                <h3 className="font-serif font-bold text-[#0B1220] text-[13px] sm:text-base">
-                  {cat.name}
-                </h3>
-                <span className="text-[10px] sm:text-xs font-semibold text-[#B88A5A] bg-[rgba(184,138,90,0.08)] px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full">
-                  {cat.count}
-                </span>
+              <div className="text-[#159AA9] group-hover:text-white transition-colors duration-300">
+                {u.icon}
               </div>
-              <p className="text-[#6B6B6B] text-[11px] sm:text-sm leading-relaxed line-clamp-4 sm:line-clamp-none">
-                {cat.description}
+              <h3 className="font-heading font-bold text-white text-lg mt-5 tracking-[-0.02em]">
+                {u.name}
+              </h3>
+              <p className="text-white/40 text-sm leading-relaxed mt-2">
+                {u.subtitle}
               </p>
             </div>
           ))}

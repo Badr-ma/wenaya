@@ -64,7 +64,7 @@ export default function YoloHowItWorks() {
                 {i < 4 && <span className="hidden lg:block text-[#AA412A]/15 text-sm">→</span>}
               </div>
               <span className="text-white font-heading font-bold text-xs bg-[#AA412A] px-3 py-1.5 rounded-lg inline-block mb-3">{s.label}</span>
-              <p className="text-[#6B6B6B]/70 text-xs leading-relaxed mt-3">{s.desc}</p>
+              <p className="text-[#2B2F36]/70 text-xs leading-relaxed mt-3">{s.desc}</p>
             </motion.div>
           ))}
         </motion.div>

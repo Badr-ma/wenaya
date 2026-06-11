@@ -45,11 +45,11 @@ export default function ExpertiseSection() {
               </span>
             </div>
 
-            <h2 id="es-title" className="text-[clamp(2rem,4vw,3.5rem)] font-serif font-bold text-[#0B1220] leading-[1.08] tracking-tight mt-5">
+            <h2 id="es-title" className="text-[clamp(2rem,4vw,3.5rem)] font-heading font-bold text-[#0B1220] leading-[1.08] tracking-tight mt-5">
               Une équipe <span className="text-[#B88A5A]">pluridisciplinaire</span>
             </h2>
 
-            <div id="es-text" className="mt-8 space-y-5 text-[#6B6B6B] text-sm sm:text-base leading-relaxed">
+            <div id="es-text" className="mt-8 space-y-5 text-[#2B2F36] text-sm sm:text-base leading-relaxed">
               <p>
                 Wenaya, c&apos;est bien plus qu&apos;un centre de soins. Nous réunissons des spécialistes en kinésithérapie, ostéopathie, psychologie, neuropsychologie, nutrition, orthophonie, naturopathie, psychomotricité et thérapies complémentaires.
               </p>

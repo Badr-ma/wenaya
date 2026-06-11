@@ -8,39 +8,37 @@ gsap.registerPlugin(ScrollTrigger);
 
 const plans = [
   {
-    name: "Consultation découverte",
-    price: "Dès 250 DH",
-    description: "Première consultation avec bilan offert",
+    name: "Bilan de prévention",
+    price: "Sur devis",
+    description: "60 min avec un gestionnaire de cas Wenaya",
     features: [
-      "Consultation avec le spécialiste de votre choix (kinésithérapie, ostéopathie, psychologie, nutrition)",
-      "Bilan initial et évaluation personnalisée offerts",
-      "Compte-rendu détaillé et plan de soins recommandé",
+      "Anamnèse complète et historique santé",
+      "Bilan postural et évaluation fonctionnelle",
+      "Étude de cas pluridisciplinaire",
+      "Recommandations personnalisées et prise en charge",
+    ],
+    popular: true,
+  },
+  {
+    name: "Consultation spécialiste",
+    price: "Sur devis",
+    description: "Kinésithérapie, ostéopathie, psychologie, nutrition",
+    features: [
+      "Consultation avec le spécialiste de votre choix",
+      "Bilan initial et évaluation personnalisée",
+      "Compte-rendu détaillé et plan de soins",
       "Accès à l'espace patient en ligne",
     ],
     popular: false,
   },
   {
-    name: "Suivi & Forfait",
-    price: "Dès 150 DH/séance",
-    description: "Forfait 10 séances — le plus populaire",
-    features: [
-      "Suivi personnalisé avec votre praticien référent",
-      "Forfait 10 séances — économisez 20%",
-      "Coordination pluridisciplinaire entre spécialistes Wenaya",
-      "Bilan d'étape intermédiaire gratuit",
-      "Priorité de réservation et créneaux dédiés",
-    ],
-    popular: true,
-  },
-  {
     name: "Parcours Bien-être",
     price: "Sur devis",
-    description: "Prise en charge globale sur mesure",
+    description: "Prise en charge globale coordonnée",
     features: [
-      "Bilan complet santé physique, mentale et cognitive",
-      "Suivi coordonné par 3 spécialistes (kiné, psy, nutrition)",
-      "Programme personnalisé sur 3 mois avec objectifs mesurables",
-      "Accès aux ateliers bien-être et cours collectifs",
+      "Suivi coordonné par plusieurs spécialistes",
+      "Programme personnalisé avec objectifs mesurables",
+      "Accès aux ateliers et cours collectifs",
       "Téléconsultation de suivi incluse",
     ],
     popular: false,
@@ -83,18 +81,17 @@ export default function Pricing() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-[#F2EFE9] noise accent-top relative py-24 sm:py-32 px-6" id="tarifs">
+    <section ref={sectionRef} className="bg-[#F2EFE9] py-24 sm:py-32 px-6" id="tarifs">
       <div className="max-w-6xl mx-auto">
         <div ref={headingRef} className="text-center mb-16">
-          <span className="text-[#B88A5A] font-semibold text-sm tracking-widest uppercase">
-            Tarifs
+          <span className="text-[#159AA9] font-semibold text-sm tracking-widest uppercase">
+            Prévenir. Performer. Durer.
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-[#0B1220] mt-4 tracking-tight">
+          <h2 className="text-[clamp(2rem,4vw,3.5rem)] font-heading font-bold text-[#0B1220] mt-4 tracking-[-0.03em]">
             Des soins accessibles à tous
           </h2>
-          <p className="text-[#6B6B6B] text-sm sm:text-base mt-4 max-w-lg mx-auto">
-            Éligible aux mutuelles et assurances santé. Payable en plusieurs
-            fois sans frais.
+          <p className="text-[#2B2F36] text-sm sm:text-base mt-4 max-w-lg mx-auto">
+            Éligible aux mutuelles et assurances santé.
           </p>
         </div>
 
@@ -105,32 +102,32 @@ export default function Pricing() {
               ref={(el) => { cardsRef.current[i] = el; }}
               className={`relative rounded-2xl p-8 border-2 flex flex-col transition-all duration-300 ${
                 plan.popular
-                  ? "bg-white border-[#B88A5A] shadow-xl shadow-[rgba(184,138,90,0.12)] hover:shadow-2xl hover:shadow-[rgba(184,138,90,0.18)]"
-                  : "bg-white/80 border-[rgba(184,138,90,0.08)] shadow-sm hover:shadow-md hover:border-[rgba(184,138,90,0.2)] hover:-translate-y-0.5"
+                  ? "bg-white border-[#159AA9] shadow-xl shadow-[rgba(21,154,169,0.12)] hover:shadow-2xl hover:shadow-[rgba(21,154,169,0.18)]"
+                  : "bg-white border-[#0B1220]/[0.06] shadow-sm hover:shadow-md hover:border-[#159AA9]/30 hover:-translate-y-0.5"
               }`}
             >
               {plan.popular && (
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#B88A5A] text-white text-xs font-semibold px-4 py-1.5 rounded-full">
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#159AA9] text-white text-xs font-semibold px-4 py-1.5 rounded-full">
                   Recommandé
                 </div>
               )}
-              <h3 className="text-xl font-serif font-bold text-[#0B1220]">
+              <h3 className="text-xl font-heading font-bold text-[#0B1220]">
                 {plan.name}
               </h3>
               <div className="mt-3 mb-1">
-                <span className="text-4xl font-serif font-bold text-[#0B1220]">
+                <span className="text-4xl font-heading font-bold text-[#0B1220]">
                   {plan.price}
                 </span>
               </div>
-              <p className="text-sm text-[#6B6B6B] mb-6">{plan.description}</p>
+              <p className="text-sm text-[#2B2F36] mb-6">{plan.description}</p>
               <ul className="space-y-3 mb-8 flex-1">
                 {plan.features.map((feat) => (
                   <li
                     key={feat}
-                    className="text-sm text-[#6B6B6B] flex items-start gap-2.5"
+                    className="text-sm text-[#2B2F36] flex items-start gap-2.5"
                   >
                     <svg
-                      className="w-4 h-4 text-[#B88A5A] mt-0.5 shrink-0"
+                      className="w-4 h-4 text-[#159AA9] mt-0.5 shrink-0"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -150,8 +147,8 @@ export default function Pricing() {
                 href="#"
                 className={`block text-center text-sm font-semibold py-3.5 rounded-full transition-all duration-300 ${
                   plan.popular
-                    ? "bg-[#B88A5A] hover:bg-[#A07848] text-white hover:shadow-lg hover:shadow-[rgba(184,138,90,0.25)]"
-                    : "bg-[#0B1220] hover:bg-[#2F2F2F] text-white"
+                    ? "bg-[#159AA9] hover:bg-[#159AA9]/80 text-white hover:shadow-lg hover:shadow-[rgba(21,154,169,0.25)]"
+                    : "bg-[#0B1220] hover:bg-[#2B2F36] text-white"
                 }`}
               >
                 Prendre RDV

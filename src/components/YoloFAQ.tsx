@@ -71,7 +71,7 @@ export default function YoloFAQ() {
                       className="overflow-hidden"
                     >
                       <div itemProp="acceptedAnswer" itemScope itemType="https://schema.org/Answer" className="px-5 sm:px-6 pb-5">
-                        <p itemProp="text" className="text-sm text-[#6B6B6B] leading-relaxed">{faq.a}</p>
+                        <p itemProp="text" className="text-sm text-[#2B2F36] leading-relaxed">{faq.a}</p>
                       </div>
                     </motion.div>
                   )}
@@ -82,7 +82,7 @@ export default function YoloFAQ() {
         </div>
 
         <div className="text-center mt-10">
-          <p className="text-sm text-[#6B6B6B]">
+          <p className="text-sm text-[#2B2F36]">
             Vous avez d&apos;autres questions ?{" "}
             <a href="/contact" className="text-[#AA412A] font-medium hover:underline transition-colors">Contactez-nous</a>
           </p>

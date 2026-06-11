@@ -39,7 +39,7 @@ export default function FutureVision() {
 
       <div id="fv-content" className="relative z-10 max-w-3xl mx-auto text-center px-6">
         <span className="text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">Notre Vision</span>
-        <h2 className="text-[clamp(2.2rem,4.5vw,4rem)] font-serif font-bold text-white leading-[1.06] tracking-tight mt-5">
+        <h2 className="text-[clamp(2.2rem,4.5vw,4rem)] font-heading font-bold text-white leading-[1.06] tracking-tight mt-5">
           Votre santé, notre engagement
         </h2>
         <p className="text-white/60 text-base sm:text-lg mt-6 max-w-xl mx-auto leading-relaxed">

@@ -67,7 +67,7 @@ function TestimonialCard({ item }: { item: TestimonialItem }) {
           </svg>
         ))}
       </div>
-      <p className="text-[#6B6B6B] text-sm leading-relaxed">
+      <p className="text-[#2B2F36] text-sm leading-relaxed">
         &ldquo;{item.quote}&rdquo;
       </p>
       <p className="text-[#0B1220] text-sm font-semibold mt-3">{item.name}</p>
@@ -84,7 +84,7 @@ function AwardCard({ item }: { item: AwardItem }) {
       <span className="text-[#0B1220] font-heading font-bold text-lg text-center leading-tight transition-all duration-300 group-hover:text-[#B88A5A]">
         {item.title}
       </span>
-      <span className="text-[#6B6B6B] text-xs text-center mt-1 max-w-[20ch] leading-relaxed transition-all duration-300 group-hover:text-[#6B6B6B]/80">
+      <span className="text-[#2B2F36] text-xs text-center mt-1 max-w-[20ch] leading-relaxed transition-all duration-300 group-hover:text-[#2B2F36]/80">
         {item.subtitle}
       </span>
     </div>
@@ -136,7 +136,7 @@ export default function TestimonialsSection() {
     <section ref={sectionRef} className="bg-[#F2EFE9] noise accent-top relative py-32 sm:py-40 px-6" id="avis-google">
       <div className="max-w-[1200px] mx-auto">
         <div ref={headingRef} className="flex justify-center text-center mb-24">
-          <h2 className="text-4xl sm:text-5xl font-serif font-bold text-[#0B1220] leading-[1.1] tracking-tight">
+          <h2 className="text-4xl sm:text-5xl font-heading font-bold text-[#0B1220] leading-[1.1] tracking-tight">
             Ils nous font confiance
           </h2>
         </div>

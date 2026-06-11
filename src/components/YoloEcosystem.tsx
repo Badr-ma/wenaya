@@ -32,7 +32,7 @@ export default function YoloEcosystem() {
           <h2 className="text-[clamp(2.2rem,4vw,3.2rem)] font-heading font-bold text-[#083241] leading-[1.02] tracking-tight">
             Connecté à un Écosystème de Santé <span className="text-[#AA412A]">Réel</span>
           </h2>
-          <p className="text-[#6B6B6B] text-sm sm:text-base mt-5 leading-relaxed max-w-lg mx-auto">
+          <p className="text-[#2B2F36] text-sm sm:text-base mt-5 leading-relaxed max-w-lg mx-auto">
             Yolo n&apos;est pas un chatbot isolé. Il est connecté à un réseau d&apos;experts Wenaya qui interviennent quand l&apos;IA détecte un besoin humain.
           </p>
         </motion.div>
@@ -79,8 +79,8 @@ export default function YoloEcosystem() {
                 <g key={i}>
                   <circle cx={cx} cy={cy} r="3" fill="#AA412A" opacity="0.2" />
                   <circle cx={cx} cy={cy - 18} r="38" fill="white" stroke="#AA412A" strokeWidth="0.3" opacity="0.2" />
-                  <text x={cx} y={cy - 22} textAnchor="middle" className="text-[8px]" fill="#6B6B6B80" fontSize="8">{first}</text>
-                  <text x={cx} y={cy - 12} textAnchor="middle" className="text-[8px]" fill="#6B6B6B80" fontSize="8">{rest.join(" ")}</text>
+                  <text x={cx} y={cy - 22} textAnchor="middle" className="text-[8px]" fill="#2B2F3680" fontSize="8">{first}</text>
+                  <text x={cx} y={cy - 12} textAnchor="middle" className="text-[8px]" fill="#2B2F3680" fontSize="8">{rest.join(" ")}</text>
                 </g>
               );
             })}

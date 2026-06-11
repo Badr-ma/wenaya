@@ -30,7 +30,7 @@ export default function YoloForHR() {
               Des Données Utiles Sans Compromettre la <span className="text-[#AA412A]">Confidentialité</span>
             </h2>
 
-            <p className="text-[#6B6B6B] text-sm sm:text-base mt-6 leading-relaxed max-w-lg">
+            <p className="text-[#2B2F36] text-sm sm:text-base mt-6 leading-relaxed max-w-lg">
               Un tableau de bord agrégé pour piloter la qualité de vie au travail, sans jamais exposer les données individuelles.
             </p>
 
@@ -54,7 +54,7 @@ export default function YoloForHR() {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                     </svg>
                   </span>
-                  <span className="text-sm text-[#6B6B6B]">{item}</span>
+                  <span className="text-sm text-[#2B2F36]">{item}</span>
                 </motion.li>
               ))}
             </motion.ul>

@@ -62,7 +62,7 @@ export default function Partners() {
     <section ref={sectionRef} className="bg-[#F2EFE9] py-24 sm:py-28 px-6" id="partenaires">
       <div className="max-w-[1440px] mx-auto">
         <div ref={headingRef} className="flex justify-center text-center mb-16">
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-[#0B1220] leading-[1.1] tracking-tight">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-heading font-bold text-[#0B1220] leading-[1.1] tracking-tight">
             Nos partenaires de confiance
           </h2>
         </div>

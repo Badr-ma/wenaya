@@ -91,7 +91,7 @@ export default function DiseaseMarquee() {
         <span className="text-[#B88A5A] font-semibold text-sm tracking-widest uppercase">
           Kinésithérapie &bull; Ostéopathie &bull; Psychologie &bull; Nutrition &bull; Orthophonie
         </span>
-        <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white mt-3 tracking-tight">
+        <h2 className="text-3xl sm:text-4xl font-heading font-bold text-white mt-3 tracking-tight">
           9 spécialités, un seul centre de soins à Casablanca
         </h2>
         <p className="text-white/50 text-sm mt-3 max-w-xl mx-auto">

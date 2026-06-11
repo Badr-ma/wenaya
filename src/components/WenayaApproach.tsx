@@ -63,7 +63,7 @@ export default function WenayaApproach() {
             </span>
           </div>
 
-          <h2 id="wa-title" className="text-[clamp(2rem,4vw,3.5rem)] font-serif font-bold text-[#0B1220] leading-[1.08] tracking-tight mt-5">
+          <h2 id="wa-title" className="text-[clamp(2rem,4vw,3.5rem)] font-heading font-bold text-[#0B1220] leading-[1.08] tracking-tight mt-5">
             L&apos;approche Wenaya
           </h2>
         </div>
@@ -75,11 +75,11 @@ export default function WenayaApproach() {
               className="wa-card group relative bg-white rounded-2xl p-8 sm:p-10 border border-[rgba(184,138,90,0.06)] transition-all duration-500 hover:shadow-2xl hover:shadow-[rgba(184,138,90,0.08)] hover:-translate-y-1.5"
             >
               <div className="flex items-center justify-between mb-8">
-                <span className="text-[clamp(2.5rem,3vw,3.5rem)] font-serif font-bold text-[#B88A5A]/15">0{i + 1}</span>
+                <span className="text-[clamp(2.5rem,3vw,3.5rem)] font-heading font-bold text-[#B88A5A]/15">0{i + 1}</span>
                 <div className="w-10 h-px bg-gradient-to-r from-[#B88A5A]/30 to-transparent" />
               </div>
-              <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#0B1220] group-hover:text-[#B88A5A] transition-colors duration-300">{s.label}</h3>
-              <p className="text-[#6B6B6B] text-sm sm:text-base mt-4 leading-relaxed">{s.desc}</p>
+              <h3 className="text-xl sm:text-2xl font-heading font-bold text-[#0B1220] group-hover:text-[#B88A5A] transition-colors duration-300">{s.label}</h3>
+              <p className="text-[#2B2F36] text-sm sm:text-base mt-4 leading-relaxed">{s.desc}</p>
               <div className="mt-8 pt-5 border-t border-gray-100">
                 <span className="text-xs font-medium text-[#B88A5A] flex items-center gap-2">
                   <span className="w-4 h-px bg-[#B88A5A]/30" />

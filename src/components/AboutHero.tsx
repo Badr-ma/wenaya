@@ -40,7 +40,7 @@ export default function AboutHero() {
               </span>
             </div>
 
-            <h1 id="ah-title" className="text-[clamp(2.5rem,5vw,4.5rem)] font-serif font-bold text-white leading-[1.06] tracking-tight mt-6">
+            <h1 id="ah-title" className="text-[clamp(2.5rem,5vw,4.5rem)] font-heading font-bold text-white leading-[1.06] tracking-tight mt-6">
               Soigner. Prévenir.{" "}
               <span className="text-[#B88A5A]">Prolonger.</span>
             </h1>

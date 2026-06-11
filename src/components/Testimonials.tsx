@@ -80,9 +80,9 @@ export default function VideoTestimonials() {
       <div className="max-w-[1400px] mx-auto relative">
         <div ref={headingRef} className="text-center mb-6">
           <span className="text-[#B88A5A] font-semibold text-xs sm:text-sm tracking-[0.2em] uppercase">
-            Une équipe de 15 professionnels de santé à Casablanca
+            35 thérapeutes certifiés à Casablanca
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-serif font-bold text-[#0B1220] mt-4 leading-[1.1] tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-heading font-bold text-[#0B1220] mt-4 leading-[1.1] tracking-tight">
             Des spécialistes pluridisciplinaires à votre écoute
           </h2>
         </div>

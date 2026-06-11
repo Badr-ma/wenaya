@@ -36,11 +36,11 @@ export default function WhyWeExist() {
               </span>
             </div>
 
-            <h2 id="wwe-title" className="text-[clamp(2rem,4vw,3.5rem)] font-serif font-bold text-[#0B1220] leading-[1.08] tracking-tight mt-5">
+            <h2 id="wwe-title" className="text-[clamp(2rem,4vw,3.5rem)] font-heading font-bold text-[#0B1220] leading-[1.08] tracking-tight mt-5">
               Votre santé, notre priorité
             </h2>
 
-            <div id="wwe-text" className="mt-8 space-y-5 text-[#6B6B6B] text-sm sm:text-base leading-relaxed">
+            <div id="wwe-text" className="mt-8 space-y-5 text-[#2B2F36] text-sm sm:text-base leading-relaxed">
               <p>
                 Chez Wenaya, notre mission est d&apos;accompagner chaque individu dans son chemin vers une santé optimale et un bien-être global. Guidés par cette vision, nous avons créé un refuge où les expertises paramédicales et les thérapies alternatives se rejoignent, offrant des solutions personnalisées en complément de la médecine conventionnelle.
               </p>
