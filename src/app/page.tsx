@@ -12,7 +12,12 @@ import Footer from "@/components/Footer";
 import YoloSection from "@/components/YoloSection";
 import SectionBreak from "@/components/SectionBreak";
 import BlogSection from "@/components/blog/BlogSection";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { getPublishedPosts, authors, categories } from "@/lib/blog";
+
+function Spacer(): React.JSX.Element {
+  return <div className="h-4 sm:h-6" />;
+}
 
 export default function Home() {
   const posts = getPublishedPosts();
@@ -23,30 +28,32 @@ export default function Home() {
   }));
 
   return (
+    <ErrorBoundary>
     <div className="flex flex-col min-h-screen">
       <Banner />
       <HeroSection />
       <SectionBreak />
       <HowItWorks />
-      <SectionBreak />
+      <Spacer />
       <DiseaseMarquee />
-      <SectionBreak />
+      <Spacer />
       <Biomarkers />
-      <SectionBreak />
+      <Spacer />
       <TestimonialsSection />
-      <SectionBreak />
+      <Spacer />
       <Testimonials />
       <SectionBreak />
       <ComparisonTable />
-      <SectionBreak />
+      <Spacer />
       <Pricing />
-      <SectionBreak />
+      <Spacer />
       <CtaSection />
-      <SectionBreak />
+      <Spacer />
       <BlogSection posts={enriched} />
-      <SectionBreak />
+      <Spacer />
       <YoloSection />
       <Footer />
     </div>
+    </ErrorBoundary>
   );
 }

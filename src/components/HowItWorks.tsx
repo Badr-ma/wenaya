@@ -1,297 +1,266 @@
 "use client";
 
-import { useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function DonutChart() {
+/* ── Card wrapper ───────────────────────────────────────── */
+function Card({ step, title, desc, children }: { step: string; title: string; desc: string; children: React.ReactNode }): React.JSX.Element {
   return (
-    <svg viewBox="0 0 200 130" className="w-full h-full">
-      <defs>
-        <radialGradient id="dr1" cx="45%" cy="45%" r="55%">
-          <stop offset="0%" stopColor="#159AA9" stopOpacity="0.08" />
-          <stop offset="100%" stopColor="#159AA9" stopOpacity="0" />
-        </radialGradient>
-        <filter id="dg1">
-          <feDropShadow dx="0" dy="1" stdDeviation="2" floodColor="#159AA9" floodOpacity="0.15" />
-        </filter>
-      </defs>
-      <style>{`
-        @keyframes df { 0%{stroke-dashoffset:251} 100%{stroke-dashoffset:88} }
-        @keyframes dd1 { 0%,100%{opacity:0.3;transform:scale(1)} 50%{opacity:0.7;transform:scale(1.15)} }
-        @keyframes dd2 { 0%,100%{opacity:0.2;transform:translateY(0)} 50%{opacity:0.5;transform:translateY(-2px)} }
-      `}</style>
-      <circle cx="100" cy="62" r="48" fill="url(#dr1)" />
-      <circle cx="100" cy="62" r="40" stroke="#EEEBE5" strokeWidth="5" />
-      <circle cx="100" cy="62" r="40" stroke="#159AA9" strokeWidth="5" strokeLinecap="round" strokeDasharray="251" strokeDashoffset="251" fill="none" transform="rotate(-90 100 62)" style={{ animation: "df 2.8s ease-out infinite alternate", filter: "url(#dg1)" }} />
-      <circle cx="100" cy="62" r="40" stroke="#159AA9" strokeWidth="5" strokeLinecap="round" strokeDasharray="251" strokeDashoffset="251" fill="none" transform="rotate(-90 100 62)" opacity="0.06" />
-      <circle cx="100" cy="62" r="29" stroke="#159AA9" strokeWidth="0.3" opacity="0.06" />
-      <circle cx="100" cy="62" r="18" stroke="#159AA9" strokeWidth="0.3" opacity="0.04" />
-      <text x="100" y="57" textAnchor="middle" fill="#0B1220" fontSize="21" fontFamily="inherit" fontWeight="700" letterSpacing="-0.5">65</text>
-      <text x="100" y="68" textAnchor="middle" fill="#0B1220" fontSize="9" fontFamily="inherit" opacity="0.25" fontWeight="600">/100</text>
-      <circle cx="64" cy="100" r="2" fill="#159AA9" style={{ animation: "dd1 2s ease-in-out infinite" }} />
-      <text x="72" y="103" fill="#2B2F36" fontSize="7.5" fontFamily="inherit" opacity="0.45">Bio 84</text>
-      <circle cx="136" cy="100" r="2" fill="#A67C52" style={{ animation: "dd1 2.4s ease-in-out infinite" }} />
-      <text x="144" y="103" fill="#2B2F36" fontSize="7.5" fontFamily="inherit" opacity="0.45">Clin 72</text>
-    </svg>
+    <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-[#0B1220]/[0.04] p-6 flex flex-col w-full sm:w-[270px] transition-all duration-500 hover:shadow-[0_8px_32px_rgba(184,138,90,0.06)] hover:border-[#B88A5A]/15" style={{ minHeight: "280px", boxShadow: "0 1px 3px rgba(0,0,0,0.02), 0 4px 16px rgba(0,0,0,0.03)" }}>
+      <span className="text-[#B88A5A] font-semibold text-xs tracking-[0.15em]">{step}</span>
+      <h3 className="heading-serif text-xl text-[#0B1220] mt-1 mb-1">{title}</h3>
+      <p className="text-[11px] text-[#2B2F36]/50 mb-4 leading-relaxed">{desc}</p>
+      <div className="flex-1">{children}</div>
+    </div>
   );
 }
 
-function HorizBars() {
+/* ── 1. Assess — score circle 0→65 + 3 pills ────────────── */
+function AssessAnim(): React.JSX.Element {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let t: ReturnType<typeof setTimeout>[] = [];
+    let alive = true;
+
+    const scoreEl = el.querySelector<HTMLDivElement>(".as-score");
+    const arcEl = el.querySelector<SVGCircleElement>(".as-arc");
+    const pills = el.querySelectorAll<HTMLDivElement>(".as-pill");
+    const circumference = 2 * Math.PI * 42;
+
+    let triggered = false;
+    ScrollTrigger.create({
+      trigger: el, start: "top 88%",
+      onEnter: () => {
+        if (triggered) return;
+        triggered = true;
+        let v = 0;
+        const si = setInterval(() => {
+          if (!alive) { clearInterval(si); return; }
+          v++;
+          if (scoreEl) scoreEl.textContent = String(v);
+          if (arcEl) arcEl.style.strokeDashoffset = String(circumference - (circumference * v) / 100);
+          if (v >= 65) clearInterval(si);
+        }, 20);
+        t.push(setTimeout(() => clearInterval(si), 3000));
+        pills.forEach((p, i) => t.push(setTimeout(() => { if (!alive) return; p.style.opacity = "1"; p.style.transform = "translateY(0)"; }, 1600 + i * 350)));
+      },
+      once: true,
+    });
+
+    return () => { alive = false; t.forEach(clearTimeout); };
+  }, []);
+
   return (
-    <svg viewBox="0 0 200 130" className="w-full h-full">
-      <defs>
-        <linearGradient id="h1" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#159AA9" />
-          <stop offset="100%" stopColor="#159AA9" stopOpacity="0.3" />
-        </linearGradient>
-        <linearGradient id="h2" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#A67C52" />
-          <stop offset="100%" stopColor="#A67C52" stopOpacity="0.3" />
-        </linearGradient>
-        <linearGradient id="h3" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#0B1220" />
-          <stop offset="100%" stopColor="#0B1220" stopOpacity="0.2" />
-        </linearGradient>
-      </defs>
-      <style>{`
-        @keyframes hw1 { 0%{width:42} 100%{width:118} }
-        @keyframes hw2 { 0%{width:28} 100%{width:82} }
-        @keyframes hw3 { 0%{width:58} 100%{width:142} }
-      `}</style>
-      <g>
-        <text x="0" y="26" fill="#2B2F36" fontSize="8" fontFamily="inherit" fontWeight="500" opacity="0.5">Alimentation</text>
-        <rect x="76" y="19" height="8" rx="4" fill="#EEEBE5" width="124" />
-        <rect x="76" y="19" height="8" rx="4" fill="url(#h1)" width="42" opacity="0.7" style={{ animation: "hw1 2.2s ease-in-out infinite alternate" }} />
-      </g>
-      <g>
-        <text x="0" y="50" fill="#2B2F36" fontSize="8" fontFamily="inherit" fontWeight="500" opacity="0.5">Activité</text>
-        <rect x="76" y="43" height="8" rx="4" fill="#EEEBE5" width="124" />
-        <rect x="76" y="43" height="8" rx="4" fill="url(#h2)" width="28" opacity="0.65" style={{ animation: "hw2 2.4s ease-in-out infinite alternate" }} />
-      </g>
-      <g>
-        <text x="0" y="74" fill="#2B2F36" fontSize="8" fontFamily="inherit" fontWeight="500">Sommeil</text>
-        <rect x="76" y="67" height="8" rx="4" fill="#EEEBE5" width="124" />
-        <rect x="76" y="67" height="8" rx="4" fill="url(#h3)" width="58" opacity="0.5" style={{ animation: "hw3 2s ease-in-out infinite alternate" }} />
-      </g>
-    </svg>
+    <Card step="Étape 01" title="Assess" desc="Comprendre où vous en êtes.">
+      <div ref={ref} className="flex flex-col items-center gap-3 pt-2">
+        <div className="relative w-[90px] h-[90px] flex items-center justify-center">
+          <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#0B1220/[0.04]" strokeWidth="6" />
+            <circle className="as-arc" cx="50" cy="50" r="42" fill="none" stroke="#B88A5A" strokeWidth="6" strokeDasharray={2 * Math.PI * 42} strokeDashoffset={2 * Math.PI * 42} strokeLinecap="round" style={{ transition: "stroke-dashoffset 0.1s linear" }} />
+          </svg>
+          <div className="text-center">
+            <div className="as-score font-heading font-bold text-[#0B1220] text-xl leading-none">0</div>
+            <div className="text-[9px] text-[#2B2F36]/40 font-medium">/100</div>
+          </div>
+        </div>
+        <div className="flex gap-3">
+          {[
+            { label: "Bio", value: "84" },
+            { label: "Clin", value: "72" },
+            { label: "Âge", value: "34" },
+          ].map(item => (
+            <div key={item.label} className="as-pill text-center transition-all duration-400" style={{ opacity: 0, transform: "translateY(8px)" }}>
+              <div className="font-heading font-semibold text-sm text-[#0B1220]">{item.value}</div>
+              <div className="text-[8px] text-[#2B2F36]/40 font-medium tracking-wider">{item.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Card>
   );
 }
 
-function MiniLineChart() {
+/* ── 2. Align — 3 pills slide in left to right ──────────── */
+function AlignAnim(): React.JSX.Element {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let t: ReturnType<typeof setTimeout>[] = [];
+    let alive = true;
+
+    const items = el.querySelectorAll<HTMLDivElement>(".al-item");
+    const checks = el.querySelectorAll<HTMLDivElement>(".al-check");
+
+    let triggered = false;
+    ScrollTrigger.create({
+      trigger: el, start: "top 88%",
+      onEnter: () => {
+        if (triggered) return;
+        triggered = true;
+        items.forEach((it, i) => t.push(setTimeout(() => { if (!alive) return; it.style.opacity = "1"; it.style.transform = "translateX(0)"; }, 300 + i * 500)));
+        checks.forEach((c, i) => t.push(setTimeout(() => { if (!alive) return; c.style.opacity = "1"; }, 600 + i * 500)));
+      },
+      once: true,
+    });
+
+    return () => { alive = false; t.forEach(clearTimeout); };
+  }, []);
+
   return (
-    <svg viewBox="0 0 200 130" className="w-full h-full">
-      <defs>
-        <linearGradient id="lg1" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#159AA9" stopOpacity="0.25" />
-          <stop offset="100%" stopColor="#159AA9" stopOpacity="0" />
-        </linearGradient>
-        <linearGradient id="lg2" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#A67C52" stopOpacity="0.12" />
-          <stop offset="100%" stopColor="#A67C52" stopOpacity="0" />
-        </linearGradient>
-        <filter id="lf1">
-          <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#159AA9" floodOpacity="0.2" />
-        </filter>
-      </defs>
-      <style>{`
-        @keyframes lc1 { 0%{d:path("M10,102 C26,90 42,92 58,82 C74,72 90,76 106,66 C122,56 138,60 154,50 C170,40 186,44 195,38")} 100%{d:path("M10,102 C26,72 42,75 58,62 C74,49 90,54 106,42 C122,30 138,35 154,24 C170,13 186,18 195,12")} }
-        @keyframes lg { 0%,100%{opacity:0.3} 50%{opacity:0.6} }
-      `}</style>
-      <rect x="0" y="0" width="200" height="130" rx="4" fill="#F8F7F4" opacity="0.3" />
-      <line x1="10" y1="105" x2="195" y2="105" stroke="#E5E2DC" strokeWidth="0.5" />
-      <line x1="10" y1="79" x2="195" y2="79" stroke="#E5E2DC" strokeWidth="0.3" strokeDasharray="2 3" />
-      <line x1="10" y1="53" x2="195" y2="53" stroke="#E5E2DC" strokeWidth="0.3" strokeDasharray="2 3" />
-      <line x1="10" y1="27" x2="195" y2="27" stroke="#E5E2DC" strokeWidth="0.3" strokeDasharray="2 3" />
-      <path fill="url(#lg1)" d="M10 105 C26 90 42 92 58 82 C74 72 90 76 106 66 C122 56 138 60 154 50 C170 40 186 44 195 38 L195 105 Z" opacity="0.5" style={{ animation: "lc1 3s ease-in-out infinite alternate" }} />
-      <path fill="none" stroke="#159AA9" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" d="M10,102 C26,90 42,92 58,82 C74,72 90,76 106,66 C122,56 138,60 154,50 C170,40 186,44 195,38" style={{ animation: "lc1 3s ease-in-out infinite alternate" }} filter="url(#lf1)" />
-      <g style={{ animation: "lg 2s ease-in-out infinite" }}>
-        <circle cx="195" cy="38" r="3" fill="#159AA9" filter="url(#lf1)" />
-        <circle cx="195" cy="38" r="6" fill="#159AA9" opacity="0.1" />
-      </g>
-      <text x="14" y="120" fill="#2B2F36" fontSize="6.5" fontFamily="inherit" opacity="0.3">J0</text>
-      <text x="96" y="120" fill="#2B2F36" fontSize="6.5" fontFamily="inherit" opacity="0.3">J45</text>
-      <text x="181" y="120" fill="#2B2F36" fontSize="6.5" fontFamily="inherit" opacity="0.3">J90</text>
-    </svg>
+    <Card step="Étape 02" title="Align" desc="Construire un parcours qui vous ressemble.">
+      <div ref={ref} className="space-y-3 pt-1">
+        {["Alimentation", "Activité", "Sommeil"].map(label => (
+          <div key={label} className="al-item flex items-center gap-3 p-2.5 rounded-xl bg-[#0B1220]/[0.02] border border-[#0B1220]/[0.03] transition-all duration-400" style={{ opacity: 0, transform: "translateX(-12px)" }}>
+            <div className="al-check w-4 h-4 rounded-full bg-[#BBF6F3] flex items-center justify-center transition-opacity duration-300" style={{ opacity: 0 }}>
+              <svg className="w-2.5 h-2.5 text-[#0B1220]" fill="none" viewBox="0 0 10 10"><path d="M2 5l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </div>
+            <span className="text-xs font-medium text-[#0B1220]">{label}</span>
+          </div>
+        ))}
+      </div>
+    </Card>
   );
 }
 
-function AreaChart() {
+/* ── 3. Activate — timeline dots + line ─────────────────── */
+function ActivateAnim(): React.JSX.Element {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let t: ReturnType<typeof setTimeout>[] = [];
+    let alive = true;
+
+    const dots = el.querySelectorAll<HTMLDivElement>(".ac-dot");
+    const lines = el.querySelectorAll<HTMLDivElement>(".ac-line");
+
+    let triggered = false;
+    ScrollTrigger.create({
+      trigger: el, start: "top 88%",
+      onEnter: () => {
+        if (triggered) return;
+        triggered = true;
+        dots.forEach((d, i) => t.push(setTimeout(() => { if (!alive) return; d.className = "ac-dot w-9 h-9 rounded-full border-2 flex items-center justify-center font-heading font-bold text-xs transition-all duration-500 border-[#BBF6F3] bg-[#BBF6F3] text-[#0B1220]"; }, 500 + i * 700)));
+        lines.forEach((l, i) => t.push(setTimeout(() => { if (!alive) return; l.style.width = "100%"; }, 600 + i * 700)));
+      },
+      once: true,
+    });
+
+    return () => { alive = false; t.forEach(clearTimeout); };
+  }, []);
+
   return (
-    <svg viewBox="0 0 200 130" className="w-full h-full">
-      <defs>
-        <linearGradient id="ag1" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#159AA9" stopOpacity="0.2" />
-          <stop offset="100%" stopColor="#159AA9" stopOpacity="0" />
-        </linearGradient>
-        <linearGradient id="ag2" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#A67C52" stopOpacity="0.12" />
-          <stop offset="100%" stopColor="#A67C52" stopOpacity="0" />
-        </linearGradient>
-        <filter id="af1">
-          <feDropShadow dx="0" dy="1" stdDeviation="2" floodColor="#159AA9" floodOpacity="0.15" />
-        </filter>
-      </defs>
-      <style>{`
-        @keyframes am1 { 0%{d:path("M10,98 C30,82 50,86 70,76 C90,66 110,70 130,60 C150,50 170,54 190,46")} 100%{d:path("M10,98 C30,68 50,72 70,60 C90,48 110,52 130,42 C150,32 170,36 190,28")} }
-        @keyframes am2 { 0%{d:path("M10,105 C30,94 50,97 70,90 C90,83 110,86 130,79 C150,72 170,75 190,70")} 100%{d:path("M10,105 C30,86 50,89 70,80 C90,71 110,74 130,66 C150,58 170,61 190,56")} }
-        @keyframes ap1 { 0%,100%{opacity:0.3;r:2.5} 50%{opacity:0.8;r:3.5} }
-        @keyframes ap2 { 0%,100%{opacity:0.15} 50%{opacity:0.35} }
-      `}</style>
-      <rect x="0" y="0" width="200" height="130" rx="4" fill="#F8F7F4" opacity="0.3" />
-      <line x1="10" y1="108" x2="195" y2="108" stroke="#E5E2DC" strokeWidth="0.5" />
-      <line x1="10" y1="83" x2="195" y2="83" stroke="#E5E2DC" strokeWidth="0.3" strokeDasharray="2 3" />
-      <line x1="10" y1="58" x2="195" y2="58" stroke="#E5E2DC" strokeWidth="0.3" strokeDasharray="2 3" />
-      <line x1="10" y1="33" x2="195" y2="33" stroke="#E5E2DC" strokeWidth="0.3" strokeDasharray="2 3" />
-      <path fill="url(#ag1)" d="M10 108 C30 82 50 86 70 76 C90 66 110 70 130 60 C150 50 170 54 190 46 L190 108 Z" opacity="0.5" style={{ animation: "am1 3.2s ease-in-out infinite alternate" }} />
-      <path fill="none" stroke="#159AA9" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" d="M10,98 C30,82 50,86 70,76 C90,66 110,70 130,60 C150,50 170,54 190,46" style={{ animation: "am1 3.2s ease-in-out infinite alternate" }} />
-      <path fill="url(#ag2)" d="M10 108 C30 94 50 97 70 90 C90 83 110 86 130 79 C150 72 170 75 190 70 L190 108 Z" opacity="0.4" style={{ animation: "am2 3.8s ease-in-out infinite alternate" }} />
-      <path fill="none" stroke="#A67C52" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round" d="M10,105 C30,94 50,97 70,90 C90,83 110,86 130,79 C150,72 170,75 190,70" style={{ animation: "am2 3.8s ease-in-out infinite alternate" }} />
-      <circle cx="190" cy="46" r="3" fill="#159AA9" filter="url(#af1)" />
-      <circle cx="190" cy="46" r="7" fill="#159AA9" opacity="0.08" />
-      <circle cx="190" cy="70" r="2.5" fill="#A67C52" />
-      <circle cx="70" cy="76" r="2" fill="#159AA9" style={{ animation: "ap1 2.5s ease-in-out infinite" }} />
-      <circle cx="130" cy="60" r="2" fill="#A67C52" style={{ animation: "ap1 3s ease-in-out 0.3s infinite" }} />
-      <line x1="190" y1="46" x2="190" y2="108" stroke="#159AA9" strokeWidth="0.3" strokeDasharray="2 3" opacity="0.15" style={{ animation: "ap2 2s ease-in-out infinite" }} />
-    </svg>
+    <Card step="Étape 03" title="Activate" desc="Passer à l'action, ensemble.">
+      <div ref={ref} className="flex flex-col gap-4 pt-2">
+        <div className="flex items-center justify-between px-1">
+          {["J0", "J45", "J90"].map((label, i) => (
+            <div key={label} className="flex flex-col items-center gap-1.5">
+              <div className="ac-dot w-9 h-9 rounded-full border-2 flex items-center justify-center font-heading font-bold text-xs transition-all duration-500 border-[#0B1220]/10 text-[#0B1220]/30">{label}</div>
+              {i < 2 && (
+                <div className="w-12 h-[2px] bg-[#0B1220]/5 rounded-full overflow-hidden -mt-6">
+                  <div className="ac-line h-full bg-[#BBF6F3] rounded-full transition-all duration-500" style={{ width: "0%" }} />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        <div className="mt-2 p-2.5 rounded-xl bg-[#159AA9]/5 border border-[#159AA9]/10">
+          <div className="text-[10px] text-[#159AA9] font-semibold">Prochaine étape</div>
+          <div className="text-[11px] text-[#0B1220] font-medium mt-0.5">Bilan de contrôle J45</div>
+        </div>
+      </div>
+    </Card>
   );
 }
 
-const icons = [DonutChart, HorizBars, MiniLineChart, AreaChart];
+/* ── 4. Sustain — graph line draws + dot pulses ─────────── */
+function SustainAnim(): React.JSX.Element {
+  const ref = useRef<HTMLDivElement>(null);
 
-const steps = [
-  { number: "01", title: "Assess", subtitle: "Comprendre où vous en êtes." },
-  { number: "02", title: "Align", subtitle: "Construire un parcours qui vous ressemble." },
-  { number: "03", title: "Activate", subtitle: "Passer à l'action, ensemble." },
-  { number: "04", title: "Sustain", subtitle: "Prévenir, performer, durer." },
-];
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let t: ReturnType<typeof setTimeout>[] = [];
+    let alive = true;
 
-export default function HowItWorks() {
+    const lineEl = el.querySelector<SVGPathElement>(".su-line");
+    const dotEl = el.querySelector<SVGCircleElement>(".su-dot");
+
+    let triggered = false;
+    ScrollTrigger.create({
+      trigger: el, start: "top 88%",
+      onEnter: () => {
+        if (triggered) return;
+        triggered = true;
+        t.push(setTimeout(() => { if (!alive) return; if (lineEl) lineEl.style.strokeDashoffset = "0"; }, 300));
+        t.push(setTimeout(() => { if (!alive) return; if (dotEl) { dotEl.style.opacity = "1"; dotEl.style.r = "3"; } }, 2000));
+      },
+      once: true,
+    });
+
+    return () => { alive = false; t.forEach(clearTimeout); };
+  }, []);
+
+  return (
+    <Card step="Étape 04" title="Sustain" desc="Prévenir, performer, durer.">
+      <div ref={ref} className="flex items-center justify-center h-full pt-4">
+        <svg className="w-full max-w-[140px]" viewBox="0 0 120 50" fill="none">
+          <path d="M5,42 Q30,38 55,22 T105,8" stroke="#0B1220/[0.04]" strokeWidth="2" fill="none" strokeLinecap="round" />
+          <path className="su-line" d="M5,42 Q30,38 55,22 T105,8" stroke="#BBF6F3" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeDasharray={140} strokeDashoffset={140} style={{ transition: "stroke-dashoffset 1.6s ease-out" }} />
+          <circle className="su-dot" cx="105" cy="8" r="0" fill="#BBF6F3" style={{ transition: "opacity 0.3s, r 0.3s" }} />
+        </svg>
+      </div>
+    </Card>
+  );
+}
+
+/* ── Section ─────────────────────────────────────────────── */
+export default function HowItWorks(): React.JSX.Element {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
-  const subheadingRef = useRef<HTMLDivElement>(null);
-  const stepRefs = useRef<(HTMLDivElement | null)[]>([null, null, null, null]);
-
-  const setStepRef = useCallback(
-    (i: number) => (el: HTMLDivElement | null) => {
-      stepRefs.current[i] = el;
-    },
-    []
-  );
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([null, null, null, null]);
 
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
-
     const ctx = gsap.context(() => {
-      const cards = stepRefs.current.filter(Boolean) as HTMLDivElement[];
-
-      gsap.set(cards, { opacity: 0, y: 24, scale: 0.97 });
-      gsap.set(headingRef.current, { opacity: 0, y: 16 });
-      gsap.set(subheadingRef.current, { opacity: 0, y: 12 });
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: el,
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
-        defaults: { ease: "power3.out", duration: 0.5 },
-      });
-
-      tl
-        .to(headingRef.current, { opacity: 1, y: 0, duration: 0.4 })
-        .to(subheadingRef.current, { opacity: 1, y: 0, duration: 0.35 }, "-=0.2")
-        .to(cards, { opacity: 1, y: 0, scale: 1, stagger: 0.08, duration: 0.4 }, "-=0.1");
+      gsap.fromTo(headingRef.current, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out", scrollTrigger: { trigger: el, start: "top 85%" } });
+      gsap.fromTo(cardRefs.current.filter(Boolean) as HTMLDivElement[], { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, stagger: 0.08, ease: "power2.out", scrollTrigger: { trigger: el, start: "top 82%" } });
     }, el);
-
     return () => ctx.revert();
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="bg-[#F2EFE9] relative overflow-hidden"
-      id="method"
-      style={{ padding: "120px 0" }}
-    >
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#159AA9]/[0.04] rounded-full blur-[100px]" />
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-[#A67C52]/[0.03] rounded-full blur-[100px]" />
-        <svg className="absolute inset-0 w-full h-full opacity-[0.015]">
-          <defs>
-            <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
-              <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#0B1220" strokeWidth="0.3" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#grid)" />
-        </svg>
-      </div>
-
-      <div className="max-w-[1280px] mx-auto px-10 max-md:px-5 relative">
-        <div ref={headingRef} className="max-w-[600px] mx-auto text-center mb-4 will-change-transform">
-          <span className="text-[#159AA9] font-semibold text-xs tracking-[0.2em] uppercase">
-            Prévenir. Performer. Durer.
-          </span>
-          <h2 className="font-heading text-[clamp(1.75rem,3.5vw,3rem)] leading-[1.08] font-bold text-[#0B1220] tracking-[-0.03em] mt-2">
-            La méthode Wenaya.
-          </h2>
-        </div>
-
-        <div ref={subheadingRef} className="max-w-[480px] mx-auto text-center mb-14 will-change-transform">
-          <p className="text-[14px] leading-relaxed text-[#2B2F36] font-light">
-            Quatre étapes pour reprendre la main sur votre santé.
+    <section ref={sectionRef} className="bg-[#F2EFE9] relative overflow-hidden" id="method" style={{ padding: "80px 0" }}>
+      <div className="max-w-7xl mx-auto px-6 sm:px-10 relative">
+        <div ref={headingRef} className="text-center mb-14">
+          <span className="text-[#B88A5A] font-semibold text-xs tracking-[0.2em] uppercase">Méthode Wenaya</span>
+          <h2 className="heading-serif text-[clamp(1.8rem,3.5vw,3rem)] text-[#0B1220] mt-3">Votre parcours en quatre étapes</h2>
+          <p className="text-[#2B2F36]/60 text-sm sm:text-base mt-3 max-w-lg mx-auto leading-relaxed">
+            De l'évaluation à la performance durable, chaque étape est conçue pour vous.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-4 gap-4">
-          {steps.map((step, i) => (
-            <div
-              key={i}
-              ref={setStepRef(i)}
-              className="group bg-white/90 backdrop-blur-sm rounded-[14px] overflow-hidden border border-[#0B1220]/[0.04] will-change-transform transition-all duration-500 hover:border-[#159AA9]/20 hover:shadow-[0_8px_32px_rgba(21,154,169,0.07)] flex flex-col"
-              style={{ boxShadow: "0 1px 2px rgba(0,0,0,0.02), 0 2px 8px rgba(0,0,0,0.02)" }}
-            >
-              <div className="h-[2px] bg-gradient-to-r from-[#159AA9]/60 via-[#159AA9]/30 to-transparent shrink-0" />
-
-              <div className="px-5 pt-4 pb-1.5 flex flex-col gap-1.5 items-center text-center">
-                <span className="text-[9px] font-semibold text-[#159AA9]/40 tracking-[0.15em] uppercase">
-                  Étape {step.number}
-                </span>
-                <h3 className="font-heading text-[15px] font-bold text-[#0B1220] tracking-[-0.02em] leading-tight">
-                  {step.title}
-                </h3>
-                <p className="text-[11px] text-[#2B2F36] leading-relaxed font-light max-w-[140px]">
-                  {step.subtitle}
-                </p>
-              </div>
-
-              <div className="flex-1 flex items-end px-2 pb-2">
-                <div className="w-full transition-all duration-500 group-hover:scale-[1.02]">
-                  {(() => {
-                    const Icon = icons[i];
-                    return <Icon />;
-                  })()}
-                </div>
-              </div>
-            </div>
-          ))}
+        <div className="flex flex-wrap justify-center gap-5">
+          <div ref={(el) => { cardRefs.current[0] = el; }}><AssessAnim /></div>
+          <div ref={(el) => { cardRefs.current[1] = el; }}><AlignAnim /></div>
+          <div ref={(el) => { cardRefs.current[2] = el; }}><ActivateAnim /></div>
+          <div ref={(el) => { cardRefs.current[3] = el; }}><SustainAnim /></div>
         </div>
 
         <div className="flex items-center justify-center gap-3 mt-12">
-          <a
-            href="#"
-            className="inline-flex items-center justify-center px-6 h-10 bg-[#0B1220] text-white rounded-lg font-medium text-[12px] tracking-wide transition-all duration-300 hover:bg-[#2B2F36] hover:shadow-[0_4px_16px_rgba(11,18,32,0.15)]"
-          >
-            Découvrir votre parcours
-          </a>
-          <a
-            href="#"
-            className="inline-flex items-center justify-center px-5 h-10 bg-transparent text-[#159AA9] border border-[#159AA9]/20 rounded-lg font-medium text-[12px] tracking-wide transition-all duration-300 hover:border-[#159AA9]/40 hover:bg-[#159AA9]/[0.02]"
-          >
-            Commencer votre évaluation
+          <a href="#" onClick={(e) => e.preventDefault()}
+            className="inline-flex items-center justify-center px-8 h-12 bg-[#0B1220] text-white rounded-full font-medium text-sm tracking-wide transition-all duration-300 hover:bg-[#2B2F36] hover:shadow-[0_4px_16px rgba(11,18,32,0.15)]">
+            Commencer votre bilan
           </a>
         </div>
       </div>

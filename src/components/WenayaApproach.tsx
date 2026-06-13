@@ -2,18 +2,15 @@
 
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const steps = [
   { label: "Écouter", desc: "Nous prenons le temps de comprendre chaque dimension de votre santé — physique, mentale, nutritionnelle et lifestyle." },
   { label: "Analyser", desc: "Notre équipe collabore pour construire une vision complète de vos besoins, objectifs et des causes profondes de vos préoccupations." },
-  { label: "Accompagner", desc: "Nous délivrons un plan coordonné et personnalisé, s'appuyant sur l'expertise de multiples disciplines working ensemble." },
+  { label: "Accompagner", desc: "Nous délivrons un plan coordonné et personnalisé, s'appuyant sur l'expertise de multiples disciplines travaillant ensemble." },
   { label: "Évoluer", desc: "Un suivi continu, de la prévention et des conseils vous aident à maintenir vos résultats sur le long terme." },
 ];
 
-export default function WenayaApproach() {
+export default function WenayaApproach(): React.JSX.Element {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -21,17 +18,23 @@ export default function WenayaApproach() {
     if (!el) return;
 
     const ctx = gsap.context(() => {
-      gsap.fromTo("#wa-badge", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" } });
-      gsap.fromTo("#wa-title", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 83%", toggleActions: "play none none none" } });
       const cards = el.querySelectorAll(".wa-card");
-      gsap.fromTo(cards, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.12, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 78%", toggleActions: "play none none none" } });
+      gsap.fromTo("#wa-title, #wa-badge", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" } });
+
+      cards.forEach((card) => {
+        const num = card.querySelector(".wa-num");
+        const label = card.querySelector(".wa-label");
+        const desc = card.querySelector(".wa-desc");
+        const step = card.querySelector(".wa-step");
+        gsap.fromTo([num, label, desc, step], { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.35, stagger: 0.08, ease: "power2.out", scrollTrigger: { trigger: card, start: "top 85%", toggleActions: "play none none none" } });
+      });
     }, el);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative bg-[#F2EFE9] py-28 sm:py-36 px-6 overflow-hidden">
+    <section ref={sectionRef} className="relative bg-[#F2EFE9] py-20 sm:py-24 px-6 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <svg className="w-full h-full opacity-[0.03]" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
           <defs>
@@ -63,7 +66,7 @@ export default function WenayaApproach() {
             </span>
           </div>
 
-          <h2 id="wa-title" className="text-[clamp(2rem,4vw,3.5rem)] font-heading font-bold text-[#0B1220] leading-[1.08] tracking-tight mt-5">
+          <h2 id="wa-title" className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220] mt-5">
             L&apos;approche Wenaya
           </h2>
         </div>
@@ -75,13 +78,13 @@ export default function WenayaApproach() {
               className="wa-card group relative bg-white rounded-2xl p-8 sm:p-10 border border-[rgba(184,138,90,0.06)] transition-all duration-500 hover:shadow-2xl hover:shadow-[rgba(184,138,90,0.08)] hover:-translate-y-1.5"
             >
               <div className="flex items-center justify-between mb-8">
-                <span className="text-[clamp(2.5rem,3vw,3.5rem)] font-heading font-bold text-[#B88A5A]/15">0{i + 1}</span>
+                <span className="wa-num text-[clamp(2.5rem,3vw,3.5rem)] font-heading font-bold text-[#B88A5A]/15" style={{ opacity: 0 }}>0{i + 1}</span>
                 <div className="w-10 h-px bg-gradient-to-r from-[#B88A5A]/30 to-transparent" />
               </div>
-              <h3 className="text-xl sm:text-2xl font-heading font-bold text-[#0B1220] group-hover:text-[#B88A5A] transition-colors duration-300">{s.label}</h3>
-              <p className="text-[#2B2F36] text-sm sm:text-base mt-4 leading-relaxed">{s.desc}</p>
+              <h3 className="wa-label heading-serif text-xl sm:text-2xl text-[#0B1220] group-hover:text-[#B88A5A] transition-colors duration-300" style={{ opacity: 0 }}>{s.label}</h3>
+              <p className="wa-desc text-[#2B2F36] text-sm sm:text-base mt-4 leading-relaxed" style={{ opacity: 0 }}>{s.desc}</p>
               <div className="mt-8 pt-5 border-t border-gray-100">
-                <span className="text-xs font-medium text-[#B88A5A] flex items-center gap-2">
+                <span className="wa-step text-xs font-medium text-[#B88A5A] flex items-center gap-2" style={{ opacity: 0 }}>
                   <span className="w-4 h-px bg-[#B88A5A]/30" />
                   Étape {i + 1}
                 </span>

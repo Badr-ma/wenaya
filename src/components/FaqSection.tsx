@@ -2,10 +2,7 @@
 
 import { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HiggsField from "./HiggsField";
-
-gsap.registerPlugin(ScrollTrigger);
 
 interface FaqItem {
   q: string;
@@ -71,7 +68,7 @@ const faqData: FaqItem[] = [
   },
 ];
 
-export default function FaqSection() {
+export default function FaqSection(): React.JSX.Element {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const subRef = useRef<HTMLParagraphElement>(null);
@@ -97,7 +94,7 @@ export default function FaqSection() {
     return () => ctx.revert();
   }, []);
 
-  const toggle = (i: number) => setOpenIndex(openIndex === i ? null : i);
+  const toggle = (i: number): void => setOpenIndex(openIndex === i ? null : i);
 
   return (
     <section ref={sectionRef} className="relative min-h-screen bg-[#F2EFE9]">
@@ -118,6 +115,7 @@ export default function FaqSection() {
             <div key={i} className="faq-item">
               <button
                 onClick={() => toggle(i)}
+                aria-expanded={openIndex === i}
                 className="w-full flex items-center justify-between gap-4 text-left p-5 sm:p-6 rounded-xl bg-white border border-[#0B1220]/[0.06] hover:border-[#B88A5A]/30 transition-all duration-300 group"
               >
                 <span className="text-[#0B1220] font-heading font-semibold text-[clamp(0.9rem,1.5vw,1rem)] leading-snug">

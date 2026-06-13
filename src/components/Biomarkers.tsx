@@ -2,9 +2,6 @@
 
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const univers = [
   {
@@ -60,7 +57,7 @@ const univers = [
   },
 ];
 
-export default function Biomarkers() {
+export default function Biomarkers(): React.JSX.Element {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -73,22 +70,9 @@ export default function Biomarkers() {
       const cards = cardsRef.current.filter(Boolean) as HTMLDivElement[];
 
       gsap.fromTo(
-        headingRef.current,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" } }
-      );
-
-      gsap.fromTo(
-        cards,
-        { opacity: 0, y: 24 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          stagger: 0.06,
-          ease: "power3.out",
-          scrollTrigger: { trigger: el, start: "top 82%", toggleActions: "play none none none" },
-        }
+        [headingRef.current, ...cards],
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.4, stagger: 0.04, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" } }
       );
     }, el);
 
@@ -96,34 +80,34 @@ export default function Biomarkers() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-[#0B1220] py-24 sm:py-32 px-6" id="univers">
+    <section ref={sectionRef} className="bg-[#F2EFE9] py-16 sm:py-20 px-6" id="univers">
       <div className="max-w-7xl mx-auto">
         <div ref={headingRef} className="text-center mb-16">
-          <span className="text-[#159AA9] font-semibold text-sm tracking-widest uppercase">
-            Prévenir &bull; Performer &bull; Récupérer &bull; Équilibrer &bull; Durer
+          <span className="text-[#B88A5A] font-semibold text-sm tracking-widest uppercase">
+            Prévenir · Performer · Récupérer · Équilibrer · Durer
           </span>
-          <h2 className="text-[clamp(2rem,4vw,3.5rem)] font-heading font-bold text-white mt-4 tracking-[-0.03em]">
+          <h2 className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220] mt-4">
             Cinq univers, une santé.
           </h2>
-          <p className="text-white/40 text-sm sm:text-base mt-4 max-w-2xl mx-auto">
+          <p className="text-[#2B2F36]/60 text-sm sm:text-base mt-4 max-w-2xl mx-auto">
             Notre approche couvre l&apos;ensemble du spectre de la santé proactive.
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
           {univers.map((u, i) => (
             <div
               key={u.name}
               ref={(el) => { cardsRef.current[i] = el; }}
-              className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-8 transition-all duration-300 hover:bg-white/[0.06] hover:border-[#159AA9]/30 group"
+              className="bg-white border border-[#0B1220]/[0.04] rounded-2xl p-8 sm:p-10 transition-all duration-500 hover:shadow-[0_8px_32px_rgba(184,138,90,0.06)] hover:border-[#B88A5A]/30 group"
             >
-              <div className="text-[#159AA9] group-hover:text-white transition-colors duration-300">
+              <div className="w-12 h-12 rounded-xl bg-[#0B1220]/[0.02] border border-[#0B1220]/[0.04] flex items-center justify-center text-[#B88A5A] group-hover:border-[#B88A5A]/30 group-hover:bg-[#B88A5A]/5 transition-all duration-300">
                 {u.icon}
               </div>
-              <h3 className="font-heading font-bold text-white text-lg mt-5 tracking-[-0.02em]">
+              <h3 className="font-heading font-bold text-[#0B1220] text-lg mt-6">
                 {u.name}
               </h3>
-              <p className="text-white/40 text-sm leading-relaxed mt-2">
+              <p className="text-[#2B2F36]/60 text-sm leading-relaxed mt-2">
                 {u.subtitle}
               </p>
             </div>

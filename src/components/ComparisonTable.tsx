@@ -2,9 +2,6 @@
 
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const entries = [
   {
@@ -18,7 +15,8 @@ const entries = [
         <path d="M16 14V10a2 2 0 012-2h12a2 2 0 012 2v4" stroke="currentColor" strokeWidth="1" />
       </svg>
     ),
-    stats: "1 centre &middot; 35 thérapeutes &middot; 9 disciplines",
+    stats: "1 centre · 35 thérapeutes · 9 disciplines",
+    featured: true,
   },
   {
     title: "Corporate",
@@ -31,7 +29,7 @@ const entries = [
         <path d="M20 30h8M20 34h8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
       </svg>
     ),
-    stats: "Audit gratuit &middot; Programmes sur mesure &middot; Suivi RH",
+    stats: "Audit gratuit · Programmes sur mesure · Suivi RH",
   },
   {
     title: "Hospitality",
@@ -44,12 +42,12 @@ const entries = [
         <path d="M14 40h20" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
       </svg>
     ),
-    stats: "Hôtels &middot; Resorts &middot; Retreats premium",
+    stats: "Hôtels · Resorts · Retreats premium",
     soon: true,
   },
 ];
 
-export default function ComparisonTable() {
+export default function ComparisonTable(): React.JSX.Element {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -63,14 +61,14 @@ export default function ComparisonTable() {
 
       gsap.fromTo(
         headingRef.current,
-        { opacity: 0, y: 20 },
+        { opacity: 0, y: 16 },
         { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" } }
       );
 
       gsap.fromTo(
         cards,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 80%", toggleActions: "play none none none" } }
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 82%", toggleActions: "play none none none" } }
       );
     }, el);
 
@@ -78,13 +76,13 @@ export default function ComparisonTable() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-[#F2EFE9] py-24 sm:py-32 px-6" id="ecosysteme">
-      <div className="max-w-7xl mx-auto">
+    <section ref={sectionRef} className="bg-[#F2EFE9] py-16 sm:py-20 px-6" id="ecosysteme">
+      <div className="max-w-6xl mx-auto">
         <div ref={headingRef} className="text-center mb-16">
-          <span className="text-[#159AA9] font-semibold text-sm tracking-widest uppercase">
-            Clinics &bull; Corporate &bull; Hospitality
+          <span className="text-[#B88A5A] font-semibold text-sm tracking-widest uppercase">
+            Clinics · Corporate · Hospitality
           </span>
-          <h2 className="text-[clamp(2rem,4vw,3.5rem)] font-heading font-bold text-[#0B1220] mt-4 tracking-[-0.03em]">
+          <h2 className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220] mt-4">
             L&apos;écosystème Wenaya.
           </h2>
           <p className="text-[#2B2F36] text-sm sm:text-base mt-4 max-w-2xl mx-auto">
@@ -92,26 +90,33 @@ export default function ComparisonTable() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid lg:grid-cols-3 gap-5">
           {entries.map((e, i) => (
             <div
               key={e.title}
               ref={(el) => { cardsRef.current[i] = el; }}
-              className="bg-white rounded-2xl border border-[#0B1220]/[0.06] p-8 flex flex-col transition-all duration-300 hover:border-[#159AA9]/30 hover:shadow-lg"
+              className={`bg-white rounded-2xl border p-6 sm:p-8 flex flex-col transition-all duration-300 ${
+                e.featured
+                  ? "border-[#B88A5A] shadow-lg shadow-[rgba(184,138,90,0.06)]"
+                  : "border-[#0B1220]/[0.06] hover:border-[#B88A5A]/30 hover:shadow-lg"
+              }`}
             >
-              <div className="text-[#159AA9] mb-6">{e.icon}</div>
-              <h3 className="font-heading font-bold text-[#0B1220] text-xl tracking-[-0.02em]">
+              <div className={`mb-5 ${e.featured ? "text-[#B88A5A]" : "text-[#B88A5A]"}`}>
+                {e.icon}
+              </div>
+              <h3 className="heading-serif text-xl text-[#0B1220] mb-2">
                 {e.title}
               </h3>
-              <p className="text-[#2B2F36] text-sm leading-relaxed mt-3 flex-1">
+              <p className="text-[#2B2F36] text-sm leading-relaxed flex-1">
                 {e.desc}
               </p>
-              <p className="text-[#159AA9] text-xs mt-4 font-medium">
+              <p className="text-[#B88A5A] text-xs mt-4 font-medium">
                 {e.stats}
               </p>
               <a
                 href="#"
-                className={`mt-6 inline-flex items-center justify-center h-[48px] px-6 rounded-full text-sm font-medium transition-all duration-300 ${
+                onClick={(e) => e.preventDefault()}
+                className={`mt-6 inline-flex items-center justify-center h-[44px] px-6 rounded-full text-sm font-medium transition-all duration-300 ${
                   e.soon
                     ? "bg-[#0B1220]/5 text-[#2B2F36] cursor-default"
                     : "bg-[#0B1220] text-white hover:bg-[#2B2F36]"

@@ -1,10 +1,7 @@
 "use client";
 
-import { useRef, useEffect, type ReactNode } from "react";
+import { useRef, useEffect, useCallback, type ReactNode } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 type TestimonialItem = {
   type: "testimonial";
@@ -52,13 +49,10 @@ const items: GridItem[] = [
   { type: "award", title: "6j/7", subtitle: "ouvert du lundi au samedi de 8h à 20h à Casablanca" },
 ];
 
-const xOffsets = [-60, 60, -40, 40, -50, 50, -30, 30];
-
-function TestimonialCard({ item }: { item: TestimonialItem }) {
+function TestimonialCard({ item }: { item: TestimonialItem }): React.JSX.Element {
   return (
     <div
       className="bg-white rounded-2xl border border-[rgba(184,138,90,0.1)] p-6 transition-all duration-500 hover:border-[rgba(184,138,90,0.25)] hover:shadow-md hover:-translate-y-0.5"
-      style={{ borderRadius: "20px" }}
     >
       <div className="flex items-center gap-1 mb-3">
         {Array.from({ length: item.rating }).map((_, j) => (
@@ -75,11 +69,11 @@ function TestimonialCard({ item }: { item: TestimonialItem }) {
   );
 }
 
-function AwardCard({ item }: { item: AwardItem }) {
+function AwardCard({ item }: { item: AwardItem }): React.JSX.Element {
   return (
     <div
       className="rounded-2xl bg-[#ECE7DD] flex flex-col items-center justify-center p-6 transition-all duration-400 group cursor-pointer"
-      style={{ borderRadius: "20px", minHeight: "140px" }}
+      style={{ minHeight: "140px" }}
     >
       <span className="text-[#0B1220] font-heading font-bold text-lg text-center leading-tight transition-all duration-300 group-hover:text-[#B88A5A]">
         {item.title}
@@ -91,11 +85,11 @@ function AwardCard({ item }: { item: AwardItem }) {
   );
 }
 
-function GridCell({ children, className }: { children: ReactNode; className?: string }) {
+function GridCell({ children, className }: { children: ReactNode; className?: string }): React.JSX.Element {
   return <div className={`flex-1 flex flex-col gap-6 ${className ?? ""}`}>{children}</div>;
 }
 
-export default function TestimonialsSection() {
+export default function TestimonialsSection(): React.JSX.Element {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -105,38 +99,25 @@ export default function TestimonialsSection() {
     if (!el) return;
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        headingRef.current,
-        { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", scrollTrigger: { trigger: el, start: "top 88%", toggleActions: "play none none none" } }
-      );
-
       const cards = cardsRef.current.filter(Boolean) as HTMLDivElement[];
-      cards.forEach((card, i) => {
-        gsap.fromTo(
-          card,
-          { opacity: 0, y: 50, x: xOffsets[i], scale: 0.95, rotateX: 5 },
-          {
-            opacity: 1, y: 0, x: 0, scale: 1, rotateX: 0,
-            duration: 0.8,
-            delay: i * 0.08,
-            ease: "power3.out",
-            scrollTrigger: { trigger: el, start: "top 80%", toggleActions: "play none none none" },
-          }
-        );
-      });
+
+      gsap.fromTo(
+        [headingRef.current, ...cards],
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.05, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" } }
+      );
     }, el);
 
     return () => ctx.revert();
   }, []);
 
-  const setRef = (i: number) => (el: HTMLDivElement | null) => { cardsRef.current[i] = el; };
+  const setRef = useCallback((i: number) => (el: HTMLDivElement | null) => { cardsRef.current[i] = el; }, []);
 
   return (
-    <section ref={sectionRef} className="bg-[#F2EFE9] noise accent-top relative py-32 sm:py-40 px-6" id="avis-google">
-      <div className="max-w-[1200px] mx-auto">
-        <div ref={headingRef} className="flex justify-center text-center mb-24">
-          <h2 className="text-4xl sm:text-5xl font-heading font-bold text-[#0B1220] leading-[1.1] tracking-tight">
+    <section ref={sectionRef} className="bg-[#F2EFE9] noise accent-top relative py-20 sm:py-24 px-6" id="avis-google">
+      <div className="max-w-7xl mx-auto">
+        <div ref={headingRef} className="flex justify-center text-center mb-12 sm:mb-16 lg:mb-24">
+          <h2 className="heading-serif text-4xl sm:text-5xl text-[#0B1220]">
             Ils nous font confiance
           </h2>
         </div>

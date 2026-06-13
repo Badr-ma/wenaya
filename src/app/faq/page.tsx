@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import FaqSection from "@/components/FaqSection";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "FAQ — Wenaya",
@@ -8,5 +10,12 @@ export const metadata: Metadata = {
 };
 
 export default function FaqPage() {
-  return <FaqSection />;
+  return (
+    <ErrorBoundary>
+      <div className="flex flex-col min-h-screen">
+        <FaqSection />
+        <Footer />
+      </div>
+    </ErrorBoundary>
+  );
 }

@@ -1,18 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
 
 const navLinks = [
   { label: "Accueil", href: "/" },
   { label: "Solutions", href: "#", hasDropdown: true },
   { label: "Yolo AI", href: "/yolo" },
-  { label: "Experts", href: "/experts" },
-  { label: "Ressources", href: "/ressources" },
   { label: "À Propos", href: "/about" },
   { label: "FAQ", href: "/faq" },
-  { label: "Contact", href: "/contact" },
 ];
 
 const solutions = [
@@ -57,7 +54,7 @@ const solutions = [
   },
 ];
 
-export default function Nav() {
+export default function Nav(): React.JSX.Element {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -66,9 +63,7 @@ export default function Nav() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => { setMounted(true); }, []);
+  const mounted = useSyncExternalStore(() => () => {}, () => true, () => false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -97,7 +92,7 @@ export default function Nav() {
   const hide = () => { timeoutRef.current = setTimeout(() => setDropdownOpen(false), 120); };
   const closeMobile = () => { setMobileOpen(false); setMobileSolutionsOpen(false); };
 
-  const isActive = (href: string) => {
+  const isActive = (href: string): boolean => {
     if (href === "/") return pathname === "/";
     return pathname.startsWith(href);
   };
@@ -142,6 +137,8 @@ export default function Nav() {
                     onMouseEnter={show}
                     onMouseLeave={hide}
                     onClick={() => setDropdownOpen(!dropdownOpen)}
+                    aria-haspopup="true"
+                    aria-expanded={dropdownOpen}
                     className={`relative flex items-center gap-1.5 px-3.5 py-2 text-sm font-medium rounded-xl transition-all duration-200 ${
                       isActive(link.href)
                         ? "text-white bg-white/[0.06]"
@@ -178,6 +175,7 @@ export default function Nav() {
         <div className="flex items-center gap-3">
           <Link
             href="#"
+            onClick={(e) => e.preventDefault()}
             className="relative hidden sm:inline-flex items-center justify-center h-9 px-5 bg-gradient-to-r from-[#B88A5A] to-[#A07848] text-white text-xs font-semibold rounded-full transition-all duration-300 hover:shadow-[0_4px_20px_rgba(184,138,90,0.35)] hover:-translate-y-0.5 active:translate-y-0"
           >
             <span className="relative z-10">Réserver</span>
@@ -233,7 +231,7 @@ export default function Nav() {
             <div className="h-px bg-gradient-to-r from-transparent via-white/[0.04] to-transparent" />
             <div className="px-5 py-3 flex items-center justify-between bg-white/[0.01]">
               <span className="text-white/25 text-xs">Solutions adaptées à chaque besoin</span>
-              <Link href="#" className="text-white/50 hover:text-white text-xs font-medium transition-colors flex items-center gap-1.5">
+              <Link href="#" onClick={(e) => e.preventDefault()} className="text-white/50 hover:text-white text-xs font-medium transition-colors flex items-center gap-1.5">
                 Voir toutes nos solutions
                 <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -245,6 +243,8 @@ export default function Nav() {
       )}
 
       <div
+        role="dialog"
+        aria-modal="true"
         className={`fixed inset-0 top-0 left-0 right-0 bottom-0 bg-[#0B1220] z-40 transition-all duration-500 ${
           mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
@@ -305,11 +305,8 @@ export default function Nav() {
 
               {[
                 { label: "Yolo AI", href: "/yolo" },
-                { label: "Experts", href: "/experts" },
-                { label: "Ressources", href: "/ressources" },
                 { label: "À Propos", href: "/about" },
                 { label: "FAQ", href: "/faq" },
-                { label: "Contact", href: "/contact" },
               ].map(({ label, href }) => (
                 <li key={label}>
                   <Link
@@ -329,7 +326,7 @@ export default function Nav() {
           <div className="pt-6 border-t border-white/[0.06] space-y-3">
             <Link
               href="#"
-              onClick={closeMobile}
+              onClick={(e) => { e.preventDefault(); closeMobile(); }}
               className="flex items-center justify-center h-[52px] px-8 bg-gradient-to-r from-[#B88A5A] to-[#A07848] text-white text-sm font-semibold rounded-full transition-all duration-300 w-full hover:shadow-[0_4px_20px_rgba(184,138,90,0.3)]"
             >
               Réserver

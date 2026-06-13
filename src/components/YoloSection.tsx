@@ -2,9 +2,6 @@
 
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const signals = [
   { label: "Sleep", x: 50, y: 15 },
@@ -16,7 +13,7 @@ const signals = [
   { label: "Longevity", x: 23, y: 28 },
 ];
 
-export default function YoloSection() {
+export default function YoloSection(): React.JSX.Element {
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const badgeRef = useRef<HTMLDivElement>(null);
@@ -103,7 +100,7 @@ export default function YoloSection() {
       });
 
       const particles = particleRefs.current.filter(Boolean) as HTMLDivElement[];
-      particles.forEach((p, i) => {
+      particles.forEach((p) => {
         const x = 10 + Math.random() * 80;
         const y = 10 + Math.random() * 80;
         gsap.set(p, { x: `${x}%`, y: `${y}%`, opacity: 0 });

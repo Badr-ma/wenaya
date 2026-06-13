@@ -14,7 +14,7 @@ interface Particle {
   connections: number;
 }
 
-export default function HiggsField({ className = "", parentRef }: { className?: string; parentRef?: React.RefObject<HTMLElement | null> }) {
+export default function HiggsField({ className = "", parentRef }: { className?: string; parentRef?: React.RefObject<HTMLElement | null> }): React.JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: 0, y: 0, active: false });
 
@@ -83,11 +83,15 @@ export default function HiggsField({ className = "", parentRef }: { className?: 
     eventTarget.addEventListener("mouseleave", onLeave);
 
     let animId: number;
+    let isVisible = true;
+    const observer = new IntersectionObserver(([entry]) => { isVisible = entry.isIntersecting; });
+    observer.observe(canvas);
 
     const draw = () => {
       const { w: ww, h: hh } = getSize();
 
       ctx.clearRect(0, 0, ww, hh);
+      if (!isVisible) { animId = requestAnimationFrame(draw); return; }
 
       const mouse = mouseRef.current;
 
@@ -194,11 +198,12 @@ export default function HiggsField({ className = "", parentRef }: { className?: 
 
     return () => {
       cancelAnimationFrame(animId);
+      observer.disconnect();
       eventTarget.removeEventListener("mousemove", onMouse);
       eventTarget.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("resize", resize);
     };
-  }, []);
+  }, [parentRef]);
 
   return (
     <canvas

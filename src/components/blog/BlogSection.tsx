@@ -1,171 +1,97 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useRef, useEffect } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
-import type { Post, Author, Category } from "@/lib/blog";
+import Image from "next/image";
+import { formatDate, type PostWithAuthor } from "@/lib/blog-utils";
 
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString("fr-FR", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-}
+gsap.registerPlugin(ScrollTrigger);
 
-const categoryColors: Record<string, string> = {
-  longevity: "bg-emerald-500/10 text-emerald-600 border-emerald-200",
-  biomarkers: "bg-blue-500/10 text-blue-600 border-blue-200",
-  nutrition: "bg-amber-500/10 text-amber-600 border-amber-200",
-  "ai-health": "bg-purple-500/10 text-purple-600 border-purple-200",
-  prevention: "bg-rose-500/10 text-rose-600 border-rose-200",
-};
-
-function BlogCard({
-  post,
-  author,
-  category,
-  featured = false,
-  index = 0,
-}: {
-  post: Post;
-  author?: Author;
-  category?: Category;
-  featured?: boolean;
-  index?: number;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
-
+function BlogCard({ post, index }: { post: PostWithAuthor; index: number }): React.JSX.Element {
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 60, scale: 0.96 }}
-      animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ duration: 0.7, delay: index * 0.15, ease: [0.25, 0.1, 0.25, 1] }}
+    <Link
+      href={`/blog/${post.slug}`}
+      className="group block bg-white rounded-2xl border border-[#0B1220]/[0.04] overflow-hidden transition-all duration-500 hover:shadow-[0_8px_32px_rgba(184,138,90,0.06)] hover:border-[#B88A5A]/15 hover:-translate-y-0.5"
     >
-      <Link
-        href={`/blog/${post.slug}`}
-        className={`group block relative bg-white rounded-2xl border border-gray-100 overflow-hidden transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] hover:-translate-y-1 h-full ${
-          featured ? "lg:col-span-2 lg:row-span-2" : ""
-        }`}
-      >
-        <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-transparent via-transparent to-transparent group-hover:from-[#AA412A]/20 group-hover:via-[#159AA9]/10 group-hover:to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700 z-0 pointer-events-none" />
-        <div className="relative overflow-hidden aspect-[16/9]">
-          <div
-            className="absolute inset-0 bg-cover bg-center transition-all duration-700 group-hover:scale-105"
-            style={{ backgroundImage: `url(${post.featuredImage})` }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-          {category && (
-            <span
-              className={`absolute top-4 left-4 inline-flex items-center px-3 py-1 rounded-full text-[11px] font-mono font-medium border backdrop-blur-sm transition-all duration-300 group-hover:scale-105 ${
-                categoryColors[category.slug] || "bg-gray-100 text-gray-700 border-gray-200"
-              }`}
-            >
-              {category.name}
-            </span>
-          )}
-          <span className="absolute top-4 right-4 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 text-[11px] font-mono text-gray-600 shadow-sm">
-            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2" />
-            </svg>
-            {post.readingTime} min
+      <div className="relative overflow-hidden aspect-[16/10]">
+        <div className="absolute inset-0 bg-cover bg-center transition-all duration-500 group-hover:scale-105" style={{ backgroundImage: `url(${post.featuredImage})` }} />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+        <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full px-2.5 py-0.5 text-[10px] font-medium text-[#2B2F36]/60 shadow-sm">
+          {post.readingTime} min
+        </span>
+        {post.category && (
+          <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-[#B88A5A]/10 text-[#B88A5A] border border-[#B88A5A]/20">
+            {post.category.name}
           </span>
-        </div>
-        <div className="relative p-6 flex flex-col flex-1">
-          <div className="flex items-center gap-3 mb-3 text-xs text-gray-400 font-mono">
-            <span>{formatDate(post.publishedAt)}</span>
-          </div>
-          <h3
-            className={`font-heading font-bold text-[#083241] leading-tight transition-colors duration-300 group-hover:text-[#AA412A] ${
-              featured ? "text-xl sm:text-2xl" : "text-lg"
-            }`}
-          >
-            {post.title}
-          </h3>
-          <p className="mt-2 text-gray-500 text-sm leading-relaxed line-clamp-2 flex-1">{post.excerpt}</p>
-          {author && (
-            <div className="flex items-center gap-3 mt-5 pt-4 border-t border-gray-50">
-              <img
-                src={author.avatar}
-                alt={author.name}
-                className="w-8 h-8 rounded-full object-cover ring-2 ring-gray-50"
-              />
-              <div>
-                <span className="block text-sm font-medium text-gray-900">{author.name}</span>
-                <span className="text-[11px] text-gray-400 font-mono">{author.role}</span>
-              </div>
+        )}
+      </div>
+      <div className="p-5">
+        <span className="text-[10px] font-medium text-[#2B2F36]/40">{formatDate(post.publishedAt)}</span>
+        <h3 className="font-heading font-bold text-[#0B1220] text-sm mt-1.5 leading-snug transition-colors duration-300 group-hover:text-[#B88A5A]">
+          {post.title}
+        </h3>
+        <p className="text-[11px] text-[#2B2F36]/50 mt-1.5 leading-relaxed line-clamp-2">{post.excerpt}</p>
+        {post.author && (
+          <div className="flex items-center gap-2.5 mt-3 pt-3 border-t border-[#0B1220]/[0.04]">
+            <Image src={post.author.avatar} alt={post.author.name} width={24} height={24} className="w-6 h-6 rounded-full object-cover" unoptimized />
+            <div>
+              <span className="text-[11px] font-medium text-[#0B1220]">{post.author.name}</span>
+              <span className="text-[9px] text-[#2B2F36]/40 ml-1.5">{post.author.role}</span>
             </div>
-          )}
-          <div className="mt-4 flex items-center gap-1.5 text-sm font-medium text-[#AA412A] opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
-            <span>Lire l'article</span>
-            <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
-            </svg>
           </div>
-        </div>
-      </Link>
-    </motion.div>
+        )}
+      </div>
+    </Link>
   );
 }
 
-export default function BlogSection({
-  posts,
-}: {
-  posts: (Post & { author?: Author; category?: Category })[];
-}) {
-  const headerRef = useRef<HTMLDivElement>(null);
-  const headerInView = useInView(headerRef, { once: true });
+export default function BlogSection({ posts }: { posts: PostWithAuthor[] }): React.JSX.Element {
+  const sectionRef = useRef<HTMLElement>(null);
+  const headingRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const ctx = gsap.context(() => {
+      gsap.fromTo(headingRef.current, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out", scrollTrigger: { trigger: el, start: "top 85%" } });
+      gsap.fromTo(cardsRef.current.filter(Boolean) as HTMLDivElement[], { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, stagger: 0.06, ease: "power2.out", scrollTrigger: { trigger: el, start: "top 82%" } });
+    }, el);
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section className="relative py-24 sm:py-32 overflow-hidden bg-[#F2EFE9]">
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-gradient-to-bl from-[#AA412A]/5 to-transparent blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-[#159AA9]/5 to-transparent blur-[100px] pointer-events-none" />
-
-      <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        <motion.div
-          ref={headerRef}
-          initial={{ opacity: 0, y: 30 }}
-          animate={headerInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-          className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-14"
-        >
+    <section ref={sectionRef} className="bg-[#F2EFE9] py-16 sm:py-20 px-6 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto relative">
+        <div ref={headingRef} className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
           <div>
-            <span className="inline-flex items-center gap-2 bg-[#AA412A]/5 border border-[#AA412A]/10 rounded-full px-3 py-1 mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#AA412A]/50" />
-              <span className="text-[10px] font-mono text-[#AA412A]/60 tracking-wider uppercase">Insights</span>
-            </span>
-            <h2 className="text-[clamp(2rem,4vw,3.2rem)] font-heading font-bold text-[#083241] leading-[1.02] tracking-tight">
-              Latest Insights
-            </h2>
-            <p className="text-gray-500 text-sm sm:text-base mt-3 max-w-lg leading-relaxed">
-              Expert analysis on longevity science, biomarker optimization, and the future of preventive medicine.
+            <span className="text-[#B88A5A] font-semibold text-xs tracking-[0.2em] uppercase">Insights</span>
+            <h2 className="heading-serif text-[clamp(1.5rem,3vw,2.5rem)] text-[#0B1220] mt-2">Latest Insights</h2>
+            <p className="text-[#2B2F36]/60 text-sm mt-2 max-w-md leading-relaxed">
+              Expert analysis on longevity science, biomarker optimization, and preventive medicine.
             </p>
           </div>
-          <Link
-            href="/blog"
-            className="group inline-flex items-center gap-2 text-sm font-medium text-[#AA412A] hover:text-[#AA412A]/80 transition-colors shrink-0"
-          >
+          <Link href="/blog"
+            className="group inline-flex items-center gap-1.5 text-xs font-medium text-[#B88A5A] hover:text-[#B88A5A]/70 transition-colors shrink-0">
             <span>Voir tous les articles</span>
-            <svg
-              className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
-              fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
-            >
+            <svg className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
             </svg>
           </Link>
-        </motion.div>
+        </div>
 
         {posts.length === 0 ? (
-          <div className="text-center py-20 text-gray-400">
-            <p className="text-lg">Aucun article pour le moment.</p>
-            <p className="text-sm mt-1">Revenez bientôt pour de nouveaux insights.</p>
+          <div className="text-center py-12 text-[#2B2F36]/40">
+            <p className="text-sm">Aucun article pour le moment.</p>
           </div>
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {posts.map((post, i) => (
-              <BlogCard key={post.slug} post={post} author={post.author} category={post.category} featured={i === 0} index={i} />
+              <div key={post.slug} ref={(el) => { cardsRef.current[i] = el; }}>
+                <BlogCard post={post} index={i} />
+              </div>
             ))}
           </div>
         )}

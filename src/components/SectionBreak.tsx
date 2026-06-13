@@ -2,11 +2,8 @@
 
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
-export default function SectionBreak() {
+export default function SectionBreak(): React.JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
   const lineL = useRef<HTMLDivElement>(null);
   const lineR = useRef<HTMLDivElement>(null);
@@ -30,7 +27,7 @@ export default function SectionBreak() {
   }, []);
 
   return (
-    <div ref={ref} className="flex items-center justify-center h-14 sm:h-16 w-full select-none">
+    <div ref={ref} className="flex items-center justify-center h-8 sm:h-10 w-full select-none">
       <div ref={lineL} className="w-12 sm:w-20 h-px bg-gradient-to-l from-[#B88A5A]/25 to-transparent" />
       <div ref={dot} className="mx-2.5 w-2 h-2 bg-[#B88A5A]/40" style={{ clipPath: "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)" }} />
       <div ref={lineR} className="w-12 sm:w-20 h-px bg-gradient-to-r from-[#B88A5A]/25 to-transparent" />

@@ -2,12 +2,9 @@
 
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 
-gsap.registerPlugin(ScrollTrigger);
-
-export default function WhyWeExist() {
+export default function WhyWeExist(): React.JSX.Element {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -15,17 +12,14 @@ export default function WhyWeExist() {
     if (!el) return;
 
     const ctx = gsap.context(() => {
-      gsap.fromTo("#wwe-badge", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" } });
-      gsap.fromTo("#wwe-title", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 83%", toggleActions: "play none none none" } });
-      gsap.fromTo("#wwe-text", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 80%", toggleActions: "play none none none" } });
-      gsap.fromTo("#wwe-image", { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.9, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 78%", toggleActions: "play none none none" } });
+      gsap.fromTo("#wwe-title, #wwe-text, #wwe-image", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" } });
     }, el);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section id="story" ref={sectionRef} className="bg-[#F2EFE9] py-28 sm:py-36 px-6">
+    <section id="story" ref={sectionRef} className="bg-[#F2EFE9] py-20 sm:py-24 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 xl:gap-24 items-center">
           <div className="max-w-xl">
@@ -36,7 +30,7 @@ export default function WhyWeExist() {
               </span>
             </div>
 
-            <h2 id="wwe-title" className="text-[clamp(2rem,4vw,3.5rem)] font-heading font-bold text-[#0B1220] leading-[1.08] tracking-tight mt-5">
+            <h2 id="wwe-title" className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220] mt-5">
               Votre santé, notre priorité
             </h2>
 

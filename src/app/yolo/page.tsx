@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import StickyProgressScroll from "@/components/StickyProgressScroll";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Yolo AI | Agent IA de Longévité et de Bien-être | Wenaya",
@@ -26,5 +28,12 @@ export const metadata: Metadata = {
 };
 
 export default function YoloPage() {
-  return <StickyProgressScroll />;
+  return (
+    <ErrorBoundary>
+      <div className="flex flex-col min-h-screen">
+        <StickyProgressScroll />
+        <Footer />
+      </div>
+    </ErrorBoundary>
+  );
 }

@@ -4,7 +4,7 @@ import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import Image from "next/image";
 
-export default function AboutHero() {
+export default function AboutHero(): React.JSX.Element {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -13,21 +13,17 @@ export default function AboutHero() {
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      tl.fromTo("#ah-badge", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6 })
-        .fromTo("#ah-title", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8 }, "-=0.35")
-        .fromTo("#ah-desc", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7 }, "-=0.45")
-        .fromTo("#ah-cta", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, "-=0.3")
-        .fromTo("#ah-image", { opacity: 0, scale: 0.92, x: 40 }, { opacity: 1, scale: 1, x: 0, duration: 1.1 }, "-=0.5");
+      tl.fromTo("#ah-title, #ah-desc, #ah-cta, #ah-image", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, stagger: 0.1 });
     }, el);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative bg-[#0B1220] min-h-screen flex items-center px-6 overflow-hidden">
+    <section ref={sectionRef} className="relative bg-[#F2EFE9] min-h-screen flex items-center px-6 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#159AA9]/4 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#B88A5A]/12 to-transparent" />
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#159AA9]/3 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#B88A5A]/20 to-transparent" />
       </div>
 
       <div className="max-w-7xl mx-auto w-full relative pt-32 pb-20 lg:pt-40 lg:pb-28">
@@ -40,18 +36,18 @@ export default function AboutHero() {
               </span>
             </div>
 
-            <h1 id="ah-title" className="text-[clamp(2.5rem,5vw,4.5rem)] font-heading font-bold text-white leading-[1.06] tracking-tight mt-6">
+            <h1 id="ah-title" className="heading-serif text-[clamp(2.5rem,5vw,4.5rem)] text-[#0B1220] mt-6">
               Soigner. Prévenir.{" "}
               <span className="text-[#B88A5A]">Prolonger.</span>
             </h1>
 
-            <p id="ah-desc" className="text-white/45 text-base sm:text-lg leading-relaxed mt-6 max-w-lg">
+            <p id="ah-desc" className="text-[#2B2F36]/60 text-base sm:text-lg leading-relaxed mt-6 max-w-lg">
               Wenaya, c&apos;est un écosystème de santé intégrée qui réunit des spécialistes en kinésithérapie, ostéopathie, psychologie, nutrition et thérapies complémentaires — pour un accompagnement global et personnalisé.
             </p>
 
             <div id="ah-cta" className="mt-10">
-              <a href="#story" className="group inline-flex items-center gap-3 text-white text-sm font-semibold tracking-wide transition-all duration-300 hover:text-[#B88A5A]">
-                <span className="w-10 h-px bg-white/30 group-hover:w-14 transition-all duration-300 group-hover:bg-[#B88A5A]" />
+              <a href="#story" className="group inline-flex items-center gap-3 text-[#0B1220] text-sm font-semibold tracking-wide transition-all duration-300 hover:text-[#B88A5A]">
+                <span className="w-10 h-px bg-[#B88A5A]/40 group-hover:w-14 transition-all duration-300 group-hover:bg-[#B88A5A]" />
                 Découvrir notre histoire
               </a>
             </div>
@@ -67,7 +63,7 @@ export default function AboutHero() {
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 priority
               />
-              <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/[0.06]" />
+              <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-[#0B1220]/[0.04]" />
             </div>
             <div className="absolute -bottom-4 -left-4 w-24 h-24 rounded-full bg-[#B88A5A]/5 blur-2xl" />
             <div className="absolute -top-4 -right-4 w-32 h-32 rounded-full bg-[#159AA9]/5 blur-3xl" />

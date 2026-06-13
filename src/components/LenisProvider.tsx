@@ -3,7 +3,7 @@
 import { type ReactNode } from "react";
 import { ReactLenis } from "lenis/react";
 
-export default function LenisProvider({ children }: { children: ReactNode }) {
+export default function LenisProvider({ children }: { children: ReactNode }): React.JSX.Element {
   return (
     <ReactLenis
       root

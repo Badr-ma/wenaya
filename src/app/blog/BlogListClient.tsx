@@ -3,25 +3,11 @@
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
-import type { Post, Author, Category } from "@/lib/blog";
+import Image from "next/image";
+import { formatDate, categoryColors, type PostWithAuthor } from "@/lib/blog-utils";
+import type { Category } from "@/lib/blog";
 
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString("fr-FR", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-}
-
-const categoryColors: Record<string, string> = {
-  longevity: "bg-emerald-500/10 text-emerald-600 border-emerald-200",
-  biomarkers: "bg-blue-500/10 text-blue-600 border-blue-200",
-  nutrition: "bg-amber-500/10 text-amber-600 border-amber-200",
-  "ai-health": "bg-purple-500/10 text-purple-600 border-purple-200",
-  prevention: "bg-rose-500/10 text-rose-600 border-rose-200",
-};
-
-function BlogCard({ post, index }: { post: Post & { author?: Author; category?: Category }; index: number }) {
+function BlogCard({ post, index }: { post: PostWithAuthor; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
 
@@ -36,7 +22,7 @@ function BlogCard({ post, index }: { post: Post & { author?: Author; category?: 
         href={`/blog/${post.slug}`}
         className="group block relative bg-white rounded-2xl border border-gray-100 overflow-hidden transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] hover:-translate-y-1"
       >
-        <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-transparent via-transparent to-transparent group-hover:from-[#AA412A]/20 group-hover:via-[#159AA9]/10 group-hover:to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700 z-0 pointer-events-none" />
+        <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-transparent via-transparent to-transparent group-hover:from-[#B88A5A]/20 group-hover:via-[#159AA9]/10 group-hover:to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700 z-0 pointer-events-none" />
         <div className="relative overflow-hidden aspect-[16/9]">
           <div
             className="absolute inset-0 bg-cover bg-center transition-all duration-700 group-hover:scale-105"
@@ -63,20 +49,20 @@ function BlogCard({ post, index }: { post: Post & { author?: Author; category?: 
           <div className="flex items-center gap-3 mb-3 text-xs text-gray-400 font-mono">
             <span>{formatDate(post.publishedAt)}</span>
           </div>
-          <h3 className="text-lg font-heading font-bold text-[#083241] leading-tight transition-colors duration-300 group-hover:text-[#AA412A]">
+          <h3 className="text-lg font-heading font-bold text-[#0B1220] leading-tight transition-colors duration-300 group-hover:text-[#B88A5A]">
             {post.title}
           </h3>
           <p className="mt-2 text-gray-500 text-sm leading-relaxed line-clamp-2">{post.excerpt}</p>
           {post.author && (
             <div className="flex items-center gap-3 mt-5 pt-4 border-t border-gray-50">
-              <img src={post.author.avatar} alt={post.author.name} className="w-8 h-8 rounded-full object-cover ring-2 ring-gray-50" />
+              <Image src={post.author.avatar} alt={post.author.name} width={32} height={32} className="w-8 h-8 rounded-full object-cover ring-2 ring-gray-50" unoptimized />
               <div>
                 <span className="block text-sm font-medium text-gray-900">{post.author.name}</span>
                 <span className="text-[11px] text-gray-400 font-mono">{post.author.role}</span>
               </div>
             </div>
           )}
-          <div className="mt-4 flex items-center gap-1.5 text-sm font-medium text-[#AA412A] opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
+          <div className="mt-4 flex items-center gap-1.5 text-sm font-medium text-[#B88A5A] opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
             <span>Lire l&apos;article</span>
             <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
@@ -92,7 +78,7 @@ export default function BlogListClient({
   posts,
   categories,
 }: {
-  posts: (Post & { author?: Author; category?: Category })[];
+  posts: PostWithAuthor[];
   categories: Category[];
 }) {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
@@ -106,8 +92,8 @@ export default function BlogListClient({
             onClick={() => setActiveCategory(null)}
             className={`inline-flex items-center px-4 py-2 rounded-full text-xs font-mono font-medium transition-all duration-300 ${
               activeCategory === null
-                ? "bg-[#083241] text-white shadow-md"
-                : "bg-white text-gray-500 border border-gray-200 hover:border-[#AA412A]/30 hover:text-[#AA412A]"
+                ? "bg-[#0B1220] text-white shadow-md"
+                : "bg-white text-gray-500 border border-gray-200 hover:border-[#B88A5A]/30 hover:text-[#B88A5A]"
             }`}
           >
             Tous
@@ -118,8 +104,8 @@ export default function BlogListClient({
               onClick={() => setActiveCategory(cat.slug)}
               className={`inline-flex items-center px-4 py-2 rounded-full text-xs font-mono font-medium transition-all duration-300 ${
                 activeCategory === cat.slug
-                  ? "bg-[#083241] text-white shadow-md"
-                  : "bg-white text-gray-500 border border-gray-200 hover:border-[#AA412A]/30 hover:text-[#AA412A]"
+                  ? "bg-[#0B1220] text-white shadow-md"
+                  : "bg-white text-gray-500 border border-gray-200 hover:border-[#B88A5A]/30 hover:text-[#B88A5A]"
               }`}
             >
               {cat.name}

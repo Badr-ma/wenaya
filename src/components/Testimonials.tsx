@@ -1,10 +1,8 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import Image from "next/image";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const team = [
   {
@@ -34,7 +32,7 @@ const team = [
   },
 ];
 
-export default function VideoTestimonials() {
+export default function VideoTestimonials(): React.JSX.Element {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const ornamentRef = useRef<HTMLDivElement>(null);
@@ -53,17 +51,17 @@ export default function VideoTestimonials() {
         .fromTo(ornamentRef.current, { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power3.out", transformOrigin: "center" }, "-=0.4");
 
       const cards = cardsRef.current.filter(Boolean) as HTMLDivElement[];
-      gsap.fromTo(
-        cards,
-        { opacity: 0, y: 50, scale: 0.92 },
-        {
-          opacity: 1, y: 0, scale: 1,
-          duration: 0.7,
-          stagger: 0.08,
-          ease: "power3.out",
-          scrollTrigger: { trigger: el, start: "top 80%", toggleActions: "play none none none" },
-        }
-      );
+      cards.forEach((card, i) => {
+        const img = card.querySelector(".tm-img") as HTMLElement;
+        const overlay = card.querySelector(".tm-overlay") as HTMLElement;
+        const btn = card.querySelector(".tm-btn") as HTMLElement;
+        const text = card.querySelector(".tm-text") as HTMLElement;
+        gsap.timeline({ scrollTrigger: { trigger: card, start: "top 88%", toggleActions: "play none none none" }, delay: i * 0.06 })
+          .fromTo(img, { scale: 1.15, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: "power2.out" })
+          .fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, "-=0.25")
+          .fromTo(btn, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: "back.out(2)" }, "-=0.15")
+          .fromTo(text, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, "-=0.1");
+      });
     }, el);
 
     return () => ctx.revert();
@@ -72,7 +70,7 @@ export default function VideoTestimonials() {
   const setCardRef = (i: number) => (el: HTMLDivElement | null) => { cardsRef.current[i] = el; };
 
   return (
-    <section ref={sectionRef} className="relative bg-[#F2EFE9] noise py-28 sm:py-36 px-6 overflow-hidden" id="equipe">
+    <section ref={sectionRef} className="relative bg-[#F2EFE9] noise py-20 sm:py-24 px-6 overflow-hidden" id="equipe">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#B88A5A]/20 to-transparent" />
       </div>
@@ -82,7 +80,7 @@ export default function VideoTestimonials() {
           <span className="text-[#B88A5A] font-semibold text-xs sm:text-sm tracking-[0.2em] uppercase">
             35 thérapeutes certifiés à Casablanca
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-heading font-bold text-[#0B1220] mt-4 leading-[1.1] tracking-tight">
+          <h2 className="heading-serif text-3xl sm:text-4xl md:text-5xl lg:text-[52px] text-[#0B1220] mt-4">
             Des spécialistes pluridisciplinaires à votre écoute
           </h2>
         </div>
@@ -101,19 +99,23 @@ export default function VideoTestimonials() {
               className="group relative overflow-hidden rounded-[18px] bg-[#0B1220] cursor-pointer transition-all duration-500 hover:shadow-2xl hover:shadow-[#0B1220]/20 hover:-translate-y-0.5"
               style={{ aspectRatio: "3/4" }}
             >
-              <img
+              <Image
                 src={member.image}
                 alt={member.name}
+                width={400}
+                height={600}
                 referrerPolicy="no-referrer"
-                className="absolute inset-0 w-full h-full object-cover transition-all duration-[800ms] group-hover:scale-105"
+                className="tm-img absolute inset-0 w-full h-full object-cover transition-all duration-[800ms] group-hover:scale-105"
+                style={{ opacity: 0, transform: "scale(1.15)" }}
+                unoptimized
               />
 
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/90 via-[#0B1220]/20 to-[#0B1220]/10" />
+              <div className="tm-overlay absolute inset-0 bg-gradient-to-t from-[#0B1220]/90 via-[#0B1220]/20 to-[#0B1220]/10" style={{ opacity: 0 }} />
               <div className="absolute inset-0 bg-gradient-to-b from-[#0B1220]/10 via-transparent to-transparent" />
 
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="relative flex items-center justify-center">
-                  <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:bg-white shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
+                  <div className="tm-btn relative w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:bg-white shadow-[0_8px_32px_rgba(0,0,0,0.3)]" style={{ opacity: 0 }}>
                     <svg className="w-5 h-5 sm:w-6 sm:h-6 text-[#0B1220]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12c0 7.142-7.5 11.25-7.5 11.25S4.5 19.142 4.5 12a7.5 7.5 0 1115 0z" />
@@ -122,7 +124,7 @@ export default function VideoTestimonials() {
                 </div>
               </div>
 
-              <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6">
+              <div className="tm-text absolute bottom-0 left-0 right-0 p-5 sm:p-6" style={{ opacity: 0 }}>
                 <div className="w-6 h-px bg-[#B88A5A]/60 mb-3" />
                 <p className="text-white text-sm sm:text-base font-medium leading-tight">{member.name}</p>
                 <p className="text-white/45 text-xs mt-1 font-sans tracking-wide">{member.role}</p>

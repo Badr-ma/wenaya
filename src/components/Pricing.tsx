@@ -2,9 +2,6 @@
 
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const plans = [
   {
@@ -45,7 +42,7 @@ const plans = [
   },
 ];
 
-export default function Pricing() {
+export default function Pricing(): React.JSX.Element {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -59,21 +56,14 @@ export default function Pricing() {
 
       gsap.fromTo(
         headingRef.current,
-        { opacity: 0, y: 20 },
+        { opacity: 0, y: 16 },
         { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" } }
       );
 
       gsap.fromTo(
         cards,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          stagger: 0.1,
-          ease: "power3.out",
-          scrollTrigger: { trigger: el, start: "top 80%", toggleActions: "play none none none" },
-        }
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 82%", toggleActions: "play none none none" } }
       );
     }, el);
 
@@ -81,13 +71,13 @@ export default function Pricing() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-[#F2EFE9] py-24 sm:py-32 px-6" id="tarifs">
-      <div className="max-w-6xl mx-auto">
+    <section ref={sectionRef} className="bg-[#F2EFE9] py-16 sm:py-20 px-6" id="tarifs">
+      <div className="max-w-5xl mx-auto">
         <div ref={headingRef} className="text-center mb-16">
-          <span className="text-[#159AA9] font-semibold text-sm tracking-widest uppercase">
+          <span className="text-[#B88A5A] font-semibold text-sm tracking-widest uppercase">
             Prévenir. Performer. Durer.
           </span>
-          <h2 className="text-[clamp(2rem,4vw,3.5rem)] font-heading font-bold text-[#0B1220] mt-4 tracking-[-0.03em]">
+          <h2 className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220] mt-4">
             Des soins accessibles à tous
           </h2>
           <p className="text-[#2B2F36] text-sm sm:text-base mt-4 max-w-lg mx-auto">
@@ -95,19 +85,19 @@ export default function Pricing() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+        <div className="flex flex-col lg:flex-row items-stretch gap-8 lg:gap-6 xl:gap-8">
           {plans.map((plan, i) => (
             <div
               key={plan.name}
               ref={(el) => { cardsRef.current[i] = el; }}
-              className={`relative rounded-2xl p-8 border-2 flex flex-col transition-all duration-300 ${
+              className={`relative rounded-2xl p-8 border-2 flex flex-col transition-all duration-300 flex-1 ${
                 plan.popular
-                  ? "bg-white border-[#159AA9] shadow-xl shadow-[rgba(21,154,169,0.12)] hover:shadow-2xl hover:shadow-[rgba(21,154,169,0.18)]"
-                  : "bg-white border-[#0B1220]/[0.06] shadow-sm hover:shadow-md hover:border-[#159AA9]/30 hover:-translate-y-0.5"
+                  ? "bg-white border-[#B88A5A] shadow-xl shadow-[rgba(184,138,90,0.10)] hover:shadow-2xl hover:shadow-[rgba(184,138,90,0.16)]"
+                  : "bg-white border-[#0B1220]/[0.06] shadow-sm hover:shadow-md hover:border-[#B88A5A]/30 hover:-translate-y-0.5"
               }`}
             >
               {plan.popular && (
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#159AA9] text-white text-xs font-semibold px-4 py-1.5 rounded-full">
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#B88A5A] text-white text-xs font-semibold px-4 py-1.5 rounded-full">
                   Recommandé
                 </div>
               )}
@@ -115,7 +105,7 @@ export default function Pricing() {
                 {plan.name}
               </h3>
               <div className="mt-3 mb-1">
-                <span className="text-4xl font-heading font-bold text-[#0B1220]">
+                <span className="text-3xl font-heading font-bold text-[#0B1220]">
                   {plan.price}
                 </span>
               </div>
@@ -127,7 +117,7 @@ export default function Pricing() {
                     className="text-sm text-[#2B2F36] flex items-start gap-2.5"
                   >
                     <svg
-                      className="w-4 h-4 text-[#159AA9] mt-0.5 shrink-0"
+                      className="w-4 h-4 text-[#B88A5A] mt-0.5 shrink-0"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -145,9 +135,10 @@ export default function Pricing() {
               </ul>
               <a
                 href="#"
+                onClick={(e) => e.preventDefault()}
                 className={`block text-center text-sm font-semibold py-3.5 rounded-full transition-all duration-300 ${
                   plan.popular
-                    ? "bg-[#159AA9] hover:bg-[#159AA9]/80 text-white hover:shadow-lg hover:shadow-[rgba(21,154,169,0.25)]"
+                    ? "bg-[#B88A5A] hover:bg-[#A07848] text-white hover:shadow-lg hover:shadow-[rgba(184,138,90,0.25)]"
                     : "bg-[#0B1220] hover:bg-[#2B2F36] text-white"
                 }`}
               >

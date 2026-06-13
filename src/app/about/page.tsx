@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import AboutHero from "@/components/AboutHero";
 import WhyWeExist from "@/components/WhyWeExist";
 import WenayaApproach from "@/components/WenayaApproach";
 import ExpertiseSection from "@/components/ExpertiseSection";
 import FutureVision from "@/components/FutureVision";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "About — Wenaya",
@@ -12,12 +14,15 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="flex flex-col">
-      <AboutHero />
-      <WhyWeExist />
-      <WenayaApproach />
-      <ExpertiseSection />
-      <FutureVision />
-    </div>
+    <ErrorBoundary>
+      <div className="flex flex-col">
+        <AboutHero />
+        <WhyWeExist />
+        <WenayaApproach />
+        <ExpertiseSection />
+        <FutureVision />
+        <Footer />
+      </div>
+    </ErrorBoundary>
   );
 }

@@ -2,10 +2,7 @@
 
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const collageImages = [
   { src: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&q=80&auto=format&fit=crop", alt: "Séance de kinésithérapie" },
@@ -14,7 +11,7 @@ const collageImages = [
   { src: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=500&q=80&auto=format&fit=crop", alt: "Suivi psychologique" },
 ];
 
-export default function ExpertiseSection() {
+export default function ExpertiseSection(): React.JSX.Element {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -22,19 +19,16 @@ export default function ExpertiseSection() {
     if (!el) return;
 
     const ctx = gsap.context(() => {
-      gsap.fromTo("#es-badge", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" } });
-      gsap.fromTo("#es-title", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 83%", toggleActions: "play none none none" } });
-      gsap.fromTo("#es-text", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 80%", toggleActions: "play none none none" } });
-      gsap.fromTo("#es-cta", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 78%", toggleActions: "play none none none" } });
       const imgs = el.querySelectorAll(".es-img");
-      gsap.fromTo(imgs, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.6, stagger: 0.08, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 76%", toggleActions: "play none none none" } });
+      gsap.fromTo("#es-title, #es-text, #es-cta", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.06, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" } });
+      gsap.fromTo(imgs, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, stagger: 0.05, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 82%", toggleActions: "play none none none" } });
     }, el);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-[#F2EFE9] py-28 sm:py-36 px-6 relative overflow-hidden">
+    <section ref={sectionRef} className="bg-[#F2EFE9] py-20 sm:py-24 px-6 relative overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 xl:gap-24 items-center">
           <div className="max-w-xl">
@@ -45,7 +39,7 @@ export default function ExpertiseSection() {
               </span>
             </div>
 
-            <h2 id="es-title" className="text-[clamp(2rem,4vw,3.5rem)] font-heading font-bold text-[#0B1220] leading-[1.08] tracking-tight mt-5">
+            <h2 id="es-title" className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220] mt-5">
               Une équipe <span className="text-[#B88A5A]">pluridisciplinaire</span>
             </h2>
 
@@ -59,7 +53,7 @@ export default function ExpertiseSection() {
             </div>
 
             <div id="es-cta" className="mt-10">
-              <a href="#" className="group inline-flex items-center gap-3 bg-[#0B1220] text-white text-sm font-semibold h-[50px] px-8 rounded-full transition-all duration-300 hover:bg-[#B88A5A] hover:shadow-lg hover:shadow-[rgba(184,138,90,0.2)]">
+              <a href="#" onClick={(e) => e.preventDefault()} className="group inline-flex items-center gap-3 bg-[#0B1220] text-white text-sm font-semibold h-[50px] px-8 rounded-full transition-all duration-300 hover:bg-[#B88A5A] hover:shadow-lg hover:shadow-[rgba(184,138,90,0.2)]">
                 Rencontrer nos spécialistes
                 <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />

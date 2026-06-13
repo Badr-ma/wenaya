@@ -1,13 +1,13 @@
 "use client";
 
 import { createContext, useContext, useRef } from "react";
-import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue, type MotionValue } from "framer-motion";
 
 /* ─── Context ─── */
 
 const ScrollProgressCtx = createContext<MotionValue<number> | null>(null);
 
-export function useSectionProgress() {
+export function useSectionProgress(): MotionValue<number> | null {
   return useContext(ScrollProgressCtx);
 }
 
@@ -38,9 +38,10 @@ export function ParallaxLayer({
   children: React.ReactNode;
   yOffset?: [number, number];
   className?: string;
-}) {
+}): React.JSX.Element {
   const progress = useSectionProgress();
-  const y = progress ? useTransform(progress, [0, 1], yOffset) : 0;
+  const fallbackY = useMotionValue(0);
+  const y = useTransform(progress ?? fallbackY, [0, 1], yOffset);
 
   return (
     <motion.div style={{ y, willChange: "transform" }} className={className}>
@@ -69,7 +70,7 @@ export default function ScrollSection({
   xRange,
   rotateRange,
   opacityRange = [1, 1, 0],
-}: ScrollSectionProps) {
+}: ScrollSectionProps): React.JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -80,8 +81,10 @@ export default function ScrollSection({
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], scaleRange);
   const y = useTransform(scrollYProgress, [0, 0.5, 1], yRange);
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], opacityRange);
-  const x = xRange ? useTransform(scrollYProgress, [0, 0.5, 1], xRange) : 0;
-  const rotate = rotateRange ? useTransform(scrollYProgress, [0, 0.5, 1], rotateRange) : 0;
+  const xVal = useTransform(scrollYProgress, [0, 0.5, 1], xRange ?? [0, 0, 0]);
+  const rotateVal = useTransform(scrollYProgress, [0, 0.5, 1], rotateRange ?? [0, 0, 0]);
+  const x = xRange ? xVal : 0;
+  const rotate = rotateRange ? rotateVal : 0;
 
   return (
     <motion.div
