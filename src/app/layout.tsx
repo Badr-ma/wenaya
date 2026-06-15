@@ -1,19 +1,21 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display, JetBrains_Mono } from "next/font/google";
+import { DM_Sans, Cormorant_Garamond, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import GsapInit from "@/components/GsapInit";
 import LenisProvider from "@/components/LenisProvider";
 
-const inter = Inter({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-dm-sans",
   display: "swap",
 });
 
-const playfair = Playfair_Display({
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  variable: "--font-serif",
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-cormorant",
   display: "swap",
 });
 
@@ -24,9 +26,71 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Wenaya — Prévenir. Performer. Durer.",
+  metadataBase: new URL("https://www.wenaya.com"),
+  title: {
+    default: "Wenaya — Plateforme de Santé Intégrée | Casablanca, Maroc",
+    template: "%s | Wenaya",
+  },
   description:
-    "Wenaya crée les nouveaux standards de la prévention, de la performance et de la longévité.",
+    "Wenaya est la première plateforme de santé intégrée au Maroc. Kinésithérapie, psychologie clinique, nutrition, bien-être corporate et Yolo AI — depuis Casablanca.",
+  keywords: [
+    "plateforme santé intégrée Maroc",
+    "kinésithérapie Casablanca",
+    "psychologie clinique Maroc",
+    "nutrition préventive Casablanca",
+    "bien-être entreprise Maroc",
+    "wellness corporate Maroc",
+    "Yolo AI santé",
+    "santé mentale Casablanca",
+    "prévention santé Maroc",
+    "wellness hôtellerie Maroc",
+    "clinique multidisciplinaire Casablanca",
+    "integrated health Morocco",
+  ],
+  authors: [{ name: "Wenaya", url: "https://www.wenaya.com" }],
+  creator: "Wenaya",
+  publisher: "Wenaya",
+  openGraph: {
+    type: "website",
+    locale: "fr_MA",
+    url: "https://www.wenaya.com",
+    siteName: "Wenaya",
+    title: "Wenaya — Plateforme de Santé Intégrée | Casablanca, Maroc",
+    description:
+      "Morocco's first integrated health and wellbeing platform. Physiotherapy, clinical psychology, nutrition, corporate wellness, and Yolo AI — from Casablanca.",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Wenaya — Plateforme de Santé Intégrée au Maroc",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Wenaya — Plateforme de Santé Intégrée | Casablanca, Maroc",
+    description:
+      "Morocco's first integrated health and wellbeing platform. Physiotherapy, psychology, nutrition, corporate wellness, and Yolo AI — from Casablanca.",
+    images: ["/og-image.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
+    },
+  },
+  alternates: {
+    canonical: "https://www.wenaya.com",
+    languages: {
+      "fr-MA": "https://www.wenaya.com",
+    },
+  },
 };
 
 export default function RootLayout({
@@ -35,16 +99,72 @@ export default function RootLayout({
   children: React.ReactNode;
 }>): React.JSX.Element {
   return (
-    <html lang="fr" className={`${inter.variable} ${playfair.variable} ${jetbrains.variable} ${inter.className}`}>
+    <html lang="fr" className={`${dmSans.variable} ${cormorant.variable} ${jetbrains.variable}`}>
       <head>
         <meta
           httpEquiv="Content-Security-Policy"
-          content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://api.fontshare.com; font-src 'self' https://api.fontshare.com https://cdn.fontshare.com; img-src 'self' https://images.unsplash.com data: blob:; media-src 'self'; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'"
+          content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://images.unsplash.com data: blob:; media-src 'self'; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'"
         />
-        <link
-          href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap"
-          rel="stylesheet"
-          crossOrigin="anonymous"
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  "@id": "https://www.wenaya.com/#organization",
+                  "name": "Wenaya",
+                  "url": "https://www.wenaya.com",
+                  "description": "Morocco's first integrated health and wellbeing platform combining physiotherapy, clinical psychology, nutrition, prevention, corporate wellness, and hospitality wellness — powered by Yolo AI.",
+                  "foundingLocation": { "@type": "Place", "name": "Casablanca, Maroc" },
+                  "areaServed": ["Maroc", "MENA"],
+                  "availableLanguage": ["French", "Arabic", "English"],
+                },
+                {
+                  "@type": ["MedicalBusiness", "LocalBusiness"],
+                  "@id": "https://www.wenaya.com/#clinic",
+                  "name": "Wenaya Clinic",
+                  "parentOrganization": { "@id": "https://www.wenaya.com/#organization" },
+                  "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "88 Rue De Jabal Azourki",
+                    "addressLocality": "Casablanca",
+                    "addressCountry": "MA",
+                  },
+                  "openingHoursSpecification": [
+                    {
+                      "@type": "OpeningHoursSpecification",
+                      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+                      "opens": "08:00",
+                      "closes": "20:00",
+                    },
+                  ],
+                  "aggregateRating": {
+                    "@type": "AggregateRating",
+                    "ratingValue": "4.7",
+                    "bestRating": "5",
+                    "ratingCount": "200",
+                  },
+                  "availableService": [
+                    { "@type": "MedicalTherapy", "name": "Kinésithérapie & Rééducation" },
+                    { "@type": "MedicalTherapy", "name": "Psychologie Clinique & Santé Mentale" },
+                    { "@type": "MedicalTherapy", "name": "Nutrition & Soins Préventifs" },
+                    { "@type": "MedicalTherapy", "name": "Bien-être Corporate" },
+                    { "@type": "MedicalTherapy", "name": "Programmes Wellness Hôtellerie" },
+                  ],
+                },
+                {
+                  "@type": "WebSite",
+                  "@id": "https://www.wenaya.com/#website",
+                  "url": "https://www.wenaya.com",
+                  "name": "Wenaya",
+                  "publisher": { "@id": "https://www.wenaya.com/#organization" },
+                  "inLanguage": ["fr-MA", "ar-MA", "en"],
+                },
+              ],
+            }),
+          }}
         />
       </head>
       <body>

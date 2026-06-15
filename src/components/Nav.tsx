@@ -19,9 +19,9 @@ const solutions = [
     cta: "Découvrir",
     href: "#",
     icon: (
-      <svg viewBox="0 0 48 48" className="w-9 h-9" fill="none">
-        <circle cx="24" cy="16" r="7" stroke="currentColor" strokeWidth="1.2" />
-        <path d="M12 40c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+      <svg viewBox="0 0 48 48" className="w-5 h-5" fill="none">
+        <circle cx="24" cy="16" r="7" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M12 40c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
       </svg>
     ),
   },
@@ -31,10 +31,10 @@ const solutions = [
     cta: "Découvrir",
     href: "#",
     icon: (
-      <svg viewBox="0 0 48 48" className="w-9 h-9" fill="none">
-        <rect x="10" y="18" width="28" height="24" rx="2" stroke="currentColor" strokeWidth="1.2" />
-        <path d="M18 18V12a2 2 0 012-2h8a2 2 0 012 2v6" stroke="currentColor" strokeWidth="1.2" />
-        <path d="M22 28v4M26 28v4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+      <svg viewBox="0 0 48 48" className="w-5 h-5" fill="none">
+        <rect x="10" y="18" width="28" height="24" rx="2" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M18 18V12a2 2 0 012-2h8a2 2 0 012 2v6" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M22 28v4M26 28v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
       </svg>
     ),
   },
@@ -44,11 +44,10 @@ const solutions = [
     cta: "Découvrir",
     href: "#",
     icon: (
-      <svg viewBox="0 0 48 48" className="w-9 h-9" fill="none">
-        <path d="M12 38V14l12-8 12 8v24" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-        <rect x="18" y="24" width="12" height="14" rx="1" stroke="currentColor" strokeWidth="1.2" />
-        <path d="M22 30h4M22 34h4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-        <path d="M8 38h32" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+      <svg viewBox="0 0 48 48" className="w-5 h-5" fill="none">
+        <path d="M12 38V14l12-8 12 8v24" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <rect x="18" y="24" width="12" height="14" rx="1" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M8 38h32" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
       </svg>
     ),
   },
@@ -66,7 +65,7 @@ export default function Nav(): React.JSX.Element {
   const mounted = useSyncExternalStore(() => () => {}, () => true, () => false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 30);
+    const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -83,13 +82,12 @@ export default function Nav(): React.JSX.Element {
   }, []);
 
   useEffect(() => {
-    if (mobileOpen) { document.body.style.overflow = "hidden"; }
-    else { document.body.style.overflow = ""; }
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
   const show = () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); setDropdownOpen(true); };
-  const hide = () => { timeoutRef.current = setTimeout(() => setDropdownOpen(false), 120); };
+  const hide = () => { timeoutRef.current = setTimeout(() => setDropdownOpen(false), 140); };
   const closeMobile = () => { setMobileOpen(false); setMobileSolutionsOpen(false); };
 
   const isActive = (href: string): boolean => {
@@ -98,27 +96,32 @@ export default function Nav(): React.JSX.Element {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-[100] flex justify-center px-4 sm:px-6 pt-4">
+    <header className="fixed top-0 left-0 right-0 z-[100] flex justify-center px-4 sm:px-8 pt-4">
+      {/* ── Main bar ── */}
       <div
-        className={`w-full max-w-7xl flex items-center justify-between h-14 sm:h-16 px-4 sm:px-6 rounded-2xl transition-all duration-500 ${
+        className={`w-full flex items-center justify-between h-[60px] sm:h-[64px] px-5 sm:px-8 rounded-2xl transition-all duration-500 ${
           scrolled || dropdownOpen || mobileOpen
-            ? "bg-[#0B1220]/85 backdrop-blur-[24px] border border-white/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.3)]"
-            : "bg-[#0B1220]/10 backdrop-blur-[16px] border border-white/[0.06]"
+            ? "bg-[#0B1220]/92 backdrop-blur-[32px] border border-white/[0.08] shadow-[0_2px_40px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.05)]"
+            : "bg-[#0B1220]/40 backdrop-blur-[20px] border border-white/[0.07]"
         }`}
       >
+        {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
-          <div className="relative">
-            <svg viewBox="0 0 36 36" className="w-[22px] h-[22px] sm:w-[26px] sm:h-[26px]" fill="none">
-              <circle cx="18" cy="18" r="15" stroke="#B88A5A" strokeWidth="0.8" opacity="0.25" />
-              <circle cx="18" cy="18" r="10" stroke="#B88A5A" strokeWidth="1" opacity="0.45" />
-              <circle cx="18" cy="18" r="4" fill="#B88A5A" />
-              <circle cx="24" cy="12" r="1.5" fill="#B88A5A" opacity="0.2" className="transition-all duration-500 group-hover:opacity-60 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          <div className="relative flex items-center justify-center w-6 h-6">
+            <svg viewBox="0 0 32 32" className="w-6 h-6 absolute inset-0" fill="none">
+              <circle cx="16" cy="16" r="13.5" stroke="#B88A5A" strokeWidth="0.75" opacity="0.22" />
+              <circle cx="16" cy="16" r="9" stroke="#B88A5A" strokeWidth="1" opacity="0.4" />
+              <circle cx="16" cy="16" r="3.5" fill="#B88A5A" />
+              <circle
+                cx="22" cy="10" r="1.5" fill="#B88A5A" opacity="0.25"
+                className="transition-all duration-500 group-hover:opacity-55"
+              />
             </svg>
           </div>
           <span
-            className="text-xl sm:text-[23px] font-bold font-heading tracking-[-0.03em]"
+            className="text-[21px] sm:text-[22px] font-bold font-heading tracking-[-0.035em]"
             style={{
-              background: "linear-gradient(135deg, #B88A5A 0%, #159AA9 50%, #ffffff 80%)",
+              background: "linear-gradient(130deg, #C99B68 0%, #159AA9 52%, #ffffff 88%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
             }}
@@ -127,8 +130,9 @@ export default function Nav(): React.JSX.Element {
           </span>
         </Link>
 
-        <nav className="hidden lg:block">
-          <ul className="flex items-center gap-0.5">
+        {/* Desktop nav */}
+        <nav className="hidden lg:block" aria-label="Navigation principale">
+          <ul className="flex items-center gap-0">
             {navLinks.map((link) =>
               link.hasDropdown ? (
                 <li key={link.label} className="relative">
@@ -139,32 +143,44 @@ export default function Nav(): React.JSX.Element {
                     onClick={() => setDropdownOpen(!dropdownOpen)}
                     aria-haspopup="true"
                     aria-expanded={dropdownOpen}
-                    className={`relative flex items-center gap-1.5 px-3.5 py-2 text-sm font-medium rounded-xl transition-all duration-200 ${
+                    className={`relative flex items-center gap-1 px-4 py-2 text-[13.5px] rounded-xl transition-all duration-200 outline-none ${
                       isActive(link.href)
-                        ? "text-white bg-white/[0.06]"
-                        : "text-white/60 hover:text-white hover:bg-white/[0.04]"
+                        ? "text-white font-semibold"
+                        : "text-white/52 hover:text-white font-medium"
                     }`}
                   >
                     {link.label}
                     <svg
-                      className={`w-3 h-3 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`}
-                      fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+                      className={`w-3 h-3 mt-px opacity-60 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`}
+                      fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                     </svg>
+                    {isActive(link.href) && (
+                      <span className="absolute bottom-0.5 left-4 right-4 h-px rounded-full bg-[#B88A5A]/60" />
+                    )}
                   </button>
                 </li>
               ) : (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className={`relative px-3.5 py-2 text-sm font-medium rounded-xl transition-all duration-200 ${
+                    className={`relative px-4 py-2 text-[13.5px] rounded-xl transition-all duration-200 flex items-center ${
                       isActive(link.href)
-                        ? "text-white bg-white/[0.06]"
-                        : "text-white/60 hover:text-white hover:bg-white/[0.04]"
+                        ? "text-white font-semibold"
+                        : "text-white/52 hover:text-white font-medium"
                     }`}
                   >
                     {link.label}
+                    <span
+                      className={`absolute bottom-0.5 left-4 right-4 h-px rounded-full bg-[#B88A5A]/60 transition-all duration-300 ${
+                        isActive(link.href) ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
+                      }`}
+                      style={{ transformOrigin: "left" }}
+                    />
+                    <span
+                      className={`absolute bottom-0.5 left-4 right-4 h-px rounded-full bg-white/20 origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100`}
+                    />
                   </Link>
                 </li>
               )
@@ -172,55 +188,86 @@ export default function Nav(): React.JSX.Element {
           </ul>
         </nav>
 
+        {/* Right: separator + actions */}
         <div className="flex items-center gap-3">
+          {/* Thin separator */}
+          <div className="hidden sm:block w-px h-5 bg-white/[0.1] mr-0.5" />
+
           <Link
             href="#"
             onClick={(e) => e.preventDefault()}
-            className="relative hidden sm:inline-flex items-center justify-center h-9 px-5 bg-gradient-to-r from-[#B88A5A] to-[#A07848] text-white text-xs font-semibold rounded-full transition-all duration-300 hover:shadow-[0_4px_20px_rgba(184,138,90,0.35)] hover:-translate-y-0.5 active:translate-y-0"
+            className="hidden sm:inline-flex items-center justify-center h-[34px] px-5 rounded-xl bg-white/[0.07] border border-white/[0.09] text-white/65 text-[13px] font-medium transition-all duration-200 hover:bg-white/[0.11] hover:text-white hover:border-white/[0.14]"
           >
-            <span className="relative z-10">Réserver</span>
+            Se connecter
           </Link>
 
+          <Link
+            href="#"
+            onClick={(e) => e.preventDefault()}
+            className="hidden sm:inline-flex items-center justify-center h-[34px] px-5 rounded-xl text-[13px] font-semibold text-white transition-all duration-300 hover:-translate-y-px active:translate-y-0"
+            style={{
+              background: "linear-gradient(135deg, #B88A5A 0%, #9A7242 100%)",
+              boxShadow: "0 1px 0 rgba(255,255,255,0.15) inset, 0 4px 16px rgba(184,138,90,0.28)",
+            }}
+          >
+            Réserver
+          </Link>
+
+          {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="lg:hidden relative flex flex-col items-center justify-center w-9 h-9 rounded-xl hover:bg-white/[0.06] transition-colors"
             aria-label="Menu"
           >
-            <span className={`block w-[18px] h-[1.5px] bg-white/70 rounded-full transition-all duration-300 origin-center ${mobileOpen ? "rotate-45 translate-y-[3.25px]" : ""}`} />
-            <span className={`block w-[18px] h-[1.5px] bg-white/70 rounded-full mt-[5px] transition-all duration-300 ${mobileOpen ? "opacity-0 scale-0" : ""}`} />
-            <span className={`block w-[18px] h-[1.5px] bg-white/70 rounded-full mt-[5px] transition-all duration-300 origin-center ${mobileOpen ? "-rotate-45 -translate-y-[3.25px]" : ""}`} />
+            <span className={`block w-[17px] h-[1.5px] bg-white/75 rounded-full transition-all duration-300 origin-center ${mobileOpen ? "rotate-45 translate-y-[3px]" : ""}`} />
+            <span className={`block w-[17px] h-[1.5px] bg-white/75 rounded-full mt-[5px] transition-all duration-300 ${mobileOpen ? "opacity-0 scale-x-0" : ""}`} />
+            <span className={`block w-[17px] h-[1.5px] bg-white/75 rounded-full mt-[5px] transition-all duration-300 origin-center ${mobileOpen ? "-rotate-45 -translate-y-[3px]" : ""}`} />
           </button>
         </div>
       </div>
 
+      {/* ── Solutions dropdown ── */}
       {mounted && (
         <div
           ref={dropdownRef}
           onMouseEnter={show}
           onMouseLeave={hide}
-          className={`hidden lg:block absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[780px] transition-all duration-200 ${
-            dropdownOpen ? "opacity-100 scale-100" : "opacity-0 scale-[0.96] pointer-events-none"
+          className={`hidden lg:block absolute top-full left-1/2 -translate-x-1/2 mt-2.5 w-[820px] transition-all duration-[180ms] ${
+            dropdownOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-1 pointer-events-none"
           }`}
-          style={{ transformOrigin: "top center" }}
         >
-          <div className="relative bg-[#0B1220]/95 backdrop-blur-[40px] border border-white/[0.06] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.4)] overflow-hidden">
-            <div className="absolute -top-px left-1/2 -translate-x-1/2 w-4 h-2 bg-[#0B1220] border-t border-l border-r border-white/[0.06] rounded-t-sm rotate-45" style={{ marginTop: "-5px" }} />
+          <div
+            className="relative rounded-2xl overflow-hidden border border-white/[0.07]"
+            style={{
+              background: "rgba(11,18,32,0.96)",
+              backdropFilter: "blur(40px)",
+              boxShadow: "0 24px 64px rgba(0,0,0,0.45), 0 1px 0 rgba(255,255,255,0.05) inset",
+            }}
+          >
+            {/* Top accent line */}
+            <div className="h-px bg-gradient-to-r from-transparent via-[#B88A5A]/30 to-transparent" />
+
             <div className="p-5">
-              <div className="grid grid-cols-3 gap-3">
+              <p className="text-white/25 text-[11px] uppercase tracking-[0.12em] font-medium mb-4 px-1">
+                Nos solutions
+              </p>
+              <div className="grid grid-cols-3 gap-2">
                 {solutions.map((s, i) => (
                   <Link
                     key={i}
                     href={s.href}
-                    className="group relative rounded-xl p-5 transition-all duration-300 hover:bg-white/[0.03]"
+                    className="group relative rounded-xl p-4 transition-all duration-250 hover:bg-white/[0.04] border border-transparent hover:border-white/[0.05]"
                   >
-                    <div className="w-11 h-11 rounded-xl bg-white/[0.03] border border-white/[0.04] flex items-center justify-center mb-4 text-[#B88A5A]/70 group-hover:text-[#B88A5A] group-hover:border-[#B88A5A]/20 group-hover:bg-[#B88A5A]/5 transition-all duration-300">
-                      {s.icon}
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-9 h-9 rounded-lg bg-white/[0.04] border border-white/[0.05] flex items-center justify-center text-[#B88A5A]/55 group-hover:text-[#B88A5A] group-hover:bg-[#B88A5A]/8 group-hover:border-[#B88A5A]/15 transition-all duration-250">
+                        {s.icon}
+                      </div>
+                      <h3 className="text-white font-heading font-semibold text-[13.5px]">{s.title}</h3>
                     </div>
-                    <h3 className="text-white font-heading font-semibold text-sm mb-1.5">{s.title}</h3>
-                    <p className="text-white/35 text-xs leading-relaxed mb-4">{s.desc}</p>
-                    <span className="inline-flex items-center gap-1.5 text-[#B88A5A] text-xs font-medium group-hover:gap-3 transition-all duration-300">
+                    <p className="text-white/32 text-[12px] leading-relaxed mb-3.5">{s.desc}</p>
+                    <span className="inline-flex items-center gap-1.5 text-[#B88A5A] text-[12px] font-medium group-hover:gap-2.5 transition-all duration-200">
                       {s.cta}
-                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                       </svg>
                     </span>
@@ -228,10 +275,19 @@ export default function Nav(): React.JSX.Element {
                 ))}
               </div>
             </div>
-            <div className="h-px bg-gradient-to-r from-transparent via-white/[0.04] to-transparent" />
-            <div className="px-5 py-3 flex items-center justify-between bg-white/[0.01]">
-              <span className="text-white/25 text-xs">Solutions adaptées à chaque besoin</span>
-              <Link href="#" onClick={(e) => e.preventDefault()} className="text-white/50 hover:text-white text-xs font-medium transition-colors flex items-center gap-1.5">
+
+            {/* Footer bar */}
+            <div className="h-px bg-white/[0.04]" />
+            <div className="px-5 py-3 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#159AA9]/70" />
+                <span className="text-white/28 text-[11.5px]">Solutions adaptées à chaque besoin</span>
+              </div>
+              <Link
+                href="#"
+                onClick={(e) => e.preventDefault()}
+                className="text-white/42 hover:text-white text-[12px] font-medium transition-colors flex items-center gap-1.5"
+              >
                 Voir toutes nos solutions
                 <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -242,60 +298,74 @@ export default function Nav(): React.JSX.Element {
         </div>
       )}
 
+      {/* ── Mobile menu ── */}
       <div
         role="dialog"
         aria-modal="true"
-        className={`fixed inset-0 top-0 left-0 right-0 bottom-0 bg-[#0B1220] z-40 transition-all duration-500 ${
+        aria-label="Menu navigation"
+        className={`fixed inset-0 bg-[#080E1C] z-40 transition-all duration-400 lg:hidden ${
           mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       >
-        <div className="flex flex-col h-full px-6 sm:px-10 pt-28 pb-10 overflow-y-auto">
-          <nav className="flex-1">
-            <ul className="space-y-1">
+        {/* Subtle grid texture */}
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: "linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px)",
+            backgroundSize: "40px 40px",
+          }}
+        />
+
+        <div className="relative flex flex-col h-full px-6 sm:px-10 pt-[88px] pb-10 overflow-y-auto">
+          <nav className="flex-1" aria-label="Navigation mobile">
+            <ul className="space-y-0.5">
+              {/* Home */}
               <li>
                 <Link
                   href="/"
                   onClick={closeMobile}
-                  className={`block text-[clamp(1.75rem,4vw,2.5rem)] font-heading font-bold py-2.5 transition-all duration-200 ${
-                    isActive("/") ? "text-white" : "text-white/50 hover:text-white"
+                  className={`flex items-center gap-3 py-3.5 text-[clamp(1.6rem,4vw,2.2rem)] font-heading font-bold transition-all duration-200 ${
+                    isActive("/") ? "text-white" : "text-white/38 hover:text-white/75"
                   }`}
                 >
+                  {isActive("/") && <span className="w-1.5 h-1.5 rounded-full bg-[#B88A5A] shrink-0" />}
                   Accueil
                 </Link>
               </li>
 
+              {/* Solutions */}
               <li>
                 <button
                   onClick={() => setMobileSolutionsOpen(!mobileSolutionsOpen)}
-                  className="flex items-center justify-between w-full text-[clamp(1.75rem,4vw,2.5rem)] font-heading font-bold text-white/50 hover:text-white py-2.5 transition-colors"
+                  className="flex items-center justify-between w-full py-3.5 text-[clamp(1.6rem,4vw,2.2rem)] font-heading font-bold text-white/38 hover:text-white/75 transition-colors"
                 >
                   Solutions
                   <svg
-                    className={`w-4 h-4 text-white/30 transition-transform duration-300 ${mobileSolutionsOpen ? "rotate-180" : ""}`}
+                    className={`w-5 h-5 text-white/20 transition-transform duration-300 ${mobileSolutionsOpen ? "rotate-180" : ""}`}
                     fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
                 <div
-                  className={`overflow-hidden transition-all duration-400 ${
-                    mobileSolutionsOpen ? "max-h-[420px] opacity-100" : "max-h-0 opacity-0"
+                  className={`overflow-hidden transition-all duration-350 ${
+                    mobileSolutionsOpen ? "max-h-[460px] opacity-100" : "max-h-0 opacity-0"
                   }`}
                 >
-                  <div className="space-y-2 pb-4 pt-3 pl-2">
+                  <div className="space-y-1.5 pb-4 pt-2 pl-1">
                     {solutions.map((s, i) => (
                       <Link
                         key={i}
                         href={s.href}
                         onClick={closeMobile}
-                        className="flex items-start gap-4 p-4 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] transition-colors border border-transparent hover:border-white/[0.04]"
+                        className="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.055] transition-colors border border-white/[0.03] hover:border-white/[0.06]"
                       >
-                        <div className="w-10 h-10 rounded-lg bg-white/[0.03] border border-white/[0.04] flex items-center justify-center shrink-0 text-[#B88A5A]/70">
+                        <div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/[0.05] flex items-center justify-center shrink-0 text-[#B88A5A]/60">
                           {s.icon}
                         </div>
                         <div className="min-w-0">
                           <span className="text-white font-heading font-semibold text-sm">{s.title}</span>
-                          <p className="text-white/35 text-xs mt-0.5 leading-relaxed">{s.desc}</p>
+                          <p className="text-white/30 text-xs mt-0.5 leading-relaxed">{s.desc}</p>
                         </div>
                       </Link>
                     ))}
@@ -303,6 +373,7 @@ export default function Nav(): React.JSX.Element {
                 </div>
               </li>
 
+              {/* Remaining links */}
               {[
                 { label: "Yolo AI", href: "/yolo" },
                 { label: "À Propos", href: "/about" },
@@ -312,10 +383,11 @@ export default function Nav(): React.JSX.Element {
                   <Link
                     href={href}
                     onClick={closeMobile}
-                    className={`block text-[clamp(1.75rem,4vw,2.5rem)] font-heading font-bold py-2.5 transition-all duration-200 ${
-                      isActive(href) ? "text-white" : "text-white/50 hover:text-white"
+                    className={`flex items-center gap-3 py-3.5 text-[clamp(1.6rem,4vw,2.2rem)] font-heading font-bold transition-all duration-200 ${
+                      isActive(href) ? "text-white" : "text-white/38 hover:text-white/75"
                     }`}
                   >
+                    {isActive(href) && <span className="w-1.5 h-1.5 rounded-full bg-[#B88A5A] shrink-0" />}
                     {label}
                   </Link>
                 </li>
@@ -323,15 +395,30 @@ export default function Nav(): React.JSX.Element {
             </ul>
           </nav>
 
-          <div className="pt-6 border-t border-white/[0.06] space-y-3">
-            <Link
-              href="#"
-              onClick={(e) => { e.preventDefault(); closeMobile(); }}
-              className="flex items-center justify-center h-[52px] px-8 bg-gradient-to-r from-[#B88A5A] to-[#A07848] text-white text-sm font-semibold rounded-full transition-all duration-300 w-full hover:shadow-[0_4px_20px_rgba(184,138,90,0.3)]"
-            >
-              Réserver
-            </Link>
-            <p className="text-center text-white/20 text-xs">Votre santé, notre engagement</p>
+          {/* Mobile bottom actions */}
+          <div className="pt-8 border-t border-white/[0.06] space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={closeMobile}
+                className="flex items-center justify-center h-12 rounded-xl border border-white/[0.09] bg-white/[0.04] text-white/65 text-sm font-medium transition-all hover:bg-white/[0.07]"
+              >
+                Se connecter
+              </button>
+              <Link
+                href="#"
+                onClick={(e) => { e.preventDefault(); closeMobile(); }}
+                className="flex items-center justify-center h-12 rounded-xl text-white text-sm font-semibold transition-all duration-300"
+                style={{
+                  background: "linear-gradient(135deg, #B88A5A 0%, #9A7242 100%)",
+                  boxShadow: "0 4px 20px rgba(184,138,90,0.3)",
+                }}
+              >
+                Réserver
+              </Link>
+            </div>
+            <p className="text-center text-white/18 text-[11.5px] tracking-wide">
+              Votre santé, notre engagement
+            </p>
           </div>
         </div>
       </div>

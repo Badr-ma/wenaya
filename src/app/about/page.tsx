@@ -8,8 +8,25 @@ import FutureVision from "@/components/FutureVision";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "About — Wenaya",
-  description: "Wenaya brings together physical health, mental wellbeing, nutrition, rehabilitation, and preventive care into one integrated experience designed around people, not symptoms.",
+  title: "À Propos — Wenaya, Première Plateforme de Santé Intégrée au Maroc",
+  description:
+    "Découvrez Wenaya : la première plateforme de santé intégrée au Maroc, fondée à Casablanca. Kinésithérapie, psychologie clinique, nutrition et bien-être corporate — coordonnés sous un seul écosystème.",
+  keywords: [
+    "Wenaya Casablanca",
+    "plateforme santé Maroc",
+    "clinique multidisciplinaire Casablanca",
+    "santé intégrée Maroc",
+    "équipe médicale Casablanca",
+    "prévention santé Maroc",
+  ],
+  alternates: { canonical: "https://www.wenaya.com/about" },
+  openGraph: {
+    title: "À Propos — Wenaya, Première Plateforme de Santé Intégrée au Maroc",
+    description:
+      "Wenaya is Morocco's first integrated health and wellbeing platform — combining physiotherapy, clinical psychology, nutrition, prevention, corporate wellness, and Yolo AI under one coordinated ecosystem.",
+    url: "https://www.wenaya.com/about",
+    type: "website",
+  },
 };
 
 export default function AboutPage() {

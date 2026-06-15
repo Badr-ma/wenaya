@@ -1,3 +1,20 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Wenaya — Santé Intégrée & Bien-être | Casablanca, Maroc",
+  description:
+    "Wenaya est la première plateforme de santé intégrée au Maroc. Kinésithérapie, psychologie clinique, nutrition, bien-être corporate et Yolo AI — depuis Casablanca. Notée 4,7/5 sur Google Maps.",
+  alternates: {
+    canonical: "https://www.wenaya.com",
+  },
+  openGraph: {
+    title: "Wenaya — Santé Intégrée & Bien-être | Casablanca, Maroc",
+    description:
+      "Morocco's first integrated health and wellbeing platform. Physiotherapy, clinical psychology, nutrition, corporate wellness, and Yolo AI — from Casablanca.",
+    url: "https://www.wenaya.com",
+  },
+};
+
 import Banner from "@/components/Banner";
 import HeroSection from "@/components/HeroSection";
 import HowItWorks from "@/components/HowItWorks";

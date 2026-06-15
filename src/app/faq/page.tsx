@@ -4,9 +4,17 @@ import FaqSection from "@/components/FaqSection";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "FAQ — Wenaya",
+  title: "FAQ — Questions Fréquentes sur Wenaya & Yolo AI",
   description:
-    "Tout savoir sur Wenaya Clinic : soins en kinésithérapie, ostéopathie, psychologie, nutrition, programmes bien-être en entreprise, rendez-vous, remboursement et téléconsultation.",
+    "Tout savoir sur Wenaya : kinésithérapie, psychologie, nutrition, bien-être corporate, Yolo AI et nos programmes hôtellerie wellness à Casablanca, Maroc.",
+  alternates: { canonical: "https://www.wenaya.com/faq" },
+  openGraph: {
+    title: "FAQ — Questions Fréquentes sur Wenaya & Yolo AI",
+    description:
+      "Answers to the most common questions about Wenaya's integrated health platform, Yolo AI, corporate wellness programs, and hospitality partnerships in Morocco.",
+    url: "https://www.wenaya.com/faq",
+    type: "website",
+  },
 };
 
 export default function FaqPage() {
