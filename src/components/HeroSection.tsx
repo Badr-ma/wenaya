@@ -19,7 +19,7 @@ function HealthCard(): React.JSX.Element {
     const trendEl = card.querySelector<SVGPathElement>(".hc-trend");
     const targets = [82, 68, 74];
 
-    gsap.timeline({ delay: 0.9 })
+    gsap.timeline({ delay: 1.0 })
       .to({}, {
         duration: 1.4,
         ease: "power2.out",
@@ -43,19 +43,21 @@ function HealthCard(): React.JSX.Element {
   }, []);
 
   return (
-    <div className="relative">
-      {/* Ambient glow */}
+    <div ref={cardRef} className="relative">
+      {/* Bronze glow behind card */}
       <div
-        className="absolute -inset-10 rounded-full pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(184,138,90,0.1) 0%, transparent 65%)" }}
+        className="absolute -inset-8 rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(184,138,90,0.12) 0%, transparent 65%)" }}
       />
 
       <div
         className="relative rounded-2xl p-6"
         style={{
-          background: "linear-gradient(145deg, rgba(11,18,38,0.97) 0%, rgba(6,10,22,0.99) 100%)",
-          border: "1px solid rgba(255,255,255,0.07)",
-          boxShadow: "0 40px 80px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.04) inset",
+          background: "linear-gradient(145deg, rgba(8,14,28,0.92) 0%, rgba(5,9,20,0.95) 100%)",
+          border: "1px solid rgba(255,255,255,0.09)",
+          boxShadow: "0 40px 80px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.05) inset",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
         }}
       >
         {/* Card header */}
@@ -142,7 +144,7 @@ function HealthCard(): React.JSX.Element {
           </svg>
         </div>
 
-        {/* Next appointment hint */}
+        {/* Next appointment */}
         <div className="mt-4 pt-3 border-t border-white/[0.04] flex items-center gap-2">
           <div className="w-1.5 h-1.5 rounded-full bg-[#159AA9]/70 shrink-0" />
           <span className="text-white/22 text-[10px]">Prochain RDV :</span>
@@ -191,51 +193,50 @@ export default function HeroSection(): React.JSX.Element {
     <section
       ref={sectionRef}
       className="relative min-h-screen flex items-center overflow-hidden"
-      style={{ background: "#080E1C" }}
     >
-      {/* Dot grid */}
+      {/* ── Video background ── */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ objectPosition: "center 30%" }}
+      >
+        <source src="/videos/forest.mp4" type="video/mp4" />
+      </video>
+
+      {/* ── Directional overlay: dark-left for text, lighter-right for video depth ── */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.055) 1px, transparent 1px)",
-          backgroundSize: "28px 28px",
+          background: "linear-gradient(108deg, rgba(6,10,22,0.94) 0%, rgba(6,10,22,0.88) 38%, rgba(6,10,22,0.65) 60%, rgba(6,10,22,0.50) 80%, rgba(6,10,22,0.58) 100%)",
         }}
       />
-      {/* Radial vignette to fade dots at edges */}
+      {/* Top dark fade (hides video at nav level) */}
       <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: "radial-gradient(ellipse 90% 80% at 50% 50%, transparent 20%, #080E1C 75%)",
-        }}
-      />
-      {/* Bronze ambient — right */}
-      <div
-        className="absolute right-0 top-1/2 -translate-y-1/2 w-[700px] h-[700px] pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(184,138,90,0.07) 0%, transparent 65%)" }}
-      />
-      {/* Teal ambient — bottom-left */}
-      <div
-        className="absolute -left-32 bottom-0 w-[500px] h-[500px] pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(21,154,169,0.05) 0%, transparent 65%)" }}
+        className="absolute top-0 left-0 right-0 h-40 pointer-events-none"
+        style={{ background: "linear-gradient(to bottom, rgba(6,10,22,0.7) 0%, transparent 100%)" }}
       />
 
-      {/* Content */}
+      {/* ── Content ── */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pt-28 pb-20">
         <div className="grid lg:grid-cols-[1fr_420px] xl:grid-cols-[1fr_460px] gap-12 xl:gap-20 items-center">
 
-          {/* ── Left column ── */}
+          {/* Left column */}
           <div>
             {/* Eyebrow */}
             <div className="hero-eyebrow inline-flex items-center gap-2.5 mb-8">
               <div className="w-1.5 h-1.5 rounded-full bg-[#B88A5A] shrink-0" />
-              <span className="text-[#B88A5A]/70 text-[11px] font-semibold tracking-[0.24em] uppercase">
+              <span className="text-[#B88A5A]/75 text-[11px] font-semibold tracking-[0.24em] uppercase">
                 Casablanca · Maroc
               </span>
-              <div className="w-8 h-px bg-[#B88A5A]/25" />
-              <span className="text-white/25 text-[11px] tracking-[0.14em] uppercase">Depuis 2019</span>
+              <div className="w-8 h-px bg-[#B88A5A]/30" />
+              <span className="text-white/28 text-[11px] tracking-[0.14em] uppercase">Depuis 2019</span>
             </div>
 
-            {/* Headline — Cormorant Garamond for editorial weight */}
+            {/* Headline */}
             <h1
               className="text-white leading-[1.04]"
               style={{
@@ -264,7 +265,7 @@ export default function HeroSection(): React.JSX.Element {
             {/* Sub */}
             <p
               className="hero-sub mt-7 max-w-[480px] leading-[1.78]"
-              style={{ color: "rgba(255,255,255,0.45)", fontSize: "clamp(0.93rem, 1.4vw, 1.05rem)" }}
+              style={{ color: "rgba(255,255,255,0.5)", fontSize: "clamp(0.93rem, 1.4vw, 1.05rem)" }}
             >
               Wenaya réunit kinésithérapie, psychologie clinique, nutrition et Yolo AI sous un seul écosystème — pour une santé préventive, personnalisée et durable, à Casablanca.
             </p>
@@ -277,14 +278,15 @@ export default function HeroSection(): React.JSX.Element {
                 className="inline-flex items-center justify-center h-11 px-7 rounded-xl text-white text-[13.5px] font-semibold transition-all duration-300 hover:-translate-y-px active:translate-y-0"
                 style={{
                   background: "linear-gradient(135deg, #C99B68 0%, #9A7242 100%)",
-                  boxShadow: "0 1px 0 rgba(255,255,255,0.16) inset, 0 6px 24px rgba(184,138,90,0.32)",
+                  boxShadow: "0 1px 0 rgba(255,255,255,0.16) inset, 0 6px 24px rgba(184,138,90,0.35)",
                 }}
               >
                 Réserver une évaluation
               </Link>
               <Link
                 href="/yolo"
-                className="inline-flex items-center gap-2 h-11 px-6 rounded-xl text-white/50 text-[13.5px] font-medium border border-white/[0.08] transition-all duration-300 hover:text-white hover:border-white/[0.16] hover:bg-white/[0.03]"
+                className="inline-flex items-center gap-2 h-11 px-6 rounded-xl text-white/55 text-[13.5px] font-medium border border-white/[0.12] transition-all duration-300 hover:text-white hover:border-white/[0.22] hover:bg-white/[0.04]"
+                style={{ backdropFilter: "blur(8px)" }}
               >
                 Découvrir Yolo AI
                 <svg className="w-3.5 h-3.5 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -294,27 +296,24 @@ export default function HeroSection(): React.JSX.Element {
             </div>
           </div>
 
-          {/* ── Right column: health card ── */}
+          {/* Right column: health card */}
           <div ref={cardRef} className="hidden lg:block">
             <HealthCard />
           </div>
         </div>
 
-        {/* ── Trust bar ── */}
+        {/* Trust bar */}
         <div
           ref={trustRef}
           className="mt-20 pt-8 grid grid-cols-2 sm:grid-cols-4 gap-x-8 gap-y-6"
-          style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
+          style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
         >
           {stats.map((s, i) => (
             <div key={i} className="flex flex-col gap-1.5">
-              <div
-                className="font-heading font-bold text-[22px] tracking-tight"
-                style={{ color: "rgba(255,255,255,0.88)" }}
-              >
+              <div className="font-heading font-bold text-[22px] tracking-tight text-white/90">
                 {s.value}
               </div>
-              <div className="text-[11.5px]" style={{ color: "rgba(255,255,255,0.3)" }}>
+              <div className="text-[11.5px] text-white/32">
                 {s.label}
               </div>
             </div>
@@ -322,9 +321,9 @@ export default function HeroSection(): React.JSX.Element {
         </div>
       </div>
 
-      {/* Fade to next section (body bg: #F2EFE9) */}
+      {/* Bottom fade to page background */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
+        className="absolute bottom-0 left-0 right-0 h-28 pointer-events-none"
         style={{ background: "linear-gradient(to bottom, transparent, #F2EFE9)" }}
       />
     </section>
