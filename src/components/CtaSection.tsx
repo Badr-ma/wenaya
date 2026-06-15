@@ -1,11 +1,14 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function CtaSection(): React.JSX.Element {
   const sectionRef = useRef<HTMLElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -13,14 +16,19 @@ export default function CtaSection(): React.JSX.Element {
 
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        contentRef.current,
-        { opacity: 0, y: 24 },
+        [".cta-quote", ".cta-divider", ".cta-headline", ".cta-sub", ".cta-actions", ".cta-info"],
+        { opacity: 0, y: 22 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.7,
+          duration: 0.65,
+          stagger: 0.1,
           ease: "power3.out",
-          scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" },
+          scrollTrigger: {
+            trigger: el,
+            start: "top 82%",
+            toggleActions: "play none none none",
+          },
         }
       );
     }, el);
@@ -29,73 +37,128 @@ export default function CtaSection(): React.JSX.Element {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-[#0B1220] py-16 sm:py-20 px-6 relative overflow-hidden">
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#159AA9]/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#159AA9]/5 rounded-full blur-3xl" />
+    <section
+      ref={sectionRef}
+      className="relative overflow-hidden py-24 sm:py-32 px-6"
+      style={{ background: "#0B1220" }}
+    >
+      {/* Atmospheric glows */}
+      <div
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] pointer-events-none"
+        style={{ background: "radial-gradient(ellipse at top, rgba(184,138,90,0.06) 0%, transparent 65%)" }}
+      />
+      <div
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] pointer-events-none"
+        style={{ background: "radial-gradient(ellipse at bottom, rgba(21,154,169,0.04) 0%, transparent 65%)" }}
+      />
 
-      <div ref={contentRef} className="relative z-10 max-w-4xl mx-auto text-center">
-          <span className="text-[#B88A5A] font-semibold text-sm tracking-widest uppercase">
-            Prévenir. Performer. Durer.
-          </span>
-          <h2 className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-white mt-4">
-            Commencez. Personnalisez. Durez.
-          </h2>
-          <p className="text-white/50 text-sm sm:text-base mt-4 max-w-xl mx-auto">
-            Réservez une première évaluation pour cadrer votre parcours.
-          </p>
+      {/* Subtle dot grid */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-20"
+        style={{
+          backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
+        }}
+      />
 
-        <div className="mt-10 grid sm:grid-cols-3 gap-6 text-left max-w-3xl mx-auto">
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-            <svg className="w-6 h-6 text-[#B88A5A] mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-            </svg>
-            <h3 className="text-white font-medium text-sm mb-1">Adresse</h3>
-            <p className="text-white/60 text-sm">
-              88 Rue De Jabal Azourki<br />Casablanca 20930<br />Maroc
-            </p>
-          </div>
+      <div className="relative z-10 max-w-3xl mx-auto text-center">
 
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-            <svg className="w-6 h-6 text-[#B88A5A] mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <h3 className="text-white font-medium text-sm mb-1">Horaires</h3>
-            <p className="text-white/60 text-sm">
-              Lundi au Samedi : 9h00 – 19h00<br />Fermé le dimanche
-            </p>
-          </div>
-
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-            <svg className="w-6 h-6 text-[#B88A5A] mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
-            </svg>
-            <h3 className="text-white font-medium text-sm mb-1">Contact</h3>
-            <p className="text-white/60 text-sm">
-              Tél : +212 6 66 12 40 35<br />Email : corporate@wenaya.com<br />Réservation en ligne
-            </p>
+        {/* Patient testimonial */}
+        <div className="cta-quote mb-10">
+          <svg
+            className="w-8 h-8 mx-auto mb-5"
+            viewBox="0 0 32 32" fill="none"
+            style={{ color: "rgba(184,138,90,0.4)" }}
+          >
+            <path d="M9.333 20c0-2.667 1.334-5.333 4-8L16 8l1.333 1.333C15.111 11.556 14 13.778 14 16v4H9.333zM20 20c0-2.667 1.333-5.333 4-8L26.667 8 28 9.333c-2.222 2.223-3.333 4.445-3.333 6.667V20H20z"
+              fill="currentColor"
+            />
+          </svg>
+          <blockquote
+            className="text-white/55 leading-relaxed mx-auto max-w-2xl"
+            style={{ fontSize: "clamp(1rem, 1.6vw, 1.2rem)", fontStyle: "italic" }}
+          >
+            « Après 3 mois avec Wenaya, j'ai retrouvé une énergie que je pensais avoir perdue définitivement. C'est la première fois que je comprends vraiment ce que mon corps a besoin. »
+          </blockquote>
+          <div className="mt-5 flex items-center justify-center gap-3">
+            <div className="w-6 h-px bg-[#B88A5A]/40" />
+            <span className="text-white/30 text-[11px] font-medium tracking-[0.15em] uppercase">
+              Sarah L., 34 ans · Casablanca
+            </span>
+            <div className="w-6 h-px bg-[#B88A5A]/40" />
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
-          <a
+        {/* Divider */}
+        <div className="cta-divider flex items-center gap-4 mb-10">
+          <div className="flex-1 h-px" style={{ background: "rgba(255,255,255,0.05)" }} />
+          <div className="w-1 h-1 rounded-full bg-[#B88A5A]/40" />
+          <div className="flex-1 h-px" style={{ background: "rgba(255,255,255,0.05)" }} />
+        </div>
+
+        {/* Headline */}
+        <h2
+          className="cta-headline text-white"
+          style={{
+            fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif",
+            fontSize: "clamp(2.8rem, 5vw, 4.5rem)",
+            fontWeight: 500,
+            lineHeight: 1.06,
+            letterSpacing: "-0.02em",
+          }}
+        >
+          La même transformation<br />
+          <span
+            style={{
+              background: "linear-gradient(135deg, #D4A870 0%, #B88A5A 50%, #E8C99A 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              fontStyle: "italic",
+            }}
+          >
+            vous attend.
+          </span>
+        </h2>
+
+        {/* Sub */}
+        <p
+          className="cta-sub mt-6 max-w-lg mx-auto leading-[1.75]"
+          style={{
+            color: "rgba(255,255,255,0.38)",
+            fontSize: "clamp(0.9rem, 1.3vw, 1.05rem)",
+          }}
+        >
+          Commencez par une évaluation complète de 90 minutes avec notre équipe pluridisciplinaire. Pas de jargon médical, pas de parcours standardisé — juste votre santé, traitée sérieusement.
+        </p>
+
+        {/* CTAs */}
+        <div className="cta-actions flex flex-col sm:flex-row items-center justify-center gap-3 mt-10">
+          <Link
             href="#"
             onClick={(e) => e.preventDefault()}
-            className="bg-[#B88A5A] hover:bg-[#A07848] text-white text-sm font-semibold px-8 py-3.5 rounded-full transition-all duration-300 inline-flex items-center gap-2 hover:shadow-lg hover:shadow-[rgba(184,138,90,0.25)]"
+            className="inline-flex items-center justify-center gap-2 h-12 px-8 rounded-xl text-white text-sm font-semibold transition-all duration-300 hover:-translate-y-px active:translate-y-0"
+            style={{
+              background: "linear-gradient(135deg, #C99B68 0%, #9A7242 100%)",
+              boxShadow: "0 1px 0 rgba(255,255,255,0.14) inset, 0 6px 28px rgba(184,138,90,0.35)",
+            }}
           >
             Réserver une évaluation
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
-          </a>
-          <a
-            href="#"
-            onClick={(e) => e.preventDefault()}
-            className="bg-[#0B1220] border border-white/20 text-white text-sm font-semibold px-8 py-3.5 rounded-full transition-all duration-300 hover:bg-white/10"
+          </Link>
+          <Link
+            href="/yolo"
+            className="inline-flex items-center gap-2 h-12 px-7 rounded-xl text-white/45 text-sm font-medium border border-white/[0.08] transition-all duration-300 hover:text-white hover:border-white/[0.16] hover:bg-white/[0.03]"
           >
-            Découvrir votre parcours
-          </a>
+            Parler à Yolo AI
+          </Link>
         </div>
+
+        {/* Contact info — minimal, one line */}
+        <p className="cta-info mt-10 text-[11px] tracking-[0.08em]" style={{ color: "rgba(255,255,255,0.18)" }}>
+          88 Rue De Jabal Azourki · Casablanca · Lun–Sam 9h00–19h00 · +212 6 66 12 40 35
+        </p>
       </div>
     </section>
   );
