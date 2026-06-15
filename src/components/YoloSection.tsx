@@ -127,7 +127,7 @@ export default function YoloSection(): React.JSX.Element {
   const setParticleRef = (i: number) => (el: HTMLDivElement | null) => { particleRefs.current[i] = el; };
 
   return (
-    <section ref={sectionRef} className="bg-[#0B1220] py-32 sm:py-44 px-6 relative overflow-hidden">
+    <section ref={sectionRef} className="bg-[#0B1220] py-20 sm:py-32 lg:py-44 px-6 relative overflow-hidden">
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -148,7 +148,7 @@ export default function YoloSection(): React.JSX.Element {
 
             <h2
               ref={titleRef}
-              className="text-6xl sm:text-7xl lg:text-8xl font-serif font-bold leading-[0.95] tracking-tight"
+              className="text-4xl sm:text-6xl lg:text-8xl font-serif font-bold leading-[0.95] tracking-tight"
               style={{
                 background: "linear-gradient(135deg, #ffffff 40%, rgba(21,154,169,0.6))",
                 WebkitBackgroundClip: "text",

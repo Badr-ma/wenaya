@@ -4,161 +4,9 @@ import Link from "next/link";
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 
-/* ── Health dashboard card ─────────────────────────────────── */
-function HealthCard(): React.JSX.Element {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const circumference = 2 * Math.PI * 34;
-
-  useEffect(() => {
-    const card = cardRef.current;
-    if (!card) return;
-
-    const arcEl = card.querySelector<SVGCircleElement>(".hc-arc");
-    const scoreEl = card.querySelector<HTMLElement>(".hc-score");
-    const bars = card.querySelectorAll<HTMLElement>(".hc-bar");
-    const trendEl = card.querySelector<SVGPathElement>(".hc-trend");
-    const targets = [82, 68, 74];
-
-    gsap.timeline({ delay: 1.0 })
-      .to({}, {
-        duration: 1.4,
-        ease: "power2.out",
-        onUpdate: function () {
-          const v = Math.round(73 * this.progress());
-          if (scoreEl) scoreEl.textContent = String(v);
-          if (arcEl) arcEl.style.strokeDashoffset = String(circumference - (circumference * v) / 100);
-        },
-      })
-      .to(bars, {
-        width: (i: number) => `${targets[i]}%`,
-        duration: 0.9,
-        stagger: 0.14,
-        ease: "power2.out",
-      }, "-=0.9")
-      .to(trendEl, {
-        strokeDashoffset: 0,
-        duration: 1.4,
-        ease: "power2.inOut",
-      }, "-=1.0");
-  }, []);
-
-  return (
-    <div ref={cardRef} className="relative">
-      {/* Bronze glow behind card */}
-      <div
-        className="absolute -inset-8 rounded-full pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(184,138,90,0.12) 0%, transparent 65%)" }}
-      />
-
-      <div
-        className="relative rounded-2xl p-6"
-        style={{
-          background: "linear-gradient(145deg, rgba(8,14,28,0.92) 0%, rgba(5,9,20,0.95) 100%)",
-          border: "1px solid rgba(255,255,255,0.09)",
-          boxShadow: "0 40px 80px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.05) inset",
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
-        }}
-      >
-        {/* Card header */}
-        <div className="flex items-center justify-between mb-5">
-          <span className="text-white/30 text-[10px] tracking-[0.2em] uppercase font-semibold">
-            Score de Santé
-          </span>
-          <div className="flex items-center gap-1.5">
-            <span className="relative flex h-[7px] w-[7px]">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#B88A5A] opacity-50" />
-              <span className="relative inline-flex rounded-full h-[7px] w-[7px] bg-[#B88A5A]" />
-            </span>
-            <span className="text-[#B88A5A]/55 text-[10px] font-medium tracking-wide">Yolo AI</span>
-          </div>
-        </div>
-
-        {/* Score ring */}
-        <div className="flex items-center gap-5 mb-6">
-          <div className="relative w-[84px] h-[84px] flex items-center justify-center shrink-0">
-            <svg className="absolute inset-0 -rotate-90" viewBox="0 0 84 84">
-              <circle cx="42" cy="42" r="34" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="6" />
-              <circle
-                className="hc-arc"
-                cx="42" cy="42" r="34" fill="none"
-                stroke="#B88A5A" strokeWidth="6"
-                strokeDasharray={circumference}
-                strokeDashoffset={circumference}
-                strokeLinecap="round"
-              />
-            </svg>
-            <div className="text-center z-10">
-              <div className="hc-score font-heading font-bold text-white text-[22px] leading-none">0</div>
-              <div className="text-white/22 text-[9px] mt-0.5 tracking-wide">/100</div>
-            </div>
-          </div>
-          <p className="text-white/30 text-[11px] leading-[1.7]">
-            Évaluation issue de<br />6 disciplines cliniques<br />+ analyse Yolo AI
-          </p>
-        </div>
-
-        {/* Metric bars */}
-        <div className="space-y-3.5 mb-5">
-          {[
-            { label: "Physique", val: 82, color: "#B88A5A" },
-            { label: "Mental", val: 68, color: "#159AA9" },
-            { label: "Nutrition", val: 74, color: "#B88A5A" },
-          ].map((m) => (
-            <div key={m.label}>
-              <div className="flex justify-between items-baseline mb-1.5">
-                <span className="text-white/40 text-[11px]">{m.label}</span>
-                <span className="text-white/28 text-[10.5px] font-medium tabular-nums">{m.val}</span>
-              </div>
-              <div className="h-[3px] rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.05)" }}>
-                <div
-                  className="hc-bar h-full rounded-full"
-                  style={{ width: "0%", backgroundColor: m.color, transition: "width 0.05s" }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Trend chart */}
-        <div className="pt-4 border-t border-white/[0.05]">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-white/22 text-[10px] tracking-wide">Tendance · 90 jours</span>
-            <span className="text-[#B88A5A] text-[10px] font-semibold">↑ +12 pts</span>
-          </div>
-          <svg viewBox="0 0 240 38" className="w-full" fill="none">
-            <defs>
-              <linearGradient id="hc-grad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#B88A5A" stopOpacity="0.14" />
-                <stop offset="100%" stopColor="#B88A5A" stopOpacity="0" />
-              </linearGradient>
-            </defs>
-            <path d="M4,32 Q55,28 95,19 T185,9 T235,4 L235,38 L4,38 Z" fill="url(#hc-grad)" />
-            <path
-              className="hc-trend"
-              d="M4,32 Q55,28 95,19 T185,9 T235,4"
-              stroke="#B88A5A" strokeWidth="1.5" strokeLinecap="round"
-              strokeDasharray={290} strokeDashoffset={290}
-            />
-            <circle cx="235" cy="4" r="3" fill="#B88A5A" opacity="0.8" />
-          </svg>
-        </div>
-
-        {/* Next appointment */}
-        <div className="mt-4 pt-3 border-t border-white/[0.04] flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-[#159AA9]/70 shrink-0" />
-          <span className="text-white/22 text-[10px]">Prochain RDV :</span>
-          <span className="text-white/40 text-[10px] font-medium">Jeudi 19 juin · 14h00</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /* ── Hero Section ──────────────────────────────────────────── */
 export default function HeroSection(): React.JSX.Element {
   const sectionRef = useRef<HTMLElement>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
   const trustRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -166,7 +14,7 @@ export default function HeroSection(): React.JSX.Element {
     if (!el) return;
 
     const ctx = gsap.context(() => {
-      gsap.set([".hero-eyebrow", ".hero-line", ".hero-sub", ".hero-cta", cardRef.current, trustRef.current], {
+      gsap.set([".hero-eyebrow", ".hero-line", ".hero-sub", ".hero-cta", trustRef.current], {
         opacity: 0,
       });
 
@@ -175,7 +23,6 @@ export default function HeroSection(): React.JSX.Element {
         .fromTo(".hero-line", { y: 32 }, { opacity: 1, y: 0, duration: 0.75, stagger: 0.1 }, "-=0.25")
         .to(".hero-sub", { opacity: 1, y: 0, duration: 0.5 }, "-=0.35")
         .to(".hero-cta", { opacity: 1, y: 0, duration: 0.45 }, "-=0.25")
-        .fromTo(cardRef.current, { x: 28, scale: 0.97 }, { opacity: 1, x: 0, scale: 1, duration: 0.75, ease: "power2.out" }, "-=0.65")
         .to(trustRef.current, { opacity: 1, duration: 0.5 }, "-=0.25");
     }, el);
 
@@ -222,9 +69,7 @@ export default function HeroSection(): React.JSX.Element {
 
       {/* ── Content ── */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pt-28 pb-20">
-        <div className="grid lg:grid-cols-[1fr_420px] xl:grid-cols-[1fr_460px] gap-12 xl:gap-20 items-center">
-
-          {/* Left column */}
+        <div className="max-w-2xl">
           <div>
             {/* Eyebrow */}
             <div className="hero-eyebrow inline-flex items-center gap-2.5 mb-8">
@@ -296,10 +141,6 @@ export default function HeroSection(): React.JSX.Element {
             </div>
           </div>
 
-          {/* Right column: health card */}
-          <div ref={cardRef} className="hidden lg:block">
-            <HealthCard />
-          </div>
         </div>
 
         {/* Trust bar */}

@@ -9,16 +9,19 @@ gsap.registerPlugin(ScrollTrigger);
 
 /* ── Card shell ─────────────────────────────────────────────── */
 function Card({
-  num, step, title, desc, children, border,
+  num, step, title, desc, children,
 }: {
   num: string; step: string; title: string; desc: string;
-  children: React.ReactNode; border?: boolean;
+  children: React.ReactNode;
 }): React.JSX.Element {
   return (
     <div
-      className={`relative flex flex-col bg-white px-7 py-8 min-h-[360px] ${
-        border ? "border-t border-[#0B1220]/[0.06] sm:border-t-0 sm:border-l" : ""
-      }`}
+      className="relative flex flex-col rounded-2xl px-8 py-10 min-h-[440px]"
+      style={{
+        background: "#E8E2D9",
+        border: "1px solid rgba(11,18,32,0.08)",
+        boxShadow: "0 2px 24px rgba(11,18,32,0.06)",
+      }}
     >
       <span
         className="absolute top-5 right-5 font-heading font-black leading-none select-none pointer-events-none"
@@ -154,7 +157,7 @@ function AlignViz(): React.JSX.Element {
       {["Alimentation", "Activité", "Sommeil"].map((label) => (
         <div
           key={label}
-          className="al-item flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-[#0B1220]/[0.02] border border-[#0B1220]/[0.05] transition-all duration-400"
+          className="al-item flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-[#0B1220]/[0.06] border border-[#0B1220]/[0.08] transition-all duration-400"
           style={{ opacity: 0, transform: "translateX(-10px)" }}
         >
           <div
@@ -298,7 +301,7 @@ function SustainViz(): React.JSX.Element {
       {/* Chart */}
       <div
         className="w-full rounded-xl overflow-hidden"
-        style={{ background: "rgba(11,18,32,0.02)", border: "1px solid rgba(11,18,32,0.05)" }}
+        style={{ background: "rgba(11,18,32,0.06)", border: "1px solid rgba(11,18,32,0.09)" }}
       >
         <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`} className="w-full" fill="none">
           <defs>
@@ -389,7 +392,8 @@ export default function HowItWorks(): React.JSX.Element {
       ref={sectionRef}
       id="method"
       className="relative overflow-hidden"
-      style={{ background: "#FAF8F4", padding: "96px 0 100px" }}
+      className="py-16 sm:py-20 lg:py-24"
+      style={{ background: "#FAF8F4" }}
     >
       <div
         className="absolute top-0 left-0 right-0 h-16 pointer-events-none"
@@ -428,19 +432,18 @@ export default function HowItWorks(): React.JSX.Element {
         {/* Cards */}
         <div
           ref={gridRef}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 rounded-2xl overflow-hidden border border-[#0B1220]/[0.08]"
-          style={{ boxShadow: "0 4px 40px rgba(11,18,32,0.06), 0 1px 0 rgba(255,255,255,0.8) inset" }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6"
         >
-          <Card num="01" step="Étape 01" title="Assess" desc="Comprendre où vous en êtes avec 160+ biomarqueurs analysés." border={false}>
+          <Card num="01" step="Étape 01" title="Assess" desc="Comprendre où vous en êtes avec 160+ biomarqueurs analysés.">
             <AssessViz />
           </Card>
-          <Card num="02" step="Étape 02" title="Align" desc="Construire un parcours nutrition, activité et sommeil sur mesure." border={true}>
+          <Card num="02" step="Étape 02" title="Align" desc="Construire un parcours nutrition, activité et sommeil sur mesure.">
             <AlignViz />
           </Card>
-          <Card num="03" step="Étape 03" title="Activate" desc="Passer à l'action avec votre coach et vos médecins référents." border={true}>
+          <Card num="03" step="Étape 03" title="Activate" desc="Passer à l'action avec votre coach et vos médecins référents.">
             <ActivateViz />
           </Card>
-          <Card num="04" step="Étape 04" title="Sustain" desc="Maintenir vos acquis et prévenir les maladies sur le long terme." border={true}>
+          <Card num="04" step="Étape 04" title="Sustain" desc="Maintenir vos acquis et prévenir les maladies sur le long terme.">
             <SustainViz />
           </Card>
         </div>

@@ -13,7 +13,7 @@ function BlogCard({ post, index }: { post: PostWithAuthor; index: number }): Rea
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="group block bg-white rounded-2xl border border-[#0B1220]/[0.04] overflow-hidden transition-all duration-500 hover:shadow-[0_8px_32px_rgba(184,138,90,0.06)] hover:border-[#B88A5A]/15 hover:-translate-y-0.5"
+      className="group block bg-[#E8E2D9] rounded-2xl border border-[#0B1220]/[0.06] overflow-hidden transition-all duration-500 hover:shadow-[0_8px_32px_rgba(184,138,90,0.06)] hover:border-[#B88A5A]/25 hover:-translate-y-0.5"
     >
       <div className="relative overflow-hidden aspect-[16/10]">
         <div className="absolute inset-0 bg-cover bg-center transition-all duration-500 group-hover:scale-105" style={{ backgroundImage: `url(${post.featuredImage})` }} />

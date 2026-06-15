@@ -92,8 +92,8 @@ export default function Pricing(): React.JSX.Element {
               ref={(el) => { cardsRef.current[i] = el; }}
               className={`relative rounded-2xl p-8 border-2 flex flex-col transition-all duration-300 flex-1 ${
                 plan.popular
-                  ? "bg-white border-[#B88A5A] shadow-xl shadow-[rgba(184,138,90,0.10)] hover:shadow-2xl hover:shadow-[rgba(184,138,90,0.16)]"
-                  : "bg-white border-[#0B1220]/[0.06] shadow-sm hover:shadow-md hover:border-[#B88A5A]/30 hover:-translate-y-0.5"
+                  ? "bg-[#E8E2D9] border-[#B88A5A] shadow-xl shadow-[rgba(184,138,90,0.10)] hover:shadow-2xl hover:shadow-[rgba(184,138,90,0.16)]"
+                  : "bg-[#E8E2D9] border-[#0B1220]/[0.06] shadow-sm hover:shadow-md hover:border-[#B88A5A]/30 hover:-translate-y-0.5"
               }`}
             >
               {plan.popular && (

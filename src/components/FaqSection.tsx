@@ -116,7 +116,7 @@ export default function FaqSection(): React.JSX.Element {
               <button
                 onClick={() => toggle(i)}
                 aria-expanded={openIndex === i}
-                className="w-full flex items-center justify-between gap-4 text-left p-5 sm:p-6 rounded-xl bg-white border border-[#0B1220]/[0.06] hover:border-[#B88A5A]/30 transition-all duration-300 group"
+                className="w-full flex items-center justify-between gap-4 text-left p-5 sm:p-6 rounded-xl bg-[#E8E2D9] border border-[#0B1220]/[0.06] hover:border-[#B88A5A]/30 transition-all duration-300 group"
               >
                 <span className="text-[#0B1220] font-heading font-semibold text-[clamp(0.9rem,1.5vw,1rem)] leading-snug">
                   {item.q}

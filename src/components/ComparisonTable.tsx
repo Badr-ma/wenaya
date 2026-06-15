@@ -90,12 +90,12 @@ export default function ComparisonTable(): React.JSX.Element {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-5">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {entries.map((e, i) => (
             <div
               key={e.title}
               ref={(el) => { cardsRef.current[i] = el; }}
-              className={`bg-white rounded-2xl border p-6 sm:p-8 flex flex-col transition-all duration-300 ${
+              className={`bg-[#E8E2D9] rounded-2xl border p-6 sm:p-8 flex flex-col transition-all duration-300 ${
                 e.featured
                   ? "border-[#B88A5A] shadow-lg shadow-[rgba(184,138,90,0.06)]"
                   : "border-[#0B1220]/[0.06] hover:border-[#B88A5A]/30 hover:shadow-lg"

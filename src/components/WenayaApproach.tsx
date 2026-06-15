@@ -75,7 +75,7 @@ export default function WenayaApproach(): React.JSX.Element {
           {steps.map((s, i) => (
             <div
               key={i}
-              className="wa-card group relative bg-white rounded-2xl p-8 sm:p-10 border border-[rgba(184,138,90,0.06)] transition-all duration-500 hover:shadow-2xl hover:shadow-[rgba(184,138,90,0.08)] hover:-translate-y-1.5"
+              className="wa-card group relative bg-[#E8E2D9] rounded-2xl p-8 sm:p-10 border border-[rgba(184,138,90,0.06)] transition-all duration-500 hover:shadow-2xl hover:shadow-[rgba(184,138,90,0.08)] hover:-translate-y-1.5"
             >
               <div className="flex items-center justify-between mb-8">
                 <span className="wa-num text-[clamp(2.5rem,3vw,3.5rem)] font-heading font-bold text-[#B88A5A]/15" style={{ opacity: 0 }}>0{i + 1}</span>
