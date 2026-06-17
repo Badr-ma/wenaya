@@ -47,29 +47,29 @@ export default function Home() {
   return (
     <ErrorBoundary>
     <div className="flex flex-col min-h-screen">
-      <Banner />
-      <HeroSection />
+      <div data-section-bg="dark"><Banner /></div>
+      <div data-section-bg="dark"><HeroSection /></div>
       <SectionBreak />
-      <HowItWorks />
+      <div data-section-bg="light"><HowItWorks /></div>
       <Spacer />
-      <DiseaseMarquee />
+      <div data-section-bg="light"><DiseaseMarquee /></div>
       <Spacer />
-      <Biomarkers />
+      <div data-section-bg="light"><Biomarkers /></div>
       <Spacer />
-      <TestimonialsSection />
+      <div data-section-bg="light"><TestimonialsSection /></div>
       <Spacer />
-      <Testimonials />
+      <div data-section-bg="light"><Testimonials /></div>
       <SectionBreak />
-      <ComparisonTable />
+      <div data-section-bg="light"><ComparisonTable /></div>
       <Spacer />
-      <Pricing />
+      <div data-section-bg="light"><Pricing /></div>
       <Spacer />
-      <CtaSection />
+      <div data-section-bg="dark"><CtaSection /></div>
       <Spacer />
-      <BlogSection posts={enriched} />
+      <div data-section-bg="light"><BlogSection posts={enriched} /></div>
       <Spacer />
-      <YoloSection />
-      <Footer />
+      <div data-section-bg="dark"><YoloSection /></div>
+      <div data-section-bg="dark"><Footer /></div>
     </div>
     </ErrorBoundary>
   );

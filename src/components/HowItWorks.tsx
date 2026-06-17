@@ -391,8 +391,7 @@ export default function HowItWorks(): React.JSX.Element {
     <section
       ref={sectionRef}
       id="method"
-      className="relative overflow-hidden"
-      className="py-16 sm:py-20 lg:py-24"
+      className="relative overflow-hidden py-16 sm:py-20 lg:py-24"
       style={{ background: "#FAF8F4" }}
     >
       <div

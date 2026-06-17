@@ -29,7 +29,7 @@ const solutions = [
     title: "Entreprises",
     desc: "Programmes de bien-être, santé mentale et performance pour les équipes.",
     cta: "Découvrir",
-    href: "#",
+    href: "/solutions/entreprises",
     icon: (
       <svg viewBox="0 0 48 48" className="w-5 h-5" fill="none">
         <rect x="10" y="18" width="28" height="24" rx="2" stroke="currentColor" strokeWidth="1.5" />
@@ -62,12 +62,36 @@ export default function Nav(): React.JSX.Element {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const lastThemeRef = useRef<"dark" | "light">("dark");
   const mounted = useSyncExternalStore(() => () => {}, () => true, () => false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const detectSection = () => {
+      const sections = document.querySelectorAll("[data-section-bg]");
+      const navBottom = 80;
+      let newTheme: "dark" | "light" = "dark";
+      for (const s of sections) {
+        const r = s.getBoundingClientRect();
+        if (r.top <= navBottom && r.bottom > navBottom) {
+          newTheme = s.getAttribute("data-section-bg") === "dark" ? "dark" : "light";
+          break;
+        }
+      }
+      if (newTheme !== lastThemeRef.current) {
+        lastThemeRef.current = newTheme;
+        setTheme(newTheme);
+      }
+    };
+    detectSection();
+    window.addEventListener("scroll", detectSection, { passive: true });
+    return () => window.removeEventListener("scroll", detectSection);
   }, []);
 
   useEffect(() => {
@@ -95,15 +119,29 @@ export default function Nav(): React.JSX.Element {
     return pathname.startsWith(href);
   };
 
+  const isDark = theme === "dark";
+  const barBg = isDark
+    ? scrolled || dropdownOpen || mobileOpen
+      ? "bg-[#0B1220]/92 backdrop-blur-[32px]"
+      : "bg-[#0B1220]/40 backdrop-blur-[20px]"
+    : scrolled || dropdownOpen || mobileOpen
+      ? "bg-[#F2EFE9]/90 backdrop-blur-[32px]"
+      : "bg-[#F2EFE9]/30 backdrop-blur-[20px]";
+  const linkBase = isDark
+    ? "text-white/52 hover:text-white"
+    : "text-[#0B1220]/52 hover:text-[#0B1220]";
+  const linkActive_ = isDark ? "text-white" : "text-[#0B1220]";
+  const linkUnderline = isDark ? "bg-white/20" : "bg-black/[0.08]";
+  const sepStyle = isDark ? "bg-white/[0.1]" : "bg-black/[0.08]";
+  const loginBtn = isDark
+    ? "bg-white/[0.07] border border-white/[0.09] text-white/65 hover:bg-white/[0.11] hover:text-white hover:border-white/[0.14]"
+    : "bg-[#0B1220]/[0.04] border border-[#0B1220]/[0.08] text-[#0B1220]/65 hover:bg-[#0B1220]/[0.08] hover:text-[#0B1220] hover:border-[#0B1220]/[0.12]";
+
   return (
     <header className="fixed top-0 left-0 right-0 z-[100] flex justify-center px-4 sm:px-8 pt-4">
       {/* ── Main bar ── */}
       <div
-        className={`w-full flex items-center justify-between h-[60px] sm:h-[64px] px-5 sm:px-8 rounded-2xl transition-all duration-500 ${
-          scrolled || dropdownOpen || mobileOpen
-            ? "bg-[#0B1220]/92 backdrop-blur-[32px] border border-white/[0.08] shadow-[0_2px_40px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.05)]"
-            : "bg-[#0B1220]/40 backdrop-blur-[20px] border border-white/[0.07]"
-        }`}
+        className={`w-full flex items-center justify-between h-[60px] sm:h-[64px] px-5 sm:px-8 rounded-2xl transition-all duration-500 ${barBg}`}
       >
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
@@ -118,14 +156,7 @@ export default function Nav(): React.JSX.Element {
               />
             </svg>
           </div>
-          <span
-            className="text-[21px] sm:text-[22px] font-bold font-heading tracking-[-0.035em]"
-            style={{
-              background: "linear-gradient(130deg, #C99B68 0%, #159AA9 52%, #ffffff 88%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
+          <span className={`text-[21px] sm:text-[22px] font-bold font-heading tracking-[-0.035em] transition-colors duration-300 ${isDark ? "text-white" : "text-[#0B1220]"}`}>
             Wenaya
           </span>
         </Link>
@@ -145,8 +176,8 @@ export default function Nav(): React.JSX.Element {
                     aria-expanded={dropdownOpen}
                     className={`relative flex items-center gap-1 px-4 py-2 text-[13.5px] rounded-xl transition-all duration-200 outline-none ${
                       isActive(link.href)
-                        ? "text-white font-semibold"
-                        : "text-white/52 hover:text-white font-medium"
+                        ? `${linkActive_} font-semibold`
+                        : `${linkBase} font-medium`
                     }`}
                   >
                     {link.label}
@@ -167,8 +198,8 @@ export default function Nav(): React.JSX.Element {
                     href={link.href}
                     className={`relative px-4 py-2 text-[13.5px] rounded-xl transition-all duration-200 flex items-center ${
                       isActive(link.href)
-                        ? "text-white font-semibold"
-                        : "text-white/52 hover:text-white font-medium"
+                        ? `${linkActive_} font-semibold`
+                        : `${linkBase} font-medium`
                     }`}
                   >
                     {link.label}
@@ -179,7 +210,7 @@ export default function Nav(): React.JSX.Element {
                       style={{ transformOrigin: "left" }}
                     />
                     <span
-                      className={`absolute bottom-0.5 left-4 right-4 h-px rounded-full bg-white/20 origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100`}
+                      className={`absolute bottom-0.5 left-4 right-4 h-px rounded-full ${linkUnderline} origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100`}
                     />
                   </Link>
                 </li>
@@ -191,12 +222,12 @@ export default function Nav(): React.JSX.Element {
         {/* Right: separator + actions */}
         <div className="flex items-center gap-3">
           {/* Thin separator */}
-          <div className="hidden sm:block w-px h-5 bg-white/[0.1] mr-0.5" />
+          <div className={`hidden sm:block w-px h-5 ${sepStyle} mr-0.5`} />
 
           <Link
             href="#"
             onClick={(e) => e.preventDefault()}
-            className="hidden sm:inline-flex items-center justify-center h-[34px] px-5 rounded-xl bg-white/[0.07] border border-white/[0.09] text-white/65 text-[13px] font-medium transition-all duration-200 hover:bg-white/[0.11] hover:text-white hover:border-white/[0.14]"
+            className={`hidden sm:inline-flex items-center justify-center h-[34px] px-5 rounded-xl text-[13px] font-medium transition-all duration-200 ${loginBtn}`}
           >
             Se connecter
           </Link>
@@ -216,12 +247,12 @@ export default function Nav(): React.JSX.Element {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden relative flex flex-col items-center justify-center w-9 h-9 rounded-xl hover:bg-white/[0.06] transition-colors"
+            className={`lg:hidden relative flex flex-col items-center justify-center w-9 h-9 rounded-xl transition-colors ${isDark ? "hover:bg-white/[0.06]" : "hover:bg-black/[0.06]"}`}
             aria-label="Menu"
           >
-            <span className={`block w-[17px] h-[1.5px] bg-white/75 rounded-full transition-all duration-300 origin-center ${mobileOpen ? "rotate-45 translate-y-[3px]" : ""}`} />
-            <span className={`block w-[17px] h-[1.5px] bg-white/75 rounded-full mt-[5px] transition-all duration-300 ${mobileOpen ? "opacity-0 scale-x-0" : ""}`} />
-            <span className={`block w-[17px] h-[1.5px] bg-white/75 rounded-full mt-[5px] transition-all duration-300 origin-center ${mobileOpen ? "-rotate-45 -translate-y-[3px]" : ""}`} />
+            <span className={`block w-[17px] h-[1.5px] rounded-full transition-all duration-300 origin-center ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "rotate-45 translate-y-[3px]" : ""}`} />
+            <span className={`block w-[17px] h-[1.5px] rounded-full mt-[5px] transition-all duration-300 ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "opacity-0 scale-x-0" : ""}`} />
+            <span className={`block w-[17px] h-[1.5px] rounded-full mt-[5px] transition-all duration-300 origin-center ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "-rotate-45 -translate-y-[3px]" : ""}`} />
           </button>
         </div>
       </div>
