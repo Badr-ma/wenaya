@@ -112,7 +112,7 @@ export default function HeroSection(): React.JSX.Element {
               className="hero-sub mt-7 max-w-[480px] leading-[1.78]"
               style={{ color: "rgba(255,255,255,0.5)", fontSize: "clamp(0.93rem, 1.4vw, 1.05rem)" }}
             >
-              Wenaya réunit kinésithérapie, psychologie clinique, nutrition et Yolo AI sous un seul écosystème — pour une santé préventive, personnalisée et durable, à Casablanca.
+              Wenaya réunit kinésithérapie, psychologie clinique et nutrition sous un seul écosystème — pour une santé préventive, personnalisée et durable, à Casablanca.
             </p>
 
             {/* CTAs */}
@@ -127,16 +127,6 @@ export default function HeroSection(): React.JSX.Element {
                 }}
               >
                 Réserver une évaluation
-              </Link>
-              <Link
-                href="/yolo"
-                className="inline-flex items-center gap-2 h-11 px-6 rounded-xl text-white/55 text-[13.5px] font-medium border border-white/[0.12] transition-all duration-300 hover:text-white hover:border-white/[0.22] hover:bg-white/[0.04]"
-                style={{ backdropFilter: "blur(8px)" }}
-              >
-                Découvrir Yolo AI
-                <svg className="w-3.5 h-3.5 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
               </Link>
             </div>
           </div>

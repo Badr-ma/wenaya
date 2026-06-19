@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import AboutHero from "@/components/AboutHero";
-import WhyWeExist from "@/components/WhyWeExist";
-import WenayaApproach from "@/components/WenayaApproach";
-import ExpertiseSection from "@/components/ExpertiseSection";
-import FutureVision from "@/components/FutureVision";
+import AboutHero from "@/components/about/Hero";
+import WhyWeExist from "@/components/about/WhyWeExist";
+import WenayaApproach from "@/components/about/WenayaApproach";
+import ExpertiseSection from "@/components/about/ExpertiseSection";
+import FutureVision from "@/components/about/FutureVision";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "À Propos — Wenaya, Première Plateforme de Santé Intégrée au Maroc",
     description:
-      "Wenaya is Morocco's first integrated health and wellbeing platform — combining physiotherapy, clinical psychology, nutrition, prevention, corporate wellness, and Yolo AI under one coordinated ecosystem.",
+      "Wenaya is Morocco's first integrated health and wellbeing platform — combining physiotherapy, clinical psychology, nutrition, prevention, and corporate wellness under one coordinated ecosystem.",
     url: "https://www.wenaya.com/about",
     type: "website",
   },

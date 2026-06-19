@@ -7,24 +7,11 @@ import { usePathname } from "next/navigation";
 const navLinks = [
   { label: "Accueil", href: "/" },
   { label: "Solutions", href: "#", hasDropdown: true },
-  { label: "Yolo AI", href: "/yolo" },
   { label: "À Propos", href: "/about" },
   { label: "FAQ", href: "/faq" },
 ];
 
 const solutions = [
-  {
-    title: "Particuliers",
-    desc: "Accompagnement personnalisé en santé physique, bien-être mental, nutrition et prévention.",
-    cta: "Découvrir",
-    href: "#",
-    icon: (
-      <svg viewBox="0 0 48 48" className="w-5 h-5" fill="none">
-        <circle cx="24" cy="16" r="7" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M12 40c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      </svg>
-    ),
-  },
   {
     title: "Entreprises",
     desc: "Programmes de bien-être, santé mentale et performance pour les équipes.",
@@ -35,6 +22,19 @@ const solutions = [
         <rect x="10" y="18" width="28" height="24" rx="2" stroke="currentColor" strokeWidth="1.5" />
         <path d="M18 18V12a2 2 0 012-2h8a2 2 0 012 2v6" stroke="currentColor" strokeWidth="1.5" />
         <path d="M22 28v4M26 28v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+    ),
+  },
+  {
+    title: "Cliniques",
+    desc: "Plateforme de santé intégrée pour cliniques : prévention, suivi et orchestration pluridisciplinaire.",
+    cta: "Découvrir",
+    href: "/solutions/clinics",
+    icon: (
+      <svg viewBox="0 0 48 48" className="w-5 h-5" fill="none">
+        <rect x="12" y="10" width="24" height="28" rx="3" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M24 18v12M18 24h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        <path d="M8 40h32" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
       </svg>
     ),
   },
@@ -225,8 +225,7 @@ export default function Nav(): React.JSX.Element {
           <div className={`hidden sm:block w-px h-5 ${sepStyle} mr-0.5`} />
 
           <Link
-            href="#"
-            onClick={(e) => e.preventDefault()}
+            href="/login"
             className={`hidden sm:inline-flex items-center justify-center h-[34px] px-5 rounded-xl text-[13px] font-medium transition-all duration-200 ${loginBtn}`}
           >
             Se connecter
@@ -263,7 +262,7 @@ export default function Nav(): React.JSX.Element {
           ref={dropdownRef}
           onMouseEnter={show}
           onMouseLeave={hide}
-          className={`hidden lg:block absolute top-full left-1/2 -translate-x-1/2 mt-2.5 w-[820px] transition-all duration-[180ms] ${
+              className={`hidden lg:block absolute top-full left-1/2 -translate-x-1/2 mt-2.5 w-[820px] transition-all duration-[180ms] ${
             dropdownOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-1 pointer-events-none"
           }`}
         >
@@ -406,7 +405,6 @@ export default function Nav(): React.JSX.Element {
 
               {/* Remaining links */}
               {[
-                { label: "Yolo AI", href: "/yolo" },
                 { label: "À Propos", href: "/about" },
                 { label: "FAQ", href: "/faq" },
               ].map(({ label, href }) => (
@@ -429,12 +427,13 @@ export default function Nav(): React.JSX.Element {
           {/* Mobile bottom actions */}
           <div className="pt-8 border-t border-white/[0.06] space-y-3">
             <div className="grid grid-cols-2 gap-3">
-              <button
+              <Link
+                href="/login"
                 onClick={closeMobile}
                 className="flex items-center justify-center h-12 rounded-xl border border-white/[0.09] bg-white/[0.04] text-white/65 text-sm font-medium transition-all hover:bg-white/[0.07]"
               >
                 Se connecter
-              </button>
+              </Link>
               <Link
                 href="#"
                 onClick={(e) => { e.preventDefault(); closeMobile(); }}

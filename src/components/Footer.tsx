@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, useEffect, useState, useCallback } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -9,18 +10,27 @@ gsap.registerPlugin(ScrollTrigger);
 const footerLinks = [
   {
     title: "Navigation",
-    links: ["Qui sommes nous", "Spécialités", "Cours & Ateliers", "Pour les entreprises"],
+    links: [
+      { label: "Qui sommes nous", href: "/about" },
+      { label: "Spécialités", href: "#" },
+      { label: "Cours & Ateliers", href: "#" },
+      { label: "Pour les entreprises", href: "/solutions/entreprises" },
+    ],
   },
   {
     title: "Infos légales",
     links: [
-      "Politique de confidentialité",
-      "Conditions générales",
+      { label: "Politique de confidentialité", href: "/confidentialite" },
+      { label: "Conditions générales", href: "/conditions" },
     ],
   },
   {
     title: "Contact",
-    links: ["+212 6 66 12 40 35", "88 Rue De Jabal Azourki", "Casablanca 20930"],
+    links: [
+      { label: "+212 6 66 12 40 35", href: "tel:+212666124035" },
+      { label: "Contact", href: "/contact" },
+    ],
+    extra: "88 Rue De Jabal Azourki, Casablanca 20930",
   },
 ];
 
@@ -219,17 +229,19 @@ export default function Footer(): React.JSX.Element {
                     </h4>
                     <ul className="space-y-3">
                       {group.links.map((link) => (
-                        <li key={link}>
-                          <a
-                            href="#"
-                            onClick={(e) => e.preventDefault()}
+                        <li key={link.label}>
+                          <Link
+                            href={link.href}
                             className="text-[#2B2F36]/70 hover:text-[#0B1220] transition-all duration-300 text-sm leading-relaxed"
                           >
-                            {link}
-                          </a>
+                            {link.label}
+                          </Link>
                         </li>
                       ))}
                     </ul>
+                    {"extra" in group && group.extra && (
+                      <p className="text-[#2B2F36]/40 text-sm mt-3">{group.extra}</p>
+                    )}
                   </div>
                 ))}
               </div>

@@ -147,12 +147,6 @@ export default function CtaSection(): React.JSX.Element {
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
           </Link>
-          <Link
-            href="/yolo"
-            className="inline-flex items-center gap-2 h-12 px-7 rounded-xl text-white/45 text-sm font-medium border border-white/[0.08] transition-all duration-300 hover:text-white hover:border-white/[0.16] hover:bg-white/[0.03]"
-          >
-            Parler à Yolo AI
-          </Link>
         </div>
 
         {/* Contact info — minimal, one line */}

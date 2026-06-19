@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import FaqSection from "@/components/FaqSection";
+import FaqSection from "@/components/faq/FaqSection";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "FAQ — Questions Fréquentes sur Wenaya & Yolo AI",
+  title: "FAQ — Questions Fréquentes sur Wenaya",
   description:
-    "Tout savoir sur Wenaya : kinésithérapie, psychologie, nutrition, bien-être corporate, Yolo AI et nos programmes hôtellerie wellness à Casablanca, Maroc.",
+    "Tout savoir sur Wenaya : kinésithérapie, psychologie, nutrition, bien-être corporate et nos programmes hôtellerie wellness à Casablanca, Maroc.",
   alternates: { canonical: "https://www.wenaya.com/faq" },
   openGraph: {
-    title: "FAQ — Questions Fréquentes sur Wenaya & Yolo AI",
+    title: "FAQ — Questions Fréquentes sur Wenaya",
     description:
-      "Answers to the most common questions about Wenaya's integrated health platform, Yolo AI, corporate wellness programs, and hospitality partnerships in Morocco.",
+      "Answers to the most common questions about Wenaya's integrated health platform, corporate wellness programs, and hospitality partnerships in Morocco.",
     url: "https://www.wenaya.com/faq",
     type: "website",
   },

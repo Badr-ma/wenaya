@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import EntreprisesHero from "@/components/EntreprisesHero";
-import EntreprisesPrograms from "@/components/EntreprisesPrograms";
-import EntreprisesApproach from "@/components/EntreprisesApproach";
-import EntreprisesCta from "@/components/EntreprisesCta";
-import EntreprisesFooter from "@/components/EntreprisesFooter";
+import EntreprisesHero from "@/components/entreprises/Hero";
+import EntreprisesPrograms from "@/components/entreprises/Programs";
+import EntreprisesApproach from "@/components/entreprises/Approach";
+import EntreprisesCta from "@/components/entreprises/Cta";
+import EntreprisesFooter from "@/components/entreprises/Footer";
 
 export const metadata: Metadata = {
   title: "Bien-être en Entreprise — Programmes Santé & Prévention | Wenaya",
@@ -17,7 +17,6 @@ export const metadata: Metadata = {
     "prévention santé corporate",
     "kinésithérapie entreprise",
     "nutrition entreprise",
-    "Yolo AI bien-être",
     "corporate wellness Morocco",
     "employee wellbeing program Casablanca",
     "burnout prevention Maroc",

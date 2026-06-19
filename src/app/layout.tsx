@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     template: "%s | Wenaya",
   },
   description:
-    "Wenaya est la première plateforme de santé intégrée au Maroc. Kinésithérapie, psychologie clinique, nutrition, bien-être corporate et Yolo AI — depuis Casablanca.",
+    "Wenaya est la première plateforme de santé intégrée au Maroc. Kinésithérapie, psychologie clinique, nutrition et bien-être corporate — depuis Casablanca.",
   keywords: [
     "plateforme santé intégrée Maroc",
     "kinésithérapie Casablanca",
@@ -40,7 +40,6 @@ export const metadata: Metadata = {
     "nutrition préventive Casablanca",
     "bien-être entreprise Maroc",
     "wellness corporate Maroc",
-    "Yolo AI santé",
     "santé mentale Casablanca",
     "prévention santé Maroc",
     "wellness hôtellerie Maroc",
@@ -57,7 +56,7 @@ export const metadata: Metadata = {
     siteName: "Wenaya",
     title: "Wenaya — Plateforme de Santé Intégrée | Casablanca, Maroc",
     description:
-      "Morocco's first integrated health and wellbeing platform. Physiotherapy, clinical psychology, nutrition, corporate wellness, and Yolo AI — from Casablanca.",
+      "Morocco's first integrated health and wellbeing platform. Physiotherapy, clinical psychology, nutrition, and corporate wellness — from Casablanca.",
     images: [
       {
         url: "/og-image.jpg",
@@ -71,7 +70,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Wenaya — Plateforme de Santé Intégrée | Casablanca, Maroc",
     description:
-      "Morocco's first integrated health and wellbeing platform. Physiotherapy, psychology, nutrition, corporate wellness, and Yolo AI — from Casablanca.",
+      "Morocco's first integrated health and wellbeing platform. Physiotherapy, psychology, nutrition, and corporate wellness — from Casablanca.",
     images: ["/og-image.jpg"],
   },
   robots: {
@@ -116,7 +115,7 @@ export default function RootLayout({
                   "@id": "https://www.wenaya.com/#organization",
                   "name": "Wenaya",
                   "url": "https://www.wenaya.com",
-                  "description": "Morocco's first integrated health and wellbeing platform combining physiotherapy, clinical psychology, nutrition, prevention, corporate wellness, and hospitality wellness — powered by Yolo AI.",
+                  "description": "Morocco's first integrated health and wellbeing platform combining physiotherapy, clinical psychology, nutrition, prevention, corporate wellness, and hospitality wellness.",
                   "foundingLocation": { "@type": "Place", "name": "Casablanca, Maroc" },
                   "areaServed": ["Maroc", "MENA"],
                   "availableLanguage": ["French", "Arabic", "English"],

@@ -3,14 +3,14 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Wenaya — Santé Intégrée & Bien-être | Casablanca, Maroc",
   description:
-    "Wenaya est la première plateforme de santé intégrée au Maroc. Kinésithérapie, psychologie clinique, nutrition, bien-être corporate et Yolo AI — depuis Casablanca. Notée 4,7/5 sur Google Maps.",
+    "Wenaya est la première plateforme de santé intégrée au Maroc. Kinésithérapie, psychologie clinique, nutrition et bien-être corporate — depuis Casablanca. Notée 4,7/5 sur Google Maps.",
   alternates: {
     canonical: "https://www.wenaya.com",
   },
   openGraph: {
     title: "Wenaya — Santé Intégrée & Bien-être | Casablanca, Maroc",
     description:
-      "Morocco's first integrated health and wellbeing platform. Physiotherapy, clinical psychology, nutrition, corporate wellness, and Yolo AI — from Casablanca.",
+      "Morocco's first integrated health and wellbeing platform. Physiotherapy, clinical psychology, nutrition, and corporate wellness — from Casablanca.",
     url: "https://www.wenaya.com",
   },
 };
@@ -25,6 +25,7 @@ import Testimonials from "@/components/Testimonials";
 import ComparisonTable from "@/components/ComparisonTable";
 import Pricing from "@/components/Pricing";
 import CtaSection from "@/components/CtaSection";
+import CoursAteliers from "@/components/CoursAteliers";
 import Footer from "@/components/Footer";
 import YoloSection from "@/components/YoloSection";
 import SectionBreak from "@/components/SectionBreak";
@@ -64,6 +65,7 @@ export default function Home() {
       <Spacer />
       <div data-section-bg="light"><Pricing /></div>
       <Spacer />
+      <div data-section-bg="dark"><CoursAteliers /></div>
       <div data-section-bg="dark"><CtaSection /></div>
       <Spacer />
       <div data-section-bg="light"><BlogSection posts={enriched} /></div>

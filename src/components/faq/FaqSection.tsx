@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
-import HiggsField from "./HiggsField";
+import HiggsField from "../HiggsField";
 
 interface FaqItem {
   q: string;

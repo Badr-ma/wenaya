@@ -120,7 +120,7 @@ export default function Biomarkers(): React.JSX.Element {
               Cinq piliers.<br />Une santé complète.
             </h2>
             <p className="text-[#2B2F36]/50 text-[14px] leading-relaxed max-w-xs sm:text-right">
-              35+ spécialistes certifiés, orchestrés par Yolo AI pour un parcours cohérent.
+              35+ spécialistes certifiés pour un parcours cohérent.
             </p>
           </div>
         </div>
