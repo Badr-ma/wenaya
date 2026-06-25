@@ -3,8 +3,10 @@
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import Image from "next/image";
+import { useLocale } from "@/contexts/LanguageContext";
 
 export default function WhyWeExist(): React.JSX.Element {
+  const { t } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -26,24 +28,18 @@ export default function WhyWeExist(): React.JSX.Element {
             <div id="wwe-badge">
               <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">
                 <span className="w-6 h-px bg-[#B88A5A]/40" />
-                Notre Mission
+                {t("whyWeExist.badge")}
               </span>
             </div>
 
             <h2 id="wwe-title" className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220] mt-5">
-              Votre santé, notre priorité
+              {t("whyWeExist.heading")}
             </h2>
 
             <div id="wwe-text" className="mt-8 space-y-5 text-[#2B2F36] text-sm sm:text-base leading-relaxed">
-              <p>
-                Chez Wenaya, notre mission est d&apos;accompagner chaque individu dans son chemin vers une santé optimale et un bien-être global. Guidés par cette vision, nous avons créé un refuge où les expertises paramédicales et les thérapies alternatives se rejoignent, offrant des solutions personnalisées en complément de la médecine conventionnelle.
-              </p>
-              <p>
-                Nous croyons fermement en l&apos;importance de l&apos;intégration holistique des soins de santé, reconnaissant que chaque personne est unique et mérite une approche individualisée. Notre équipe dévouée travaille main dans la main avec vous, vous encourageant à devenir responsable de votre santé.
-              </p>
-              <p className="text-[#0B1220] font-medium">
-                Trop souvent, les symptômes sont traités sans tenir compte de leurs causes sous-jacentes. Nous croyons que chaque individu doit être considéré dans sa globalité — car le corps, l&apos;esprit et l&apos;âme sont intrinsèquement liés. Wenaya est né pour prendre en compte tous les plans de l&apos;être.
-              </p>
+              <p>{t("whyWeExist.p1")}</p>
+              <p>{t("whyWeExist.p2")}</p>
+              <p className="text-[#0B1220] font-medium">{t("whyWeExist.p3")}</p>
             </div>
           </div>
 

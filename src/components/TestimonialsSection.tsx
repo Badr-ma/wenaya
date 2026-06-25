@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useCallback, type ReactNode } from "react";
 import { gsap } from "gsap";
+import { useLocale } from "@/contexts/LanguageContext";
 
 type TestimonialItem = {
   type: "testimonial";
@@ -18,41 +19,10 @@ type AwardItem = {
 
 type GridItem = TestimonialItem | AwardItem;
 
-const items: GridItem[] = [
-  {
-    type: "testimonial",
-    quote: "Je suis venue pour des douleurs chroniques au dos et l'équipe de kinésithérapie et d'ostéopathie de Wenaya Clinic Casablanca m'a redonné une qualité de vie que je n'espérais plus. Le suivi coordonné entre praticiens fait toute la différence.",
-    name: "Fatima Z.",
-    rating: 5,
-  },
-  { type: "award", title: "99%", subtitle: "de nos patients recommandent Wenaya Clinic à leur entourage" },
-  {
-    type: "testimonial",
-    quote: "Mon enfant a été suivi en psychomotricité et orthophonie chez Wenaya. Les progrès en quelques mois ont dépassé nos attentes. Une équipe pluridisciplinaire remarquable à Casablanca pour la prise en charge des troubles de l'apprentissage.",
-    name: "Karim B.",
-    rating: 5,
-  },
-  { type: "award", title: "+148", subtitle: "avis Google 5 étoiles — la confiance de nos patients" },
-  {
-    type: "testimonial",
-    quote: "Je consulte en psychologie et nutrition chez Wenaya depuis six mois. L'approche globale qui lie santé mentale et alimentation est exactement ce dont j'avais besoin. Les locaux sont modernes et l'accueil est chaleureux au centre de Casablanca.",
-    name: "Nadia R.",
-    rating: 5,
-  },
-  { type: "award", title: "9 spécialités", subtitle: "kinésithérapie, ostéopathie, psychologie, nutrition, orthophonie et plus en un seul lieu" },
-  {
-    type: "testimonial",
-    quote: "Les séances d'ostéopathie avec Khalid Ouazzani m'ont soulagé d'une lombalgie chronique qui durait depuis deux ans. La qualité des soins et l'écoute sont exceptionnelles. Wenaya est bien plus qu'un simple cabinet : c'est un véritable centre de santé intégré.",
-    name: "Youssef L.",
-    rating: 5,
-  },
-  { type: "award", title: "6j/7", subtitle: "ouvert du lundi au samedi de 8h à 20h à Casablanca" },
-];
-
 function TestimonialCard({ item }: { item: TestimonialItem }): React.JSX.Element {
   return (
     <div
-      className="bg-white rounded-2xl border border-[rgba(184,138,90,0.1)] p-8 transition-all duration-500 hover:border-[rgba(184,138,90,0.25)] hover:shadow-md hover:-translate-y-0.5"
+      className="bg-white rounded-2xl border border-[rgba(184,138,90,0.1)] p-6 sm:p-8 transition-all duration-500 hover:border-[rgba(184,138,90,0.25)] hover:shadow-md hover:-translate-y-0.5"
     >
       <div className="flex items-center gap-1 mb-4">
         {Array.from({ length: item.rating }).map((_, j) => (
@@ -72,7 +42,7 @@ function TestimonialCard({ item }: { item: TestimonialItem }): React.JSX.Element
 function AwardCard({ item }: { item: AwardItem }): React.JSX.Element {
   return (
     <div
-      className="rounded-2xl bg-[#ECE7DD] flex flex-col items-center justify-center p-8 transition-all duration-400 group cursor-pointer"
+      className="rounded-2xl bg-[#ECE7DD] flex flex-col items-center justify-center p-6 sm:p-8 transition-all duration-400 group cursor-pointer"
       style={{ minHeight: "170px" }}
     >
       <span className="text-[#0B1220] font-heading font-bold text-2xl text-center leading-tight transition-all duration-300 group-hover:text-[#B88A5A]">
@@ -90,9 +60,21 @@ function GridCell({ children, className }: { children: ReactNode; className?: st
 }
 
 export default function TestimonialsSection(): React.JSX.Element {
+  const { t } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  const items: GridItem[] = [
+    { type: "testimonial", quote: t("testimonialsSection.testimonial1.quote"), name: t("testimonialsSection.testimonial1.name"), rating: 5 },
+    { type: "award", title: t("testimonialsSection.award1.stat"), subtitle: t("testimonialsSection.award1.label") },
+    { type: "testimonial", quote: t("testimonialsSection.testimonial2.quote"), name: t("testimonialsSection.testimonial2.name"), rating: 5 },
+    { type: "award", title: t("testimonialsSection.award2.stat"), subtitle: t("testimonialsSection.award2.label") },
+    { type: "testimonial", quote: t("testimonialsSection.testimonial3.quote"), name: t("testimonialsSection.testimonial3.name"), rating: 5 },
+    { type: "award", title: t("testimonialsSection.award3.stat"), subtitle: t("testimonialsSection.award3.label") },
+    { type: "testimonial", quote: t("testimonialsSection.testimonial4.quote"), name: t("testimonialsSection.testimonial4.name"), rating: 5 },
+    { type: "award", title: t("testimonialsSection.award4.stat"), subtitle: t("testimonialsSection.award4.label") },
+  ];
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -114,11 +96,11 @@ export default function TestimonialsSection(): React.JSX.Element {
   const setRef = useCallback((i: number) => (el: HTMLDivElement | null) => { cardsRef.current[i] = el; }, []);
 
   return (
-    <section ref={sectionRef} className="bg-[#F2EFE9] noise accent-top relative py-20 sm:py-24 px-6" id="avis-google">
+    <section ref={sectionRef} className="bg-[#F2EFE9] noise accent-top relative py-12 sm:py-24 px-6" id="avis-google">
       <div className="max-w-7xl mx-auto">
-        <div ref={headingRef} className="flex justify-center text-center mb-12 sm:mb-16 lg:mb-24">
+        <div ref={headingRef} className="flex justify-center text-center mb-8 sm:mb-16 lg:mb-24">
           <h2 className="heading-serif text-4xl sm:text-5xl text-[#0B1220]">
-            Ils nous font confiance
+            {t("testimonialsSection.heading")}
           </h2>
         </div>
 

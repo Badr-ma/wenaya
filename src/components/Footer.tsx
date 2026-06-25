@@ -4,35 +4,9 @@ import Link from "next/link";
 import { useRef, useEffect, useState, useCallback } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useLocale } from "@/contexts/LanguageContext";
 
 gsap.registerPlugin(ScrollTrigger);
-
-const footerLinks = [
-  {
-    title: "Navigation",
-    links: [
-      { label: "Qui sommes nous", href: "/about" },
-      { label: "Spécialités", href: "#" },
-      { label: "Cours & Ateliers", href: "#" },
-      { label: "Pour les entreprises", href: "/solutions/entreprises" },
-    ],
-  },
-  {
-    title: "Infos légales",
-    links: [
-      { label: "Politique de confidentialité", href: "/confidentialite" },
-      { label: "Conditions générales", href: "/conditions" },
-    ],
-  },
-  {
-    title: "Contact",
-    links: [
-      { label: "+212 6 66 12 40 35", href: "tel:+212666124035" },
-      { label: "Contact", href: "/contact" },
-    ],
-    extra: "88 Rue De Jabal Azourki, Casablanca 20930",
-  },
-];
 
 const socialLinks = [
   {
@@ -54,6 +28,7 @@ const socialLinks = [
 ];
 
 export default function Footer(): React.JSX.Element {
+  const { t, tRaw } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
   const bgTextRef = useRef<HTMLDivElement>(null);
@@ -199,7 +174,7 @@ export default function Footer(): React.JSX.Element {
                     Wenaya
                   </span>
                   <p className="text-[#2B2F36]/80 text-sm mt-4 max-w-sm leading-relaxed">
-                    Centre de santé pluridisciplinaire à Casablanca — Kinésithérapie, ostéopathie, psychologie, neuropsychologie, nutrition, orthophonie, naturopathie, psychomotricité et thérapies complémentaires. Soins physiques et santé mentale pour toute la famille.
+                    {t("footer.desc")}
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
@@ -222,36 +197,72 @@ export default function Footer(): React.JSX.Element {
               </div>
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8 flex-1">
-                {footerLinks.map((group) => (
-                  <div key={group.title}>
-                    <h4 className="text-[#0B1220]/50 font-heading font-semibold text-xs mb-6 uppercase tracking-[0.15em]">
-                      {group.title}
-                    </h4>
-                    <ul className="space-y-3">
-                      {group.links.map((link) => (
-                        <li key={link.label}>
-                          <Link
-                            href={link.href}
-                            className="text-[#2B2F36]/70 hover:text-[#0B1220] transition-all duration-300 text-sm leading-relaxed"
-                          >
-                            {link.label}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                    {"extra" in group && group.extra && (
-                      <p className="text-[#2B2F36]/40 text-sm mt-3">{group.extra}</p>
-                    )}
-                  </div>
-                ))}
+                <div>
+                  <h4 className="text-[#0B1220]/50 font-heading font-semibold text-xs mb-6 uppercase tracking-[0.15em]">
+                    {t("footer.navigation.title")}
+                  </h4>
+                  <ul className="space-y-3">
+                    {(tRaw<string[]>("footer.navigation.links")).map((label: string, i: number) => (
+                      <li key={label}>
+                        <Link
+                          href={["/about", "#", "#", "/solutions/entreprises"][i] || "#"}
+                          className="text-[#2B2F36]/70 hover:text-[#0B1220] transition-all duration-300 text-sm leading-relaxed"
+                        >
+                          {label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-[#0B1220]/50 font-heading font-semibold text-xs mb-6 uppercase tracking-[0.15em]">
+                    {t("footer.infosLegales.title")}
+                  </h4>
+                  <ul className="space-y-3">
+                    {(tRaw<string[]>("footer.infosLegales.links")).map((label: string, i: number) => (
+                      <li key={label}>
+                        <Link
+                          href={["/confidentialite", "/conditions"][i] || "#"}
+                          className="text-[#2B2F36]/70 hover:text-[#0B1220] transition-all duration-300 text-sm leading-relaxed"
+                        >
+                          {label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-[#0B1220]/50 font-heading font-semibold text-xs mb-6 uppercase tracking-[0.15em]">
+                    {t("footer.contact.title")}
+                  </h4>
+                  <ul className="space-y-3">
+                    <li>
+                      <a
+                        href="tel:+212666124035"
+                        className="text-[#2B2F36]/70 hover:text-[#0B1220] transition-all duration-300 text-sm leading-relaxed"
+                      >
+                        {t("footer.contact.phone")}
+                      </a>
+                    </li>
+                    <li>
+                      <Link
+                        href="/contact"
+                        className="text-[#2B2F36]/70 hover:text-[#0B1220] transition-all duration-300 text-sm leading-relaxed"
+                      >
+                        {t("footer.contact.contact")}
+                      </Link>
+                    </li>
+                  </ul>
+                  <p className="text-[#2B2F36]/40 text-sm mt-3">{t("footer.contact.address")}</p>
+                </div>
               </div>
 
               <div className="border-t border-[#0B1220]/10 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <p className="text-[#2B2F36]/50 text-xs">
-                  &copy; {new Date().getFullYear()} Wenaya. Tous droits réservés.
+                  {t("footer.copyright").replace("{year}", String(new Date().getFullYear()))}
                 </p>
                 <p className="text-[#2B2F36]/40 text-xs">
-                  Du lundi au samedi de 9h à 19h
+                  {t("footer.hours")}
                 </p>
               </div>
             </div>

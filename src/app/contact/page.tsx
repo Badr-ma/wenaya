@@ -1,64 +1,63 @@
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
+import { useLocale } from "@/contexts/LanguageContext";
 import Footer from "@/components/Footer";
 
-export const metadata: Metadata = {
-  title: "Contact — Wenaya | Casablanca, Maroc",
-  description: "Contactez Wenaya — 88 Rue De Jabal Azourki, Casablanca. Téléphone : +212 6 66 12 40 35. Ouvert du lundi au samedi de 8h à 20h.",
-  alternates: { canonical: "https://www.wenaya.com/contact" },
-};
-
 export default function ContactPage() {
+  const { t } = useLocale();
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex-1 bg-[#F2EFE9] pt-32 pb-20 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2.5 mb-8">
+        <div className="max-w-2xl mx-auto text-center mb-14">
+          <div className="inline-flex items-center gap-2.5 mb-6 justify-center">
             <div className="w-1 h-1 rounded-full bg-[#B88A5A]" />
-            <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.22em] uppercase">Contact</span>
+            <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.22em] uppercase">{t("contact.badge")}</span>
           </div>
 
-          <h1 className="text-[#0B1220] font-heading text-[clamp(2rem,4vw,3.2rem)] font-bold leading-[1.06] tracking-tight mb-6">
-            Prenez rendez-vous
+          <h1 className="heading-serif text-[clamp(2.5rem,5vw,4.5rem)] text-[#0B1220] mb-6">
+            {t("contact.heading")}
           </h1>
-          <p className="text-[#2B2F36]/55 text-sm max-w-lg mb-14 leading-relaxed">
-            Notre équipe est à votre écoute du lundi au samedi, de 8h à 20h.
+          <p className="text-[#2B2F36]/55 text-sm max-w-lg mx-auto mb-14 leading-relaxed">
+            {t("contact.sub")}
           </p>
+        </div>
 
+        <div className="max-w-4xl mx-auto">
           <div className="grid md:grid-cols-2 gap-8 mb-14">
             <div className="space-y-6">
-              <InfoCard title="Adresse" icon={<PinIcon />}>
-                <p>88 Rue De Jabal Azourki</p>
-                <p className="text-[#2B2F36]/50">Casablanca 20930</p>
+              <InfoCard title={t("contact.adresse")} icon={<PinIcon />}>
+                <p>{t("contact.addressLine1")}</p>
+                <p className="text-[#2B2F36]/50">{t("contact.addressLine2")}</p>
               </InfoCard>
-              <InfoCard title="Téléphone" icon={<PhoneIcon />}>
+              <InfoCard title={t("contact.telephone")} icon={<PhoneIcon />}>
                 <Link href="tel:+212666124035" className="text-[#159AA9] hover:text-[#1AB0C0] transition-colors">
-                  +212 6 66 12 40 35
+                  {t("contact.phone")}
                 </Link>
               </InfoCard>
-              <InfoCard title="Email" icon={<MailIcon />}>
+              <InfoCard title={t("contact.email")} icon={<MailIcon />}>
                 <a href="mailto:contact@wenaya.com" className="text-[#159AA9] hover:text-[#1AB0C0] transition-colors">
-                  contact@wenaya.com
+                  {t("contact.emailAddr")}
                 </a>
               </InfoCard>
-              <InfoCard title="Horaires" icon={<ClockIcon />}>
-                <p>Lun–Sam : 8h00 – 20h00</p>
-                <p className="text-[#2B2F36]/50">Fermé le dimanche</p>
+              <InfoCard title={t("contact.horaires")} icon={<ClockIcon />}>
+                <p>{t("contact.hoursWeek")}</p>
+                <p className="text-[#2B2F36]/50">{t("contact.hoursClosed")}</p>
               </InfoCard>
             </div>
 
             <div className="bg-white/60 rounded-2xl p-6 sm:p-8 border border-[#0B1220]/[0.06]">
-              <h2 className="text-[#0B1220] font-heading font-semibold text-lg mb-6">Envoyez-nous un message</h2>
+              <h2 className="text-[#0B1220] font-heading font-semibold text-lg mb-6">{t("contact.formTitle")}</h2>
               <form className="space-y-4">
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <Input label="Prénom" placeholder="Votre prénom" />
-                  <Input label="Nom" placeholder="Votre nom" />
+                  <Input label={t("contact.prenom")} placeholder={t("contact.prenomPlaceholder")} />
+                  <Input label={t("contact.nom")} placeholder={t("contact.nomPlaceholder")} />
                 </div>
-                <Input label="Email" type="email" placeholder="votre@email.com" />
-                <Input label="Téléphone" type="tel" placeholder="+212 6 XX XX XX XX" />
+                <Input label={t("contact.emailForm")} type="email" placeholder={t("contact.emailPlaceholder")} />
+                <Input label={t("contact.telephoneForm")} type="tel" placeholder={t("contact.telPlaceholder")} />
                 <div>
-                  <label className="block text-[#0B1220]/60 text-xs font-medium tracking-wide mb-1.5">Message</label>
-                  <textarea rows={4} placeholder="Votre message..."
+                  <label className="block text-[#0B1220]/60 text-xs font-medium tracking-wide mb-1.5">{t("contact.message")}</label>
+                  <textarea rows={4} placeholder={t("contact.messagePlaceholder")}
                     className="w-full rounded-xl border border-[#0B1220]/[0.08] bg-white/80 px-4 py-3 text-sm text-[#0B1220] placeholder-[#0B1220]/25 outline-none transition-all duration-200 focus:border-[#B88A5A]/40 focus:bg-white focus:shadow-[0_0_0_3px_rgba(184,138,90,0.08)] resize-none"
                   />
                 </div>
@@ -69,7 +68,7 @@ export default function ContactPage() {
                     boxShadow: "0 1px 0 rgba(255,255,255,0.14) inset, 0 4px 16px rgba(184,138,90,0.28)",
                   }}
                 >
-                  Envoyer
+                  {t("contact.envoyer")}
                 </button>
               </form>
             </div>
@@ -79,7 +78,7 @@ export default function ContactPage() {
           <div className="rounded-2xl overflow-hidden border border-[#0B1220]/[0.06] h-[250px] sm:h-[320px] bg-white/40 flex items-center justify-center">
             <div className="text-center">
               <PinIcon />
-              <p className="text-[#2B2F36]/30 text-sm mt-2">88 Rue De Jabal Azourki, Casablanca</p>
+              <p className="text-[#2B2F36]/30 text-sm mt-2">{t("contact.mapText")}</p>
             </div>
           </div>
         </div>

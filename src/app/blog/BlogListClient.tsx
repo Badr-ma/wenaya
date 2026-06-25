@@ -6,8 +6,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { formatDate, categoryColors, type PostWithAuthor } from "@/lib/blog-utils";
 import type { Category } from "@/lib/blog";
+import { useLocale } from "@/contexts/LanguageContext";
 
 function BlogCard({ post, index }: { post: PostWithAuthor; index: number }) {
+  const { t } = useLocale();
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
 
@@ -63,7 +65,7 @@ function BlogCard({ post, index }: { post: PostWithAuthor; index: number }) {
             </div>
           )}
           <div className="mt-4 flex items-center gap-1.5 text-sm font-medium text-[#B88A5A] opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
-            <span>Lire l&apos;article</span>
+            <span>{t("blog.lireArticle")}</span>
             <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
             </svg>
@@ -82,6 +84,7 @@ export default function BlogListClient({
   categories: Category[];
 }) {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const { t } = useLocale();
   const filtered = activeCategory ? posts.filter((p) => p.category?.slug === activeCategory) : posts;
 
   return (
@@ -96,7 +99,7 @@ export default function BlogListClient({
                 : "bg-white text-gray-500 border border-gray-200 hover:border-[#B88A5A]/30 hover:text-[#B88A5A]"
             }`}
           >
-            Tous
+            {t("blog.tous")}
           </button>
           {categories.map((cat) => (
             <button
@@ -115,7 +118,7 @@ export default function BlogListClient({
 
         {filtered.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-gray-400 text-lg">Aucun article dans cette catégorie.</p>
+            <p className="text-gray-400 text-lg">{t("blog.aucunDansCategorie")}</p>
           </div>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">

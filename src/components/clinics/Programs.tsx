@@ -3,72 +3,43 @@
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useLocale } from "@/contexts/LanguageContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const offers = [
+const visualOffers = [
   {
-    title: "Plateforme de Prévention",
-    desc: "Un tableau de bord complet pour suivre les biomarqueurs, les habitudes et les risques de vos patients. Alertes personnalisées et recommandations automatiques.",
-    icon: (
-      <svg viewBox="0 0 48 48" className="w-8 h-8" fill="none">
-        <rect x="8" y="12" width="32" height="28" rx="3" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M16 8v6M32 8v6M12 24h24M12 32h16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        <circle cx="34" cy="32" r="3" stroke="currentColor" strokeWidth="1.5" />
-      </svg>
-    ),
-    gradient: "from-[#159AA9]/10 to-[#0D7A87]/5",
-    border: "border-[#159AA9]/15",
-    accent: "#159AA9",
-  },
-  {
-    title: "Programmes Bien-être",
-    desc: "Des parcours clé en main : gestion du stress, nutrition de précision, récupération physique et santé mentale — adaptés à la patientèle de votre clinique.",
-    icon: (
-      <svg viewBox="0 0 48 48" className="w-8 h-8" fill="none">
-        <path d="M24 6v36M6 24h36" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        <circle cx="24" cy="24" r="10" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M18 24l4 4 8-8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    ),
+    icon: (<svg viewBox="0 0 48 48" className="w-8 h-8" fill="none"><rect x="8" y="12" width="32" height="28" rx="3" stroke="currentColor" strokeWidth="1.5" /><path d="M16 8v6M32 8v6M12 24h24M12 32h16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /><circle cx="34" cy="32" r="3" stroke="currentColor" strokeWidth="1.5" /></svg>),
     gradient: "from-[#B88A5A]/10 to-[#9A7242]/5",
     border: "border-[#B88A5A]/15",
     accent: "#B88A5A",
   },
   {
-    title: "Orchestration Pluridisciplinaire",
-    desc: "Coordination fluide entre kinésithérapeutes, psychologues, nutritionnistes et médecins de votre clinique. Référencements croisés et suivi unifié.",
-    icon: (
-      <svg viewBox="0 0 48 48" className="w-8 h-8" fill="none">
-        <circle cx="16" cy="16" r="5" stroke="currentColor" strokeWidth="1.5" />
-        <circle cx="32" cy="16" r="5" stroke="currentColor" strokeWidth="1.5" />
-        <circle cx="24" cy="32" r="5" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M20 20l-2 8M28 20l2 8" stroke="currentColor" strokeWidth="1.5" />
-      </svg>
-    ),
-    gradient: "from-[#159AA9]/10 to-[#B88A5A]/5",
-    border: "border-[#159AA9]/15",
-    accent: "#159AA9",
+    icon: (<svg viewBox="0 0 48 48" className="w-8 h-8" fill="none"><path d="M24 6v36M6 24h36" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /><circle cx="24" cy="24" r="10" stroke="currentColor" strokeWidth="1.5" /><path d="M18 24l4 4 8-8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>),
+    gradient: "from-[#B88A5A]/10 to-[#9A7242]/5",
+    border: "border-[#B88A5A]/15",
+    accent: "#B88A5A",
   },
   {
-    title: "Outils Analytiques",
-    desc: "Rapports agrégés, tendances de santé, indicateurs de performance et tableaux de bord comparatifs pour piloter la qualité de vos soins.",
-    icon: (
-      <svg viewBox="0 0 48 48" className="w-8 h-8" fill="none">
-        <rect x="8" y="28" width="8" height="12" rx="1" stroke="currentColor" strokeWidth="1.5" />
-        <rect x="20" y="18" width="8" height="22" rx="1" stroke="currentColor" strokeWidth="1.5" />
-        <rect x="32" y="8" width="8" height="32" rx="1" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M6 44h36" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      </svg>
-    ),
-    gradient: "from-[#0D7A87]/10 to-[#159AA9]/5",
-    border: "border-[#0D7A87]/15",
-    accent: "#0D7A87",
+    icon: (<svg viewBox="0 0 48 48" className="w-8 h-8" fill="none"><circle cx="16" cy="16" r="5" stroke="currentColor" strokeWidth="1.5" /><circle cx="32" cy="16" r="5" stroke="currentColor" strokeWidth="1.5" /><circle cx="24" cy="32" r="5" stroke="currentColor" strokeWidth="1.5" /><path d="M20 20l-2 8M28 20l2 8" stroke="currentColor" strokeWidth="1.5" /></svg>),
+    gradient: "from-[#B88A5A]/10 to-[#B88A5A]/5",
+    border: "border-[#B88A5A]/15",
+    accent: "#B88A5A",
+  },
+  {
+    icon: (<svg viewBox="0 0 48 48" className="w-8 h-8" fill="none"><rect x="8" y="28" width="8" height="12" rx="1" stroke="currentColor" strokeWidth="1.5" /><rect x="20" y="18" width="8" height="22" rx="1" stroke="currentColor" strokeWidth="1.5" /><rect x="32" y="8" width="8" height="32" rx="1" stroke="currentColor" strokeWidth="1.5" /><path d="M6 44h36" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>),
+    gradient: "from-[#9A7242]/10 to-[#B88A5A]/5",
+    border: "border-[#9A7242]/15",
+    accent: "#9A7242",
   },
 ];
 
 export default function ClinicsPrograms(): React.JSX.Element {
   const sectionRef = useRef<HTMLElement>(null);
+  const { t, tRaw } = useLocale();
+
+  const rawOffers = tRaw<{ title: string; desc: string }[]>("clinics.programs.offers");
+  const offers = rawOffers.map((o, i) => ({ ...o, ...visualOffers[i] }));
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -90,18 +61,15 @@ export default function ClinicsPrograms(): React.JSX.Element {
   return (
     <section ref={sectionRef} className="bg-[#F2EFE9] py-20 sm:py-28 px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-14 sm:mb-16">
+        <div className="mx-auto text-center mb-14 sm:mb-16 max-w-2xl">
           <div className="inline-flex items-center gap-2.5 mb-5">
-            <div className="w-1 h-1 rounded-full bg-[#159AA9]" />
-            <span className="text-[#159AA9] text-[11px] font-semibold tracking-[0.22em] uppercase">
-              Notre Offre
+            <div className="w-1 h-1 rounded-full bg-[#B88A5A]" />
+            <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.22em] uppercase">
+              {t("clinics.programs.badge")}
             </span>
           </div>
-          <h2 className="text-[#0B1220] font-heading"
-            style={{ fontSize: "clamp(2.2rem, 4vw, 3.8rem)", fontWeight: 500, lineHeight: 1.08, letterSpacing: "-0.015em" }}
-          >
-            Tout ce qu&apos;il faut pour<br />
-            <span className="italic" style={{ color: "#159AA9" }}>élever votre clinique.</span>
+          <h2 className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220]">
+            {t("clinics.programs.heading")}
           </h2>
         </div>
 

@@ -3,38 +3,23 @@
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useLocale } from "@/contexts/LanguageContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const reasons = [
-  {
-    num: "01",
-    title: "Différenciation",
-    desc: "Positionnez votre clinique comme un établissement de référence en santé préventive et intégrée au Maroc.",
-    decoration: "#159AA9",
-  },
-  {
-    num: "02",
-    title: "Fidélisation",
-    desc: "Offrez un suivi continu entre les consultations — vos patients restent engagés et connectés à votre clinique.",
-    decoration: "#B88A5A",
-  },
-  {
-    num: "03",
-    title: "Efficacité",
-    desc: "Automatisez le suivi préventif et libérez du temps médical grâce à nos outils d'orchestration intelligents.",
-    decoration: "#159AA9",
-  },
-  {
-    num: "04",
-    title: "Croissance",
-    desc: "Attirez une nouvelle patientèle sensible à la prévention et au bien-être, avec des programmes innovants.",
-    decoration: "#B88A5A",
-  },
+const visualReasons = [
+  { num: "01", decoration: "#B88A5A" },
+  { num: "02", decoration: "#B88A5A" },
+  { num: "03", decoration: "#B88A5A" },
+  { num: "04", decoration: "#B88A5A" },
 ];
 
 export default function ClinicsWhy(): React.JSX.Element {
   const sectionRef = useRef<HTMLElement>(null);
+  const { t, tRaw } = useLocale();
+
+  const rawReasons = tRaw<{ title: string; desc: string }[]>("clinics.why.reasons");
+  const reasons = rawReasons.map((r, i) => ({ ...r, ...visualReasons[i] }));
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -63,18 +48,15 @@ export default function ClinicsWhy(): React.JSX.Element {
       />
 
       <div className="max-w-7xl mx-auto relative">
-        <div className="mb-14 sm:mb-16">
+        <div className="mx-auto text-center mb-14 sm:mb-16 max-w-2xl">
           <div className="inline-flex items-center gap-2.5 mb-5">
             <div className="w-1 h-1 rounded-full bg-[#B88A5A]" />
             <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.22em] uppercase">
-              Pourquoi Wenaya
+              {t("clinics.why.badge")}
             </span>
           </div>
-          <h2 className="text-[#0B1220] font-heading"
-            style={{ fontSize: "clamp(2rem, 3.6vw, 3.4rem)", fontWeight: 500, lineHeight: 1.08, letterSpacing: "-0.015em" }}
-          >
-            Une clinique qui anticipe,<br />
-            <span className="italic text-[#B88A5A]">c&apos;est une clinique qui grandit.</span>
+          <h2 className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220]">
+            {t("clinics.why.heading")}
           </h2>
         </div>
 
@@ -96,10 +78,10 @@ export default function ClinicsWhy(): React.JSX.Element {
 
         <div className="cw-item mt-16 pt-8 border-t border-[#0B1220]/[0.06] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
           <p className="text-[#2B2F36]/45 text-sm max-w-md">
-            Rejoignez les 15+ cliniques qui utilisent déjà Wenaya pour transformer leur approche de la santé.
+            {t("clinics.why.bottom")}
           </p>
-          <a href="#" className="inline-flex items-center gap-2 text-[#159AA9] text-sm font-semibold hover:gap-3 transition-all duration-300">
-            Demander une démo
+          <a href="#" className="inline-flex items-center gap-2 text-[#B88A5A] text-sm font-semibold hover:gap-3 transition-all duration-300">
+            {t("clinics.why.cta")}
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>

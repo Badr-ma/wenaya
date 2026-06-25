@@ -2,55 +2,47 @@
 
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
+import { useLocale } from "@/contexts/LanguageContext";
 
-const entries = [
-  {
-    title: "Clinics",
-    desc: "Des centres dédiés à votre prévention, votre performance et votre récupération.",
-    cta: "Découvrir la clinique",
-    icon: (
-      <svg viewBox="0 0 48 48" className="w-10 h-10" fill="none">
-        <rect x="10" y="14" width="28" height="28" rx="3" stroke="currentColor" strokeWidth="1" />
-        <path d="M22 24v8M18 28h8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-        <path d="M16 14V10a2 2 0 012-2h12a2 2 0 012 2v4" stroke="currentColor" strokeWidth="1" />
-      </svg>
-    ),
-    stats: "1 centre · 35 thérapeutes · 9 disciplines",
-    featured: true,
-  },
-  {
-    title: "Corporate",
-    desc: "Des programmes de santé proactive pour vos équipes.",
-    cta: "Découvrir Corporate",
-    icon: (
-      <svg viewBox="0 0 48 48" className="w-10 h-10" fill="none">
-        <rect x="8" y="22" width="32" height="20" rx="2" stroke="currentColor" strokeWidth="1" />
-        <rect x="16" y="10" width="16" height="12" rx="1" stroke="currentColor" strokeWidth="1" />
-        <path d="M20 30h8M20 34h8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-      </svg>
-    ),
-    stats: "Audit gratuit · Programmes sur mesure · Suivi RH",
-  },
-  {
-    title: "Hospitality",
-    desc: "Des expériences de récupération et de longévité, intégrées aux lieux d'hospitalité premium.",
-    cta: "Bientôt disponible",
-    icon: (
-      <svg viewBox="0 0 48 48" className="w-10 h-10" fill="none">
-        <path d="M8 40V14l16-8 16 8v26" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-        <rect x="18" y="26" width="12" height="14" rx="1" stroke="currentColor" strokeWidth="1" />
-        <path d="M14 40h20" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-      </svg>
-    ),
-    stats: "Hôtels · Resorts · Retreats premium",
-    soon: true,
-  },
+const cardKeys = [
+  { key: "clinics", featured: true, icon: (
+    <svg viewBox="0 0 48 48" className="w-10 h-10" fill="none">
+      <rect x="10" y="14" width="28" height="28" rx="3" stroke="currentColor" strokeWidth="1" />
+      <path d="M22 24v8M18 28h8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+      <path d="M16 14V10a2 2 0 012-2h12a2 2 0 012 2v4" stroke="currentColor" strokeWidth="1" />
+    </svg>
+  )},
+  { key: "corporate", featured: false, icon: (
+    <svg viewBox="0 0 48 48" className="w-10 h-10" fill="none">
+      <rect x="8" y="22" width="32" height="20" rx="2" stroke="currentColor" strokeWidth="1" />
+      <rect x="16" y="10" width="16" height="12" rx="1" stroke="currentColor" strokeWidth="1" />
+      <path d="M20 30h8M20 34h8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+    </svg>
+  )},
+  { key: "hospitality", featured: false, soon: true, icon: (
+    <svg viewBox="0 0 48 48" className="w-10 h-10" fill="none">
+      <path d="M8 40V14l16-8 16 8v26" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="18" y="26" width="12" height="14" rx="1" stroke="currentColor" strokeWidth="1" />
+      <path d="M14 40h20" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+    </svg>
+  )},
 ];
 
 export default function ComparisonTable(): React.JSX.Element {
+  const { t } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  const entries = cardKeys.map((c) => ({
+    title: t(`comparisonTable.${c.key}.title`),
+    desc: t(`comparisonTable.${c.key}.desc`),
+    cta: t(`comparisonTable.${c.key}.cta`),
+    stats: t(`comparisonTable.${c.key}.stats`),
+    icon: c.icon,
+    featured: c.featured,
+    soon: "soon" in c,
+  }));
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -76,17 +68,17 @@ export default function ComparisonTable(): React.JSX.Element {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-[#F2EFE9] py-16 sm:py-20 px-6" id="ecosysteme">
+    <section ref={sectionRef} className="bg-[#F2EFE9] py-10 sm:py-20 px-6" id="ecosysteme">
       <div className="max-w-6xl mx-auto">
-        <div ref={headingRef} className="text-center mb-16">
+        <div ref={headingRef} className="text-center mb-8 sm:mb-16">
           <span className="text-[#B88A5A] font-semibold text-sm tracking-widest uppercase">
-            Clinics · Corporate · Hospitality
+            {t("comparisonTable.badge")}
           </span>
           <h2 className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220] mt-4">
-            L&apos;écosystème Wenaya.
+            {t("comparisonTable.heading")}
           </h2>
           <p className="text-[#2B2F36] text-sm sm:text-base mt-4 max-w-2xl mx-auto">
-            Trois portes d&apos;entrée. Une seule promesse.
+            {t("comparisonTable.sub")}
           </p>
         </div>
 

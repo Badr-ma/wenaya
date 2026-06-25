@@ -4,42 +4,31 @@ import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
+import { useLocale } from "@/contexts/LanguageContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const supports = [
-  {
-    title: "Accompagnement dédié",
-    desc: "Un chef de projet unique, de la signature au déploiement. Interlocuteur unique, suivi personnalisé, réactivité garantie.",
-    icon: (
-      <svg viewBox="0 0 48 48" className="w-5 h-5" fill="none">
-        <path d="M24 6c-8.837 0-16 5.373-16 12 0 3.708 2.087 7.047 5.333 9.333L12 38l6.667-4.667A18.27 18.27 0 0024 34c8.837 0 16-5.373 16-12S32.837 6 24 6z" stroke="currentColor" strokeWidth="1.5" />
-      </svg>
-    ),
-  },
-  {
-    title: "Outils clés en main",
-    desc: "Supports de communication, affichages, emails types, vidéos de présentation — tout pour engager vos équipes dès le jour J.",
-    icon: (
-      <svg viewBox="0 0 48 48" className="w-5 h-5" fill="none">
-        <rect x="10" y="8" width="28" height="32" rx="3" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M18 18h12M18 26h8M18 34h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" opacity="0.5" />
-      </svg>
-    ),
-  },
-  {
-    title: "Reporting & ROI",
-    desc: "Tableaux de bord consolidés, indicateurs d'engagement, bilans trimestriels. Des données pour piloter votre politique QVT.",
-    icon: (
-      <svg viewBox="0 0 48 48" className="w-5 h-5" fill="none">
-        <path d="M10 38V16l8-4 12 8 8-4v22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M18 24v10M28 20v14M38 16v18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      </svg>
-    ),
-  },
-];
-
 export default function EntreprisesCta(): React.JSX.Element {
+  const { t, tRaw } = useLocale();
+
+  const supportIcons: React.JSX.Element[] = [
+    (<svg viewBox="0 0 48 48" className="w-5 h-5" fill="none">
+      <path d="M24 6c-8.837 0-16 5.373-16 12 0 3.708 2.087 7.047 5.333 9.333L12 38l6.667-4.667A18.27 18.27 0 0024 34c8.837 0 16-5.373 16-12S32.837 6 24 6z" stroke="currentColor" strokeWidth="1.5" />
+    </svg>),
+    (<svg viewBox="0 0 48 48" className="w-5 h-5" fill="none">
+      <rect x="10" y="8" width="28" height="32" rx="3" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M18 18h12M18 26h8M18 34h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" opacity="0.5" />
+    </svg>),
+    (<svg viewBox="0 0 48 48" className="w-5 h-5" fill="none">
+      <path d="M10 38V16l8-4 12 8 8-4v22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M18 24v10M28 20v14M38 16v18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>),
+  ];
+
+  const supports = (tRaw<Array<{title: string; desc: string}>>("entreprises.cta.supportCards")).map((s, i) => ({ ...s, icon: supportIcons[i] }));
+
+  const dirigeantsBullets = tRaw<string[]>("entreprises.cta.dirigeantsBullets");
+
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -90,16 +79,16 @@ export default function EntreprisesCta(): React.JSX.Element {
         <div className="absolute inset-0 pointer-events-none opacity-20" style={{ backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
 
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="max-w-2xl mb-14">
+          <div className="max-w-2xl mx-auto mb-14 text-center">
             <div className="ecta-fade">
               <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">
                 <span className="w-6 h-px bg-[#B88A5A]/40" />
-                Votre équipe dédiée
+                {t("entreprises.cta.supportBadge")}
               </span>
             </div>
-            <h2 className="ecta-fade heading-lg text-white mt-5">Un support à chaque étape</h2>
-            <p className="ecta-fade text-white/40 text-sm sm:text-base leading-relaxed mt-4 max-w-lg">
-              Nous ne déployons pas un programme — nous construisons une relation. De la conception au suivi, une équipe vous accompagne.
+            <h2 className="ecta-fade heading-serif text-[clamp(2rem,4vw,3.5rem)] text-white mt-5">{t("entreprises.cta.supportHeading")}</h2>
+            <p className="ecta-fade text-white/40 text-sm sm:text-base leading-relaxed mt-4 max-w-lg mx-auto">
+              {t("entreprises.cta.supportDesc")}
             </p>
           </div>
 
@@ -141,22 +130,17 @@ export default function EntreprisesCta(): React.JSX.Element {
                 <div className="ecta-fade">
                   <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">
                     <span className="w-3 h-px bg-[#B88A5A]/40" />
-                    Pour vos dirigeants
+                    {t("entreprises.cta.dirigeantsBadge")}
                   </span>
                 </div>
                 <h3 className="ecta-fade text-white font-heading font-semibold mt-5" style={{ fontSize: "clamp(1.5rem, 2.5vw, 2rem)", lineHeight: 1.15 }}>
-                  Vos leaders sont votre avantage
+                  {t("entreprises.cta.dirigeantsHeading")}
                 </h3>
                 <p className="ecta-fade text-white/40 text-sm sm:text-base leading-relaxed mt-4">
-                  Un accompagnement santé premium pour vos cadres et dirigeants. Bilan complet, suivi personnalisé
-                  et accès prioritaire à nos thérapeutes.
+                  {t("entreprises.cta.dirigeantsDesc")}
                 </p>
                 <ul className="ecta-fade mt-6 space-y-3">
-                  {[
-                    "Bilan santé complet avec nos spécialistes",
-                    "Suivi personnalisé et confidentiel",
-                    "Accès prioritaire aux consultations",
-                  ].map((item, i) => (
+                  {dirigeantsBullets.map((item, i) => (
                     <li key={i} className="flex items-start gap-3 text-white/50 text-sm">
                       <svg className="w-4 h-4 mt-0.5 shrink-0 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -170,7 +154,7 @@ export default function EntreprisesCta(): React.JSX.Element {
                   onClick={(e) => e.preventDefault()}
                   className="ecta-fade inline-flex items-center gap-2 mt-6 text-[#B88A5A] text-sm font-medium hover:gap-3 transition-all duration-200"
                 >
-                  En savoir plus
+                  {t("entreprises.cta.dirigeantsCta")}
                   <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
@@ -194,7 +178,7 @@ export default function EntreprisesCta(): React.JSX.Element {
                 <div className="absolute bottom-4 left-4">
                   <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#0B1220]/60 backdrop-blur-sm border border-white/[0.06] text-white/60 text-[10px] font-medium tracking-wide">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#B88A5A]/60" />
-                    Programme dirigeant
+                    {t("entreprises.cta.imageBadge")}
                   </span>
                 </div>
                 <div className="absolute inset-0 ring-1 ring-white/[0.06] ring-inset rounded-xl" />
@@ -213,12 +197,12 @@ export default function EntreprisesCta(): React.JSX.Element {
               <path d="M9.333 20c0-2.667 1.334-5.333 4-8L16 8l1.333 1.333C15.111 11.556 14 13.778 14 16v4H9.333zM20 20c0-2.667 1.333-5.333 4-8L26.667 8 28 9.333c-2.222 2.223-3.333 4.445-3.333 6.667V20H20z" fill="currentColor" />
             </svg>
             <blockquote className="text-white/55 leading-relaxed mx-auto max-w-2xl" style={{ fontSize: "clamp(1rem, 1.6vw, 1.2rem)", fontStyle: "italic" }}>
-              « Nous déployons un programme annuel Wenaya pour plus de 900 collaborateurs. La capacité de l&apos;équipe à adapter les formats à nos contraintes terrain — multi-sites, agendas surchargés, créneaux variables — fait toute la différence. L&apos;adhésion dépasse nos attentes. »
+              {t("entreprises.cta.quote")}
             </blockquote>
             <div className="mt-5 flex items-center justify-center gap-2 sm:gap-3 flex-wrap">
               <div className="w-4 sm:w-6 h-px bg-[#B88A5A]/40 shrink-0" />
               <span className="text-white/30 text-[10px] sm:text-[11px] font-medium tracking-[0.15em] uppercase text-center">
-                DRH, multinationale du conseil · +900 collaborateurs
+                {t("entreprises.cta.quoteAttr")}
               </span>
               <div className="w-4 sm:w-6 h-px bg-[#B88A5A]/40 shrink-0" />
             </div>
@@ -233,15 +217,12 @@ export default function EntreprisesCta(): React.JSX.Element {
 
           {/* Headline */}
           <h2 className="ecta-fade text-white" style={{ fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif", fontSize: "clamp(2.8rem, 5vw, 4.5rem)", fontWeight: 500, lineHeight: 1.06, letterSpacing: "-0.02em" }}>
-            Discutons de votre<br />
-            <span style={{ background: "linear-gradient(135deg, #D4A870 0%, #B88A5A 50%, #E8C99A 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontStyle: "italic" }}>
-              projet bien-être.
-            </span>
+            {t("entreprises.cta.finalHeading")}
           </h2>
 
           {/* Sub */}
           <p className="ecta-fade mt-6 max-w-lg mx-auto leading-[1.75]" style={{ color: "rgba(255,255,255,0.38)", fontSize: "clamp(0.9rem, 1.3vw, 1.05rem)" }}>
-            30 minutes pour comprendre vos enjeux et identifier les pistes adaptées à vos équipes. Sans engagement.
+            {t("entreprises.cta.finalSub")}
           </p>
 
           {/* CTAs */}
@@ -253,7 +234,7 @@ export default function EntreprisesCta(): React.JSX.Element {
               className="inline-flex items-center justify-center gap-2 h-12 px-8 rounded-xl text-white text-sm font-semibold transition-all duration-300 hover:-translate-y-px active:translate-y-0 sm:w-auto w-full"
               style={{ background: "linear-gradient(135deg, #C99B68 0%, #9A7242 100%)", boxShadow: "0 1px 0 rgba(255,255,255,0.14) inset, 0 6px 28px rgba(184,138,90,0.35)" }}
             >
-              Réserver un audit gratuit
+              {t("entreprises.cta.cta1")}
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
@@ -263,13 +244,13 @@ export default function EntreprisesCta(): React.JSX.Element {
               onClick={(e) => e.preventDefault()}
               className="inline-flex items-center justify-center gap-2 h-12 px-7 rounded-xl text-white/45 text-sm font-medium border border-white/[0.08] transition-all duration-300 hover:text-white hover:border-white/[0.16] hover:bg-white/[0.03] sm:w-auto w-full"
             >
-              Demander un devis personnalisé
+              {t("entreprises.cta.cta2")}
             </a>
           </div>
 
           {/* Contact */}
           <p className="ecta-fade mt-10 text-[11px] tracking-[0.08em]" style={{ color: "rgba(255,255,255,0.18)" }}>
-            88 Rue De Jabal Azourki · Casablanca · Lun–Sam 8h–20h · +212 6 66 12 40 35
+            {t("entreprises.cta.contact")}
           </p>
         </div>
       </div>

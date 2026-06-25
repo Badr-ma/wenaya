@@ -4,6 +4,7 @@ import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
+import { useLocale } from "@/contexts/LanguageContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,7 +17,7 @@ function Card({
 }): React.JSX.Element {
   return (
     <div
-      className="relative flex flex-col rounded-2xl px-8 py-10 min-h-[440px]"
+      className="relative flex flex-col rounded-2xl px-6 sm:px-8 py-8 sm:py-10 min-h-[360px] sm:min-h-[440px]"
       style={{
         background: "#E8E2D9",
         border: "1px solid rgba(11,18,32,0.08)",
@@ -49,39 +50,47 @@ function AssessViz(): React.JSX.Element {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    let st: ScrollTrigger | null = null;
     const timers: ReturnType<typeof setTimeout>[] = [];
     let alive = true;
-    const scoreEl = el.querySelector<HTMLElement>(".as-score");
-    const arcEl = el.querySelector<SVGCircleElement>(".as-arc");
-    const pills = el.querySelectorAll<HTMLElement>(".as-pill");
-    const circ = 2 * Math.PI * 40;
-
-    let triggered = false;
-    ScrollTrigger.create({
-      trigger: el, start: "top 88%",
-      onEnter: () => {
-        if (triggered) return;
-        triggered = true;
-        let v = 0;
-        const si = setInterval(() => {
-          if (!alive) { clearInterval(si); return; }
-          v++;
-          if (scoreEl) scoreEl.textContent = String(v);
-          if (arcEl) arcEl.style.strokeDashoffset = String(circ - (circ * v) / 100);
-          if (v >= 65) clearInterval(si);
-        }, 22);
-        timers.push(setTimeout(() => clearInterval(si), 3000));
-        pills.forEach((p, i) =>
-          timers.push(setTimeout(() => {
-            if (!alive) return;
-            p.style.opacity = "1";
-            p.style.transform = "translateY(0)";
-          }, 1600 + i * 340))
-        );
-      },
-      once: true,
+    const raf = requestAnimationFrame(() => {
+      const scoreEl = el.querySelector<HTMLElement>(".as-score");
+      const arcEl = el.querySelector<SVGCircleElement>(".as-arc");
+      const pills = el.querySelectorAll<HTMLElement>(".as-pill");
+      const circ = 2 * Math.PI * 40;
+      let triggered = false;
+      st = ScrollTrigger.create({
+        trigger: el, start: "top 88%",
+        onEnter: () => {
+          if (triggered) return;
+          triggered = true;
+          let v = 0;
+          const si = setInterval(() => {
+            if (!alive) { clearInterval(si); return; }
+            v++;
+            if (scoreEl) scoreEl.textContent = String(v);
+            if (arcEl) arcEl.style.strokeDashoffset = String(circ - (circ * v) / 100);
+            if (v >= 65) clearInterval(si);
+          }, 22);
+          timers.push(setTimeout(() => clearInterval(si), 3000));
+          pills.forEach((p, i) =>
+            timers.push(setTimeout(() => {
+              if (!alive) return;
+              p.style.opacity = "1";
+              p.style.transform = "translateY(0)";
+            }, 1600 + i * 340))
+          );
+        },
+        once: true,
+      });
+      ScrollTrigger.refresh();
     });
-    return () => { alive = false; timers.forEach(clearTimeout); };
+    return () => {
+      cancelAnimationFrame(raf);
+      alive = false;
+      timers.forEach(clearTimeout);
+      if (st) st.kill();
+    };
   }, []);
 
   return (
@@ -117,44 +126,53 @@ function AssessViz(): React.JSX.Element {
 
 /* ── 2. Align — rows slide in + checkmarks ───────────────────── */
 function AlignViz(): React.JSX.Element {
+  const { t } = useLocale();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    let st: ScrollTrigger | null = null;
     const timers: ReturnType<typeof setTimeout>[] = [];
     let alive = true;
-    const items = el.querySelectorAll<HTMLElement>(".al-item");
-    const checks = el.querySelectorAll<HTMLElement>(".al-check");
-
-    let triggered = false;
-    ScrollTrigger.create({
-      trigger: el, start: "top 88%",
-      onEnter: () => {
-        if (triggered) return;
-        triggered = true;
-        items.forEach((it, i) =>
-          timers.push(setTimeout(() => {
-            if (!alive) return;
-            it.style.opacity = "1";
-            it.style.transform = "translateX(0)";
-          }, 300 + i * 480))
-        );
-        checks.forEach((c, i) =>
-          timers.push(setTimeout(() => {
-            if (!alive) return;
-            c.style.opacity = "1";
-          }, 620 + i * 480))
-        );
-      },
-      once: true,
+    const raf = requestAnimationFrame(() => {
+      const items = el.querySelectorAll<HTMLElement>(".al-item");
+      const checks = el.querySelectorAll<HTMLElement>(".al-check");
+      let triggered = false;
+      st = ScrollTrigger.create({
+        trigger: el, start: "top 88%",
+        onEnter: () => {
+          if (triggered) return;
+          triggered = true;
+          items.forEach((it, i) =>
+            timers.push(setTimeout(() => {
+              if (!alive) return;
+              it.style.opacity = "1";
+              it.style.transform = "translateX(0)";
+            }, 300 + i * 480))
+          );
+          checks.forEach((c, i) =>
+            timers.push(setTimeout(() => {
+              if (!alive) return;
+              c.style.opacity = "1";
+            }, 620 + i * 480))
+          );
+        },
+        once: true,
+      });
+      ScrollTrigger.refresh();
     });
-    return () => { alive = false; timers.forEach(clearTimeout); };
+    return () => {
+      cancelAnimationFrame(raf);
+      alive = false;
+      timers.forEach(clearTimeout);
+      if (st) st.kill();
+    };
   }, []);
 
   return (
     <div ref={ref} className="w-full space-y-2.5">
-      {["Alimentation", "Activité", "Sommeil"].map((label) => (
+      {[t("howItWorks.align.alimentation"), t("howItWorks.align.activite"), t("howItWorks.align.sommeil")].map((label) => (
         <div
           key={label}
           className="al-item flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-[#0B1220]/[0.06] border border-[#0B1220]/[0.08] transition-all duration-400"
@@ -177,40 +195,49 @@ function AlignViz(): React.JSX.Element {
 
 /* ── 3. Activate — timeline dots animate ────────────────────── */
 function ActivateViz(): React.JSX.Element {
+  const { t } = useLocale();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    let st: ScrollTrigger | null = null;
     const timers: ReturnType<typeof setTimeout>[] = [];
     let alive = true;
-    const dots = el.querySelectorAll<HTMLElement>(".ac-dot");
-    const lines = el.querySelectorAll<HTMLElement>(".ac-line");
-
-    let triggered = false;
-    ScrollTrigger.create({
-      trigger: el, start: "top 88%",
-      onEnter: () => {
-        if (triggered) return;
-        triggered = true;
-        dots.forEach((d, i) =>
-          timers.push(setTimeout(() => {
-            if (!alive) return;
-            d.style.borderColor = "#BBF6F3";
-            d.style.backgroundColor = "#BBF6F3";
-            d.style.color = "#0B1220";
-          }, 500 + i * 650))
-        );
-        lines.forEach((l, i) =>
-          timers.push(setTimeout(() => {
-            if (!alive) return;
-            l.style.width = "100%";
-          }, 680 + i * 650))
-        );
-      },
-      once: true,
+    const raf = requestAnimationFrame(() => {
+      const dots = el.querySelectorAll<HTMLElement>(".ac-dot");
+      const lines = el.querySelectorAll<HTMLElement>(".ac-line");
+      let triggered = false;
+      st = ScrollTrigger.create({
+        trigger: el, start: "top 88%",
+        onEnter: () => {
+          if (triggered) return;
+          triggered = true;
+          dots.forEach((d, i) =>
+            timers.push(setTimeout(() => {
+              if (!alive) return;
+              d.style.borderColor = "#BBF6F3";
+              d.style.backgroundColor = "#BBF6F3";
+              d.style.color = "#0B1220";
+            }, 500 + i * 650))
+          );
+          lines.forEach((l, i) =>
+            timers.push(setTimeout(() => {
+              if (!alive) return;
+              l.style.width = "100%";
+            }, 680 + i * 650))
+          );
+        },
+        once: true,
+      });
+      ScrollTrigger.refresh();
     });
-    return () => { alive = false; timers.forEach(clearTimeout); };
+    return () => {
+      cancelAnimationFrame(raf);
+      alive = false;
+      timers.forEach(clearTimeout);
+      if (st) st.kill();
+    };
   }, []);
 
   return (
@@ -233,8 +260,8 @@ function ActivateViz(): React.JSX.Element {
         ))}
       </div>
       <div className="rounded-xl bg-[#159AA9]/[0.06] border border-[#159AA9]/[0.12] px-4 py-3">
-        <div className="text-[10px] text-[#159AA9] font-semibold tracking-wide mb-0.5">Prochaine étape</div>
-        <div className="text-[12.5px] text-[#0B1220]/75 font-medium">Bilan de contrôle J45</div>
+        <div className="text-[10px] text-[#159AA9] font-semibold tracking-wide mb-0.5">{t("howItWorks.activate.prochaineEtape")}</div>
+        <div className="text-[12.5px] text-[#0B1220]/75 font-medium">{t("howItWorks.activate.bilanControle")}</div>
       </div>
     </div>
   );
@@ -242,6 +269,7 @@ function ActivateViz(): React.JSX.Element {
 
 /* ── 4. Sustain — Function Health-style upward line chart ───── */
 function SustainViz(): React.JSX.Element {
+  const { t } = useLocale();
   const svgRef = useRef<SVGSVGElement>(null);
   const W = 200, H = 90;
   const pts = [0.15, 0.26, 0.40, 0.54, 0.65, 0.75, 0.84];
@@ -294,7 +322,7 @@ function SustainViz(): React.JSX.Element {
     <div className="w-full flex flex-col gap-2.5">
       {/* Label + badge */}
       <div className="flex items-center justify-between">
-        <span className="text-[11px] text-[#2B2F36]/45 font-medium">Santé durable</span>
+        <span className="text-[11px] text-[#2B2F36]/45 font-medium">{t("howItWorks.sustain.santeDurable")}</span>
         <span className="text-[10.5px] font-bold px-2 py-0.5 rounded-full text-[#B88A5A] bg-[#B88A5A]/10">+41%</span>
       </div>
 
@@ -353,8 +381,8 @@ function SustainViz(): React.JSX.Element {
 
       {/* X-axis labels */}
       <div className="flex items-center justify-between">
-        <span className="text-[10px] text-[#2B2F36]/35">Mois 1</span>
-        <span className="text-[10px] text-[#2B2F36]/35">Mois 12</span>
+        <span className="text-[10px] text-[#2B2F36]/35">{t("howItWorks.sustain.mois1")}</span>
+        <span className="text-[10px] text-[#2B2F36]/35">{t("howItWorks.sustain.mois12")}</span>
       </div>
     </div>
   );
@@ -362,6 +390,7 @@ function SustainViz(): React.JSX.Element {
 
 /* ── Section ─────────────────────────────────────────────────── */
 export default function HowItWorks(): React.JSX.Element {
+  const { t } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const headRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -384,14 +413,21 @@ export default function HowItWorks(): React.JSX.Element {
         { opacity: 1, y: 0, duration: 0.5, delay: 0.2, ease: "power2.out", scrollTrigger: { trigger: el, start: "top 75%" } }
       );
     }, el);
-    return () => ctx.revert();
+    const onReady = () => ScrollTrigger.refresh();
+    if (document.fonts) document.fonts.ready.then(onReady);
+    if (document.readyState === "complete") onReady();
+    else window.addEventListener("load", onReady);
+    return () => {
+      ctx.revert();
+      window.removeEventListener("load", onReady);
+    };
   }, []);
 
   return (
     <section
       ref={sectionRef}
       id="method"
-      className="relative overflow-hidden py-16 sm:py-20 lg:py-24"
+      className="relative overflow-hidden py-12 sm:py-20 lg:py-24"
       style={{ background: "#FAF8F4" }}
     >
       <div
@@ -402,29 +438,24 @@ export default function HowItWorks(): React.JSX.Element {
       <div className="relative max-w-7xl mx-auto px-6 sm:px-10">
 
         {/* Header */}
-        <div ref={headRef} className="text-center mb-14 max-w-xl mx-auto">
+        <div ref={headRef} className="text-center mb-10 sm:mb-14 max-w-xl mx-auto">
           <div className="inline-flex items-center gap-2 mb-5">
             <div className="w-4 h-px bg-[#B88A5A]/40" />
-            <span className="text-[#B88A5A] text-[10.5px] font-bold tracking-[0.22em] uppercase">Méthode Wenaya</span>
+            <span className="text-[#B88A5A] text-[10.5px] font-bold tracking-[0.22em] uppercase">{t("howItWorks.badge")}</span>
             <div className="w-4 h-px bg-[#B88A5A]/40" />
           </div>
-          <h2
-            className="font-heading font-bold text-[#0B1220] leading-tight"
-            style={{ fontSize: "clamp(1.85rem, 3.5vw, 2.75rem)" }}
-          >
-            Votre parcours en{" "}
+          <h2 className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220]">
+            {t("howItWorks.heading1")}{" "}
             <span style={{
               background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
             }}>
-              quatre étapes
+              {t("howItWorks.heading2")}
             </span>
           </h2>
           <p className="text-[#2B2F36]/55 text-[14px] sm:text-[15px] mt-4 leading-relaxed">
-            De l'évaluation à la performance durable,{" "}
-            <br className="hidden sm:block" />
-            chaque étape est conçue pour vous.
+            {t("howItWorks.sub")}
           </p>
         </div>
 
@@ -433,16 +464,16 @@ export default function HowItWorks(): React.JSX.Element {
           ref={gridRef}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6"
         >
-          <Card num="01" step="Étape 01" title="Assess" desc="Comprendre où vous en êtes avec 160+ biomarqueurs analysés.">
+          <Card num="01" step={t("howItWorks.etape1")} title="Assess" desc={t("howItWorks.assess.desc")}>
             <AssessViz />
           </Card>
-          <Card num="02" step="Étape 02" title="Align" desc="Construire un parcours nutrition, activité et sommeil sur mesure.">
+          <Card num="02" step={t("howItWorks.etape2")} title="Align" desc={t("howItWorks.align.desc")}>
             <AlignViz />
           </Card>
-          <Card num="03" step="Étape 03" title="Activate" desc="Passer à l'action avec votre coach et vos médecins référents.">
+          <Card num="03" step={t("howItWorks.etape3")} title="Activate" desc={t("howItWorks.activate.desc")}>
             <ActivateViz />
           </Card>
-          <Card num="04" step="Étape 04" title="Sustain" desc="Maintenir vos acquis et prévenir les maladies sur le long terme.">
+          <Card num="04" step={t("howItWorks.etape4")} title="Sustain" desc={t("howItWorks.sustain.desc")}>
             <SustainViz />
           </Card>
         </div>
@@ -455,14 +486,14 @@ export default function HowItWorks(): React.JSX.Element {
             className="inline-flex items-center justify-center h-11 px-7 rounded-xl text-white text-[13.5px] font-semibold transition-all duration-300 hover:-translate-y-px"
             style={{ background: "#0B1220", boxShadow: "0 4px 20px rgba(11,18,32,0.18)" }}
           >
-            Commencer votre bilan
+            {t("howItWorks.cta1")}
           </Link>
           <Link
             href="#"
             onClick={(e) => e.preventDefault()}
             className="inline-flex items-center gap-2 h-11 px-7 rounded-xl border border-[#0B1220]/[0.12] text-[#0B1220]/60 text-[13.5px] font-medium transition-all duration-300 hover:text-[#0B1220] hover:border-[#0B1220]/[0.22] hover:bg-[#0B1220]/[0.03]"
           >
-            Voir comment ça marche
+            {t("howItWorks.cta2")}
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>

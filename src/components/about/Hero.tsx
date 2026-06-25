@@ -3,8 +3,10 @@
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import Image from "next/image";
+import { useLocale } from "@/contexts/LanguageContext";
 
 export default function AboutHero(): React.JSX.Element {
+  const { t } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -32,23 +34,22 @@ export default function AboutHero(): React.JSX.Element {
             <div id="ah-badge">
               <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">
                 <span className="w-6 h-px bg-[#B88A5A]/40" />
-                Qui sommes nous
+                {t("aboutHero.badge")}
               </span>
             </div>
 
             <h1 id="ah-title" className="heading-serif text-[clamp(2.5rem,5vw,4.5rem)] text-[#0B1220] mt-6">
-              Soigner. Prévenir.{" "}
-              <span className="text-[#B88A5A]">Prolonger.</span>
+              {t("aboutHero.heading")}
             </h1>
 
             <p id="ah-desc" className="text-[#2B2F36]/60 text-base sm:text-lg leading-relaxed mt-6 max-w-lg">
-              Wenaya, c&apos;est un écosystème de santé intégrée qui réunit des spécialistes en kinésithérapie, ostéopathie, psychologie, nutrition et thérapies complémentaires — pour un accompagnement global et personnalisé.
+              {t("aboutHero.desc")}
             </p>
 
             <div id="ah-cta" className="mt-10">
               <a href="#story" className="group inline-flex items-center gap-3 text-[#0B1220] text-sm font-semibold tracking-wide transition-all duration-300 hover:text-[#B88A5A]">
                 <span className="w-10 h-px bg-[#B88A5A]/40 group-hover:w-14 transition-all duration-300 group-hover:bg-[#B88A5A]" />
-                Découvrir notre histoire
+                {t("aboutHero.cta")}
               </a>
             </div>
           </div>

@@ -3,40 +3,29 @@
 import { useRef, useEffect } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
+import { useLocale } from "@/contexts/LanguageContext";
 
-const team = [
-  {
-    name: "Dr. Amal Benali",
-    role: "Médecin généraliste — Santé préventive & bilans complets",
-    image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=600&fit=crop",
-  },
-  {
-    name: "Sarah El Fassi",
-    role: "Kinésithérapeute — Rééducation fonctionnelle & TECAR",
-    image: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&h=600&fit=crop",
-  },
-  {
-    name: "Khalid Ouazzani",
-    role: "Ostéopathe — Douleurs musculo-squelettiques & troubles fonctionnels",
-    image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=600&fit=crop",
-  },
-  {
-    name: "Nadia Tazi",
-    role: "Psychologue clinicienne — TCC & gestion du stress",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=600&fit=crop",
-  },
-  {
-    name: "Yassine El Amrani",
-    role: "Nutritionniste — Rééquilibrage alimentaire & suivi métabolique",
-    image: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400&h=600&fit=crop",
-  },
+const images = [
+  "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=600&fit=crop",
+  "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&h=600&fit=crop",
+  "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=600&fit=crop",
+  "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=600&fit=crop",
+  "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400&h=600&fit=crop",
 ];
 
 export default function VideoTestimonials(): React.JSX.Element {
+  const { t } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const ornamentRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  const memberKeys = ["member1", "member2", "member3", "member4", "member5"];
+  const team = memberKeys.map((key, i) => ({
+    name: t(`testimonials.${key}.name`),
+    role: t(`testimonials.${key}.role`),
+    image: images[i],
+  }));
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -70,7 +59,7 @@ export default function VideoTestimonials(): React.JSX.Element {
   const setCardRef = (i: number) => (el: HTMLDivElement | null) => { cardsRef.current[i] = el; };
 
   return (
-    <section ref={sectionRef} className="relative bg-[#F2EFE9] noise py-20 sm:py-24 px-6 overflow-hidden" id="equipe">
+    <section ref={sectionRef} className="relative bg-[#F2EFE9] noise py-12 sm:py-24 px-6 overflow-hidden" id="equipe">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#B88A5A]/20 to-transparent" />
       </div>
@@ -78,14 +67,14 @@ export default function VideoTestimonials(): React.JSX.Element {
       <div className="max-w-[1400px] mx-auto relative">
         <div ref={headingRef} className="text-center mb-6">
           <span className="text-[#B88A5A] font-semibold text-xs sm:text-sm tracking-[0.2em] uppercase">
-            35 thérapeutes certifiés à Casablanca
+            {t("testimonials.badge")}
           </span>
           <h2 className="heading-serif text-3xl sm:text-4xl md:text-5xl lg:text-[52px] text-[#0B1220] mt-4">
-            Des spécialistes pluridisciplinaires à votre écoute
+            {t("testimonials.heading")}
           </h2>
         </div>
 
-        <div ref={ornamentRef} className="flex items-center justify-center gap-3 mb-16">
+        <div ref={ornamentRef} className="flex items-center justify-center gap-3 mb-10 sm:mb-16">
           <span className="w-8 h-px bg-[#B88A5A]/40" />
           <span className="w-1.5 h-1.5 rounded-full bg-[#B88A5A]" />
           <span className="w-8 h-px bg-[#B88A5A]/40" />
@@ -143,7 +132,7 @@ export default function VideoTestimonials(): React.JSX.Element {
             href="#"
             className="inline-flex items-center justify-center px-8 h-[50px] bg-[#B88A5A] text-white rounded-full font-sans font-medium text-sm tracking-wide transition-all duration-300 hover:bg-[#A07848] hover:shadow-lg hover:shadow-[rgba(184,138,90,0.25)]"
           >
-            Découvrir plus
+            {t("testimonials.cta")}
           </a>
         </div>
       </div>

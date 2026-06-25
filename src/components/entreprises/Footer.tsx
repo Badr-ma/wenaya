@@ -3,23 +3,9 @@
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useLocale } from "@/contexts/LanguageContext";
 
 gsap.registerPlugin(ScrollTrigger);
-
-const footerLinks = [
-  {
-    title: "Solutions",
-    links: ["Pour les entreprises", "Pour les dirigeants", "Bilens de santé", "Ateliers QVT"],
-  },
-  {
-    title: "Resources",
-    links: ["Blog", "FAQ", "Études de cas", "Catalogue"],
-  },
-  {
-    title: "Contact",
-    links: ["+212 6 66 12 40 35", "88 Rue De Jabal Azourki", "Casablanca 20930", "contact@wenaya.com"],
-  },
-];
 
 const socialLinks = [
   {
@@ -37,6 +23,23 @@ const socialLinks = [
 ];
 
 export default function EntreprisesFooter(): React.JSX.Element {
+  const { t, tRaw } = useLocale();
+
+  const footerSolutions = tRaw<{title: string; links: string[]}>("entreprises.footer.solutions");
+  const footerResources = tRaw<{title: string; links: string[]}>("entreprises.footer.resources");
+  const footerContactRaw = tRaw<{title: string; phone: string; address: string; city: string; email: string}>("entreprises.footer.contact");
+  const footerAPropos = tRaw<{title: string; links: string[]}>("entreprises.footer.aPropos");
+
+  const footerLinks = [
+    footerSolutions,
+    footerResources,
+    {
+      title: footerContactRaw.title,
+      links: [footerContactRaw.phone, footerContactRaw.address, footerContactRaw.city, footerContactRaw.email],
+    },
+    footerAPropos,
+  ];
+
   const sectionRef = useRef<HTMLElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
 
@@ -108,8 +111,7 @@ export default function EntreprisesFooter(): React.JSX.Element {
                     Wenaya
                   </span>
                   <p className="text-white/45 text-sm mt-4 max-w-sm leading-relaxed">
-                    Centre de santé pluridisciplinaire à Casablanca — kinésithérapie, psychologie, nutrition,
-                    prévention et programmes bien-être pour les entreprises.
+                    {t("entreprises.footer.desc")}
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
@@ -153,32 +155,14 @@ export default function EntreprisesFooter(): React.JSX.Element {
                   </div>
                 ))}
 
-                <div>
-                  <h4 className="text-white/30 font-heading font-semibold text-xs mb-6 uppercase tracking-[0.15em]">
-                    À propos
-                  </h4>
-                  <ul className="space-y-3">
-                    {["Qui sommes-nous", "Nos spécialités", "Carrières", "Presse"].map((link) => (
-                      <li key={link}>
-                        <a
-                          href="#"
-                          onClick={(e) => e.preventDefault()}
-                          className="text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed"
-                        >
-                          {link}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
               </div>
 
               <div className="border-t border-white/[0.08] mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <p className="text-white/25 text-xs">
-                  &copy; {new Date().getFullYear()} Wenaya. Tous droits réservés.
+                  {t("entreprises.footer.copyright").replace("{year}", String(new Date().getFullYear()))}
                 </p>
                 <p className="text-white/20 text-xs">
-                  Du lundi au samedi de 9h à 19h
+                  {t("entreprises.footer.hours")}
                 </p>
               </div>
             </div>

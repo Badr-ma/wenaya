@@ -4,6 +4,7 @@ import "./globals.css";
 import Nav from "@/components/Nav";
 import GsapInit from "@/components/GsapInit";
 import LenisProvider from "@/components/LenisProvider";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -167,11 +168,13 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <GsapInit />
-        <LenisProvider>
-          <Nav />
-          {children}
-        </LenisProvider>
+        <LanguageProvider>
+          <GsapInit />
+          <LenisProvider>
+            <Nav />
+            {children}
+          </LenisProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

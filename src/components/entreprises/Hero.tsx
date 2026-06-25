@@ -5,14 +5,11 @@ import { gsap } from "gsap";
 import Link from "next/link";
 import Image from "next/image";
 import HiggsField from "@/components/HiggsField";
-
-const bullets = [
-  "Réduire l'absentéisme et les risques psychosociaux",
-  "Renforcer l'engagement et la productivité des équipes",
-  "Attirer et fidéliser les talents",
-];
+import { useLocale } from "@/contexts/LanguageContext";
 
 export default function EntreprisesHero(): React.JSX.Element {
+  const { t, tRaw } = useLocale();
+  const bullets = tRaw<string[]>("entreprises.hero.bullets");
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -58,18 +55,16 @@ export default function EntreprisesHero(): React.JSX.Element {
           <div id="eh-badge">
             <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">
               <span className="w-6 h-px bg-[#B88A5A]/40" />
-              Wenaya pour l&apos;entreprise
+              {t("entreprises.hero.badge")}
             </span>
           </div>
 
           <h1 id="eh-title" className="heading-serif text-white mt-6" style={{ fontSize: "clamp(2.5rem, 5vw, 4.5rem)" }}>
-            Cultivez le bien-être.<br />
-            <span className="text-[#B88A5A]">Récoltez la performance.</span>
+            {t("entreprises.hero.heading")}
           </h1>
 
           <p id="eh-desc" className="text-white/50 text-base sm:text-lg leading-relaxed mt-6 max-w-lg">
-            Un partenaire santé et bien-être au travail qui s&apos;adapte à vos équipes,
-            à vos rythmes et à vos enjeux RH. Pas l&apos;inverse.
+            {t("entreprises.hero.desc")}
           </p>
 
           {/* Value bullets */}
@@ -95,7 +90,7 @@ export default function EntreprisesHero(): React.JSX.Element {
                 boxShadow: "0 1px 0 rgba(255,255,255,0.14) inset, 0 6px 28px rgba(184,138,90,0.35)",
               }}
             >
-              Réserver un audit gratuit
+              {t("entreprises.hero.cta1")}
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
@@ -105,7 +100,7 @@ export default function EntreprisesHero(): React.JSX.Element {
               onClick={(e) => e.preventDefault()}
               className="inline-flex items-center justify-center gap-2 h-12 px-7 rounded-xl text-white/45 text-sm font-medium border border-white/[0.08] transition-all duration-300 hover:text-white hover:border-white/[0.16] hover:bg-white/[0.03] sm:w-auto w-full"
             >
-              Télécharger notre catalogue
+              {t("entreprises.hero.cta2")}
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4M4 16v4h16v-4" />
               </svg>
@@ -115,15 +110,15 @@ export default function EntreprisesHero(): React.JSX.Element {
           <div id="eh-stats" className="flex flex-wrap gap-6 sm:gap-12 mt-14">
             <div>
               <p className="text-white text-2xl sm:text-3xl font-bold font-heading tracking-tight">35</p>
-              <p className="text-white/35 text-xs sm:text-sm mt-1">thérapeutes certifiés</p>
+              <p className="text-white/35 text-xs sm:text-sm mt-1">{t("entreprises.hero.stats.therapeutes")}</p>
             </div>
             <div>
               <p className="text-white text-2xl sm:text-3xl font-bold font-heading tracking-tight">+2 000</p>
-              <p className="text-white/35 text-xs sm:text-sm mt-1">collaborateurs accompagnés</p>
+              <p className="text-white/35 text-xs sm:text-sm mt-1">{t("entreprises.hero.stats.collaborateurs")}</p>
             </div>
             <div>
               <p className="text-white text-2xl sm:text-3xl font-bold font-heading tracking-tight">4/4</p>
-              <p className="text-white/35 text-xs sm:text-sm mt-1">piliers d&apos;intervention</p>
+              <p className="text-white/35 text-xs sm:text-sm mt-1">{t("entreprises.hero.stats.piliers")}</p>
             </div>
           </div>
         </div>

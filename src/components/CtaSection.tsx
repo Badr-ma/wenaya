@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { useRef, useEffect } from "react";
+import { useLocale } from "@/contexts/LanguageContext";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function CtaSection(): React.JSX.Element {
+  const { t } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -39,7 +41,7 @@ export default function CtaSection(): React.JSX.Element {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden py-24 sm:py-32 px-6"
+      className="relative overflow-hidden py-14 sm:py-32 px-6"
       style={{ background: "#0B1220" }}
     >
       {/* Atmospheric glows */}
@@ -64,7 +66,7 @@ export default function CtaSection(): React.JSX.Element {
       <div className="relative z-10 max-w-3xl mx-auto text-center">
 
         {/* Patient testimonial */}
-        <div className="cta-quote mb-10">
+        <div className="cta-quote mb-6 sm:mb-10">
           <svg
             className="w-8 h-8 mx-auto mb-5"
             viewBox="0 0 32 32" fill="none"
@@ -78,19 +80,19 @@ export default function CtaSection(): React.JSX.Element {
             className="text-white/55 leading-relaxed mx-auto max-w-2xl"
             style={{ fontSize: "clamp(1rem, 1.6vw, 1.2rem)", fontStyle: "italic" }}
           >
-            « Après 3 mois avec Wenaya, j'ai retrouvé une énergie que je pensais avoir perdue définitivement. C'est la première fois que je comprends vraiment ce que mon corps a besoin. »
+            {t("ctaSection.quote")}
           </blockquote>
           <div className="mt-5 flex items-center justify-center gap-3">
             <div className="w-6 h-px bg-[#B88A5A]/40" />
             <span className="text-white/30 text-[11px] font-medium tracking-[0.15em] uppercase">
-              Sarah L., 34 ans · Casablanca
+              {t("ctaSection.attribution")}
             </span>
             <div className="w-6 h-px bg-[#B88A5A]/40" />
           </div>
         </div>
 
         {/* Divider */}
-        <div className="cta-divider flex items-center gap-4 mb-10">
+        <div className="cta-divider flex items-center gap-4 mb-6 sm:mb-10">
           <div className="flex-1 h-px" style={{ background: "rgba(255,255,255,0.05)" }} />
           <div className="w-1 h-1 rounded-full bg-[#B88A5A]/40" />
           <div className="flex-1 h-px" style={{ background: "rgba(255,255,255,0.05)" }} />
@@ -107,7 +109,7 @@ export default function CtaSection(): React.JSX.Element {
             letterSpacing: "-0.02em",
           }}
         >
-          La même transformation<br />
+          {t("ctaSection.heading1")}<br />
           <span
             style={{
               background: "linear-gradient(135deg, #D4A870 0%, #B88A5A 50%, #E8C99A 100%)",
@@ -116,7 +118,7 @@ export default function CtaSection(): React.JSX.Element {
               fontStyle: "italic",
             }}
           >
-            vous attend.
+            {t("ctaSection.heading2")}
           </span>
         </h2>
 
@@ -128,11 +130,11 @@ export default function CtaSection(): React.JSX.Element {
             fontSize: "clamp(0.9rem, 1.3vw, 1.05rem)",
           }}
         >
-          Commencez par une évaluation complète de 90 minutes avec notre équipe pluridisciplinaire. Pas de jargon médical, pas de parcours standardisé — juste votre santé, traitée sérieusement.
+          {t("ctaSection.sub")}
         </p>
 
         {/* CTAs */}
-        <div className="cta-actions flex flex-col sm:flex-row items-center justify-center gap-3 mt-10">
+        <div className="cta-actions flex flex-col sm:flex-row items-center justify-center gap-3 mt-6 sm:mt-10">
           <Link
             href="#"
             onClick={(e) => e.preventDefault()}
@@ -142,7 +144,7 @@ export default function CtaSection(): React.JSX.Element {
               boxShadow: "0 1px 0 rgba(255,255,255,0.14) inset, 0 6px 28px rgba(184,138,90,0.35)",
             }}
           >
-            Réserver une évaluation
+            {t("ctaSection.cta")}
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
@@ -150,8 +152,8 @@ export default function CtaSection(): React.JSX.Element {
         </div>
 
         {/* Contact info — minimal, one line */}
-        <p className="cta-info mt-10 text-[11px] tracking-[0.08em]" style={{ color: "rgba(255,255,255,0.18)" }}>
-          88 Rue De Jabal Azourki · Casablanca · Lun–Sam 9h00–19h00 · +212 6 66 12 40 35
+        <p className="cta-info mt-6 sm:mt-10 text-[11px] tracking-[0.08em]" style={{ color: "rgba(255,255,255,0.18)" }}>
+          {t("ctaSection.contact")}
         </p>
       </div>
     </section>

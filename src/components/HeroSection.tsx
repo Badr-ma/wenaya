@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
+import { useLocale } from "@/contexts/LanguageContext";
 
 /* ── Hero Section ──────────────────────────────────────────── */
 export default function HeroSection(): React.JSX.Element {
+  const { t } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const trustRef = useRef<HTMLDivElement>(null);
 
@@ -30,16 +32,16 @@ export default function HeroSection(): React.JSX.Element {
   }, []);
 
   const stats = [
-    { value: "35", label: "thérapeutes certifiés" },
-    { value: "+2 000", label: "patients accompagnés" },
-    { value: "4,7 ★", label: "avis Google Maps" },
-    { value: "6", label: "disciplines cliniques" },
+    { value: "35", label: t("hero.stats.therapeutes") },
+    { value: "+2 000", label: t("hero.stats.patients") },
+    { value: "4,7 ★", label: t("hero.stats.avis") },
+    { value: "6", label: t("hero.stats.disciplines") },
   ];
 
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen flex items-center overflow-hidden"
+      className="relative min-h-[80vh] sm:min-h-screen flex items-center overflow-hidden"
     >
       {/* ── Video background ── */}
       <video
@@ -68,17 +70,17 @@ export default function HeroSection(): React.JSX.Element {
       />
 
       {/* ── Content ── */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pt-28 pb-20">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pt-20 sm:pt-28 pb-16 sm:pb-20">
         <div className="max-w-2xl">
           <div>
             {/* Eyebrow */}
             <div className="hero-eyebrow inline-flex items-center gap-2.5 mb-8">
               <div className="w-1.5 h-1.5 rounded-full bg-[#B88A5A] shrink-0" />
               <span className="text-[#B88A5A]/75 text-[11px] font-semibold tracking-[0.24em] uppercase">
-                Casablanca · Maroc
+                {t("hero.eyebrow")}
               </span>
               <div className="w-8 h-px bg-[#B88A5A]/30" />
-              <span className="text-white/28 text-[11px] tracking-[0.14em] uppercase">Depuis 2019</span>
+              <span className="text-white/28 text-[11px] tracking-[0.14em] uppercase">{t("hero.depuis")}</span>
             </div>
 
             {/* Headline */}
@@ -91,9 +93,9 @@ export default function HeroSection(): React.JSX.Element {
                 letterSpacing: "-0.02em",
               }}
             >
-              <span className="hero-line block">Vous méritez</span>
+              <span className="hero-line block">{t("hero.vousMéritez")}</span>
               <span className="hero-line block">
-                une santé{" "}
+                {t("hero.uneSante")}{" "}
                 <span
                   style={{
                     background: "linear-gradient(135deg, #D4A870 0%, #B88A5A 45%, #E8C99A 100%)",
@@ -102,7 +104,7 @@ export default function HeroSection(): React.JSX.Element {
                     fontStyle: "italic",
                   }}
                 >
-                  complète.
+                  {t("hero.complete")}
                 </span>
               </span>
             </h1>
@@ -112,7 +114,7 @@ export default function HeroSection(): React.JSX.Element {
               className="hero-sub mt-7 max-w-[480px] leading-[1.78]"
               style={{ color: "rgba(255,255,255,0.5)", fontSize: "clamp(0.93rem, 1.4vw, 1.05rem)" }}
             >
-              Wenaya réunit kinésithérapie, psychologie clinique et nutrition sous un seul écosystème — pour une santé préventive, personnalisée et durable, à Casablanca.
+              {t("hero.sub")}
             </p>
 
             {/* CTAs */}
@@ -126,7 +128,7 @@ export default function HeroSection(): React.JSX.Element {
                   boxShadow: "0 1px 0 rgba(255,255,255,0.16) inset, 0 6px 24px rgba(184,138,90,0.35)",
                 }}
               >
-                Réserver une évaluation
+                {t("hero.cta")}
               </Link>
             </div>
           </div>
@@ -136,7 +138,7 @@ export default function HeroSection(): React.JSX.Element {
         {/* Trust bar */}
         <div
           ref={trustRef}
-          className="mt-20 pt-8 grid grid-cols-2 sm:grid-cols-4 gap-x-8 gap-y-6"
+          className="mt-10 sm:mt-20 pt-8 grid grid-cols-2 sm:grid-cols-4 gap-x-8 gap-y-3 sm:gap-y-6"
           style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
         >
           {stats.map((s, i) => (
@@ -151,12 +153,6 @@ export default function HeroSection(): React.JSX.Element {
           ))}
         </div>
       </div>
-
-      {/* Bottom fade to page background */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-28 pointer-events-none"
-        style={{ background: "linear-gradient(to bottom, transparent, #F2EFE9)" }}
-      />
     </section>
   );
 }

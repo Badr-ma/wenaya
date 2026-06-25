@@ -3,6 +3,7 @@
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import Image from "next/image";
+import { useLocale } from "@/contexts/LanguageContext";
 
 const collageImages = [
   { src: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&q=80&auto=format&fit=crop", alt: "Séance de kinésithérapie" },
@@ -12,6 +13,7 @@ const collageImages = [
 ];
 
 export default function ExpertiseSection(): React.JSX.Element {
+  const { t } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -35,26 +37,22 @@ export default function ExpertiseSection(): React.JSX.Element {
             <div id="es-badge">
               <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">
                 <span className="w-6 h-px bg-[#B88A5A]/40" />
-                Notre Équipe
+                {t("expertiseSection.badge")}
               </span>
             </div>
 
             <h2 id="es-title" className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220] mt-5">
-              Une équipe <span className="text-[#B88A5A]">pluridisciplinaire</span>
+              {t("expertiseSection.heading")}
             </h2>
 
             <div id="es-text" className="mt-8 space-y-5 text-[#2B2F36] text-sm sm:text-base leading-relaxed">
-              <p>
-                Wenaya, c&apos;est bien plus qu&apos;un centre de soins. Nous réunissons des spécialistes en kinésithérapie, ostéopathie, psychologie, neuropsychologie, nutrition, orthophonie, naturopathie, psychomotricité et thérapies complémentaires.
-              </p>
-              <p>
-                Wenaya Clinic, notre centre pluridisciplinaire à Casablanca, propose des bilans complets et des prises en charge coordonnées. Nous utilisons les dernières technologies d&apos;évaluation, de suivi et d&apos;analyse pour offrir un accompagnement précis, personnalisé et évolutif.
-              </p>
+              <p>{t("expertiseSection.p1")}</p>
+              <p>{t("expertiseSection.p2")}</p>
             </div>
 
             <div id="es-cta" className="mt-10">
               <a href="#" onClick={(e) => e.preventDefault()} className="group inline-flex items-center gap-3 bg-[#0B1220] text-white text-sm font-semibold h-[50px] px-8 rounded-full transition-all duration-300 hover:bg-[#B88A5A] hover:shadow-lg hover:shadow-[rgba(184,138,90,0.2)]">
-                Rencontrer nos spécialistes
+                {t("expertiseSection.cta")}
                 <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>

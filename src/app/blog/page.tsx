@@ -1,18 +1,15 @@
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { getPublishedPosts, authors, categories } from "@/lib/blog";
 import { formatDate, categoryColors } from "@/lib/blog-utils";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { useLocale } from "@/contexts/LanguageContext";
 import BlogListClient from "./BlogListClient";
 
-export const metadata: Metadata = {
-  title: "Blog | Wenaya — Prévention, Performance & Longévité",
-  description:
-    "Expert insights on longevity science, biomarker optimization, AI-powered preventive medicine, and personalized nutrition from the Wenaya team.",
-};
-
 export default function BlogPage() {
+  const { t } = useLocale();
   const posts = getPublishedPosts();
   const enriched = posts.map((p) => ({
     ...p,
@@ -31,16 +28,16 @@ export default function BlogPage() {
         <div className="absolute top-1/2 left-1/4 w-[300px] h-[300px] rounded-full bg-gradient-to-br from-[#0B1220]/3 to-transparent blur-[80px] pointer-events-none" />
 
         <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl mx-auto text-center">
             <span className="inline-flex items-center gap-2 bg-[#B88A5A]/5 border border-[#B88A5A]/10 rounded-full px-3 py-1 mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-[#B88A5A]/50" />
-              <span className="text-[10px] font-mono text-[#B88A5A]/60 tracking-wider uppercase">Blog</span>
+              <span className="text-[10px] font-mono text-[#B88A5A]/60 tracking-wider uppercase">{t("blog.badge")}</span>
             </span>
-            <h1 className="text-[clamp(2.4rem,5vw,4rem)] font-heading font-bold text-[#0B1220] leading-[1.02] tracking-tight">
-              Insights & <span className="text-[#B88A5A]">Recherche</span>
+            <h1 className="heading-serif text-[clamp(2.5rem,5vw,4.5rem)] text-[#0B1220]">
+              {t("blog.heading")}
             </h1>
-            <p className="text-gray-500 text-sm sm:text-base mt-4 max-w-lg leading-relaxed">
-              Expert analysis on the science of longevity, biomarker optimization, and the future of personalized preventive medicine.
+            <p className="text-gray-500 text-sm sm:text-base mt-4 max-w-lg mx-auto leading-relaxed">
+              {t("blog.sub")}
             </p>
           </div>
         </div>
@@ -75,9 +72,9 @@ export default function BlogPage() {
                       {latest.category.name}
                     </span>
                   )}
-                  <span className="text-xs text-gray-400 font-mono">{latest.readingTime} min de lecture</span>
+                  <span className="text-xs text-gray-400 font-mono">{latest.readingTime} {t("blog.minLecture")}</span>
                 </div>
-                <span className="text-[10px] font-mono text-[#B88A5A]/60 tracking-wider uppercase mb-2">Dernier article</span>
+                <span className="text-[10px] font-mono text-[#B88A5A]/60 tracking-wider uppercase mb-2">{t("blog.dernierArticle")}</span>
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-heading font-bold text-[#0B1220] leading-tight transition-colors duration-300 group-hover:text-[#B88A5A]">
                   {latest.title}
                 </h2>

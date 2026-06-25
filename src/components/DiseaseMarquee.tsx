@@ -2,59 +2,13 @@
 
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
-
-const servicesRow1 = [
-  "Kinésithérapie",
-  "Ostéopathie",
-  "Psychologie",
-  "Neuropsychologie",
-  "Nutrition",
-  "Orthophonie",
-  "Naturopathie",
-  "Psychomotricité",
-  "Thérapies Complémentaires",
-  "Kinésithérapie",
-  "Ostéopathie",
-  "Psychologie",
-  "Neuropsychologie",
-  "Nutrition",
-  "Orthophonie",
-  "Naturopathie",
-  "Psychomotricité",
-  "Thérapies Complémentaires",
-];
-
-const servicesRow2 = [
-  "Rééducation Fonctionnelle",
-  "Bilans Complets",
-  "Suivi Personnalisé",
-  "Soins à Domicile",
-  "Téléconsultation",
-  "Ateliers Bien-être",
-  "Rééducation Fonctionnelle",
-  "Bilans Complets",
-  "Suivi Personnalisé",
-  "Soins à Domicile",
-  "Téléconsultation",
-  "Ateliers Bien-être",
-];
-
-const servicesRow3 = [
-  "Thérapie Manuelle",
-  "Suivi Nutritionnel",
-  "Accompagnement Psychologique",
-  "Rééducation Cognitive",
-  "Sophrologie",
-  "Hypnose",
-  "Thérapie Manuelle",
-  "Suivi Nutritionnel",
-  "Accompagnement Psychologique",
-  "Rééducation Cognitive",
-  "Sophrologie",
-  "Hypnose",
-];
+import { useLocale } from "@/contexts/LanguageContext";
 
 export default function DiseaseMarquee(): React.JSX.Element {
+  const { t, tRaw } = useLocale();
+  const servicesRow1 = [...tRaw<string[]>("diseaseMarquee.specialites"), ...tRaw<string[]>("diseaseMarquee.specialites")];
+  const servicesRow2 = [...tRaw<string[]>("diseaseMarquee.services"), ...tRaw<string[]>("diseaseMarquee.services")];
+  const servicesRow3 = [...tRaw<string[]>("diseaseMarquee.therapies"), ...tRaw<string[]>("diseaseMarquee.therapies")];
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
 
@@ -83,16 +37,16 @@ export default function DiseaseMarquee(): React.JSX.Element {
     "inline-block mx-2 px-4 py-2 rounded-full bg-white border border-[#0B1220]/[0.04] text-[#2B2F36]/50 text-sm font-medium transition-all duration-300 hover:bg-[rgba(184,138,90,0.08)] hover:border-[#B88A5A]/30 hover:text-[#0B1220] hover:scale-105";
 
   return (
-    <section ref={sectionRef} className="bg-[#F2EFE9] py-14 sm:py-18 overflow-hidden">
-      <div ref={headingRef} className="text-center mb-12 px-6">
+    <section ref={sectionRef} className="bg-[#F2EFE9] py-10 sm:py-18 overflow-hidden">
+      <div ref={headingRef} className="text-center mb-8 sm:mb-12 px-6">
         <span className="text-[#B88A5A] font-semibold text-sm tracking-widest uppercase">
-          Kinésithérapie &bull; Ostéopathie &bull; Psychologie &bull; Nutrition &bull; Orthophonie
+          {t("diseaseMarquee.badge")}
         </span>
         <h2 className="heading-serif text-3xl sm:text-4xl text-[#0B1220] mt-3 tracking-tight">
-          9 spécialités, un seul centre de soins à Casablanca
+          {t("diseaseMarquee.heading")}
         </h2>
         <p className="text-[#2B2F36]/60 text-sm mt-3 max-w-xl mx-auto">
-          Wenaya Clinic réunit kinésithérapeutes, ostéopathes, psychologues, neuropsychologues, nutritionnistes, orthophonistes, naturopathes et psychomotriciens pour une prise en charge pluridisciplinaire adaptée à chaque patient, enfant comme adulte.
+          {t("diseaseMarquee.sub")}
         </p>
       </div>
 
@@ -114,13 +68,13 @@ export default function DiseaseMarquee(): React.JSX.Element {
         </div>
       </div>
 
-      <div className="text-center mt-10">
+      <div className="text-center mt-6 sm:mt-10">
         <a
           href="#"
           onClick={(e) => e.preventDefault()}
           className="inline-flex items-center justify-center px-8 h-[50px] bg-[#B88A5A] text-white rounded-full font-sans font-medium text-sm tracking-wide transition-all duration-300 hover:bg-[#A07848] hover:shadow-lg hover:shadow-[rgba(184,138,90,0.25)]"
         >
-          Voir Plus
+          {t("diseaseMarquee.voirPlus")}
         </a>
       </div>
     </section>

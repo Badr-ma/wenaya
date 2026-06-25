@@ -4,33 +4,25 @@ import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
+import { useLocale } from "@/contexts/LanguageContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const steps = [
-  {
-    num: "01",
-    title: "Audit des besoins",
-    desc: "Diagnostic confidentiel via questionnaire anonyme et échange avec votre direction RH pour comprendre vos enjeux, votre culture et vos contraintes.",
-  },
-  {
-    num: "02",
-    title: "Plan personnalisé",
-    desc: "Programme construit sur mesure selon vos enjeux, votre budget et les contraintes terrain. Modules, formats, durée — tout est adaptable.",
-  },
-  {
-    num: "03",
-    title: "Déploiement",
-    desc: "Interventions, cours, cellules d'écoute, plateforme digitale. Avec adaptation continue selon le feedback de vos équipes.",
-  },
-  {
-    num: "04",
-    title: "Suivi et reporting",
-    desc: "Indicateurs anonymisés agrégés, bilan trimestriel, ajustement du plan. Des données concrètes pour mesurer l'impact.",
-  },
-];
-
 export default function EntreprisesApproach(): React.JSX.Element {
+  const { t, tRaw } = useLocale();
+
+  const stepNums = ["01", "02", "03", "04"];
+  const steps = (tRaw<Array<{title: string; desc: string}>>("entreprises.approach.steps")).map((s, i) => ({ ...s, num: stepNums[i] }));
+
+  const expertData = [
+    { initials: "SB", gradient: "from-[#B88A5A] to-[#9A7242]", glow: "rgba(184,138,90,0.12)" },
+    { initials: "AL", gradient: "from-[#159AA9] to-[#0D7A87]", glow: "rgba(21,154,169,0.12)" },
+    { initials: "KA", gradient: "from-emerald-600 to-emerald-800", glow: "rgba(16,185,129,0.12)" },
+    { initials: "YO", gradient: "from-violet-500 to-violet-700", glow: "rgba(139,92,246,0.12)" },
+  ];
+
+  const experts = (tRaw<Array<{name: string; role: string}>>("entreprises.approach.experts")).map((e, i) => ({ ...e, ...expertData[i] }));
+
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -71,18 +63,18 @@ export default function EntreprisesApproach(): React.JSX.Element {
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="max-w-2xl mb-16">
+        <div className="max-w-2xl mx-auto mb-16 text-center">
           <div id="ea-badge">
             <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">
               <span className="w-6 h-px bg-[#B88A5A]/40" />
-              Comment ça marche
+              {t("entreprises.approach.badge")}
             </span>
           </div>
-          <h2 id="ea-title" className="heading-lg text-[#0B1220] mt-5">
-            Notre méthode en 4 étapes
+          <h2 id="ea-title" className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220] mt-5">
+            {t("entreprises.approach.heading")}
           </h2>
-          <p id="ea-desc" className="text-[#2B2F36]/55 text-sm sm:text-base leading-relaxed mt-4 max-w-lg">
-            De l&apos;audit à l&apos;impact, un accompagnement structuré pensé pour le terrain.
+          <p id="ea-desc" className="text-[#2B2F36]/55 text-sm sm:text-base leading-relaxed mt-4 max-w-lg mx-auto">
+            {t("entreprises.approach.sub")}
           </p>
         </div>
 
@@ -143,22 +135,17 @@ export default function EntreprisesApproach(): React.JSX.Element {
             <div id="ea-experts-badge">
               <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">
                 <span className="w-6 h-px bg-[#B88A5A]/40" />
-                Notre comité d&apos;experts
+                {t("entreprises.approach.boardBadge")}
               </span>
             </div>
-            <h2 className="heading-lg text-[#0B1220] mt-5">Des professionnels de la santé</h2>
+            <h2 className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220] mt-5">{t("entreprises.approach.boardHeading")}</h2>
             <p className="text-[#2B2F36]/55 text-sm sm:text-base leading-relaxed mt-4 max-w-lg mx-auto">
-              Une équipe pluridisciplinaire de thérapeutes certifiés pour couvrir l&apos;ensemble des besoins de vos équipes.
+              {t("entreprises.approach.boardDesc")}
             </p>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 sm:gap-12 max-w-3xl mx-auto relative z-10">
-            {[
-              { name: "Dr. Sarah Benali", role: "Médecine du travail", initials: "SB", gradient: "from-[#B88A5A] to-[#9A7242]", glow: "rgba(184,138,90,0.12)" },
-              { name: "Amine Laaroussi", role: "Kinésithérapie", initials: "AL", gradient: "from-[#159AA9] to-[#0D7A87]", glow: "rgba(21,154,169,0.12)" },
-              { name: "Khadija Amrani", role: "Nutrition", initials: "KA", gradient: "from-emerald-600 to-emerald-800", glow: "rgba(16,185,129,0.12)" },
-              { name: "Yasmine Ouazzani", role: "Psychologie", initials: "YO", gradient: "from-violet-500 to-violet-700", glow: "rgba(139,92,246,0.12)" },
-            ].map((expert, i) => (
+            {experts.map((expert, i) => (
               <div key={i} className="ea-expert text-center group relative">
                 {/* Decorative bg glow */}
                 <div

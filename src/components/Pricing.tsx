@@ -2,50 +2,25 @@
 
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
+import { useLocale } from "@/contexts/LanguageContext";
 
-const plans = [
-  {
-    name: "Bilan de prévention",
-    price: "Sur devis",
-    description: "60 min avec un gestionnaire de cas Wenaya",
-    features: [
-      "Anamnèse complète et historique santé",
-      "Bilan postural et évaluation fonctionnelle",
-      "Étude de cas pluridisciplinaire",
-      "Recommandations personnalisées et prise en charge",
-    ],
-    popular: true,
-  },
-  {
-    name: "Consultation spécialiste",
-    price: "Sur devis",
-    description: "Kinésithérapie, ostéopathie, psychologie, nutrition",
-    features: [
-      "Consultation avec le spécialiste de votre choix",
-      "Bilan initial et évaluation personnalisée",
-      "Compte-rendu détaillé et plan de soins",
-      "Accès à l'espace patient en ligne",
-    ],
-    popular: false,
-  },
-  {
-    name: "Parcours Bien-être",
-    price: "Sur devis",
-    description: "Prise en charge globale coordonnée",
-    features: [
-      "Suivi coordonné par plusieurs spécialistes",
-      "Programme personnalisé avec objectifs mesurables",
-      "Accès aux ateliers et cours collectifs",
-      "Téléconsultation de suivi incluse",
-    ],
-    popular: false,
-  },
-];
+const planKeys = ["plan1", "plan2", "plan3"];
 
 export default function Pricing(): React.JSX.Element {
+  const { t, tRaw } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  const plans = planKeys.map((key, i) => ({
+    name: t(`pricing.${key}.name`),
+    price: t(`pricing.${key}.price`),
+    description: t(`pricing.${key}.desc`),
+    features: tRaw<string[]>(`pricing.${key}.features`),
+    cta: t(`pricing.${key}.cta`),
+    popular: i === 0,
+    badge: i === 0 ? t("pricing.plan1.badge") : undefined,
+  }));
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -71,21 +46,21 @@ export default function Pricing(): React.JSX.Element {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-[#F2EFE9] py-16 sm:py-20 px-6" id="tarifs">
+    <section ref={sectionRef} className="bg-[#F2EFE9] py-10 sm:py-20 px-6" id="tarifs">
       <div className="max-w-5xl mx-auto">
-        <div ref={headingRef} className="text-center mb-16">
+        <div ref={headingRef} className="text-center mb-8 sm:mb-16">
           <span className="text-[#B88A5A] font-semibold text-sm tracking-widest uppercase">
-            Prévenir. Performer. Durer.
+            {t("pricing.eyebrow")}
           </span>
           <h2 className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220] mt-4">
-            Des soins accessibles à tous
+            {t("pricing.heading")}
           </h2>
           <p className="text-[#2B2F36] text-sm sm:text-base mt-4 max-w-lg mx-auto">
-            Éligible aux mutuelles et assurances santé.
+            {t("pricing.sub")}
           </p>
         </div>
 
-        <div className="flex flex-col lg:flex-row items-stretch gap-8 lg:gap-6 xl:gap-8">
+        <div className="flex flex-col lg:flex-row items-stretch gap-5 lg:gap-6 xl:gap-8">
           {plans.map((plan, i) => (
             <div
               key={plan.name}
@@ -96,9 +71,9 @@ export default function Pricing(): React.JSX.Element {
                   : "bg-[#E8E2D9] border-[#0B1220]/[0.06] shadow-sm hover:shadow-md hover:border-[#B88A5A]/30 hover:-translate-y-0.5"
               }`}
             >
-              {plan.popular && (
+              {plan.popular && plan.badge && (
                 <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#B88A5A] text-white text-xs font-semibold px-4 py-1.5 rounded-full">
-                  Recommandé
+                  {plan.badge}
                 </div>
               )}
               <h3 className="text-xl font-heading font-bold text-[#0B1220]">
@@ -142,7 +117,7 @@ export default function Pricing(): React.JSX.Element {
                     : "bg-[#0B1220] hover:bg-[#2B2F36] text-white"
                 }`}
               >
-                Prendre RDV
+                {plan.cta}
               </a>
             </div>
           ))}

@@ -1,0 +1,66 @@
+"use client";
+
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  type ReactNode,
+} from "react";
+import { useTranslations } from "@/i18n";
+import type { Translations } from "@/i18n/fr";
+
+type Locale = "fr" | "en";
+
+interface LanguageContextValue {
+  locale: Locale;
+  setLocale: (locale: Locale) => void;
+  toggleLocale: () => void;
+  t: (path: string) => string;
+  tRaw: <T>(path: string) => T;
+}
+
+const LanguageContext = createContext<LanguageContextValue | null>(null);
+
+function getInitialLocale(): Locale {
+  if (typeof window === "undefined") return "fr";
+  try {
+    const stored = localStorage.getItem("wenaya-locale");
+    if (stored === "fr" || stored === "en") return stored;
+  } catch {}
+  const browserLang = navigator.language?.slice(0, 2);
+  return browserLang === "en" ? "en" : "fr";
+}
+
+export function LanguageProvider({ children }: { children: ReactNode }) {
+  const [locale, setLocaleState] = useState<Locale>("fr");
+
+  useEffect(() => {
+    setLocaleState(getInitialLocale());
+  }, []);
+
+  const setLocale = useCallback((l: Locale) => {
+    setLocaleState(l);
+    try { localStorage.setItem("wenaya-locale", l); } catch {}
+    document.documentElement.lang = l === "fr" ? "fr" : "en";
+  }, []);
+
+  const toggleLocale = useCallback(() => {
+    setLocale(locale === "fr" ? "en" : "fr");
+  }, [locale, setLocale]);
+
+  const { t, tRaw } = useTranslations(locale);
+
+  return (
+    <LanguageContext.Provider value={{ locale, setLocale, toggleLocale, t, tRaw }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+}
+
+export function useLocale(): LanguageContextValue {
+  const ctx = useContext(LanguageContext);
+  if (!ctx) throw new Error("useLocale must be used within a LanguageProvider");
+  return ctx;
+}

@@ -3,19 +3,12 @@
 import Link from "next/link";
 import { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
-
-const navLinks = [
-  { label: "Accueil", href: "/" },
-  { label: "Solutions", href: "#", hasDropdown: true },
-  { label: "À Propos", href: "/about" },
-  { label: "FAQ", href: "/faq" },
-];
+import { useLocale } from "@/contexts/LanguageContext";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const solutions = [
   {
-    title: "Entreprises",
-    desc: "Programmes de bien-être, santé mentale et performance pour les équipes.",
-    cta: "Découvrir",
+    key: "entreprises" as const,
     href: "/solutions/entreprises",
     icon: (
       <svg viewBox="0 0 48 48" className="w-5 h-5" fill="none">
@@ -26,9 +19,7 @@ const solutions = [
     ),
   },
   {
-    title: "Cliniques",
-    desc: "Plateforme de santé intégrée pour cliniques : prévention, suivi et orchestration pluridisciplinaire.",
-    cta: "Découvrir",
+    key: "cliniques" as const,
     href: "/solutions/clinics",
     icon: (
       <svg viewBox="0 0 48 48" className="w-5 h-5" fill="none">
@@ -39,9 +30,7 @@ const solutions = [
     ),
   },
   {
-    title: "Hôtellerie",
-    desc: "Expériences wellness et partenariats santé pour hôtels, resorts et résidences premium.",
-    cta: "Découvrir",
+    key: "hotelierie" as const,
     href: "#",
     icon: (
       <svg viewBox="0 0 48 48" className="w-5 h-5" fill="none">
@@ -55,6 +44,7 @@ const solutions = [
 
 export default function Nav(): React.JSX.Element {
   const pathname = usePathname();
+  const { t } = useLocale();
   const [scrolled, setScrolled] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -162,9 +152,14 @@ export default function Nav(): React.JSX.Element {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden lg:block" aria-label="Navigation principale">
+        <nav className="hidden lg:block" aria-label={t("nav.navPrincipale")}>
           <ul className="flex items-center gap-0">
-            {navLinks.map((link) =>
+            {[
+              { label: t("nav.accueil"), href: "/" },
+              { label: t("nav.solutions"), href: "#", hasDropdown: true },
+              { label: t("nav.aPropos"), href: "/about" },
+              { label: t("nav.faq"), href: "/faq" },
+            ].map((link) =>
               link.hasDropdown ? (
                 <li key={link.label} className="relative">
                   <button
@@ -221,6 +216,9 @@ export default function Nav(): React.JSX.Element {
 
         {/* Right: separator + actions */}
         <div className="flex items-center gap-3">
+          {/* Language switcher */}
+          <LanguageSwitcher />
+
           {/* Thin separator */}
           <div className={`hidden sm:block w-px h-5 ${sepStyle} mr-0.5`} />
 
@@ -228,7 +226,7 @@ export default function Nav(): React.JSX.Element {
             href="/login"
             className={`hidden sm:inline-flex items-center justify-center h-[34px] px-5 rounded-xl text-[13px] font-medium transition-all duration-200 ${loginBtn}`}
           >
-            Se connecter
+            {t("nav.seConnecter")}
           </Link>
 
           <Link
@@ -240,14 +238,14 @@ export default function Nav(): React.JSX.Element {
               boxShadow: "0 1px 0 rgba(255,255,255,0.15) inset, 0 4px 16px rgba(184,138,90,0.28)",
             }}
           >
-            Réserver
+            {t("nav.reserver")}
           </Link>
 
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className={`lg:hidden relative flex flex-col items-center justify-center w-9 h-9 rounded-xl transition-colors ${isDark ? "hover:bg-white/[0.06]" : "hover:bg-black/[0.06]"}`}
-            aria-label="Menu"
+            aria-label={t("nav.menu")}
           >
             <span className={`block w-[17px] h-[1.5px] rounded-full transition-all duration-300 origin-center ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "rotate-45 translate-y-[3px]" : ""}`} />
             <span className={`block w-[17px] h-[1.5px] rounded-full mt-[5px] transition-all duration-300 ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "opacity-0 scale-x-0" : ""}`} />
@@ -279,7 +277,7 @@ export default function Nav(): React.JSX.Element {
 
             <div className="p-5">
               <p className="text-white/25 text-[11px] uppercase tracking-[0.12em] font-medium mb-4 px-1">
-                Nos solutions
+                {t("nav.nosSolutions")}
               </p>
               <div className="grid grid-cols-3 gap-2">
                 {solutions.map((s, i) => (
@@ -292,11 +290,11 @@ export default function Nav(): React.JSX.Element {
                       <div className="w-9 h-9 rounded-lg bg-white/[0.04] border border-white/[0.05] flex items-center justify-center text-[#B88A5A]/55 group-hover:text-[#B88A5A] group-hover:bg-[#B88A5A]/8 group-hover:border-[#B88A5A]/15 transition-all duration-250">
                         {s.icon}
                       </div>
-                      <h3 className="text-white font-heading font-semibold text-[13.5px]">{s.title}</h3>
+                      <h3 className="text-white font-heading font-semibold text-[13.5px]">{t(`nav.${s.key}.title`)}</h3>
                     </div>
-                    <p className="text-white/32 text-[12px] leading-relaxed mb-3.5">{s.desc}</p>
+                    <p className="text-white/32 text-[12px] leading-relaxed mb-3.5">{t(`nav.${s.key}.desc`)}</p>
                     <span className="inline-flex items-center gap-1.5 text-[#B88A5A] text-[12px] font-medium group-hover:gap-2.5 transition-all duration-200">
-                      {s.cta}
+                      {t(`nav.${s.key}.cta`)}
                       <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                       </svg>
@@ -311,14 +309,14 @@ export default function Nav(): React.JSX.Element {
             <div className="px-5 py-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-[#159AA9]/70" />
-                <span className="text-white/28 text-[11.5px]">Solutions adaptées à chaque besoin</span>
+                <span className="text-white/28 text-[11.5px]">{t("nav.solutionsAdaptees")}</span>
               </div>
               <Link
                 href="#"
                 onClick={(e) => e.preventDefault()}
                 className="text-white/42 hover:text-white text-[12px] font-medium transition-colors flex items-center gap-1.5"
               >
-                Voir toutes nos solutions
+                {t("nav.voirToutes")}
                 <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
@@ -332,7 +330,7 @@ export default function Nav(): React.JSX.Element {
       <div
         role="dialog"
         aria-modal="true"
-        aria-label="Menu navigation"
+        aria-label={t("nav.menuNav")}
         className={`fixed inset-0 bg-[#080E1C] z-40 transition-all duration-400 lg:hidden ${
           mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
@@ -347,7 +345,7 @@ export default function Nav(): React.JSX.Element {
         />
 
         <div className="relative flex flex-col h-full px-6 sm:px-10 pt-[88px] pb-10 overflow-y-auto">
-          <nav className="flex-1" aria-label="Navigation mobile">
+          <nav className="flex-1" aria-label={t("nav.navMobile")}>
             <ul className="space-y-0.5">
               {/* Home */}
               <li>
@@ -359,7 +357,7 @@ export default function Nav(): React.JSX.Element {
                   }`}
                 >
                   {isActive("/") && <span className="w-1.5 h-1.5 rounded-full bg-[#B88A5A] shrink-0" />}
-                  Accueil
+                  {t("nav.accueil")}
                 </Link>
               </li>
 
@@ -369,7 +367,7 @@ export default function Nav(): React.JSX.Element {
                   onClick={() => setMobileSolutionsOpen(!mobileSolutionsOpen)}
                   className="flex items-center justify-between w-full py-3.5 text-[clamp(1.6rem,4vw,2.2rem)] font-heading font-bold text-white/38 hover:text-white/75 transition-colors"
                 >
-                  Solutions
+                  {t("nav.solutions")}
                   <svg
                     className={`w-5 h-5 text-white/20 transition-transform duration-300 ${mobileSolutionsOpen ? "rotate-180" : ""}`}
                     fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
@@ -394,8 +392,8 @@ export default function Nav(): React.JSX.Element {
                           {s.icon}
                         </div>
                         <div className="min-w-0">
-                          <span className="text-white font-heading font-semibold text-sm">{s.title}</span>
-                          <p className="text-white/30 text-xs mt-0.5 leading-relaxed">{s.desc}</p>
+                          <span className="text-white font-heading font-semibold text-sm">{t(`nav.${s.key}.title`)}</span>
+                          <p className="text-white/30 text-xs mt-0.5 leading-relaxed">{t(`nav.${s.key}.desc`)}</p>
                         </div>
                       </Link>
                     ))}
@@ -405,8 +403,8 @@ export default function Nav(): React.JSX.Element {
 
               {/* Remaining links */}
               {[
-                { label: "À Propos", href: "/about" },
-                { label: "FAQ", href: "/faq" },
+                { label: t("nav.aPropos"), href: "/about" },
+                { label: t("nav.faq"), href: "/faq" },
               ].map(({ label, href }) => (
                 <li key={label}>
                   <Link
@@ -432,7 +430,7 @@ export default function Nav(): React.JSX.Element {
                 onClick={closeMobile}
                 className="flex items-center justify-center h-12 rounded-xl border border-white/[0.09] bg-white/[0.04] text-white/65 text-sm font-medium transition-all hover:bg-white/[0.07]"
               >
-                Se connecter
+                {t("nav.seConnecter")}
               </Link>
               <Link
                 href="#"
@@ -443,11 +441,11 @@ export default function Nav(): React.JSX.Element {
                   boxShadow: "0 4px 20px rgba(184,138,90,0.3)",
                 }}
               >
-                Réserver
+                {t("nav.reserver")}
               </Link>
             </div>
             <p className="text-center text-white/18 text-[11.5px] tracking-wide">
-              Votre santé, notre engagement
+              {t("nav.votreSanteNotreEngagement")}
             </p>
           </div>
         </div>

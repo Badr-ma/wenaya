@@ -7,6 +7,7 @@ import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { formatDate, categoryColors, type PostWithAuthor } from "@/lib/blog-utils";
+import { useLocale } from "@/contexts/LanguageContext";
 
 function extractHeadings(content: string): { id: string; text: string; level: number }[] {
   const headings: { id: string; text: string; level: number }[] = [];
@@ -32,6 +33,7 @@ export default function BlogPostClient({
   post: PostWithAuthor;
   related: PostWithAuthor[];
 }) {
+  const { t } = useLocale();
   const contentRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
   const heroRef = useRef<HTMLDivElement>(null);
@@ -86,7 +88,7 @@ export default function BlogPostClient({
             transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
           >
             <div className="flex items-center gap-2 text-sm text-white/50 mb-6">
-              <Link href="/" className="hover:text-white transition-colors">Accueil</Link>
+              <Link href="/" className="hover:text-white transition-colors">{t("blog.accueil")}</Link>
               <span>/</span>
               <Link href="/blog" className="hover:text-white transition-colors">Blog</Link>
               <span>/</span>
@@ -134,7 +136,7 @@ export default function BlogPostClient({
         <div className="lg:grid lg:grid-cols-[220px_1fr_180px] lg:gap-8 xl:gap-12">
           <aside className="hidden lg:block">
             <div className="sticky top-32">
-              <h4 className="text-[10px] font-mono text-gray-400 uppercase tracking-widest mb-4">Contenu</h4>
+              <h4 className="text-[10px] font-mono text-gray-400 uppercase tracking-widest mb-4">{t("blog.contenu")}</h4>
               <nav className="space-y-2.5">
                 {headings.map((h) => (
                   <a
@@ -197,7 +199,7 @@ export default function BlogPostClient({
 
           <aside className="hidden lg:block">
             <div className="sticky top-32">
-              <h4 className="text-[10px] font-mono text-gray-400 uppercase tracking-widest mb-4">Partager</h4>
+              <h4 className="text-[10px] font-mono text-gray-400 uppercase tracking-widest mb-4">{t("blog.partager")}</h4>
               <div className="flex flex-col gap-3">
                 <a
                   href={`https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`}
@@ -224,7 +226,7 @@ export default function BlogPostClient({
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
                   </svg>
-                  Copier
+                  {t("blog.copier")}
                 </button>
               </div>
             </div>
@@ -235,7 +237,7 @@ export default function BlogPostClient({
       {related.length > 0 && (
         <section className="bg-white border-t border-gray-100 py-20 sm:py-24">
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-            <h2 className="text-2xl font-heading font-bold text-[#0B1220] mb-10">Articles connexes</h2>
+            <h2 className="text-2xl font-heading font-bold text-[#0B1220] mb-10">{t("blog.articlesConnexes")}</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {related.map((r) => (
                 <Link
@@ -270,13 +272,13 @@ export default function BlogPostClient({
           >
             <span className="inline-flex items-center gap-2 bg-white/[0.04] border border-white/[0.06] rounded-full px-3 py-1 mb-5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#B88A5A] animate-pulse-soft" />
-              <span className="text-[10px] font-mono text-white/40 tracking-wider uppercase">Newsletter</span>
+              <span className="text-[10px] font-mono text-white/40 tracking-wider uppercase">{t("blog.newsletterBadge")}</span>
             </span>
-            <h2 className="text-3xl sm:text-4xl font-heading font-bold text-white leading-[1.1] tracking-tight">
-              Restez à la pointe de la <span className="text-[#B88A5A]">médecine préventive</span>
+            <h2 className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-white">
+              {t("blog.newsletterHeading")}
             </h2>
             <p className="text-white/40 text-sm sm:text-base mt-4 max-w-lg mx-auto leading-relaxed">
-              Recevez nos derniers articles, recherches et protocoles directement dans votre boîte mail.
+              {t("blog.newsletterSub")}
             </p>
             <form
               onSubmit={(e) => e.preventDefault()}
@@ -284,14 +286,14 @@ export default function BlogPostClient({
             >
               <input
                 type="email"
-                placeholder="Votre adresse email"
+                placeholder={t("blog.newsletterPlaceholder")}
                 className="flex-1 h-12 px-4 rounded-xl bg-white/[0.05] border border-white/[0.08] text-white placeholder:text-white/20 text-sm focus:outline-none focus:border-[#B88A5A]/40 focus:ring-1 focus:ring-[#B88A5A]/20 transition-all duration-300"
               />
               <button
                 type="submit"
                 className="h-12 px-6 bg-[#B88A5A] text-white text-sm font-semibold rounded-xl hover:bg-[#B88A5A]/90 transition-all duration-300 hover:shadow-[0_8px_24px_rgba(170,65,42,0.3)] shrink-0"
               >
-                S&apos;abonner
+                {t("blog.newsletterBtn")}
               </button>
             </form>
           </motion.div>

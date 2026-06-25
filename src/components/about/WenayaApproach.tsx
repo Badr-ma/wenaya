@@ -2,16 +2,18 @@
 
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
-
-const steps = [
-  { label: "Écouter", desc: "Nous prenons le temps de comprendre chaque dimension de votre santé — physique, mentale, nutritionnelle et lifestyle." },
-  { label: "Analyser", desc: "Notre équipe collabore pour construire une vision complète de vos besoins, objectifs et des causes profondes de vos préoccupations." },
-  { label: "Accompagner", desc: "Nous délivrons un plan coordonné et personnalisé, s'appuyant sur l'expertise de multiples disciplines travaillant ensemble." },
-  { label: "Évoluer", desc: "Un suivi continu, de la prévention et des conseils vous aident à maintenir vos résultats sur le long terme." },
-];
+import { useLocale } from "@/contexts/LanguageContext";
 
 export default function WenayaApproach(): React.JSX.Element {
+  const { t, tRaw } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
+
+  const steps = [
+    { label: t("wenayaApproach.step1.label"), desc: t("wenayaApproach.step1.desc"), footer: t("wenayaApproach.step1.footer") },
+    { label: t("wenayaApproach.step2.label"), desc: t("wenayaApproach.step2.desc"), footer: t("wenayaApproach.step2.footer") },
+    { label: t("wenayaApproach.step3.label"), desc: t("wenayaApproach.step3.desc"), footer: t("wenayaApproach.step3.footer") },
+    { label: t("wenayaApproach.step4.label"), desc: t("wenayaApproach.step4.desc"), footer: t("wenayaApproach.step4.footer") },
+  ];
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -60,14 +62,14 @@ export default function WenayaApproach(): React.JSX.Element {
       <div className="max-w-6xl mx-auto relative">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <div id="wa-badge">
-            <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">
-              <span className="w-6 h-px bg-[#B88A5A]/40" />
-              Notre Approche
-            </span>
+              <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">
+                <span className="w-6 h-px bg-[#B88A5A]/40" />
+                {t("wenayaApproach.badge")}
+              </span>
           </div>
 
           <h2 id="wa-title" className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220] mt-5">
-            L&apos;approche Wenaya
+            {t("wenayaApproach.heading")}
           </h2>
         </div>
 
@@ -86,7 +88,7 @@ export default function WenayaApproach(): React.JSX.Element {
               <div className="mt-8 pt-5 border-t border-gray-100">
                 <span className="wa-step text-xs font-medium text-[#B88A5A] flex items-center gap-2" style={{ opacity: 0 }}>
                   <span className="w-4 h-px bg-[#B88A5A]/30" />
-                  Étape {i + 1}
+                  {t(`wenayaApproach.step${i + 1}.footer`)}
                 </span>
               </div>
             </div>

@@ -3,8 +3,10 @@
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import Image from "next/image";
+import { useLocale } from "@/contexts/LanguageContext";
 
 export default function FutureVision(): React.JSX.Element {
+  const { t } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -35,12 +37,12 @@ export default function FutureVision(): React.JSX.Element {
       </div>
 
       <div id="fv-content" className="relative z-10 max-w-3xl mx-auto text-center px-6">
-        <span className="text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">Notre Vision</span>
+        <span className="text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">{t("futureVision.badge")}</span>
         <h2 className="heading-serif text-[clamp(2.2rem,4.5vw,4rem)] text-white mt-5">
-          Votre santé, notre engagement
+          {t("futureVision.heading")}
         </h2>
         <p className="text-white/60 text-base sm:text-lg mt-6 max-w-xl mx-auto leading-relaxed">
-          Nous croyons en un avenir où la santé est intégrée, préventive et accessible — accompagnant chaque étape de la vie avec expertise, compassion et un engagement pour un bien-être durable.
+          {t("futureVision.desc")}
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-4 mt-12">
@@ -48,13 +50,13 @@ export default function FutureVision(): React.JSX.Element {
             href="tel:0666124035"
             className="inline-flex items-center justify-center px-8 h-[52px] bg-[#B88A5A] hover:bg-[#A07848] text-white text-sm font-semibold rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-[rgba(184,138,90,0.25)]"
           >
-            Prendre rendez-vous
+            {t("futureVision.cta1")}
           </a>
           <a
             href="/pratiques"
             className="inline-flex items-center justify-center px-8 h-[52px] bg-transparent text-white/70 border border-white/20 hover:border-white/40 hover:text-white rounded-full text-sm font-medium transition-all duration-300"
           >
-            Découvrir nos pratiques
+            {t("futureVision.cta2")}
           </a>
         </div>
       </div>

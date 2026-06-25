@@ -127,7 +127,7 @@ export default function YoloSection(): React.JSX.Element {
   const setParticleRef = (i: number) => (el: HTMLDivElement | null) => { particleRefs.current[i] = el; };
 
   return (
-    <section ref={sectionRef} className="bg-[#0B1220] py-20 sm:py-32 lg:py-44 px-6 relative overflow-hidden">
+    <section ref={sectionRef} className="bg-[#0B1220] py-12 sm:py-32 lg:py-44 px-6 relative overflow-hidden">
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -137,7 +137,7 @@ export default function YoloSection(): React.JSX.Element {
       />
 
       <div className="max-w-7xl mx-auto relative">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-16 lg:gap-12 items-center">
           <div ref={contentRef} className="max-w-xl">
             <div ref={badgeRef}>
               <span className="inline-flex items-center gap-2 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase mb-6">
@@ -166,7 +166,7 @@ export default function YoloSection(): React.JSX.Element {
               A continuous intelligence layer designed to help individuals understand their health, anticipate risks, and make better decisions over time.
             </p>
 
-            <div ref={buttonsRef} className="flex flex-wrap gap-4 mt-12">
+            <div ref={buttonsRef} className="flex flex-wrap gap-4 mt-6 sm:mt-12">
               <a
                 href="#"
                 className="group relative inline-flex items-center justify-center px-8 h-[50px] overflow-hidden rounded-full transition-all duration-500"
