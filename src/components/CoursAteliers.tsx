@@ -74,7 +74,14 @@ export default function CoursAteliers(): React.JSX.Element {
             <div className="w-1 h-1 rounded-full bg-[#B88A5A]" />
             <span className="text-[#B88A5A]/50 text-[10px] font-semibold tracking-[0.24em] uppercase">{t("coursAteliers.badge")}</span>
           </span>
-          <h2 className="heading-serif text-white text-[clamp(1.6rem,3.5vw,3rem)]">{t("coursAteliers.heading")}</h2>
+          <h2 className="heading-serif text-white text-[clamp(1.6rem,3.5vw,3rem)]">{t("coursAteliers.heading1")}{" "}
+<span style={{
+  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+}}>
+  {t("coursAteliers.heading2")}
+</span></h2>
         </div>
 
         {/* Horizontal scroll — exactly 4 cards visible */}
@@ -91,7 +98,7 @@ export default function CoursAteliers(): React.JSX.Element {
                 const desc = t(`coursAteliers.${s.key}.desc`);
 
                 return (
-                  <div key={s.key} className="ca-card group w-[calc(25%-12px)] shrink-0 snap-start rounded-2xl overflow-hidden flex flex-col transition-all duration-500 hover:shadow-2xl hover:shadow-[#B88A5A]/5"
+                  <div key={s.key} className="ca-card group w-[calc(25%-12px)] shrink-0 snap-start rounded-2xl overflow-hidden flex flex-col transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_8px_40px_-4px_rgba(184,138,90,0.15)]"
                     style={{ background: "#0B1220", border: "1px solid rgba(255,255,255,0.06)" }}
                   >
                     {/* Image area */}
@@ -100,39 +107,39 @@ export default function CoursAteliers(): React.JSX.Element {
                         src={s.img}
                         alt={title}
                         fill
-                        className="object-cover transition-all duration-700 group-hover:scale-[1.08]"
+                        className="object-cover transition-all duration-700 group-hover:scale-[1.05]"
                         sizes="(max-width: 640px) 50vw, 25vw"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/70 via-[#0B1220]/10 to-transparent" />
 
                       {/* Number badge */}
-                      <div className="absolute top-3 left-3 w-7 h-7 sm:w-8 sm:h-8 rounded-full backdrop-blur-lg flex items-center justify-center"
+                      <div className="absolute top-3 left-3 w-7 h-7 sm:w-8 sm:h-8 rounded-full backdrop-blur-lg flex items-center justify-center transition-all duration-500 group-hover:scale-110"
                         style={{ background: `${s.accent}18`, border: `1px solid ${s.accent}25`, boxShadow: `0 0 20px ${s.accent}10` }}
                       >
-                        <span className="font-heading font-bold text-[10px] sm:text-xs tabular-nums" style={{ color: s.accent }}>
+                        <span className="font-heading font-bold text-[10px] sm:text-xs tabular-nums transition-colors duration-500 group-hover:text-white" style={{ color: s.accent }}>
                           {String(i + 1).padStart(2, "0")}
                         </span>
                       </div>
 
                       {/* Title */}
-                      <h3 className="absolute bottom-3 left-4 right-4 text-white font-heading font-semibold text-sm sm:text-base leading-tight">
+                      <h3 className="absolute bottom-3 left-4 right-4 font-heading font-semibold text-sm sm:text-base leading-tight transition-colors duration-500 group-hover:text-[#B88A5A]" style={{ color: "rgba(255,255,255,0.95)" }}>
                         {title}
                       </h3>
                     </div>
 
                     {/* Description */}
-                    <div className="flex-1 flex flex-col justify-center px-4 py-3 sm:py-4">
-                      <div className="flex items-start gap-2.5">
-                        <div className="w-px h-8 self-stretch shrink-0 rounded-full opacity-40 mt-0.5"
-                          style={{ background: `linear-gradient(to bottom, ${s.accent}, transparent)` }}
+                    <div className="flex-1 flex flex-col justify-center px-5 py-4 sm:py-5">
+                      <div className="flex items-start gap-3">
+                        <div className="w-px h-10 self-stretch shrink-0 rounded-full mt-0.5 transition-opacity duration-500 group-hover:opacity-70"
+                          style={{ background: `linear-gradient(to bottom, ${s.accent}, transparent)`, opacity: 0.4 }}
                         />
-                        <p className="text-white/35 text-xs leading-relaxed line-clamp-2">{desc}</p>
+                        <p className="text-white/55 text-xs leading-relaxed line-clamp-3">{desc}</p>
                       </div>
                     </div>
 
                     {/* Accent bar */}
-                    <div className="mx-4 mb-3 h-[2px] rounded-full opacity-50"
-                      style={{ background: `linear-gradient(90deg, transparent, ${s.accent}30, ${s.accent}50, ${s.accent}30, transparent)` }}
+                    <div className="mx-5 mb-4 h-[2px] rounded-full transition-opacity duration-500 group-hover:opacity-80"
+                      style={{ background: `linear-gradient(90deg, transparent, ${s.accent}30, ${s.accent}50, ${s.accent}30, transparent)`, opacity: 0.5 }}
                     />
                   </div>
                 );
@@ -162,7 +169,7 @@ export default function CoursAteliers(): React.JSX.Element {
         </div>
 
         {/* Scroll progress indicator */}
-        <div className="ca-head flex items-center justify-center gap-1.5 mt-6">
+        <div className="ca-head flex items-center justify-center gap-2 mt-8">
           {sessionsData.slice(0, -2).map((_, i) => {
             const segStart = i / (sessionsData.length - 2);
             const segEnd = (i + 1) / (sessionsData.length - 2);
@@ -170,10 +177,12 @@ export default function CoursAteliers(): React.JSX.Element {
             return (
               <div
                 key={i}
-                className="h-1 rounded-full transition-all duration-500"
+                className="rounded-full transition-all duration-500"
                 style={{
-                  width: active ? "20px" : "6px",
-                  background: active ? "rgba(184,138,90,0.5)" : "rgba(255,255,255,0.08)",
+                  width: active ? "24px" : "6px",
+                  height: "6px",
+                  background: active ? "#B88A5A" : "rgba(255,255,255,0.08)",
+                  boxShadow: active ? "0 0 8px rgba(184,138,90,0.35)" : "none",
                 }}
               />
             );
@@ -181,14 +190,14 @@ export default function CoursAteliers(): React.JSX.Element {
         </div>
 
         {/* Bottom link */}
-        <div className="ca-head text-center mt-6">
+        <div className="ca-head text-center mt-8">
           <a
-            href="/seance-de-groupe"
-            className="inline-flex items-center gap-2 text-[#B88A5A] text-xs font-semibold transition-all duration-300 hover:gap-3 group"
+            href="/pratiques"
+            className="inline-flex items-center gap-3 text-[#B88A5A] text-sm font-semibold transition-all duration-500 group rounded-xl border border-[#B88A5A]/20 px-5 py-2.5 hover:bg-[#B88A5A]/5 hover:border-[#B88A5A]/30 hover:gap-4"
           >
-            <span className="w-5 h-px bg-[#B88A5A]/30 transition-all duration-300 group-hover:w-7" />
+            <span className="w-6 h-px bg-[#B88A5A]/40 transition-all duration-500 group-hover:w-8" />
             {t("coursAteliers.cta")}
-            <svg className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-3.5 h-3.5 transition-transform duration-500 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
           </a>

@@ -46,7 +46,14 @@ export default function ClinicsHero(): React.JSX.Element {
           </div>
 
           <h1 className="ch-title heading-serif text-white text-[clamp(2.5rem,5vw,4.5rem)]">
-            {t("clinics.hero.heading")}
+            {t("clinics.hero.heading1")}{" "}
+<span style={{
+  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+}}>
+  {t("clinics.hero.heading2")}
+</span>
           </h1>
 
           <p className="ch-desc mt-6 max-w-xl text-white/40 leading-relaxed"

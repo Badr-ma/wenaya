@@ -70,7 +70,14 @@ export default function VideoTestimonials(): React.JSX.Element {
             {t("testimonials.badge")}
           </span>
           <h2 className="heading-serif text-3xl sm:text-4xl md:text-5xl lg:text-[52px] text-[#0B1220] mt-4">
-            {t("testimonials.heading")}
+            {t("testimonials.heading1")}{" "}
+<span style={{
+  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+}}>
+  {t("testimonials.heading2")}
+</span>
           </h2>
         </div>
 

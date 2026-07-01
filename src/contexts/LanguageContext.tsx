@@ -4,12 +4,11 @@ import {
   createContext,
   useContext,
   useState,
-  useEffect,
   useCallback,
+  useEffect,
   type ReactNode,
 } from "react";
 import { useTranslations } from "@/i18n";
-import type { Translations } from "@/i18n/fr";
 
 type Locale = "fr" | "en";
 
@@ -23,21 +22,21 @@ interface LanguageContextValue {
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
-function getInitialLocale(): Locale {
-  if (typeof window === "undefined") return "fr";
-  try {
-    const stored = localStorage.getItem("wenaya-locale");
-    if (stored === "fr" || stored === "en") return stored;
-  } catch {}
-  const browserLang = navigator.language?.slice(0, 2);
-  return browserLang === "en" ? "en" : "fr";
-}
-
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>("fr");
 
   useEffect(() => {
-    setLocaleState(getInitialLocale());
+    let detected: Locale = "fr";
+    try {
+      const stored = localStorage.getItem("wenaya-locale");
+      if (stored === "fr" || stored === "en") detected = stored;
+      else {
+        const browserLang = navigator.language?.slice(0, 2);
+        detected = browserLang === "en" ? "en" : "fr";
+      }
+    } catch {}
+    setLocaleState(detected);
+    document.documentElement.lang = detected;
   }, []);
 
   const setLocale = useCallback((l: Locale) => {

@@ -71,7 +71,14 @@ export default function EntreprisesApproach(): React.JSX.Element {
             </span>
           </div>
           <h2 id="ea-title" className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220] mt-5">
-            {t("entreprises.approach.heading")}
+            {t("entreprises.approach.heading1")}{" "}
+<span style={{
+  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+}}>
+  {t("entreprises.approach.heading2")}
+</span>
           </h2>
           <p id="ea-desc" className="text-[#2B2F36]/55 text-sm sm:text-base leading-relaxed mt-4 max-w-lg mx-auto">
             {t("entreprises.approach.sub")}

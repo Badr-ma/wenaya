@@ -16,7 +16,14 @@ export default function ContactPage() {
           </div>
 
           <h1 className="heading-serif text-[clamp(2.5rem,5vw,4.5rem)] text-[#0B1220] mb-6">
-            {t("contact.heading")}
+            {t("contact.heading1")}{" "}
+<span style={{
+  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+}}>
+  {t("contact.heading2")}
+</span>
           </h1>
           <p className="text-[#2B2F36]/55 text-sm max-w-lg mx-auto mb-14 leading-relaxed">
             {t("contact.sub")}

@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Biomarkers(): React.JSX.Element {
   const { t, tRaw } = useLocale();
-  const pillarKeys = ["prevention", "performance", "recuperation", "equilibre", "longevite"];
+  const pillarKeys = ["prevention", "performance", "recuperation"];
   const pillars = pillarKeys.map((key, i) => {
     const p = tRaw<{ title: string; services: string[] }>(`biomarkers.pillars.${key}`);
     return { num: String(i + 1).padStart(2, "0"), name: p.title, services: p.services };
@@ -60,7 +60,14 @@ export default function Biomarkers(): React.JSX.Element {
               letterSpacing: "-0.015em",
             }}
           >
-            {t("biomarkers.heading").split('\n')[0]}<br />{t("biomarkers.heading").split('\n')[1]}
+            {t("biomarkers.heading1")}<br />
+<span style={{
+  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+}}>
+  {t("biomarkers.heading2")}
+</span>
           </h2>
           <p className="text-[#2B2F36]/50 text-[14px] leading-relaxed max-w-md mx-auto mt-4">
             {t("biomarkers.sub")}

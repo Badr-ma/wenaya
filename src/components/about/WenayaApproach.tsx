@@ -5,7 +5,7 @@ import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
 
 export default function WenayaApproach(): React.JSX.Element {
-  const { t, tRaw } = useLocale();
+  const { t } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
 
   const steps = [
@@ -69,7 +69,14 @@ export default function WenayaApproach(): React.JSX.Element {
           </div>
 
           <h2 id="wa-title" className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220] mt-5">
-            {t("wenayaApproach.heading")}
+            {t("wenayaApproach.heading1")}{" "}
+<span style={{
+  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+}}>
+  {t("wenayaApproach.heading2")}
+</span>
           </h2>
         </div>
 

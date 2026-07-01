@@ -14,7 +14,7 @@ interface Particle {
   connections: number;
 }
 
-export default function HiggsField({ className = "", parentRef }: { className?: string; parentRef?: React.RefObject<HTMLElement | null> }): React.JSX.Element {
+export default function HiggsField({ className = "", parentRef, palette: customPalette }: { className?: string; parentRef?: React.RefObject<HTMLElement | null>; palette?: [number, number, number][] }): React.JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: 0, y: 0, active: false });
 
@@ -38,7 +38,7 @@ export default function HiggsField({ className = "", parentRef }: { className?: 
     canvas.height = h * dpr;
     ctx.scale(dpr, dpr);
 
-    const palette = [
+    const palette = customPalette ?? [
       [184, 138, 90],
       [21, 154, 169],
       [170, 65, 42],
@@ -171,7 +171,8 @@ export default function HiggsField({ className = "", parentRef }: { className?: 
               ctx.beginPath();
               ctx.moveTo(a.x, a.y);
               ctx.lineTo(b.x, b.y);
-              ctx.strokeStyle = `rgba(184,138,90,${alpha})`;
+              const [cr, cg, cb] = palette[0];
+              ctx.strokeStyle = `rgba(${cr},${cg},${cb},${alpha})`;
               ctx.lineWidth = 0.4;
               ctx.stroke();
               a.connections++;

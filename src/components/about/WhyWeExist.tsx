@@ -33,7 +33,14 @@ export default function WhyWeExist(): React.JSX.Element {
             </div>
 
             <h2 id="wwe-title" className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220] mt-5">
-              {t("whyWeExist.heading")}
+              {t("whyWeExist.heading1")}{" "}
+<span style={{
+  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+}}>
+  {t("whyWeExist.heading2")}
+</span>
             </h2>
 
             <div id="wwe-text" className="mt-8 space-y-5 text-[#2B2F36] text-sm sm:text-base leading-relaxed">

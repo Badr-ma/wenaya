@@ -4,6 +4,7 @@ const fr = {
     solutions: "Solutions",
     aPropos: "À Propos",
     faq: "FAQ",
+    produits: "Produits",
     seConnecter: "Se connecter",
     reserver: "Réserver",
     menu: "Menu",
@@ -86,7 +87,8 @@ const fr = {
   },
   diseaseMarquee: {
     badge: "Kinésithérapie • Ostéopathie • Psychologie • Nutrition • Orthophonie",
-    heading: "9 spécialités, un seul centre de soins à Casablanca",
+    heading1: "9 spécialités,",
+    heading2: "un seul centre de soins à Casablanca",
     sub: "Wenaya Clinic réunit kinésithérapeutes, ostéopathes, psychologues, neuropsychologues, nutritionnistes, orthophonistes, naturopathes et psychomotriciens pour une prise en charge pluridisciplinaire adaptée à chaque patient, enfant comme adulte.",
     specialites: [
       "Kinésithérapie",
@@ -119,7 +121,8 @@ const fr = {
   },
   biomarkers: {
     badge: "L'écosystème Wenaya",
-    heading: "Cinq piliers.\nUne santé complète.",
+    heading1: "Trois piliers.",
+    heading2: "Une santé complète.",
     sub: "35+ spécialistes certifiés pour un parcours cohérent.",
     soins: "6 soins",
     pillars: {
@@ -156,34 +159,14 @@ const fr = {
           "Mobilisation articulaire",
         ],
       },
-      equilibre: {
-        title: "Équilibre",
-        services: [
-          "Psychologie clinique",
-          "Thérapie cognitive",
-          "Gestion du stress",
-          "Psychomotricité",
-          "Orthophonie",
-          "Accompagnement émotionnel",
-        ],
-      },
-      longevite: {
-        title: "Longévité",
-        services: [
-          "Micronutrition",
-          "Nutrition de précision",
-          "Médecine anti-âge",
-          "Plan longévité",
-          "Suivi métabolique",
-          "Médecine intégrative",
-        ],
-      },
+
     },
     bottom: "Tous nos programmes sont conçus sur mesure après votre première évaluation pluridisciplinaire.",
     cta: "Découvrir notre méthode",
   },
   testimonialsSection: {
-    heading: "Ils nous font confiance",
+    heading1: "Ils",
+    heading2: "nous font confiance",
     testimonial1: {
       quote: "Je suis venue pour des douleurs chroniques au dos et l'équipe de kinésithérapie et d'ostéopathie de Wenaya Clinic Casablanca m'a redonné une qualité de vie que je n'espérais plus. Le suivi coordonné entre praticiens fait toute la différence.",
       name: "Fatima Z.",
@@ -219,7 +202,8 @@ const fr = {
   },
   testimonials: {
     badge: "35 thérapeutes certifiés à Casablanca",
-    heading: "Des expertises qui vous ressemblent",
+    heading1: "Des expertises",
+    heading2: "qui vous ressemblent",
     member1: { name: "Dr. Amal Benali", role: "Médecin généraliste — Santé préventive & bilans complets" },
     member2: { name: "Sarah El Fassi", role: "Kinésithérapeute — Rééducation fonctionnelle & TECAR" },
     member3: { name: "Khalid Ouazzani", role: "Ostéopathe — Douleurs musculo-squelettiques & troubles fonctionnels" },
@@ -229,7 +213,8 @@ const fr = {
   },
   comparisonTable: {
     badge: "Clinics · Corporate · Hospitality",
-    heading: "L'écosystème Wenaya.",
+    heading1: "L'écosystème",
+    heading2: "Wenaya.",
     sub: "Trois portes d'entrée. Une seule promesse.",
     clinics: {
       title: "Clinics",
@@ -252,7 +237,8 @@ const fr = {
   },
   pricing: {
     eyebrow: "Prévenir. Performer. Durer.",
-    heading: "Investissez dans votre santé",
+    heading1: "Investissez dans",
+    heading2: "votre santé",
     sub: "Des formules pensées pour chaque profil, avec ou sans mutuelle.",
     plan1: {
       name: "Bilan de prévention",
@@ -303,7 +289,8 @@ const fr = {
   },
   coursAteliers: {
     badge: "Cours & Ateliers",
-    heading: "Des ateliers pour chaque moment de votre vie",
+    heading1: "Des ateliers pour",
+    heading2: "chaque moment de votre vie",
     cta: "Voir Plus",
     swipe: "Voir plus",
     yoga: { title: "Yoga Prénatal", desc: "Méthode de Gasquet — postures adaptées à la grossesse" },
@@ -334,20 +321,23 @@ const fr = {
   },
   aboutHero: {
     badge: "Qui sommes nous",
-    heading: "Soigner. Prévenir. Prolonger.",
+    heading1: "Soigner. Prévenir.",
+    heading2: "Prolonger.",
     desc: "Wenaya, c'est un écosystème de santé intégrée qui réunit des spécialistes en kinésithérapie, ostéopathie, psychologie, nutrition et thérapies complémentaires — pour un accompagnement global et personnalisé.",
     cta: "Découvrir notre histoire",
   },
   whyWeExist: {
     badge: "Notre Mission",
-    heading: "Votre santé, notre priorité",
+    heading1: "Votre santé,",
+    heading2: "notre priorité",
     p1: "Chez Wenaya, notre mission est d'accompagner chaque individu dans son chemin vers une santé optimale et un bien-être global. Guidés par cette vision, nous avons créé un refuge où les expertises paramédicales et les thérapies alternatives se rejoignent, offrant des solutions personnalisées en complément de la médecine conventionnelle.",
     p2: "Nous croyons fermement en l'importance de l'intégration holistique des soins de santé, reconnaissant que chaque personne est unique et mérite une approche individualisée. Notre équipe dévouée travaille main dans la main avec vous, vous encourageant à devenir responsable de votre santé.",
     p3: "Trop souvent, les symptômes sont traités sans tenir compte de leurs causes sous-jacentes. Nous croyons que chaque individu doit être considéré dans sa globalité — car le corps, l'esprit et l'âme sont intrinsèquement liés. Wenaya est né pour prendre en compte tous les plans de l'être.",
   },
   wenayaApproach: {
     badge: "Notre Approche",
-    heading: "Notre méthode, votre transformation",
+    heading1: "Notre méthode,",
+    heading2: "votre transformation",
     step1: { label: "Écouter", desc: "Nous prenons le temps de comprendre chaque dimension de votre santé — physique, mentale, nutritionnelle et lifestyle.", footer: "Étape 1" },
     step2: { label: "Analyser", desc: "Notre équipe collabore pour construire une vision complète de vos besoins, objectifs et des causes profondes de vos préoccupations.", footer: "Étape 2" },
     step3: { label: "Accompagner", desc: "Nous délivrons un plan coordonné et personnalisé, s'appuyant sur l'expertise de multiples disciplines travaillant ensemble.", footer: "Étape 3" },
@@ -355,14 +345,16 @@ const fr = {
   },
   expertiseSection: {
     badge: "Notre Équipe",
-    heading: "Une équipe pluridisciplinaire",
+    heading1: "Une équipe",
+    heading2: "pluridisciplinaire",
     p1: "Wenaya, c'est bien plus qu'un centre de soins. Nous réunissons des spécialistes en kinésithérapie, ostéopathie, psychologie, neuropsychologie, nutrition, orthophonie, naturopathie, psychomotricité et thérapies complémentaires.",
     p2: "Wenaya Clinic, notre centre pluridisciplinaire à Casablanca, propose des bilans complets et des prises en charge coordonnées. Nous utilisons les dernières technologies d'évaluation, de suivi et d'analyse pour offrir un accompagnement précis, personnalisé et évolutif.",
     cta: "Rencontrer nos spécialistes",
   },
   futureVision: {
     badge: "Notre Vision",
-    heading: "Votre santé, notre engagement",
+    heading1: "Votre santé,",
+    heading2: "notre engagement",
     desc: "Nous croyons en un avenir où la santé est intégrée, préventive et accessible — accompagnant chaque étape de la vie avec expertise, compassion et un engagement pour un bien-être durable.",
     cta1: "Prendre rendez-vous",
     cta2: "Découvrir nos pratiques",
@@ -370,7 +362,8 @@ const fr = {
   entreprises: {
     hero: {
       badge: "Wenaya pour l'entreprise",
-      heading: "Cultivez le bien-être. Récoltez la performance.",
+      heading1: "Cultivez le bien-être.",
+      heading2: "Récoltez la performance.",
       desc: "Un partenaire santé et bien-être au travail qui s'adapte à vos équipes, à vos rythmes et à vos enjeux RH. Pas l'inverse.",
       bullets: [
         "Réduire l'absentéisme et les risques psychosociaux",
@@ -387,7 +380,8 @@ const fr = {
     },
     programs: {
       badge: "Notre programme",
-      heading: "Une approche sur mesure",
+      heading1: "Une approche",
+      heading2: "sur mesure",
       sub: "Découvrez nos publics, notre offre et nos thématiques phares en un coup d'œil.",
       tabPublics: "Nos publics",
       tabOffre: "Notre offre",
@@ -418,7 +412,8 @@ const fr = {
     },
     approach: {
       badge: "Comment ça marche",
-      heading: "Notre méthode en 4 étapes",
+      heading1: "Notre méthode",
+      heading2: "en 4 étapes",
       sub: "De l'audit à l'impact, un accompagnement structuré pensé pour le terrain.",
       steps: [
         { title: "Audit des besoins", desc: "Diagnostic confidentiel via questionnaire anonyme et échange avec votre direction RH pour comprendre vos enjeux, votre culture et vos contraintes." },
@@ -476,7 +471,8 @@ const fr = {
   clinics: {
     hero: {
       eyebrow: "Solutions Cliniques",
-      heading: "La santé intégrée pour vos patients.",
+      heading1: "La santé intégrée",
+      heading2: "pour vos patients.",
       desc: "Offrez à votre clinique une plateforme de prévention et de suivi pluridisciplinaire. Wenaya s'intègre à votre établissement pour enrichir votre offre de soins avec des programmes de bien-être mesurables et personnalisés.",
       cta1: "Devenir partenaire",
       cta2: "En savoir plus",
@@ -489,7 +485,8 @@ const fr = {
     },
     programs: {
       badge: "Notre Offre",
-      heading: "Tout ce qu'il faut pour élever votre clinique.",
+      heading1: "Tout ce qu'il faut",
+      heading2: "pour élever votre clinique.",
       offers: [
         { title: "Plateforme de Prévention", desc: "Un tableau de bord complet pour suivre les biomarqueurs, les habitudes et les risques de vos patients. Alertes personnalisées et recommandations automatiques." },
         { title: "Programmes Bien-être", desc: "Des parcours clé en main : gestion du stress, nutrition de précision, récupération physique et santé mentale — adaptés à la patientèle de votre clinique." },
@@ -499,7 +496,8 @@ const fr = {
     },
     why: {
       badge: "Pourquoi Wenaya",
-      heading: "Une clinique qui anticipe, c'est une clinique qui grandit.",
+      heading1: "Une clinique qui anticipe",
+      heading2: "c'est une clinique qui grandit.",
       reasons: [
         { title: "Différenciation", desc: "Positionnez votre clinique comme un établissement de référence en santé préventive et intégrée au Maroc." },
         { title: "Fidélisation", desc: "Offrez un suivi continu entre les consultations — vos patients restent engagés et connectés à votre clinique." },
@@ -511,7 +509,8 @@ const fr = {
     },
     cta: {
       badge: "Prêt à passer à l'action ?",
-      heading: "Transformez votre clinique avec Wenaya.",
+      heading1: "Transformez votre clinique",
+      heading2: "avec Wenaya.",
       desc: "Un appel de 30 minutes pour comprendre vos besoins. Une démo personnalisée. Un déploiement accompagné.",
       cta1: "Demander une démo",
       cta2: "Nous contacter",
@@ -519,7 +518,8 @@ const fr = {
     },
   },
   faq: {
-    heading: "Foire Aux Questions",
+    heading1: "Foire Aux",
+    heading2: "Questions",
     sub: "Tout ce que vous devez savoir sur Wenaya Clinic, nos soins, nos programmes bien-être et nos services aux entreprises.",
     q1: { q: "Quels types de soins sont proposés à la clinique ?", a: "Wenaya Clinic propose une large gamme de soins pluridisciplinaires : kinésithérapie, ostéopathie, psychologie clinique, neuropsychologie, nutrition, orthophonie, naturopathie, psychomotricité et thérapies complémentaires. Chaque patient bénéficie d'une évaluation complète pour orienter sa prise en charge vers le ou les spécialistes les plus adaptés à ses besoins." },
     q2: { q: "Comment les données collectées sont-elles protégées ?", a: "Wenaya respecte strictement les réglementations en vigueur (RGPD, loi 09-08 marocaine). Toutes les données de santé sont chiffrées, stockées sur des serveurs sécurisés au Maroc et accessibles uniquement aux praticiens autorisés. Vous pouvez consulter notre politique de confidentialité pour plus de détails." },
@@ -538,7 +538,8 @@ const fr = {
   },
   blog: {
     badge: "Blog",
-    heading: "Insights & Recherche",
+    heading1: "Insights",
+    heading2: "& Recherche",
     sub: "Expert analysis on the science of longevity, biomarker optimization, and the future of personalized preventive medicine.",
     dernierArticle: "Dernier article",
     minLecture: "min de lecture",
@@ -560,7 +561,8 @@ const fr = {
   },
   contact: {
     badge: "Contact",
-    heading: "Prenez rendez-vous",
+    heading1: "Prenez",
+    heading2: "rendez-vous",
     sub: "Notre équipe est à votre écoute du lundi au samedi, de 8h à 20h.",
     adresse: "Adresse",
     telephone: "Téléphone",
@@ -588,7 +590,8 @@ const fr = {
   },
   conditions: {
     badge: "Légal",
-    heading: "Conditions Générales d'Utilisation",
+    heading1: "Conditions Générales",
+    heading2: "d'Utilisation",
     sections: [
       "1. Présentation",
       "2. Acceptation des conditions",
@@ -619,7 +622,8 @@ const fr = {
   },
   confidentialite: {
     badge: "Légal",
-    heading: "Politique de Confidentialité",
+    heading1: "Politique",
+    heading2: "de Confidentialité",
     sections: [
       "1. Introduction",
       "2. Données collectées",
@@ -645,6 +649,55 @@ const fr = {
       cookies: "Notre Site utilise des cookies essentiels au fonctionnement et des cookies analytiques (anonymisés). Vous pouvez paramétrer vos préférences de cookies via le bandeau dédié. Le refus des cookies peut limiter certaines fonctionnalités du Site.",
       contactConf: "Pour toute question relative à vos données personnelles : Email : contact@wenaya.com, Téléphone : +212 6 66 12 40 35, Adresse : 88 Rue De Jabal Azourki, Casablanca 20930, Maroc.",
     },
+  },
+  pratiques: {
+    hero: { title1: "Nos", title2: "Pratiques", sub: "Kinésithérapie, ostéopathie, psychologie, nutrition et plus — une approche intégrée pour votre santé." },
+    cta: "Prendre rendez-vous",
+    search: "Rechercher une pratique…",
+    filters: { all: "Toutes", manualTherapies: "Thérapies manuelles", mentalHealth: "Santé mentale", nutrition: "Nutrition", holisticWellness: "Bien-être holistique" },
+    count: "pratiques",
+    items: [
+      { title: "Kinésithérapie", desc: "Rééducation fonctionnelle, thérapie manuelle et soins post-opératoires pour retrouver votre mobilité et soulager vos douleurs." },
+      { title: "Ostéopathie", desc: "Approche manuelle globale pour traiter les dysfonctions musculo-squelettiques et rétablir l'équilibre du corps." },
+      { title: "Psychologie Clinique", desc: "Thérapies cognitivo-comportementales (TCC), gestion du stress, anxiété et accompagnement émotionnel personnalisé." },
+      { title: "Neuropsychologie", desc: "Bilan et rééducation cognitive pour les troubles de la mémoire, de l'attention et des fonctions exécutives." },
+      { title: "Nutrition", desc: "Rééquilibrage alimentaire, suivi métabolique et nutrition de précision pour une santé optimale et durable." },
+      { title: "Orthophonie", desc: "Prise en charge des troubles de la communication, du langage oral et écrit, et de la déglutition." },
+      { title: "Naturopathie", desc: "Approche holistique combinant hygiène de vie, phytothérapie et conseils en micronutrition pour renforcer vos capacités d'auto-guérison." },
+      { title: "Psychomotricité", desc: "Accompagnement des troubles du développement moteur et psychomoteur chez l'enfant, l'adolescent et l'adulte." },
+      { title: "Thérapies Complémentaires", desc: "Sophrologie, hypnose, relaxation et médecines douces pour un bien-être global et une approche préventive." },
+    ],
+  },
+  produits: {
+    hero: { title1: "Nos", title2: "Produits", sub: "Des produits de santé, bien-être et longévité soigneusement sélectionnés par nos spécialistes pour votre bien-être." },
+    search: "Rechercher un produit…",
+    back: "Retour aux produits",
+    filters: { all: "Tous", supplements: "Compléments", devices: "Appareils", wearables: "Wearables", skincare: "Soins", programs: "Programmes" },
+    sort: { bestRated: "Mieux notés", newest: "Nouveautés", mostPopular: "Populaires" },
+    count: "produits",
+    cta: "En savoir plus",
+    reviews: "Avis",
+    visitWebsite: "Visiter le site",
+    writeReview: "Écrire un avis",
+    products: "Produits",
+    noReviews: "Aucun avis pour le moment — soyez le premier à donner votre avis !",
+    filter: "Filtrer",
+    category: "Catégorie",
+    rating: "Note",
+    status: "Statut",
+    related: "Produits similaires",
+    items: [
+      { slug: "wenaya-longevity-protocol", title: "Protocole Longévité Wenaya", desc: "Un protocole personnalisé de 12 semaines basé sur votre analyse biomarqueurs, conçu pour optimiser la santé cellulaire et ralentir le vieillissement.", category: "programs", goals: ["longevity", "energy"], topics: ["supplements"], rating: 4.8, reviews: 24, image: "https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600&q=80&auto=format&fit=crop" },
+      { slug: "tecar-therapy-device", title: "Appareil TECAR Thérapie", desc: "Appareil professionnel à transfert énergétique capacitif et résistif pour la régénération tissulaire, le soulagement de la douleur et la récupération.", category: "devices", goals: ["recovery"], topics: ["recovery"], rating: 4.9, reviews: 18, image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80&auto=format&fit=crop" },
+      { slug: "oura-ring-gen-4", title: "Oura Ring Gen 4", desc: "Bague connectée avancée pour le suivi du sommeil, de la récupération et de l'activité. Compatible avec votre tableau de bord Wenaya.", category: "wearables", goals: ["sleep", "recovery", "energy"], topics: ["sleep-tracking", "heart-rate"], rating: 4.6, reviews: 42, image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600&q=80&auto=format&fit=crop" },
+      { slug: "wenaya-skin-health-kit", title: "Kit Santé Peau Wenaya", desc: "Pack de soins topiques et oraux à base d'antioxydants, peptides et boosters de collagène pour une peau éclatante et jeune.", category: "skincare", goals: ["skin"], topics: ["collagen", "peptides"], rating: 4.7, reviews: 31, image: "https://images.unsplash.com/photo-1570194065650-d99fb4ee8e39?w=600&q=80&auto=format&fit=crop" },
+      { slug: "magnesium-glycinate-complex", title: "Complexe Glycinate de Magnésium", desc: "Supplément de magnésium hautement biodisponible pour la récupération musculaire, la réduction du stress et un sommeil profond.", category: "supplements", goals: ["sleep", "stress", "recovery"], topics: ["magnesium"], rating: 4.5, reviews: 87, image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&q=80&auto=format&fit=crop" },
+      { slug: "wenaya-stress-recovery-program", title: "Programme Récupération Stress Wenaya", desc: "Un programme guidé de 6 semaines combinant exercices de respiration, soutien nutritionnel et coaching hebdomadaire.", category: "programs", goals: ["stress", "recovery"], topics: ["meditation", "breathwork"], rating: 4.9, reviews: 15, image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=80&auto=format&fit=crop" },
+      { slug: "continuous-glucose-monitor", title: "Capteur de Glucose Continu", desc: "Capteur de glucose en temps réel avec insights personnalisés. Comprenez l'impact de votre alimentation sur votre énergie et votre sommeil.", category: "devices", goals: ["energy", "heart"], topics: ["glucose"], rating: 4.4, reviews: 53, image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=80&auto=format&fit=crop" },
+      { slug: "omega-3-marine-complex", title: "Complexe Oméga-3 Marin", desc: "Oméga-3 ultra-pur issu de poissons sauvages. Soutient la santé cardiaque, la fonction cérébrale et le contrôle de l'inflammation.", category: "supplements", goals: ["heart", "brain"], topics: ["omega-3"], rating: 4.6, reviews: 64, image: "https://images.unsplash.com/photo-1610041323142-5b0edc15e564?w=600&q=80&auto=format&fit=crop" },
+      { slug: "wenaya-sleep-optimization-kit", title: "Kit Optimisation Sommeil Wenaya", desc: "Un système complet : masque lesté, lotion au magnésium, mélange adaptogène et guide de suivi du sommeil.", category: "skincare", goals: ["sleep"], topics: ["magnesium", "sleep-tracking"], rating: 4.3, reviews: 29, image: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&q=80&auto=format&fit=crop" },
+      { slug: "whoop-5-0-band", title: "Whoop 5.0 Band", desc: "Wearable avancé avec suivi de l'effort, de la récupération et du sommeil. Recommandations personnalisées quotidiennes.", category: "wearables", goals: ["recovery", "sleep", "energy"], topics: ["heart-rate", "sleep-tracking"], rating: 4.7, reviews: 76, image: "https://images.unsplash.com/photo-1560343090-f0409e92791a?w=600&q=80&auto=format&fit=crop" },
+    ],
   },
   login: {
     subtitle: "Connectez-vous à votre espace",

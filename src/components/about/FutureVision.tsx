@@ -39,7 +39,14 @@ export default function FutureVision(): React.JSX.Element {
       <div id="fv-content" className="relative z-10 max-w-3xl mx-auto text-center px-6">
         <span className="text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">{t("futureVision.badge")}</span>
         <h2 className="heading-serif text-[clamp(2.2rem,4.5vw,4rem)] text-white mt-5">
-          {t("futureVision.heading")}
+          {t("futureVision.heading1")}{" "}
+<span style={{
+  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+}}>
+  {t("futureVision.heading2")}
+</span>
         </h2>
         <p className="text-white/60 text-base sm:text-lg mt-6 max-w-xl mx-auto leading-relaxed">
           {t("futureVision.desc")}

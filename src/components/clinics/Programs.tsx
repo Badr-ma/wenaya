@@ -69,7 +69,14 @@ export default function ClinicsPrograms(): React.JSX.Element {
             </span>
           </div>
           <h2 className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220]">
-            {t("clinics.programs.heading")}
+            {t("clinics.programs.heading1")}{" "}
+<span style={{
+  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+}}>
+  {t("clinics.programs.heading2")}
+</span>
           </h2>
         </div>
 

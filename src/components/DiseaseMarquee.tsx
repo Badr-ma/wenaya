@@ -43,7 +43,14 @@ export default function DiseaseMarquee(): React.JSX.Element {
           {t("diseaseMarquee.badge")}
         </span>
         <h2 className="heading-serif text-3xl sm:text-4xl text-[#0B1220] mt-3 tracking-tight">
-          {t("diseaseMarquee.heading")}
+          {t("diseaseMarquee.heading1")}{" "}
+<span style={{
+  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+}}>
+  {t("diseaseMarquee.heading2")}
+</span>
         </h2>
         <p className="text-[#2B2F36]/60 text-sm mt-3 max-w-xl mx-auto">
           {t("diseaseMarquee.sub")}

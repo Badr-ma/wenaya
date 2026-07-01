@@ -75,7 +75,14 @@ export default function ComparisonTable(): React.JSX.Element {
             {t("comparisonTable.badge")}
           </span>
           <h2 className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220] mt-4">
-            {t("comparisonTable.heading")}
+            {t("comparisonTable.heading1")}{" "}
+<span style={{
+  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+}}>
+  {t("comparisonTable.heading2")}
+</span>
           </h2>
           <p className="text-[#2B2F36] text-sm sm:text-base mt-4 max-w-2xl mx-auto">
             {t("comparisonTable.sub")}

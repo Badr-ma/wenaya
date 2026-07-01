@@ -8,8 +8,8 @@ export default function LanguageSwitcher() {
   return (
     <button
       onClick={toggleLocale}
-      className="relative flex items-center gap-1.5 h-[34px] px-3 rounded-xl text-[12.5px] font-medium transition-all duration-200 hover:bg-white/[0.06] active:scale-95"
-      style={{ color: "rgba(255,255,255,0.55)" }}
+      className="relative flex items-center gap-1.5 h-[34px] px-3 rounded-xl text-[12.5px] font-medium transition-all duration-200 border border-white/[0.12] bg-white/[0.04] hover:bg-white/[0.1] hover:border-white/[0.2] active:scale-95"
+      style={{ color: "rgba(255,255,255,0.7)" }}
       aria-label={locale === "fr" ? "Switch to English" : "Passer en français"}
     >
       <span

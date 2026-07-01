@@ -6,6 +6,7 @@ const en: Translations = {
     solutions: "Solutions",
     aPropos: "About",
     faq: "FAQ",
+    produits: "Products",
     seConnecter: "Log in",
     reserver: "Book",
     menu: "Menu",
@@ -88,7 +89,8 @@ const en: Translations = {
   },
   diseaseMarquee: {
     badge: "Physiotherapy • Osteopathy • Psychology • Nutrition • Speech Therapy",
-    heading: "9 specialties, one care center in Casablanca",
+    heading1: "9 specialties,",
+    heading2: "one care center in Casablanca",
     sub: "Wenaya Clinic brings together physiotherapists, osteopaths, psychologists, neuropsychologists, nutritionists, speech therapists, naturopaths and psychomotor therapists for multidisciplinary care adapted to every patient, child and adult alike.",
     specialites: [
       "Physiotherapy",
@@ -121,7 +123,8 @@ const en: Translations = {
   },
   biomarkers: {
     badge: "The Wenaya Ecosystem",
-    heading: "Five pillars.\nComplete health.",
+    heading1: "Three pillars.",
+    heading2: "Complete health.",
     sub: "35+ certified specialists for a coherent journey.",
     soins: "6 treatments",
     pillars: {
@@ -158,34 +161,14 @@ const en: Translations = {
           "Joint mobilization",
         ],
       },
-      equilibre: {
-        title: "Balance",
-        services: [
-          "Clinical psychology",
-          "Cognitive therapy",
-          "Stress management",
-          "Psychomotricity",
-          "Speech therapy",
-          "Emotional support",
-        ],
-      },
-      longevite: {
-        title: "Longevity",
-        services: [
-          "Micronutrition",
-          "Precision nutrition",
-          "Anti-aging medicine",
-          "Longevity plan",
-          "Metabolic monitoring",
-          "Integrative medicine",
-        ],
-      },
+
     },
     bottom: "All our programs are customized after your first multidisciplinary assessment.",
     cta: "Discover our method",
   },
   testimonialsSection: {
-    heading: "They trust us",
+    heading1: "They",
+    heading2: "trust us",
     testimonial1: {
       quote: "I came for chronic back pain and the physiotherapy and osteopathy team at Wenaya Clinic Casablanca gave me back a quality of life I had lost hope for. The coordinated follow-up between practitioners makes all the difference.",
       name: "Fatima Z.",
@@ -221,7 +204,8 @@ const en: Translations = {
   },
   testimonials: {
     badge: "35 certified therapists in Casablanca",
-    heading: "Expertise that mirrors you",
+    heading1: "Expertise",
+    heading2: "that mirrors you",
     member1: { name: "Dr. Amal Benali", role: "General Practitioner — Preventive health & complete check-ups" },
     member2: { name: "Sarah El Fassi", role: "Physiotherapist — Functional rehabilitation & TECAR" },
     member3: { name: "Khalid Ouazzani", role: "Osteopath — Musculoskeletal pain & functional disorders" },
@@ -231,7 +215,8 @@ const en: Translations = {
   },
   comparisonTable: {
     badge: "Clinics · Corporate · Hospitality",
-    heading: "The Wenaya Ecosystem.",
+    heading1: "The Wenaya",
+    heading2: "Ecosystem.",
     sub: "Three gateways. One promise.",
     clinics: {
       title: "Clinics",
@@ -254,7 +239,8 @@ const en: Translations = {
   },
   pricing: {
     eyebrow: "Prevent. Perform. Last.",
-    heading: "Invest in your health",
+    heading1: "Invest in",
+    heading2: "your health",
     sub: "Plans designed for every profile, with or without insurance.",
     plan1: {
       name: "Preventive Assessment",
@@ -305,7 +291,8 @@ const en: Translations = {
   },
   coursAteliers: {
     badge: "Courses & Workshops",
-    heading: "Workshops for every chapter of your life",
+    heading1: "Workshops for",
+    heading2: "every chapter of your life",
     cta: "See More",
     swipe: "See More",
     yoga: { title: "Prenatal Yoga", desc: "De Gasquet method — postures adapted to pregnancy" },
@@ -336,20 +323,23 @@ const en: Translations = {
   },
   aboutHero: {
     badge: "About us",
-    heading: "Heal. Prevent. Prolong.",
+    heading1: "Heal. Prevent.",
+    heading2: "Prolong.",
     desc: "Wenaya is an integrated health ecosystem that brings together specialists in physiotherapy, osteopathy, psychology, nutrition and complementary therapies — for comprehensive and personalized care.",
     cta: "Discover our story",
   },
   whyWeExist: {
     badge: "Our Mission",
-    heading: "Your health, our priority",
+    heading1: "Your health,",
+    heading2: "our priority",
     p1: "At Wenaya, our mission is to accompany each individual on their path to optimal health and overall well-being. Guided by this vision, we have created a refuge where paramedical expertise and alternative therapies converge, offering personalized solutions alongside conventional medicine.",
     p2: "We firmly believe in the importance of holistic integration of healthcare, recognizing that each person is unique and deserves an individualized approach. Our dedicated team works hand in hand with you, encouraging you to take ownership of your health.",
     p3: "Too often, symptoms are treated without considering their underlying causes. We believe that each individual must be considered as a whole — because body, mind and soul are intrinsically linked. Wenaya was born to address all planes of being.",
   },
   wenayaApproach: {
     badge: "Our Approach",
-    heading: "Our method, your transformation",
+    heading1: "Our method,",
+    heading2: "your transformation",
     step1: { label: "Listen", desc: "We take the time to understand every dimension of your health — physical, mental, nutritional and lifestyle.", footer: "Step 1" },
     step2: { label: "Analyze", desc: "Our team collaborates to build a complete picture of your needs, goals, and the root causes of your concerns.", footer: "Step 2" },
     step3: { label: "Support", desc: "We deliver a coordinated, personalized plan, drawing on expertise from multiple disciplines working together.", footer: "Step 3" },
@@ -357,14 +347,16 @@ const en: Translations = {
   },
   expertiseSection: {
     badge: "Our Team",
-    heading: "A multidisciplinary team",
+    heading1: "A multidisciplinary",
+    heading2: "team",
     p1: "Wenaya is much more than a care center. We bring together specialists in physiotherapy, osteopathy, psychology, neuropsychology, nutrition, speech therapy, naturopathy, psychomotricity and complementary therapies.",
     p2: "Wenaya Clinic, our multidisciplinary center in Casablanca, offers complete assessments and coordinated care. We use the latest evaluation, monitoring and analysis technologies to provide precise, personalized and evolving support.",
     cta: "Meet our specialists",
   },
   futureVision: {
     badge: "Our Vision",
-    heading: "Your health, our commitment",
+    heading1: "Your health,",
+    heading2: "our commitment",
     desc: "We believe in a future where health is integrated, preventive and accessible — accompanying every stage of life with expertise, compassion and a commitment to lasting well-being.",
     cta1: "Book an appointment",
     cta2: "Discover our practices",
@@ -372,7 +364,8 @@ const en: Translations = {
   entreprises: {
     hero: {
       badge: "Wenaya for business",
-      heading: "Cultivate well-being. Reap performance.",
+      heading1: "Cultivate well-being.",
+      heading2: "Reap performance.",
       desc: "A health and wellness partner that adapts to your teams, your rhythms and your HR challenges. Not the other way around.",
       bullets: [
         "Reduce absenteeism and psychosocial risks",
@@ -389,7 +382,8 @@ const en: Translations = {
     },
     programs: {
       badge: "Our program",
-      heading: "A tailored approach",
+      heading1: "A tailored",
+      heading2: "approach",
       sub: "Discover our audiences, our offer and our key themes at a glance.",
       tabPublics: "Our audiences",
       tabOffre: "Our offer",
@@ -420,7 +414,8 @@ const en: Translations = {
     },
     approach: {
       badge: "How it works",
-      heading: "Our method in 4 steps",
+      heading1: "Our method",
+      heading2: "in 4 steps",
       sub: "From audit to impact, a structured approach designed for the field.",
       steps: [
         { title: "Needs audit", desc: "Confidential diagnosis via anonymous questionnaire and discussion with your HR department to understand your challenges, culture and constraints." },
@@ -478,7 +473,8 @@ const en: Translations = {
   clinics: {
     hero: {
       eyebrow: "Clinic Solutions",
-      heading: "Integrated health for your patients.",
+      heading1: "Integrated health",
+      heading2: "for your patients.",
       desc: "Give your clinic a prevention and multidisciplinary monitoring platform. Wenaya integrates with your facility to enrich your care offering with measurable, personalized wellness programs.",
       cta1: "Become a partner",
       cta2: "Learn more",
@@ -491,7 +487,8 @@ const en: Translations = {
     },
     programs: {
       badge: "Our Offer",
-      heading: "Everything you need to elevate your clinic.",
+      heading1: "Everything you need",
+      heading2: "to elevate your clinic.",
       offers: [
         { title: "Prevention Platform", desc: "A complete dashboard to track your patients' biomarkers, habits and risks. Personalized alerts and automatic recommendations." },
         { title: "Wellness Programs", desc: "Turnkey pathways: stress management, precision nutrition, physical recovery and mental health — adapted to your clinic's patient base." },
@@ -501,7 +498,8 @@ const en: Translations = {
     },
     why: {
       badge: "Why Wenaya",
-      heading: "A clinic that anticipates is a clinic that grows.",
+      heading1: "A clinic that anticipates",
+      heading2: "is a clinic that grows.",
       reasons: [
         { title: "Differentiation", desc: "Position your clinic as a reference establishment in preventive and integrated health in Morocco." },
         { title: "Loyalty", desc: "Offer continuous follow-up between consultations — your patients stay engaged and connected to your clinic." },
@@ -513,7 +511,8 @@ const en: Translations = {
     },
     cta: {
       badge: "Ready to take action?",
-      heading: "Transform your clinic with Wenaya.",
+      heading1: "Transform your clinic",
+      heading2: "with Wenaya.",
       desc: "A 30-minute call to understand your needs. A personalized demo. A supported deployment.",
       cta1: "Request a demo",
       cta2: "Contact us",
@@ -521,7 +520,8 @@ const en: Translations = {
     },
   },
   faq: {
-    heading: "Frequently Asked Questions",
+    heading1: "Frequently Asked",
+    heading2: "Questions",
     sub: "Everything you need to know about Wenaya Clinic, our care, our wellness programs and our corporate services.",
     q1: { q: "What types of care are offered at the clinic?", a: "Wenaya Clinic offers a wide range of multidisciplinary care: physiotherapy, osteopathy, clinical psychology, neuropsychology, nutrition, speech therapy, naturopathy, psychomotricity and complementary therapies. Each patient receives a complete assessment to direct their care to the specialist(s) best suited to their needs." },
     q2: { q: "How is the collected data protected?", a: "Wenaya strictly complies with applicable regulations (GDPR, Moroccan Law 09-08). All health data is encrypted, stored on secure servers in Morocco and accessible only to authorized practitioners. You may consult our privacy policy for more details." },
@@ -540,7 +540,8 @@ const en: Translations = {
   },
   blog: {
     badge: "Blog",
-    heading: "Insights & Research",
+    heading1: "Insights",
+    heading2: "& Research",
     sub: "Expert analysis on the science of longevity, biomarker optimization, and the future of personalized preventive medicine.",
     dernierArticle: "Latest article",
     minLecture: "min read",
@@ -562,7 +563,8 @@ const en: Translations = {
   },
   contact: {
     badge: "Contact",
-    heading: "Book an appointment",
+    heading1: "Book an",
+    heading2: "appointment",
     sub: "Our team is available Monday to Saturday, 8am to 8pm.",
     adresse: "Address",
     telephone: "Phone",
@@ -590,7 +592,8 @@ const en: Translations = {
   },
   conditions: {
     badge: "Legal",
-    heading: "Terms & Conditions",
+    heading1: "Terms",
+    heading2: "& Conditions",
     sections: [
       "1. Presentation",
       "2. Acceptance of terms",
@@ -621,7 +624,8 @@ const en: Translations = {
   },
   confidentialite: {
     badge: "Legal",
-    heading: "Privacy Policy",
+    heading1: "Privacy",
+    heading2: "Policy",
     sections: [
       "1. Introduction",
       "2. Data collected",
@@ -647,6 +651,55 @@ const en: Translations = {
       cookies: "Our Site uses essential cookies for operation and analytical cookies (anonymized). You can set your cookie preferences via the dedicated banner. Refusing cookies may limit certain Site functionalities.",
       contactConf: "For any questions regarding your personal data: Email: contact@wenaya.com, Phone: +212 6 66 12 40 35, Address: 88 Rue De Jabal Azourki, Casablanca 20930, Morocco.",
     },
+  },
+  pratiques: {
+    hero: { title1: "Our", title2: "Practices", sub: "Physiotherapy, osteopathy, psychology, nutrition and more — an integrated approach to your health." },
+    cta: "Book an appointment",
+    search: "Search practices…",
+    filters: { all: "All", manualTherapies: "Manual Therapies", mentalHealth: "Mental Health", nutrition: "Nutrition", holisticWellness: "Holistic Wellness" },
+    count: "practices",
+    items: [
+      { title: "Physiotherapy", desc: "Functional rehabilitation, manual therapy and post-operative care to restore mobility and relieve pain." },
+      { title: "Osteopathy", desc: "Global manual approach to treat musculoskeletal dysfunctions and restore the body's balance." },
+      { title: "Clinical Psychology", desc: "Cognitive-behavioral therapy (CBT), stress management, anxiety and personalized emotional support." },
+      { title: "Neuropsychology", desc: "Cognitive assessment and rehabilitation for memory, attention and executive function disorders." },
+      { title: "Nutrition", desc: "Dietary rebalancing, metabolic monitoring and precision nutrition for optimal, lasting health." },
+      { title: "Speech Therapy", desc: "Management of communication disorders, oral and written language, and swallowing difficulties." },
+      { title: "Naturopathy", desc: "Holistic approach combining lifestyle, herbal medicine and micronutrition advice to strengthen self-healing abilities." },
+      { title: "Psychomotricity", desc: "Support for motor and psychomotor development disorders in children, adolescents and adults." },
+      { title: "Complementary Therapies", desc: "Sophrology, hypnosis, relaxation and gentle medicine for global well-being and a preventive approach." },
+    ],
+  },
+  produits: {
+    hero: { title1: "Our", title2: "Products", sub: "Curated health, wellness and longevity products — selected by our specialists for your well-being." },
+    search: "Search products…",
+    back: "Back to products",
+    filters: { all: "All", supplements: "Supplements", devices: "Devices", wearables: "Wearables", skincare: "Skin Care", programs: "Programs" },
+    sort: { bestRated: "Best rated", newest: "Newest", mostPopular: "Most popular" },
+    count: "products",
+    cta: "Learn more",
+    reviews: "Reviews",
+    visitWebsite: "Visit Website",
+    writeReview: "Write a review",
+    products: "Products",
+    noReviews: "No reviews yet — be the first to review!",
+    filter: "Filter",
+    category: "Category",
+    rating: "Rating",
+    status: "Status",
+    related: "Related products",
+    items: [
+      { slug: "wenaya-longevity-protocol", title: "Wenaya Longevity Protocol", desc: "A 12-week personalized supplement protocol based on your biomarker analysis, designed to optimize cellular health and slow biological aging.", category: "programs", goals: ["longevity", "energy"], topics: ["supplements"], rating: 4.8, reviews: 24, image: "https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600&q=80&auto=format&fit=crop" },
+      { slug: "tecar-therapy-device", title: "TECAR Therapy Device", desc: "Professional capacitive and resistive energy transfer device for deep tissue regeneration, pain relief and accelerated recovery.", category: "devices", goals: ["recovery"], topics: ["recovery"], rating: 4.9, reviews: 18, image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80&auto=format&fit=crop" },
+      { slug: "oura-ring-gen-4", title: "Oura Ring Gen 4", desc: "Advanced smart ring for sleep tracking, recovery monitoring and activity insights. Compatible with your Wenaya health dashboard.", category: "wearables", goals: ["sleep", "recovery", "energy"], topics: ["sleep-tracking", "heart-rate"], rating: 4.6, reviews: 42, image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600&q=80&auto=format&fit=crop" },
+      { slug: "wenaya-skin-health-kit", title: "Wenaya Skin Health Kit", desc: "Science-backed topical and oral skincare bundle featuring antioxidants, peptides and collagen boosters for radiant, youthful skin.", category: "skincare", goals: ["skin"], topics: ["collagen", "peptides"], rating: 4.7, reviews: 31, image: "https://images.unsplash.com/photo-1570194065650-d99fb4ee8e39?w=600&q=80&auto=format&fit=crop" },
+      { slug: "magnesium-glycinate-complex", title: "Magnesium Glycinate Complex", desc: "Highly bioavailable magnesium supplement for muscle recovery, stress reduction and deep sleep. Third-party tested for purity.", category: "supplements", goals: ["sleep", "stress", "recovery"], topics: ["magnesium"], rating: 4.5, reviews: 87, image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&q=80&auto=format&fit=crop" },
+      { slug: "wenaya-stress-recovery-program", title: "Wenaya Stress Recovery Program", desc: "A 6-week guided program combining breathwork sessions, nutritional support and weekly coaching calls to restore your nervous system.", category: "programs", goals: ["stress", "recovery"], topics: ["meditation", "breathwork"], rating: 4.9, reviews: 15, image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=80&auto=format&fit=crop" },
+      { slug: "continuous-glucose-monitor", title: "Continuous Glucose Monitor", desc: "Real-time glucose tracking sensor with personalized insights. Understand how your diet affects your energy, sleep and metabolic health.", category: "devices", goals: ["energy", "heart"], topics: ["glucose"], rating: 4.4, reviews: 53, image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=80&auto=format&fit=crop" },
+      { slug: "omega-3-marine-complex", title: "Omega-3 Marine Complex", desc: "Ultra-pure omega-3 supplement derived from wild-caught fish. Supports heart health, brain function and inflammation control.", category: "supplements", goals: ["heart", "brain"], topics: ["omega-3"], rating: 4.6, reviews: 64, image: "https://images.unsplash.com/photo-1610041323142-5b0edc15e564?w=600&q=80&auto=format&fit=crop" },
+      { slug: "wenaya-sleep-optimization-kit", title: "Wenaya Sleep Optimization Kit", desc: "A complete sleep system: weighted eye mask, magnesium lotion, adaptogenic herbal blend and sleep tracking guide.", category: "skincare", goals: ["sleep"], topics: ["magnesium", "sleep-tracking"], rating: 4.3, reviews: 29, image: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&q=80&auto=format&fit=crop" },
+      { slug: "whoop-5-0-band", title: "Whoop 5.0 Band", desc: "Advanced fitness and recovery wearable with strain, recovery and sleep tracking. Daily personalized health recommendations.", category: "wearables", goals: ["recovery", "sleep", "energy"], topics: ["heart-rate", "sleep-tracking"], rating: 4.7, reviews: 76, image: "https://images.unsplash.com/photo-1560343090-f0409e92791a?w=600&q=80&auto=format&fit=crop" },
+    ],
   },
   login: {
     subtitle: "Log in to your space",

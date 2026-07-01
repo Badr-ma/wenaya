@@ -100,7 +100,14 @@ export default function TestimonialsSection(): React.JSX.Element {
       <div className="max-w-7xl mx-auto">
         <div ref={headingRef} className="flex justify-center text-center mb-8 sm:mb-16 lg:mb-24">
           <h2 className="heading-serif text-4xl sm:text-5xl text-[#0B1220]">
-            {t("testimonialsSection.heading")}
+            {t("testimonialsSection.heading1")}{" "}
+<span style={{
+  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+}}>
+  {t("testimonialsSection.heading2")}
+</span>
           </h2>
         </div>
 

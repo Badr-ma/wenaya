@@ -52,7 +52,14 @@ export default function ClinicsCta(): React.JSX.Element {
         </div>
 
         <h2 className="cc-title heading-serif text-[clamp(2rem,4vw,3.5rem)] text-white">
-          {t("clinics.cta.heading")}
+          {t("clinics.cta.heading1")}{" "}
+<span style={{
+  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+}}>
+  {t("clinics.cta.heading2")}
+</span>
         </h2>
 
         <p className="cc-desc mt-6 max-w-lg mx-auto text-white/35 text-[15px] leading-relaxed">

@@ -5,6 +5,7 @@ import { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
 import { useLocale } from "@/contexts/LanguageContext";
 import LanguageSwitcher from "./LanguageSwitcher";
+import Logo from "./Logo";
 
 const solutions = [
   {
@@ -134,21 +135,8 @@ export default function Nav(): React.JSX.Element {
         className={`w-full flex items-center justify-between h-[60px] sm:h-[64px] px-5 sm:px-8 rounded-2xl transition-all duration-500 ${barBg}`}
       >
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
-          <div className="relative flex items-center justify-center w-6 h-6">
-            <svg viewBox="0 0 32 32" className="w-6 h-6 absolute inset-0" fill="none">
-              <circle cx="16" cy="16" r="13.5" stroke="#B88A5A" strokeWidth="0.75" opacity="0.22" />
-              <circle cx="16" cy="16" r="9" stroke="#B88A5A" strokeWidth="1" opacity="0.4" />
-              <circle cx="16" cy="16" r="3.5" fill="#B88A5A" />
-              <circle
-                cx="22" cy="10" r="1.5" fill="#B88A5A" opacity="0.25"
-                className="transition-all duration-500 group-hover:opacity-55"
-              />
-            </svg>
-          </div>
-          <span className={`text-[21px] sm:text-[22px] font-bold font-heading tracking-[-0.035em] transition-colors duration-300 ${isDark ? "text-white" : "text-[#0B1220]"}`}>
-            Wenaya
-          </span>
+        <Link href="/" className="h-full overflow-hidden shrink-0 flex items-center">
+          <Logo />
         </Link>
 
         {/* Desktop nav */}
@@ -158,6 +146,7 @@ export default function Nav(): React.JSX.Element {
               { label: t("nav.accueil"), href: "/" },
               { label: t("nav.solutions"), href: "#", hasDropdown: true },
               { label: t("nav.aPropos"), href: "/about" },
+              { label: t("nav.produits"), href: "/produits" },
               { label: t("nav.faq"), href: "/faq" },
             ].map((link) =>
               link.hasDropdown ? (
@@ -404,6 +393,7 @@ export default function Nav(): React.JSX.Element {
               {/* Remaining links */}
               {[
                 { label: t("nav.aPropos"), href: "/about" },
+                { label: t("nav.produits"), href: "/produits" },
                 { label: t("nav.faq"), href: "/faq" },
               ].map(({ label, href }) => (
                 <li key={label}>

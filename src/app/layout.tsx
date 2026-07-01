@@ -1,15 +1,22 @@
 import type { Metadata } from "next";
-import { DM_Sans, Cormorant_Garamond, JetBrains_Mono } from "next/font/google";
+import { Cormorant_Garamond, JetBrains_Mono, Nunito, Open_Sans } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import GsapInit from "@/components/GsapInit";
 import LenisProvider from "@/components/LenisProvider";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 
-const dmSans = DM_Sans({
+const nunito = Nunito({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-dm-sans",
+  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-nunito",
+  display: "swap",
+});
+
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-open-sans",
   display: "swap",
 });
 
@@ -99,7 +106,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>): React.JSX.Element {
   return (
-    <html lang="fr" className={`${dmSans.variable} ${cormorant.variable} ${jetbrains.variable}`}>
+    <html lang="fr" className={`${nunito.variable} ${openSans.variable} ${cormorant.variable} ${jetbrains.variable}`}>
       <head>
         <meta
           httpEquiv="Content-Security-Policy"

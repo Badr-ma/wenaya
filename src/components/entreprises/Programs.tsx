@@ -9,43 +9,43 @@ import { useLocale } from "@/contexts/LanguageContext";
 gsap.registerPlugin(ScrollTrigger);
 
 const audienceIcons: React.JSX.Element[] = [
-  (<svg viewBox="0 0 24 24" className="w-4 h-4" fill="none">
+  (<svg key="aud-1" viewBox="0 0 24 24" className="w-4 h-4" fill="none">
     <path d="M6 19v-8l4-2.667M18 19V11l-4-2.667M10 8.333V19M14 8.333V19" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
     <circle cx="12" cy="5" r="1.5" stroke="currentColor" strokeWidth="1.3" />
   </svg>),
-  (<svg viewBox="0 0 24 24" className="w-4 h-4" fill="none">
+  (<svg key="aud-2" viewBox="0 0 24 24" className="w-4 h-4" fill="none">
     <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="1.3" />
     <path d="M8 5V3h8v2M10 11l2 2 4-4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
   </svg>),
-  (<svg viewBox="0 0 24 24" className="w-4 h-4" fill="none">
+  (<svg key="aud-3" viewBox="0 0 24 24" className="w-4 h-4" fill="none">
     <circle cx="12" cy="8" r="3.5" stroke="currentColor" strokeWidth="1.3" />
     <path d="M6 20c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
   </svg>),
 ];
 
 const offerIcons: React.JSX.Element[] = [
-  (<svg viewBox="0 0 24 24" className="w-4 h-4" fill="none">
+  (<svg key="off-1" viewBox="0 0 24 24" className="w-4 h-4" fill="none">
     <circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="1.3" />
     <path d="M12 7v5l3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
   </svg>),
-  (<svg viewBox="0 0 24 24" className="w-4 h-4" fill="none">
+  (<svg key="off-2" viewBox="0 0 24 24" className="w-4 h-4" fill="none">
     <rect x="4" y="9" width="16" height="12" rx="2" stroke="currentColor" strokeWidth="1.3" />
     <path d="M8 9V6a4 4 0 018 0v3" stroke="currentColor" strokeWidth="1.3" />
     <circle cx="12" cy="15" r="1.5" fill="currentColor" opacity="0.4" />
   </svg>),
-  (<svg viewBox="0 0 24 24" className="w-4 h-4" fill="none">
+  (<svg key="off-3" viewBox="0 0 24 24" className="w-4 h-4" fill="none">
     <rect x="5" y="4" width="14" height="16" rx="2" stroke="currentColor" strokeWidth="1.3" />
     <path d="M9 9h6M9 13h4M9 17h2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" opacity="0.5" />
   </svg>),
-  (<svg viewBox="0 0 24 24" className="w-4 h-4" fill="none">
+  (<svg key="off-4" viewBox="0 0 24 24" className="w-4 h-4" fill="none">
     <rect x="3" y="3" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="1.3" />
     <path d="M9 17h6M12 15v2" stroke="currentColor" strokeWidth="1.3" />
   </svg>),
-  (<svg viewBox="0 0 24 24" className="w-4 h-4" fill="none">
+  (<svg key="off-5" viewBox="0 0 24 24" className="w-4 h-4" fill="none">
     <path d="M5 19V8l4-2 6 4 4-2v11" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
     <path d="M9 12v5M15 10v7M19 8v9" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
   </svg>),
-  (<svg viewBox="0 0 24 24" className="w-4 h-4" fill="none">
+  (<svg key="off-6" viewBox="0 0 24 24" className="w-4 h-4" fill="none">
     <path d="M12 3C6.477 3 2 5.686 2 9c0 1.854 1.044 3.524 2.667 4.667L5 18l3.333-2.333A9.135 9.135 0 0012 16c5.523 0 10-2.686 10-6s-4.477-6-10-6z" stroke="currentColor" strokeWidth="1.3" />
   </svg>),
 ];
@@ -133,7 +133,14 @@ export default function EntreprisesPrograms(): React.JSX.Element {
               </span>
             </div>
             <h2 className="prog-fade heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220] mt-5">
-              {t("entreprises.programs.heading")}
+              {t("entreprises.programs.heading1")}{" "}
+<span style={{
+  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+}}>
+  {t("entreprises.programs.heading2")}
+</span>
             </h2>
             <p className="prog-fade text-[#2B2F36]/55 text-sm sm:text-base leading-relaxed mt-4 max-w-lg mx-auto">
               {t("entreprises.programs.sub")}

@@ -30,7 +30,14 @@ export default function ConditionsPage() {
           </div>
 
           <h1 className="heading-serif text-[clamp(2.5rem,5vw,4.5rem)] text-[#0B1220] mb-10">
-            {t("conditions.heading")}
+            {t("conditions.heading1")}{" "}
+<span style={{
+  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+}}>
+  {t("conditions.heading2")}
+</span>
           </h1>
 
           <div className="space-y-8 text-[#2B2F36]/70 text-sm leading-relaxed">

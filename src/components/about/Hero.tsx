@@ -39,7 +39,14 @@ export default function AboutHero(): React.JSX.Element {
             </div>
 
             <h1 id="ah-title" className="heading-serif text-[clamp(2.5rem,5vw,4.5rem)] text-[#0B1220] mt-6">
-              {t("aboutHero.heading")}
+              {t("aboutHero.heading1")}{" "}
+<span style={{
+  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+}}>
+  {t("aboutHero.heading2")}
+</span>
             </h1>
 
             <p id="ah-desc" className="text-[#2B2F36]/60 text-base sm:text-lg leading-relaxed mt-6 max-w-lg">

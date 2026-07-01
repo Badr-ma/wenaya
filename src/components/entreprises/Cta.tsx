@@ -12,14 +12,14 @@ export default function EntreprisesCta(): React.JSX.Element {
   const { t, tRaw } = useLocale();
 
   const supportIcons: React.JSX.Element[] = [
-    (<svg viewBox="0 0 48 48" className="w-5 h-5" fill="none">
+    (<svg key="chat" viewBox="0 0 48 48" className="w-5 h-5" fill="none">
       <path d="M24 6c-8.837 0-16 5.373-16 12 0 3.708 2.087 7.047 5.333 9.333L12 38l6.667-4.667A18.27 18.27 0 0024 34c8.837 0 16-5.373 16-12S32.837 6 24 6z" stroke="currentColor" strokeWidth="1.5" />
     </svg>),
-    (<svg viewBox="0 0 48 48" className="w-5 h-5" fill="none">
+    (<svg key="docs" viewBox="0 0 48 48" className="w-5 h-5" fill="none">
       <rect x="10" y="8" width="28" height="32" rx="3" stroke="currentColor" strokeWidth="1.5" />
       <path d="M18 18h12M18 26h8M18 34h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" opacity="0.5" />
     </svg>),
-    (<svg viewBox="0 0 48 48" className="w-5 h-5" fill="none">
+    (<svg key="chart" viewBox="0 0 48 48" className="w-5 h-5" fill="none">
       <path d="M10 38V16l8-4 12 8 8-4v22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M18 24v10M28 20v14M38 16v18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
     </svg>),

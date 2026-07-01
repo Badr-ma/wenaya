@@ -50,7 +50,14 @@ export default function FaqSection(): React.JSX.Element {
       <div className="relative z-10 pt-40 pb-24 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto text-center">
           <h1 ref={headingRef} className="heading-serif text-[clamp(2.5rem,5vw,4.5rem)] text-[#0B1220]">
-            {t("faq.heading")}
+            {t("faq.heading1")}{" "}
+<span style={{
+  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+}}>
+  {t("faq.heading2")}
+</span>
           </h1>
           <p ref={subRef} className="mt-4 sm:mt-5 text-[clamp(0.95rem,2vw,1.15rem)] text-[#0B1220]/60 leading-relaxed max-w-xl mx-auto">
             {t("faq.sub")}

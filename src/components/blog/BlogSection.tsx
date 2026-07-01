@@ -10,7 +10,7 @@ import { useLocale } from "@/contexts/LanguageContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function BlogCard({ post, index }: { post: PostWithAuthor; index: number }): React.JSX.Element {
+function BlogCard({ post }: { post: PostWithAuthor }): React.JSX.Element {
   const { t } = useLocale();
   return (
     <Link
@@ -71,7 +71,14 @@ export default function BlogSection({ posts }: { posts: PostWithAuthor[] }): Rea
         <div ref={headingRef} className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-10">
           <div>
             <span className="text-[#B88A5A] font-semibold text-xs tracking-[0.2em] uppercase">{t("blog.badge")}</span>
-            <h2 className="heading-serif text-[clamp(1.5rem,3vw,2.5rem)] text-[#0B1220] mt-2">{t("blog.heading")}</h2>
+            <h2 className="heading-serif text-[clamp(1.5rem,3vw,2.5rem)] text-[#0B1220] mt-2">{t("blog.heading1")}{" "}
+<span style={{
+  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+}}>
+  {t("blog.heading2")}
+</span></h2>
             <p className="text-[#2B2F36]/60 text-sm mt-2 max-w-md leading-relaxed">
               {t("blog.sub")}
             </p>
@@ -93,7 +100,7 @@ export default function BlogSection({ posts }: { posts: PostWithAuthor[] }): Rea
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {posts.map((post, i) => (
               <div key={post.slug} ref={(el) => { cardsRef.current[i] = el; }}>
-                <BlogCard post={post} index={i} />
+                <BlogCard post={post} />
               </div>
             ))}
           </div>
