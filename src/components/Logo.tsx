@@ -5,9 +5,9 @@ export default function Logo() {
     <Image
       src="/images/logo-full.png"
       alt="Wenaya"
-      width={500}
-      height={100}
-      className="h-[90px] sm:h-[100px] w-auto object-cover"
+      width={1097}
+      height={222}
+      className="h-[18px] sm:h-5 md:h-6 w-auto"
       priority
     />
   );

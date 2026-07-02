@@ -61,6 +61,25 @@ export default function PratiquesGrid(): React.JSX.Element {
   }, [activeFilter, searchQuery, items]);
 
   useEffect(() => {
+    const handler = (e: Event) => {
+      const { key, value } = (e as CustomEvent).detail;
+      if (key === "activeFilter") setActiveFilter(value);
+      if (key === "searchQuery") setSearchQuery(value);
+    };
+    window.addEventListener("pratiques-filter-request", handler);
+    return () => window.removeEventListener("pratiques-filter-request", handler);
+  }, []);
+
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("pratiques-update", {
+      detail: {
+        searchQuery,
+        activeFilter,
+      },
+    }));
+  }, [searchQuery, activeFilter]);
+
+  useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
     const ctx = gsap.context(() => {
@@ -76,7 +95,7 @@ export default function PratiquesGrid(): React.JSX.Element {
   }, [activeFilter, searchQuery]);
 
   return (
-    <section ref={sectionRef} className="relative bg-[#F2EFE9] py-16 sm:py-24 sm:py-28 px-6">
+    <section ref={sectionRef} data-section-bg="light" className="relative bg-[#F2EFE9] py-16 sm:py-24 sm:py-28 px-6">
       <HiggsField parentRef={sectionRef as React.RefObject<HTMLElement | null>} palette={bronzePalette} />
       <div className="relative z-[2] max-w-7xl mx-auto">
         {/* Hero */}
@@ -101,7 +120,7 @@ export default function PratiquesGrid(): React.JSX.Element {
         </div>
 
         {/* Search + Filters */}
-        <div className="flex flex-wrap items-center justify-center gap-2.5 mb-10 sm:mb-14">
+        <div data-filter-bar className="flex flex-wrap items-center justify-center gap-2.5 mb-10 sm:mb-14">
           {filterKeys.map((key) => (
             <button
               key={key}

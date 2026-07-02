@@ -74,7 +74,7 @@ export default async function BlogPostPage({ params }: Props) {
       name: "Wenaya",
       logo: {
         "@type": "ImageObject",
-        url: `${siteUrl}/logo.png`,
+        url: `${siteUrl}/images/logo-full.png`,
       },
     },
     mainEntityOfPage: {

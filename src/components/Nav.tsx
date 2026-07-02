@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useLocale } from "@/contexts/LanguageContext";
 import LanguageSwitcher from "./LanguageSwitcher";
 import Logo from "./Logo";
+import { MinimalDropdown } from "./produits/FilterDropdown";
 
 const solutions = [
   {
@@ -47,6 +48,8 @@ export default function Nav(): React.JSX.Element {
   const pathname = usePathname();
   const { t } = useLocale();
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const lastScrollRef = useRef(0);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileSolutionsOpen, setMobileSolutionsOpen] = useState(false);
@@ -57,11 +60,90 @@ export default function Nav(): React.JSX.Element {
   const lastThemeRef = useRef<"dark" | "light">("dark");
   const mounted = useSyncExternalStore(() => () => {}, () => true, () => false);
 
+  const pathnameRef = useRef(pathname);
+  pathnameRef.current = pathname;
+  const filtersPastRef = useRef(false);
+
+  const [filtersPast, setFiltersPast] = useState(false);
+  const [filterSearch, setFilterSearch] = useState("");
+  const [filterCount, setFilterCount] = useState(0);
+  const [filterGoals, setFilterGoals] = useState<string[]>([]);
+  const [filterCategory, setFilterCategory] = useState<string | null>(null);
+  const [filterTopics, setFilterTopics] = useState<string[]>([]);
+  const [filterSort, setFilterSort] = useState("bestRated");
+
+  const [pratiquesSearch, setPratiquesSearch] = useState("");
+  const [pratiquesActiveFilter, setPratiquesActiveFilter] = useState("all");
+
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const handler = (e: Event) => {
+      const d = (e as CustomEvent).detail;
+      setFilterSearch(d.search);
+      setFilterCount(d.count);
+      setFilterGoals(d.selectedGoals);
+      setFilterCategory(d.selectedCategory);
+      setFilterTopics(d.selectedTopics);
+      setFilterSort(d.sort);
+    };
+    window.addEventListener("products-update", handler);
+    return () => window.removeEventListener("products-update", handler);
+  }, []);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const d = (e as CustomEvent).detail;
+      setPratiquesSearch(d.searchQuery);
+      setPratiquesActiveFilter(d.activeFilter);
+    };
+    window.addEventListener("pratiques-update", handler);
+    return () => window.removeEventListener("pratiques-update", handler);
+  }, []);
+
+  const handleFilterChange = (key: string, value: unknown) => {
+    window.dispatchEvent(new CustomEvent("products-filter-request", { detail: { key, value } }));
+  };
+
+  const handlePratiquesFilterChange = (key: string, value: string) => {
+    window.dispatchEvent(new CustomEvent("pratiques-filter-request", { detail: { key, value } }));
+  };
+
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 40);
+      if ((pathnameRef.current === "/produits" || pathnameRef.current === "/pratiques") && filtersPastRef.current) {
+        setHidden(false);
+      } else if (y > 80 && y > lastScrollRef.current) {
+        setHidden(true);
+      } else if (y <= 80 || y < lastScrollRef.current) {
+        setHidden(false);
+      }
+      lastScrollRef.current = y;
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    if (pathname !== "/produits" && pathname !== "/pratiques") {
+      setFiltersPast(false);
+      return;
+    }
+    const findBar = () => {
+      const el = document.querySelector("[data-filter-bar]");
+      if (!el) { setTimeout(findBar, 50); return; }
+      const check = () => {
+        const r = el.getBoundingClientRect();
+        const past = r.top < 80;
+        filtersPastRef.current = past;
+        setFiltersPast(past);
+      };
+      check();
+      window.addEventListener("scroll", check, { passive: true });
+    };
+    findBar();
+    return () => { filtersPastRef.current = false; };
+  }, [pathname]);
 
   useEffect(() => {
     const detectSection = () => {
@@ -129,118 +211,213 @@ export default function Nav(): React.JSX.Element {
     : "bg-[#0B1220]/[0.04] border border-[#0B1220]/[0.08] text-[#0B1220]/65 hover:bg-[#0B1220]/[0.08] hover:text-[#0B1220] hover:border-[#0B1220]/[0.12]";
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-[100] flex justify-center px-4 sm:px-8 pt-4">
+    <header className={`fixed top-0 left-0 right-0 z-[100] flex justify-center px-4 sm:px-8 pt-4 transition-transform duration-300 ease-in-out ${hidden ? "-translate-y-full" : "translate-y-0"}`}>
       {/* ── Main bar ── */}
       <div
-        className={`w-full flex items-center justify-between h-[60px] sm:h-[64px] px-5 sm:px-8 rounded-2xl transition-all duration-500 ${barBg}`}
+        className={`flex-1 max-w-7xl flex items-center justify-between h-[60px] sm:h-[64px] px-5 rounded-full shadow-sm transition-all duration-500 ${barBg}`}
       >
-        {/* Logo */}
-        <Link href="/" className="h-full overflow-hidden shrink-0 flex items-center">
-          <Logo />
-        </Link>
+        {/* ── Filter bar mode (appears when main filters scroll out of view) ── */}
+        {filtersPast && pathname === "/produits" ? (
+          <div className="flex items-center flex-1 min-w-0">
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+              <span className={`text-sm whitespace-nowrap shrink-0 ${isDark ? "text-white/65" : "text-[#2B2F36]/65"}`}>
+                Showing {filterCount} brands
+              </span>
+              <div className={`hidden sm:block w-px h-4 ${isDark ? "bg-white/[0.1]" : "bg-[#0B1220]/[0.06]"}`} />
+              <MinimalDropdown
+                label="Goals"
+                options={["longevity", "sleep", "stress", "recovery", "skin", "heart", "energy", "brain"]}
+                selected={filterGoals}
+                onChange={(v) => handleFilterChange("selectedGoals", v)}
+                multi
+                dark={isDark}
+              />
+              <MinimalDropdown
+                label={filterCategory ?? "Categories"}
+                options={["supplements", "devices", "wearables", "skincare", "programs"]}
+                selected={filterCategory ? [filterCategory] : []}
+                onChange={(v) => handleFilterChange("selectedCategory", v[0] ?? null)}
+                multi={false}
+                dark={isDark}
+              />
+              <MinimalDropdown
+                label="Topics"
+                options={["magnesium", "omega-3", "glucose", "collagen", "peptides", "sleep-tracking", "heart-rate", "meditation", "breathwork"]}
+                selected={filterTopics}
+                onChange={(v) => handleFilterChange("selectedTopics", v)}
+                multi
+                dark={isDark}
+              />
+              <MinimalDropdown
+                label={filterSort === "bestRated" ? "Sort by" : filterSort === "mostPopular" ? "Most popular" : "Newest"}
+                options={["bestRated", "mostPopular", "newest"]}
+                selected={[filterSort]}
+                onChange={(v) => handleFilterChange("sort", v[0] ?? "bestRated")}
+                multi={false}
+                dark={isDark}
+              />
+            </div>
+            <div className="flex items-center gap-2 shrink-0 ml-auto">
+              <svg className={`w-4 h-4 ${isDark ? "text-white/55" : "text-[#2B2F36]/55"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
+              </svg>
+              <input
+                type="text"
+                value={filterSearch}
+                onChange={(e) => handleFilterChange("search", e.target.value)}
+                placeholder="Search brands"
+                className={`w-[130px] sm:w-[170px] py-1.5 bg-transparent border-b text-sm outline-none transition-colors ${
+                  isDark
+                    ? "text-white/85 placeholder-white/30 border-white/[0.2] focus:border-white/40"
+                    : "text-[#0B1220] placeholder-[#2B2F36]/35 border-[#0B1220]/[0.15] focus:border-[#0B1220]/40"
+                }`}
+              />
+            </div>
+          </div>
+        ) : filtersPast && pathname === "/pratiques" ? (
+          <div className="flex items-center flex-1 min-w-0">
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0 overflow-x-auto">
+              {(["all", "manualTherapies", "mentalHealth", "nutrition", "holisticWellness"] as const).map((key) => (
+                <button
+                  key={key}
+                  onClick={() => handlePratiquesFilterChange("activeFilter", key)}
+                  className={`shrink-0 text-sm tracking-wider transition-all duration-200 rounded-full px-3 py-1.5 border ${
+                    isDark
+                      ? pratiquesActiveFilter === key
+                        ? "border-white text-white font-semibold"
+                        : "border-white/60 text-white/70 hover:border-white hover:text-white"
+                      : pratiquesActiveFilter === key
+                        ? "border-[#0B1220] text-[#0B1220] font-semibold"
+                        : "border-[#0B1220]/60 text-[#2B2F36]/70 hover:border-[#0B1220] hover:text-[#0B1220]"
+                  }`}
+                >
+                  {t(`pratiques.filters.${key}`)}
+                </button>
+              ))}
+            </div>
+            <div className="flex items-center gap-1.5 shrink-0 ml-auto">
+              <svg className={`w-4 h-4 ${isDark ? "text-white/55" : "text-[#2B2F36]/55"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
+              </svg>
+              <input
+                type="text"
+                value={pratiquesSearch}
+                onChange={(e) => handlePratiquesFilterChange("searchQuery", e.target.value)}
+                placeholder="Search practices…"
+                className={`w-[130px] sm:w-[170px] py-1.5 bg-transparent border-b text-sm outline-none transition-colors ${
+                  isDark
+                    ? "text-white/85 placeholder-white/30 border-white/[0.2] focus:border-white/40"
+                    : "text-[#0B1220] placeholder-[#2B2F36]/35 border-[#0B1220]/[0.15] focus:border-[#0B1220]/40"
+                }`}
+              />
+            </div>
+          </div>
+        ) : (
+          <>
+            <Link href="/" className="h-full overflow-hidden shrink-0 flex items-center">
+              <Logo />
+            </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden lg:block" aria-label={t("nav.navPrincipale")}>
-          <ul className="flex items-center gap-0">
-            {[
-              { label: t("nav.accueil"), href: "/" },
-              { label: t("nav.solutions"), href: "#", hasDropdown: true },
-              { label: t("nav.aPropos"), href: "/about" },
-              { label: t("nav.produits"), href: "/produits" },
-              { label: t("nav.faq"), href: "/faq" },
-            ].map((link) =>
-              link.hasDropdown ? (
-                <li key={link.label} className="relative">
-                  <button
-                    ref={triggerRef}
-                    onMouseEnter={show}
-                    onMouseLeave={hide}
-                    onClick={() => setDropdownOpen(!dropdownOpen)}
-                    aria-haspopup="true"
-                    aria-expanded={dropdownOpen}
-                    className={`relative flex items-center gap-1 px-4 py-2 text-[13.5px] rounded-xl transition-all duration-200 outline-none ${
-                      isActive(link.href)
-                        ? `${linkActive_} font-semibold`
-                        : `${linkBase} font-medium`
-                    }`}
-                  >
-                    {link.label}
-                    <svg
-                      className={`w-3 h-3 mt-px opacity-60 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`}
-                      fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
-                    {isActive(link.href) && (
-                      <span className="absolute bottom-0.5 left-4 right-4 h-px rounded-full bg-[#B88A5A]/60" />
-                    )}
-                  </button>
-                </li>
-              ) : (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className={`relative px-4 py-2 text-[13.5px] rounded-xl transition-all duration-200 flex items-center ${
-                      isActive(link.href)
-                        ? `${linkActive_} font-semibold`
-                        : `${linkBase} font-medium`
-                    }`}
-                  >
-                    {link.label}
-                    <span
-                      className={`absolute bottom-0.5 left-4 right-4 h-px rounded-full bg-[#B88A5A]/60 transition-all duration-300 ${
-                        isActive(link.href) ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
-                      }`}
-                      style={{ transformOrigin: "left" }}
-                    />
-                    <span
-                      className={`absolute bottom-0.5 left-4 right-4 h-px rounded-full ${linkUnderline} origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100`}
-                    />
-                  </Link>
-                </li>
-              )
-            )}
-          </ul>
-        </nav>
+            <nav className="hidden lg:block" aria-label={t("nav.navPrincipale")}>
+              <ul className="flex items-center gap-0">
+                {[
+                  { label: t("nav.accueil"), href: "/" },
+                  { label: t("nav.solutions"), href: "#", hasDropdown: true },
+                  { label: t("nav.aPropos"), href: "/about" },
+                  { label: t("nav.produits"), href: "/produits" },
+                  { label: t("nav.faq"), href: "/faq" },
+                ].map((link) =>
+                  link.hasDropdown ? (
+                    <li key={link.label} className="relative">
+                      <button
+                        ref={triggerRef}
+                        onMouseEnter={show}
+                        onMouseLeave={hide}
+                        onClick={() => setDropdownOpen(!dropdownOpen)}
+                        aria-haspopup="true"
+                        aria-expanded={dropdownOpen}
+                        className={`relative flex items-center gap-1 px-4 py-2 text-sm rounded-full transition-all duration-200 outline-none ${
+                          isActive(link.href)
+                            ? `${linkActive_} font-semibold`
+                            : `${linkBase} font-medium`
+                        }`}
+                      >
+                        {link.label}
+                        <svg
+                          className={`w-3 h-3 mt-px opacity-60 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`}
+                          fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                        {isActive(link.href) && (
+                          <span className="absolute bottom-0.5 left-4 right-4 h-px rounded-full bg-[#B88A5A]/60" />
+                        )}
+                      </button>
+                    </li>
+                  ) : (
+                    <li key={link.label}>
+                      <Link
+                        href={link.href}
+                        className={`relative px-4 py-2 text-sm rounded-full transition-all duration-200 flex items-center ${
+                          isActive(link.href)
+                            ? `${linkActive_} font-semibold`
+                            : `${linkBase} font-medium`
+                        }`}
+                      >
+                        {link.label}
+                        <span
+                          className={`absolute bottom-0.5 left-4 right-4 h-px rounded-full bg-[#B88A5A]/60 transition-all duration-300 ${
+                            isActive(link.href) ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
+                          }`}
+                          style={{ transformOrigin: "left" }}
+                        />
+                        <span
+                          className={`absolute bottom-0.5 left-4 right-4 h-px rounded-full ${linkUnderline} origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100`}
+                        />
+                      </Link>
+                    </li>
+                  )
+                )}
+              </ul>
+            </nav>
 
-        {/* Right: separator + actions */}
-        <div className="flex items-center gap-3">
-          {/* Language switcher */}
-          <LanguageSwitcher />
+            <div className="flex items-center gap-3 shrink-0">
+              <LanguageSwitcher />
+              <div className={`hidden sm:block w-px h-5 ${sepStyle} mr-0.5`} />
 
-          {/* Thin separator */}
-          <div className={`hidden sm:block w-px h-5 ${sepStyle} mr-0.5`} />
+              <Link
+                href="/login"
+                className={`hidden sm:inline-flex items-center justify-center px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${loginBtn}`}
+              >
+                {t("nav.seConnecter")}
+              </Link>
 
-          <Link
-            href="/login"
-            className={`hidden sm:inline-flex items-center justify-center h-[34px] px-5 rounded-xl text-[13px] font-medium transition-all duration-200 ${loginBtn}`}
-          >
-            {t("nav.seConnecter")}
-          </Link>
+              <Link
+                href="#"
+                onClick={(e) => e.preventDefault()}
+                className="hidden sm:inline-flex items-center justify-center px-5 py-1.5 rounded-full text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-px active:translate-y-0"
+                style={{
+                  background: "linear-gradient(135deg, #B88A5A 0%, #9A7242 100%)",
+                  boxShadow: "0 1px 0 rgba(255,255,255,0.15) inset, 0 4px 16px rgba(184,138,90,0.28)",
+                }}
+              >
+                {t("nav.reserver")}
+              </Link>
 
-          <Link
-            href="#"
-            onClick={(e) => e.preventDefault()}
-            className="hidden sm:inline-flex items-center justify-center h-[34px] px-5 rounded-xl text-[13px] font-semibold text-white transition-all duration-300 hover:-translate-y-px active:translate-y-0"
-            style={{
-              background: "linear-gradient(135deg, #B88A5A 0%, #9A7242 100%)",
-              boxShadow: "0 1px 0 rgba(255,255,255,0.15) inset, 0 4px 16px rgba(184,138,90,0.28)",
-            }}
-          >
-            {t("nav.reserver")}
-          </Link>
-
-          {/* Mobile hamburger */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className={`lg:hidden relative flex flex-col items-center justify-center w-9 h-9 rounded-xl transition-colors ${isDark ? "hover:bg-white/[0.06]" : "hover:bg-black/[0.06]"}`}
-            aria-label={t("nav.menu")}
-          >
-            <span className={`block w-[17px] h-[1.5px] rounded-full transition-all duration-300 origin-center ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "rotate-45 translate-y-[3px]" : ""}`} />
-            <span className={`block w-[17px] h-[1.5px] rounded-full mt-[5px] transition-all duration-300 ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "opacity-0 scale-x-0" : ""}`} />
-            <span className={`block w-[17px] h-[1.5px] rounded-full mt-[5px] transition-all duration-300 origin-center ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "-rotate-45 -translate-y-[3px]" : ""}`} />
-          </button>
-        </div>
+              <button
+                onClick={() => setMobileOpen(!mobileOpen)}
+                className={`lg:hidden relative flex flex-col items-center justify-center w-9 h-9 rounded-xl transition-colors ${isDark ? "hover:bg-white/[0.06]" : "hover:bg-black/[0.06]"}`}
+                aria-label={t("nav.menu")}
+              >
+                <span className={`block w-[17px] h-[1.5px] rounded-full transition-all duration-300 origin-center ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "rotate-45 translate-y-[3px]" : ""}`} />
+                <span className={`block w-[17px] h-[1.5px] rounded-full mt-[5px] transition-all duration-300 ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "opacity-0 scale-x-0" : ""}`} />
+                <span className={`block w-[17px] h-[1.5px] rounded-full mt-[5px] transition-all duration-300 origin-center ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "-rotate-45 -translate-y-[3px]" : ""}`} />
+              </button>
+            </div>
+          </>
+        )}
       </div>
 
       {/* ── Solutions dropdown ── */}
@@ -279,7 +456,7 @@ export default function Nav(): React.JSX.Element {
                       <div className="w-9 h-9 rounded-lg bg-white/[0.04] border border-white/[0.05] flex items-center justify-center text-[#B88A5A]/55 group-hover:text-[#B88A5A] group-hover:bg-[#B88A5A]/8 group-hover:border-[#B88A5A]/15 transition-all duration-250">
                         {s.icon}
                       </div>
-                      <h3 className="text-white font-heading font-semibold text-[13.5px]">{t(`nav.${s.key}.title`)}</h3>
+                      <h3 className="text-white font-heading font-semibold text-sm">{t(`nav.${s.key}.title`)}</h3>
                     </div>
                     <p className="text-white/32 text-[12px] leading-relaxed mb-3.5">{t(`nav.${s.key}.desc`)}</p>
                     <span className="inline-flex items-center gap-1.5 text-[#B88A5A] text-[12px] font-medium group-hover:gap-2.5 transition-all duration-200">
