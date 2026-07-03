@@ -23,7 +23,7 @@ export default function WhyWeExist(): React.JSX.Element {
   return (
     <section id="story" ref={sectionRef} className="bg-[#F2EFE9] py-20 sm:py-24 px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 xl:gap-24 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 xl:gap-24 items-center">
           <div className="max-w-xl">
             <div id="wwe-badge">
               <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">

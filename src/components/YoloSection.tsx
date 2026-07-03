@@ -137,7 +137,7 @@ export default function YoloSection(): React.JSX.Element {
       />
 
       <div className="max-w-7xl mx-auto relative">
-        <div className="grid lg:grid-cols-2 gap-8 sm:gap-16 lg:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-16 lg:gap-12 items-center">
           <div ref={contentRef} className="max-w-xl">
             <div ref={badgeRef}>
               <span className="inline-flex items-center gap-2 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase mb-6">
@@ -248,7 +248,7 @@ export default function YoloSection(): React.JSX.Element {
                       style={{ flexDirection: s.x > 55 ? "row" : "row-reverse" }}
                     >
                       <span className="relative w-1.5 h-1.5 rounded-full bg-[#159AA9]/40 group-hover:bg-[#159AA9]/70 transition-colors duration-300 shrink-0" />
-                      <span className="text-[10px] sm:text-[11px] text-white/30 group-hover:text-white/60 transition-colors duration-300 font-medium tracking-wide whitespace-nowrap">
+                      <span className="text-[10px] sm:text-[11px] text-white/30 group-hover:text-white/60 transition-colors duration-300 font-medium tracking-wide text-center max-w-[80px] sm:max-w-none leading-tight">
                         {s.label}
                       </span>
                     </div>

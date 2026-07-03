@@ -36,7 +36,8 @@ export default function EntreprisesCta(): React.JSX.Element {
     if (!el) return;
 
     const ctx = gsap.context(() => {
-      gsap.utils.toArray<HTMLElement>(".ecta-section").forEach((section) => {
+      const sections = Array.from(el.querySelectorAll<HTMLElement>(".ecta-section"));
+      sections.forEach((section) => {
         gsap.fromTo(
           section.querySelectorAll(".ecta-fade"),
           { opacity: 0, y: 20 },

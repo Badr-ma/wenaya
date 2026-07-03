@@ -165,8 +165,9 @@ const fr = {
     cta: "Découvrir notre méthode",
   },
   testimonialsSection: {
-    heading1: "Ils",
-    heading2: "nous font confiance",
+    heading1: "Real people.",
+    heading2: "Real results.",
+    sub: "Découvrez les témoignages de patients qui ont transformé leur santé grâce à l'approche intégrée Wenaya.",
     testimonial1: {
       quote: "Je suis venue pour des douleurs chroniques au dos et l'équipe de kinésithérapie et d'ostéopathie de Wenaya Clinic Casablanca m'a redonné une qualité de vie que je n'espérais plus. Le suivi coordonné entre praticiens fait toute la différence.",
       name: "Fatima Z.",
@@ -318,6 +319,7 @@ const fr = {
     },
     copyright: "© {year} Wenaya. Tous droits réservés.",
     hours: "Du lundi au samedi de 9h à 19h",
+    socials: ["LinkedIn", "Instagram", "X", "YouTube"],
   },
   aboutHero: {
     badge: "Qui sommes nous",

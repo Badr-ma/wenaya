@@ -61,7 +61,7 @@ export default function BlogHero({ latest }: { latest: PostWithAuthor | null }) 
                 </div>
               </div>
               <div className="sm:w-[55%] p-6 sm:p-8 lg:p-10 flex flex-col justify-center">
-                <div className="hidden sm:flex items-center gap-3 mb-4">
+                <div className="flex items-center gap-3 mb-4 flex-wrap">
                   {latest.category && (
                     <span className={`inline-flex items-center px-3 py-1 rounded-full text-[11px] font-mono font-medium border ${categoryColors[latest.category.slug] || "bg-gray-100 text-gray-700 border-gray-200"}`}>
                       {latest.category.name}

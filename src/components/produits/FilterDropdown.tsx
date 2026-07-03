@@ -62,7 +62,7 @@ export function MinimalDropdown({
       </button>
 
       {open && (
-        <div className="absolute top-full left-0 z-50 mt-2 bg-white border border-[#0B1220]/[0.06] min-w-[180px] py-1.5 rounded-lg shadow-sm">
+        <div className="absolute top-full left-0 right-0 sm:right-auto z-50 mt-2 bg-white border border-[#0B1220]/[0.06] min-w-[160px] sm:min-w-[180px] py-1.5 rounded-lg shadow-sm">
           {options.map((opt) => {
             const active = selected.includes(opt);
             return (

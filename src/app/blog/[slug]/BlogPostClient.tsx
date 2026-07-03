@@ -40,6 +40,8 @@ export default function BlogPostClient({
   const heroInView = useInView(heroRef, { once: true });
   const headings = useMemo(() => extractHeadings(post.content), [post.content]);
   const [activeHeading, setActiveHeading] = useState("");
+  const [tocOpen, setTocOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const onScroll = () => {
@@ -132,6 +134,41 @@ export default function BlogPostClient({
         </div>
       </section>
 
+      {/* Mobile TOC */}
+      <div className="lg:hidden max-w-4xl mx-auto px-6 sm:px-8 -mt-2 mb-6">
+        <button
+          onClick={() => setTocOpen(!tocOpen)}
+          className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-gray-500 hover:text-[#B88A5A] transition-colors text-xs font-mono"
+        >
+          <span>{t("blog.contenu")}</span>
+          <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${tocOpen ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        {tocOpen && (
+          <nav className="mt-1 px-4 py-3 rounded-xl bg-white border border-gray-200 space-y-2.5">
+            {headings.map((h) => (
+              <a
+                key={h.id}
+                href={`#${h.id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById(h.id)?.scrollIntoView({ behavior: "smooth" });
+                  setTocOpen(false);
+                }}
+                className={`block text-xs leading-relaxed transition-colors duration-300 ${
+                  activeHeading === h.id
+                    ? "text-[#B88A5A] font-medium"
+                    : "text-gray-400 hover:text-gray-600"
+                } ${h.level === 3 ? "pl-4" : ""}`}
+              >
+                {h.text}
+              </a>
+            ))}
+          </nav>
+        )}
+      </div>
+
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-24 sm:pb-32">
         <div className="lg:grid lg:grid-cols-[220px_1fr_180px] lg:gap-8 xl:gap-12">
           <aside className="hidden lg:block">
@@ -194,6 +231,44 @@ export default function BlogPostClient({
                   #{tag}
                 </span>
               ))}
+            </div>
+
+            {/* Mobile share buttons */}
+            <div className="lg:hidden flex items-center gap-3 mt-8 pt-6 border-t border-gray-200">
+              <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest">{t("blog.partager")}</span>
+              <div className="flex gap-2">
+                <a
+                  href={`https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-500 hover:text-[#B88A5A] hover:border-[#B88A5A]/20 transition-all duration-300 text-xs"
+                >
+                  <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
+                  <span className="hidden sm:inline">X</span>
+                </a>
+                <a
+                  href={`https://www.linkedin.com/share?url=${shareUrl}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-500 hover:text-[#B88A5A] hover:border-[#B88A5A]/20 transition-all duration-300 text-xs"
+                >
+                  <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>
+                  <span className="hidden sm:inline">LinkedIn</span>
+                </a>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(shareUrl);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                  }}
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-500 hover:text-[#B88A5A] hover:border-[#B88A5A]/20 transition-all duration-300 text-xs"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                  </svg>
+                  {copied ? "Copié!" : <span className="hidden sm:inline">{t("blog.copier")}</span>}
+                </button>
+              </div>
             </div>
           </div>
 

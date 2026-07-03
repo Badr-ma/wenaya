@@ -29,7 +29,7 @@ export default function AboutHero(): React.JSX.Element {
       </div>
 
       <div className="max-w-7xl mx-auto w-full relative pt-32 pb-20 lg:pt-40 lg:pb-28">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-20 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-20 items-center">
           <div className="max-w-xl z-10">
             <div id="ah-badge">
               <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">

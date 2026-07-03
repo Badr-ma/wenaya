@@ -167,8 +167,9 @@ const en: Translations = {
     cta: "Discover our method",
   },
   testimonialsSection: {
-    heading1: "They",
-    heading2: "trust us",
+    heading1: "Real people.",
+    heading2: "Real results.",
+    sub: "Hear from patients who transformed their health with Wenaya's integrated approach.",
     testimonial1: {
       quote: "I came for chronic back pain and the physiotherapy and osteopathy team at Wenaya Clinic Casablanca gave me back a quality of life I had lost hope for. The coordinated follow-up between practitioners makes all the difference.",
       name: "Fatima Z.",
@@ -320,6 +321,7 @@ const en: Translations = {
     },
     copyright: "© {year} Wenaya. All rights reserved.",
     hours: "Monday to Saturday from 9am to 7pm",
+    socials: ["LinkedIn", "Instagram", "X", "YouTube"],
   },
   aboutHero: {
     badge: "About us",

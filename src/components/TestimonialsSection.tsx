@@ -98,7 +98,7 @@ export default function TestimonialsSection(): React.JSX.Element {
   return (
     <section ref={sectionRef} className="bg-[#F2EFE9] noise accent-top relative py-12 sm:py-24 px-6" id="avis-google">
       <div className="max-w-7xl mx-auto">
-        <div ref={headingRef} className="flex justify-center text-center mb-8 sm:mb-16 lg:mb-24">
+        <div ref={headingRef} className="flex flex-col items-center text-center mb-8 sm:mb-16 lg:mb-24">
           <h2 className="heading-serif text-4xl sm:text-5xl text-[#0B1220]">
             {t("testimonialsSection.heading1")}{" "}
 <span style={{
@@ -109,6 +109,9 @@ export default function TestimonialsSection(): React.JSX.Element {
   {t("testimonialsSection.heading2")}
 </span>
           </h2>
+          <p className="text-[#2B2F36]/55 text-sm sm:text-base mt-4 max-w-lg leading-relaxed">
+            {t("testimonialsSection.sub")}
+          </p>
         </div>
 
         <div className="hidden lg:flex gap-6 items-start">

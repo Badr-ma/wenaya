@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect, useRef, useSyncExternalStore } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { useLocale } from "@/contexts/LanguageContext";
 import LanguageSwitcher from "./LanguageSwitcher";
@@ -58,7 +58,8 @@ export default function Nav(): React.JSX.Element {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const lastThemeRef = useRef<"dark" | "light">("dark");
-  const mounted = useSyncExternalStore(() => () => {}, () => true, () => false);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
 
   const pathnameRef = useRef(pathname);
   pathnameRef.current = pathname;
@@ -220,42 +221,44 @@ export default function Nav(): React.JSX.Element {
         {filtersPast && pathname === "/produits" ? (
           <div className="flex items-center flex-1 min-w-0">
             <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-              <span className={`text-sm whitespace-nowrap shrink-0 ${isDark ? "text-white/65" : "text-[#2B2F36]/65"}`}>
-                Showing {filterCount} brands
+              <span className={`text-xs sm:text-sm whitespace-nowrap shrink-0 ${isDark ? "text-white/65" : "text-[#2B2F36]/65"}`}>
+                {filterCount} brands
               </span>
               <div className={`hidden sm:block w-px h-4 ${isDark ? "bg-white/[0.1]" : "bg-[#0B1220]/[0.06]"}`} />
-              <MinimalDropdown
-                label="Goals"
-                options={["longevity", "sleep", "stress", "recovery", "skin", "heart", "energy", "brain"]}
-                selected={filterGoals}
-                onChange={(v) => handleFilterChange("selectedGoals", v)}
-                multi
-                dark={isDark}
-              />
-              <MinimalDropdown
-                label={filterCategory ?? "Categories"}
-                options={["supplements", "devices", "wearables", "skincare", "programs"]}
-                selected={filterCategory ? [filterCategory] : []}
-                onChange={(v) => handleFilterChange("selectedCategory", v[0] ?? null)}
-                multi={false}
-                dark={isDark}
-              />
-              <MinimalDropdown
-                label="Topics"
-                options={["magnesium", "omega-3", "glucose", "collagen", "peptides", "sleep-tracking", "heart-rate", "meditation", "breathwork"]}
-                selected={filterTopics}
-                onChange={(v) => handleFilterChange("selectedTopics", v)}
-                multi
-                dark={isDark}
-              />
-              <MinimalDropdown
-                label={filterSort === "bestRated" ? "Sort by" : filterSort === "mostPopular" ? "Most popular" : "Newest"}
-                options={["bestRated", "mostPopular", "newest"]}
-                selected={[filterSort]}
-                onChange={(v) => handleFilterChange("sort", v[0] ?? "bestRated")}
-                multi={false}
-                dark={isDark}
-              />
+              <div className="hidden sm:flex items-center gap-2">
+                <MinimalDropdown
+                  label="Goals"
+                  options={["longevity", "sleep", "stress", "recovery", "skin", "heart", "energy", "brain"]}
+                  selected={filterGoals}
+                  onChange={(v) => handleFilterChange("selectedGoals", v)}
+                  multi
+                  dark={isDark}
+                />
+                <MinimalDropdown
+                  label={filterCategory ?? "Categories"}
+                  options={["supplements", "devices", "wearables", "skincare", "programs"]}
+                  selected={filterCategory ? [filterCategory] : []}
+                  onChange={(v) => handleFilterChange("selectedCategory", v[0] ?? null)}
+                  multi={false}
+                  dark={isDark}
+                />
+                <MinimalDropdown
+                  label="Topics"
+                  options={["magnesium", "omega-3", "glucose", "collagen", "peptides", "sleep-tracking", "heart-rate", "meditation", "breathwork"]}
+                  selected={filterTopics}
+                  onChange={(v) => handleFilterChange("selectedTopics", v)}
+                  multi
+                  dark={isDark}
+                />
+                <MinimalDropdown
+                  label={filterSort === "bestRated" ? "Sort by" : filterSort === "mostPopular" ? "Most popular" : "Newest"}
+                  options={["bestRated", "mostPopular", "newest"]}
+                  selected={[filterSort]}
+                  onChange={(v) => handleFilterChange("sort", v[0] ?? "bestRated")}
+                  multi={false}
+                  dark={isDark}
+                />
+              </div>
             </div>
             <div className="flex items-center gap-2 shrink-0 ml-auto">
               <svg className={`w-4 h-4 ${isDark ? "text-white/55" : "text-[#2B2F36]/55"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -267,22 +270,32 @@ export default function Nav(): React.JSX.Element {
                 value={filterSearch}
                 onChange={(e) => handleFilterChange("search", e.target.value)}
                 placeholder="Search brands"
-                className={`w-[130px] sm:w-[170px] py-1.5 bg-transparent border-b text-sm outline-none transition-colors ${
+                className={`w-[110px] sm:w-[170px] py-1.5 bg-transparent border-b text-sm outline-none transition-colors ${
                   isDark
                     ? "text-white/85 placeholder-white/30 border-white/[0.2] focus:border-white/40"
                     : "text-[#0B1220] placeholder-[#2B2F36]/35 border-[#0B1220]/[0.15] focus:border-[#0B1220]/40"
                 }`}
               />
+              {/* Mobile hamburger in filter mode */}
+              <button
+                onClick={() => setMobileOpen(!mobileOpen)}
+                className={`lg:hidden relative flex flex-col items-center justify-center w-9 h-9 rounded-xl transition-colors ml-1 sm:ml-0 ${isDark ? "hover:bg-white/[0.06]" : "hover:bg-black/[0.06]"}`}
+                aria-label={t("nav.menu")}
+              >
+                <span className={`block w-[17px] h-[1.5px] rounded-full transition-all duration-300 origin-center ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "rotate-45 translate-y-[3px]" : ""}`} />
+                <span className={`block w-[17px] h-[1.5px] rounded-full mt-[5px] transition-all duration-300 ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "opacity-0 scale-x-0" : ""}`} />
+                <span className={`block w-[17px] h-[1.5px] rounded-full mt-[5px] transition-all duration-300 origin-center ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "-rotate-45 -translate-y-[3px]" : ""}`} />
+              </button>
             </div>
           </div>
         ) : filtersPast && pathname === "/pratiques" ? (
-          <div className="flex items-center flex-1 min-w-0">
-            <div className="flex items-center gap-2 sm:gap-3 shrink-0 overflow-x-auto">
+          <div className="flex items-center flex-1 min-w-0 gap-2 sm:gap-0">
+            <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto scrollbar-none">
               {(["all", "manualTherapies", "mentalHealth", "nutrition", "holisticWellness"] as const).map((key) => (
                 <button
                   key={key}
                   onClick={() => handlePratiquesFilterChange("activeFilter", key)}
-                  className={`shrink-0 text-sm tracking-wider transition-all duration-200 rounded-full px-3 py-1.5 border ${
+                  className={`shrink-0 text-xs sm:text-sm tracking-wider transition-all duration-200 rounded-full px-2.5 sm:px-3 py-1.5 border ${
                     isDark
                       ? pratiquesActiveFilter === key
                         ? "border-white text-white font-semibold"
@@ -296,7 +309,7 @@ export default function Nav(): React.JSX.Element {
                 </button>
               ))}
             </div>
-            <div className="flex items-center gap-1.5 shrink-0 ml-auto">
+            <div className="flex items-center gap-1.5 shrink-0 ml-auto hidden sm:flex">
               <svg className={`w-4 h-4 ${isDark ? "text-white/55" : "text-[#2B2F36]/55"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <circle cx="11" cy="11" r="8" />
                 <path d="M21 21l-4.35-4.35" />
@@ -542,8 +555,8 @@ export default function Nav(): React.JSX.Element {
                   </svg>
                 </button>
                 <div
-                  className={`overflow-hidden transition-all duration-350 ${
-                    mobileSolutionsOpen ? "max-h-[460px] opacity-100" : "max-h-0 opacity-0"
+                  className={`overflow-y-auto transition-all duration-350 ${
+                    mobileSolutionsOpen ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0"
                   }`}
                 >
                   <div className="space-y-1.5 pb-4 pt-2 pl-1">

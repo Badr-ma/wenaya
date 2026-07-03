@@ -68,10 +68,13 @@ export default function BlogSection({ posts }: { posts: PostWithAuthor[] }): Rea
   return (
     <section ref={sectionRef} className="bg-[#F2EFE9] py-10 sm:py-20 px-6 relative overflow-hidden">
       <div className="max-w-7xl mx-auto relative">
-        <div ref={headingRef} className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-10">
-          <div>
-            <span className="text-[#B88A5A] font-semibold text-xs tracking-[0.2em] uppercase">{t("blog.badge")}</span>
-            <h2 className="heading-serif text-[clamp(1.5rem,3vw,2.5rem)] text-[#0B1220] mt-2">{t("blog.heading1")}{" "}
+        <div ref={headingRef} className="text-center mb-10 sm:mb-14 max-w-xl mx-auto">
+          <div className="inline-flex items-center gap-2 mb-5">
+            <div className="w-4 h-px bg-[#B88A5A]/40" />
+            <span className="text-[#B88A5A] text-[10.5px] font-bold tracking-[0.22em] uppercase">{t("blog.badge")}</span>
+            <div className="w-4 h-px bg-[#B88A5A]/40" />
+          </div>
+          <h2 className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220]">{t("blog.heading1")}{" "}
 <span style={{
   background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
   WebkitBackgroundClip: "text",
@@ -79,12 +82,11 @@ export default function BlogSection({ posts }: { posts: PostWithAuthor[] }): Rea
 }}>
   {t("blog.heading2")}
 </span></h2>
-            <p className="text-[#2B2F36]/60 text-sm mt-2 max-w-md leading-relaxed">
-              {t("blog.sub")}
-            </p>
-          </div>
+          <p className="text-[#2B2F36]/55 text-[14px] sm:text-[15px] mt-4 leading-relaxed">
+            {t("blog.sub")}
+          </p>
           <Link href="/blog"
-            className="group inline-flex items-center gap-1.5 text-xs font-medium text-[#B88A5A] hover:text-[#B88A5A]/70 transition-colors shrink-0">
+            className="mt-6 inline-flex items-center gap-1.5 text-xs font-medium text-[#B88A5A] hover:text-[#B88A5A]/70 transition-colors">
             <span>{t("blog.voirTous")}</span>
             <svg className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />

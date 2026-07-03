@@ -98,7 +98,7 @@ export default function EntreprisesApproach(): React.JSX.Element {
                     <span className="text-[#B88A5A] font-heading font-bold text-sm">{s.num}</span>
                   </div>
                   <h3 className="text-[#0B1220] font-heading font-semibold text-base mt-5">{s.title}</h3>
-                  <p className="text-[#2B2F36]/50 text-sm leading-relaxed mt-2 max-w-[220px]">{s.desc}</p>
+                  <p className="text-[#2B2F36]/50 text-sm leading-relaxed mt-2 max-w-[220px] lg:max-w-none">{s.desc}</p>
                 </div>
               ))}
             </div>
