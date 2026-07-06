@@ -432,6 +432,40 @@ const fr = {
         { name: "Khadija Amrani", role: "Nutrition" },
         { name: "Yasmine Ouazzani", role: "Psychologie" },
       ],
+      featuredCallout: {
+        title: "Programme Prévention",
+        stat: "−40% d'absentéisme",
+        desc: "Un programme complet de prévention santé qui combine bilans individuels, ateliers collectifs et suivi digital pour réduire durablement l'absentéisme.",
+        longDesc: "Chaque collaborateur reçoit un bilan initial confidentiel (physique, mental, nutritionnel), puis une feuille de route personnalisée mêlant séances individuelles, ateliers collectifs et suivi digital — avec des indicateurs RH anonymisés chaque trimestre.",
+        link: "En savoir plus",
+      },
+      valueProps: [
+        { title: "Équipe pluridisciplinaire", desc: "35+ thérapeutes certifiés en kinésithérapie, psychologie, nutrition et ostéopathie pour une prise en charge globale.", stat: "35+ experts" },
+        { title: "Suivi connecté", desc: "Plateforme digitale dédiée avec téléconsultations, suivi personnalisé et reporting RH en temps réel.", stat: "100% digital" },
+        { title: "Résultats prouvés", desc: "−40% d'absentéisme, +25% d'engagement collaborateur — des résultats mesurés et documentés.", stat: "−40% abs." },
+      ],
+      stats: [
+        { number: "35+", label: "thérapeutes certifiés" },
+        { number: "+2 000", label: "collaborateurs accompagnés" },
+        { number: "96%", label: "de satisfaction" },
+        { number: "7", label: "ans d'expérience" },
+      ],
+      comparison: {
+        heading: "Sans Wenaya / Avec Wenaya",
+        sub: "La différence d'une approche structurée de la santé en entreprise.",
+        without: [
+          { label: "Absentéisme récurrent", desc: "Des arrêts maladie non anticipés qui désorganisent les équipes" },
+          { label: "Risques psychosociaux ignorés", desc: "Un stress chronique et des risques de burnout sans accompagnement" },
+          { label: "Turnover élevé", desc: "Des talents qui quittent l'entreprise faute de bien-être" },
+          { label: "Productivité en baisse", desc: "Une perte d'engagement liée à la santé des équipes" },
+        ],
+        with: [
+          { label: "−40% d'absentéisme", desc: "Une prévention proactive qui réduit les arrêts maladie" },
+          { label: "Santé mentale priorisée", desc: "Un accompagnement psychologique accessible et déstigmatisé" },
+          { label: "Talents fidélisés", desc: "Un avantage santé qui renforce l'attractivité et la rétention" },
+          { label: "Performance durable", desc: "Des équipes en meilleure santé, plus engagées et productives" },
+        ],
+      },
     },
     cta: {
       supportBadge: "Votre équipe dédiée",
@@ -459,6 +493,12 @@ const fr = {
       cta1: "Réserver un audit gratuit",
       cta2: "Demander un devis personnalisé",
       contact: "88 Rue De Jabal Azourki · Casablanca · Lun–Sam 8h–20h · +212 6 66 12 40 35",
+      newsletter: {
+        heading: "Restez informé",
+        sub: "Recevez nos actualités, études de cas et conseils bien-être pour votre entreprise.",
+        placeholder: "Votre adresse email",
+        btn: "S'abonner",
+      },
     },
     footer: {
       desc: "Centre de santé pluridisciplinaire à Casablanca — kinésithérapie, psychologie, nutrition, prévention et programmes bien-être pour les entreprises.",

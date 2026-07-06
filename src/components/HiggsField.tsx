@@ -16,7 +16,7 @@ interface Particle {
 
 export default function HiggsField({ className = "", parentRef, palette: customPalette }: { className?: string; parentRef?: React.RefObject<HTMLElement | null>; palette?: [number, number, number][] }): React.JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const mouseRef = useRef({ x: 0, y: 0, active: false });
+  const mouseRef = useRef({ x: 0, y: 0, rawX: 0, rawY: 0, active: false });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -64,15 +64,9 @@ export default function HiggsField({ className = "", parentRef, palette: customP
 
     const onMouse = (e: Event) => {
       const me = e as MouseEvent;
-      if (parentRef?.current) {
-        const rect = parentRef.current.getBoundingClientRect();
-        mouseRef.current.x = me.clientX - rect.left;
-        mouseRef.current.y = me.clientY - rect.top;
-      } else {
-        mouseRef.current.x = me.clientX;
-        mouseRef.current.y = me.clientY;
-      }
       mouseRef.current.active = true;
+      mouseRef.current.rawX = me.clientX;
+      mouseRef.current.rawY = me.clientY;
     };
     const onLeave = () => {
       mouseRef.current.active = false;
@@ -88,26 +82,31 @@ export default function HiggsField({ className = "", parentRef, palette: customP
     observer.observe(canvas);
 
     const draw = () => {
-      const { w: ww, h: hh } = getSize();
-
-      ctx.clearRect(0, 0, ww, hh);
+      ctx.clearRect(0, 0, w, h);
       if (!isVisible) { animId = requestAnimationFrame(draw); return; }
 
       const mouse = mouseRef.current;
+      if (mouse.active) {
+        if (parentRef?.current) {
+          const rect = parentRef.current.getBoundingClientRect();
+          mouse.x = mouse.rawX - rect.left;
+          mouse.y = mouse.rawY - rect.top;
+        } else {
+          mouse.x = mouse.rawX;
+          mouse.y = mouse.rawY;
+        }
+      }
 
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
 
-        // Higgs-like drag — higher mass = more resistance
         const drag = 0.98 + (p.mass - 0.2) * 0.015;
         p.vx *= drag;
         p.vy *= drag;
 
-        // Gentle ambient oscillation (quantum fluctuation)
         p.vx += Math.sin(p.phase + performance.now() * 0.0003 * p.frequency) * 0.008;
         p.vy += Math.cos(p.phase + performance.now() * 0.0004 * p.frequency) * 0.008;
 
-        // Mouse perturbation — massless particles affected more
         if (mouse.active) {
           const dx = p.x - mouse.x;
           const dy = p.y - mouse.y;
@@ -120,7 +119,6 @@ export default function HiggsField({ className = "", parentRef, palette: customP
           }
         }
 
-        // Random micro-jolts (spontaneous symmetry breaking)
         if (Math.random() < 0.002) {
           p.vx += (Math.random() - 0.5) * 0.4;
           p.vy += (Math.random() - 0.5) * 0.4;
@@ -129,13 +127,11 @@ export default function HiggsField({ className = "", parentRef, palette: customP
         p.x += p.vx;
         p.y += p.vy;
 
-        // Wrap around with soft edge
-        if (p.x < -50) p.x = ww + 50;
-        if (p.x > ww + 50) p.x = -50;
-        if (p.y < -50) p.y = hh + 50;
-        if (p.y > hh + 50) p.y = -50;
+        if (p.x < -50) p.x = w + 50;
+        if (p.x > w + 50) p.x = -50;
+        if (p.y < -50) p.y = h + 50;
+        if (p.y > h + 50) p.y = -50;
 
-        // Draw particle
         const colorIdx = Math.floor(p.mass * palette.length) % palette.length;
         const [r, g, b] = palette[colorIdx];
         const alpha = 0.15 + p.mass * 0.2;
@@ -145,7 +141,6 @@ export default function HiggsField({ className = "", parentRef, palette: customP
         ctx.fillStyle = `rgba(${r},${g},${b},${alpha})`;
         ctx.fill();
 
-        // Glow on heavier particles
         if (p.mass > 1.2) {
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.radius * 2.5, 0, Math.PI * 2);

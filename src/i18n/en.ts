@@ -434,6 +434,40 @@ const en: Translations = {
         { name: "Khadija Amrani", role: "Nutrition" },
         { name: "Yasmine Ouazzani", role: "Psychology" },
       ],
+      featuredCallout: {
+        title: "Prevention Program",
+        stat: "−40% absenteeism",
+        desc: "A complete prevention program combining individual assessments, group workshops and digital follow-up to sustainably reduce absenteeism.",
+        longDesc: "Each employee receives a confidential initial assessment (physical, mental, nutritional), followed by a personalized roadmap of individual sessions, group workshops, and digital support — with anonymized HR impact reports every quarter.",
+        link: "Learn more",
+      },
+      valueProps: [
+        { title: "Multidisciplinary team", desc: "35+ certified therapists in physiotherapy, psychology, nutrition and osteopathy for comprehensive care.", stat: "35+ experts" },
+        { title: "Connected follow-up", desc: "Dedicated digital platform with teleconsultations, personalized tracking and real-time HR reporting.", stat: "100% digital" },
+        { title: "Proven results", desc: "−40% absenteeism, +25% employee engagement — measured and documented results.", stat: "−40% abs." },
+      ],
+      stats: [
+        { number: "35+", label: "certified therapists" },
+        { number: "+2,000", label: "employees supported" },
+        { number: "96%", label: "satisfaction rate" },
+        { number: "7", label: "years of experience" },
+      ],
+      comparison: {
+        heading: "Without Wenaya / With Wenaya",
+        sub: "The difference a structured workplace health approach makes.",
+        without: [
+          { label: "Recurrent absenteeism", desc: "Unexpected sick leave that disrupts teams" },
+          { label: "Ignored psychosocial risks", desc: "Chronic stress and burnout risks without support" },
+          { label: "High turnover", desc: "Talents leaving due to lack of recognition and well-being" },
+          { label: "Declining productivity", desc: "Loss of engagement and performance linked to employee health" },
+        ],
+        with: [
+          { label: "−40% absenteeism", desc: "Proactive prevention that measurably reduces sick leave" },
+          { label: "Prioritized mental health", desc: "Accessible, destigmatized psychological support for all" },
+          { label: "Retained talent", desc: "A health benefit that boosts attractiveness and retention" },
+          { label: "Sustainable performance", desc: "Healthier, more engaged and more productive teams" },
+        ],
+      },
     },
     cta: {
       supportBadge: "Your dedicated team",
@@ -461,6 +495,12 @@ const en: Translations = {
       cta1: "Book a free audit",
       cta2: "Request a custom quote",
       contact: "88 Rue De Jabal Azourki · Casablanca · Mon–Sat 8am–8pm · +212 6 66 12 40 35",
+      newsletter: {
+        heading: "Stay informed",
+        sub: "Receive our news, case studies and wellness tips for your company.",
+        placeholder: "Your email address",
+        btn: "Subscribe",
+      },
     },
     footer: {
       desc: "Multidisciplinary health center in Casablanca — physiotherapy, psychology, nutrition, prevention and wellness programs for companies.",

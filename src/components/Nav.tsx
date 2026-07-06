@@ -133,11 +133,17 @@ export default function Nav(): React.JSX.Element {
     const findBar = () => {
       const el = document.querySelector("[data-filter-bar]");
       if (!el) { setTimeout(findBar, 50); return; }
+      let ticking = false;
       const check = () => {
-        const r = el.getBoundingClientRect();
-        const past = r.top < 80;
-        filtersPastRef.current = past;
-        setFiltersPast(past);
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          ticking = false;
+          const r = el.getBoundingClientRect();
+          const past = r.top < 80;
+          filtersPastRef.current = past;
+          setFiltersPast(past);
+        });
       };
       check();
       window.addEventListener("scroll", check, { passive: true });
@@ -147,21 +153,27 @@ export default function Nav(): React.JSX.Element {
   }, [pathname]);
 
   useEffect(() => {
+    let ticking = false;
     const detectSection = () => {
-      const sections = document.querySelectorAll("[data-section-bg]");
-      const navBottom = 80;
-      let newTheme: "dark" | "light" = "dark";
-      for (const s of sections) {
-        const r = s.getBoundingClientRect();
-        if (r.top <= navBottom && r.bottom > navBottom) {
-          newTheme = s.getAttribute("data-section-bg") === "dark" ? "dark" : "light";
-          break;
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        const sections = document.querySelectorAll("[data-section-bg]");
+        const navBottom = 80;
+        let newTheme: "dark" | "light" = "dark";
+        for (const s of sections) {
+          const r = s.getBoundingClientRect();
+          if (r.top <= navBottom && r.bottom > navBottom) {
+            newTheme = s.getAttribute("data-section-bg") === "dark" ? "dark" : "light";
+            break;
+          }
         }
-      }
-      if (newTheme !== lastThemeRef.current) {
-        lastThemeRef.current = newTheme;
-        setTheme(newTheme);
-      }
+        if (newTheme !== lastThemeRef.current) {
+          lastThemeRef.current = newTheme;
+          setTheme(newTheme);
+        }
+      });
     };
     detectSection();
     window.addEventListener("scroll", detectSection, { passive: true });

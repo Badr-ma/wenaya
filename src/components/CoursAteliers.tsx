@@ -23,6 +23,7 @@ export default function CoursAteliers(): React.JSX.Element {
   const sectionRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const tickingRef = useRef(false);
 
   const scrollMore = () => {
     if (!scrollRef.current) return;
@@ -31,10 +32,15 @@ export default function CoursAteliers(): React.JSX.Element {
   };
 
   const handleScroll = () => {
-    if (!scrollRef.current) return;
-    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-    const maxScroll = scrollWidth - clientWidth;
-    setScrollProgress(maxScroll > 0 ? scrollLeft / maxScroll : 1);
+    if (!scrollRef.current || tickingRef.current) return;
+    tickingRef.current = true;
+    requestAnimationFrame(() => {
+      tickingRef.current = false;
+      if (!scrollRef.current) return;
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      const maxScroll = scrollWidth - clientWidth;
+      setScrollProgress(maxScroll > 0 ? scrollLeft / maxScroll : 1);
+    });
   };
 
   useEffect(() => {

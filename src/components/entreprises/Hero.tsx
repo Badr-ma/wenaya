@@ -10,9 +10,13 @@ export default function EntreprisesHero(): React.JSX.Element {
   const { t, tRaw } = useLocale();
   const bullets = tRaw<string[]>("entreprises.hero.bullets");
   const sectionRef = useRef<HTMLElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = sectionRef.current;
+    const bg = bgRef.current;
+    const stats = statsRef.current;
     if (!el) return;
 
     const ctx = gsap.context(() => {
@@ -22,6 +26,17 @@ export default function EntreprisesHero(): React.JSX.Element {
         { opacity: 0, y: 20 },
         { opacity: 1, y: 0, duration: 0.7, stagger: 0.1 }
       );
+
+      if (bg) {
+        gsap.fromTo(bg, { scale: 1 }, { scale: 1.08, duration: 12, ease: "none" });
+      }
+
+      if (stats) {
+        const nums = stats.querySelectorAll(".stat-num");
+        nums.forEach((num) => {
+          gsap.fromTo(num, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, delay: 0.8, ease: "power2.out" });
+        });
+      }
     }, el);
 
     return () => ctx.revert();
@@ -29,8 +44,8 @@ export default function EntreprisesHero(): React.JSX.Element {
 
   return (
     <section ref={sectionRef} className="relative bg-[#0B1220] min-h-screen flex items-center overflow-hidden">
-      {/* Full-bleed background image */}
-      <div className="absolute inset-0">
+      {/* Full-bleed background image with ken burns zoom */}
+      <div ref={bgRef} className="absolute inset-0 will-change-transform">
         <Image
           src="/images/entreprises/scans-hero.webp"
           alt=""
@@ -60,13 +75,13 @@ export default function EntreprisesHero(): React.JSX.Element {
 
           <h1 id="eh-title" className="heading-serif text-white mt-6" style={{ fontSize: "clamp(2.5rem, 5vw, 4.5rem)" }}>
             {t("entreprises.hero.heading1")}{" "}
-<span style={{
-  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
-  WebkitBackgroundClip: "text",
-  WebkitTextFillColor: "transparent",
-}}>
-  {t("entreprises.hero.heading2")}
-</span>
+            <span style={{
+              background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}>
+              {t("entreprises.hero.heading2")}
+            </span>
           </h1>
 
           <p id="eh-desc" className="text-white/50 text-base sm:text-lg leading-relaxed mt-6 max-w-lg">
@@ -113,17 +128,17 @@ export default function EntreprisesHero(): React.JSX.Element {
             </a>
           </div>
 
-          <div id="eh-stats" className="flex flex-wrap gap-6 sm:gap-12 mt-14">
+          <div id="eh-stats" ref={statsRef} className="flex flex-wrap gap-6 sm:gap-12 mt-14">
             <div>
-              <p className="text-white text-2xl sm:text-3xl font-bold font-heading tracking-tight">35</p>
+              <p className="stat-num text-white text-2xl sm:text-3xl font-bold font-heading tracking-tight">35</p>
               <p className="text-white/35 text-xs sm:text-sm mt-1">{t("entreprises.hero.stats.therapeutes")}</p>
             </div>
             <div>
-              <p className="text-white text-2xl sm:text-3xl font-bold font-heading tracking-tight">+2 000</p>
+              <p className="stat-num text-white text-2xl sm:text-3xl font-bold font-heading tracking-tight">+2 000</p>
               <p className="text-white/35 text-xs sm:text-sm mt-1">{t("entreprises.hero.stats.collaborateurs")}</p>
             </div>
             <div>
-              <p className="text-white text-2xl sm:text-3xl font-bold font-heading tracking-tight">4/4</p>
+              <p className="stat-num text-white text-2xl sm:text-3xl font-bold font-heading tracking-tight">4/4</p>
               <p className="text-white/35 text-xs sm:text-sm mt-1">{t("entreprises.hero.stats.piliers")}</p>
             </div>
           </div>

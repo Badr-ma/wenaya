@@ -36,8 +36,8 @@ export default function EntreprisesPage() {
     <ErrorBoundary>
       <div className="flex flex-col">
         <div data-section-bg="dark"><EntreprisesHero /></div>
-        <div data-section-bg="light"><EntreprisesPrograms /></div>
         <div data-section-bg="light"><EntreprisesApproach /></div>
+        <div data-section-bg="light"><EntreprisesPrograms /></div>
         <div data-section-bg="dark"><EntreprisesCta /></div>
         <div data-section-bg="dark"><EntreprisesFooter /></div>
       </div>

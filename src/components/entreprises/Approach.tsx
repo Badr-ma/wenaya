@@ -3,171 +3,216 @@
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Image from "next/image";
 import { useLocale } from "@/contexts/LanguageContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function EntreprisesApproach(): React.JSX.Element {
-  const { t, tRaw } = useLocale();
+  const { tRaw } = useLocale();
 
-  const stepNums = ["01", "02", "03", "04"];
-  const steps = (tRaw<Array<{title: string; desc: string}>>("entreprises.approach.steps")).map((s, i) => ({ ...s, num: stepNums[i] }));
-
-  const expertData = [
-    { initials: "SB", gradient: "from-[#B88A5A] to-[#9A7242]", glow: "rgba(184,138,90,0.12)" },
-    { initials: "AL", gradient: "from-[#159AA9] to-[#0D7A87]", glow: "rgba(21,154,169,0.12)" },
-    { initials: "KA", gradient: "from-emerald-600 to-emerald-800", glow: "rgba(16,185,129,0.12)" },
-    { initials: "YO", gradient: "from-violet-500 to-violet-700", glow: "rgba(139,92,246,0.12)" },
-  ];
-
-  const experts = (tRaw<Array<{name: string; role: string}>>("entreprises.approach.experts")).map((e, i) => ({ ...e, ...expertData[i] }));
+  const featured = tRaw<{ title: string; stat: string; desc: string; longDesc: string; link: string }>("entreprises.approach.featuredCallout");
+  const valueProps = tRaw<Array<{ title: string; desc: string; stat: string }>>("entreprises.approach.valueProps");
+  const stats = tRaw<Array<{ number: string; label: string }>>("entreprises.approach.stats");
+  const comparison = tRaw<{ heading: string; sub: string; without: Array<{ label: string; desc: string }>; with: Array<{ label: string; desc: string }> }>("entreprises.approach.comparison");
 
   const sectionRef = useRef<HTMLElement>(null);
+  const statRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        "#ea-badge, #ea-title, #ea-desc",
-        { opacity: 0, y: 16 },
-        { opacity: 1, y: 0, duration: 0.5, stagger: 0.06, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" } }
-      );
-      gsap.fromTo(
-        ".ea-card",
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.5, stagger: 0.12, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 80%", toggleActions: "play none none none" } }
-      );
-      gsap.fromTo(
-        ".ea-expert",
-        { opacity: 0, scale: 0.9 },
-        { opacity: 1, scale: 1, duration: 0.45, stagger: 0.1, ease: "back.out(1.7)", scrollTrigger: { trigger: "#ea-experts", start: "top 85%", toggleActions: "play none none none" } }
-      );
+      gsap.fromTo(".reveal", { opacity: 0, y: 16 }, {
+        opacity: 1, y: 0, duration: 0.5, stagger: 0.06, ease: "power3.out",
+        scrollTrigger: { trigger: el, start: "top 88%", toggleActions: "play none none none" },
+      });
+
+      gsap.fromTo(".vp-row", { opacity: 0, x: -20 }, {
+        opacity: 1, x: 0, duration: 0.6, stagger: 0.15, ease: "power3.out",
+        scrollTrigger: { trigger: ".vp-list", start: "top 85%", toggleActions: "play none none none" },
+      });
+
+      statRefs.current.forEach((ref) => {
+        if (!ref) return;
+        gsap.fromTo(ref, { opacity: 0, y: 20 }, {
+          opacity: 1, y: 0, duration: 0.5, ease: "power3.out",
+          scrollTrigger: { trigger: ref, start: "top 90%", toggleActions: "play none none none" },
+        });
+      });
+
+      gsap.fromTo(".comp-half", { opacity: 0 }, {
+        opacity: 1, duration: 0.6, stagger: 0.2, ease: "power2.out",
+        scrollTrigger: { trigger: ".comp-section", start: "top 85%", toggleActions: "play none none none" },
+      });
     }, el);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="section-padding px-6 relative overflow-hidden"
-      style={{ background: "linear-gradient(180deg, #F2EFE9 0%, #ECE7DD 50%, #F2EFE9 100%)" }}
-    >
-      {/* Decorative corner accent */}
-      <div className="absolute top-0 right-0 w-64 h-64 pointer-events-none opacity-[0.03] hidden sm:block">
-        <div className="absolute top-0 right-0 w-48 h-px bg-[#B88A5A]" />
-        <div className="absolute top-0 right-0 w-px h-48 bg-[#B88A5A]" />
+    <section ref={sectionRef} className="relative bg-[#F2EFE9]">
+      {/* ── Featured callout — draft explanation ── */}
+      <div className="section-padding px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="reveal">
+            <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 items-stretch">
+              <div className="lg:col-span-3 flex items-center">
+                <div>
+                  <div className="flex items-center gap-4 mb-4">
+                    <span className="text-[#0B1220] heading-serif text-3xl sm:text-4xl tracking-tight">{featured.title}</span>
+                    <span className="text-[#B88A5A] font-heading font-bold text-lg sm:text-xl tracking-tight whitespace-nowrap">{featured.stat}</span>
+                  </div>
+                  <p className="text-graphite text-base sm:text-lg leading-relaxed">
+                    {featured.longDesc}
+                  </p>
+                  <a href="#" onClick={(e) => e.preventDefault()} className="inline-flex items-center gap-1.5 mt-5 text-[#B88A5A] hover:text-[#9A7242] text-xs font-semibold tracking-[0.12em] uppercase transition-colors">
+                    {featured.link}
+                    <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <path d="M13 7l5 5m0 0l-5 5m5-5H6" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+              <div className="lg:col-span-2 rounded-2xl bg-[#0B1220] p-6 sm:p-8">
+                <p className="text-white/40 text-xs font-semibold tracking-[0.15em] uppercase mb-6">Impact sur l&apos;absentéisme</p>
+                <svg viewBox="0 0 280 200" className="w-full h-auto" fill="none">
+                  <line x1="60" y1="24" x2="60" y2="168" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+                  <text x="52" y="20" textAnchor="end" fill="rgba(255,255,255,0.2)" fontSize="9" fontFamily="var(--font-nunito), system-ui">%</text>
+                  <line x1="60" y1="48" x2="250" y2="48" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+                  <line x1="60" y1="84" x2="250" y2="84" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+                  <line x1="60" y1="120" x2="250" y2="120" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+                  <line x1="60" y1="156" x2="250" y2="156" stroke="rgba(255,255,255,0.02)" strokeWidth="1" />
+                  <text x="52" y="52" textAnchor="end" fill="rgba(255,255,255,0.15)" fontSize="9">10</text>
+                  <text x="52" y="88" textAnchor="end" fill="rgba(255,255,255,0.15)" fontSize="9">7.5</text>
+                  <text x="52" y="124" textAnchor="end" fill="rgba(255,255,255,0.15)" fontSize="9">5</text>
+                  <text x="52" y="160" textAnchor="end" fill="rgba(255,255,255,0.15)" fontSize="9">2.5</text>
+                  <rect x="100" y="52" width="36" height="116" rx="3" fill="rgba(255,255,255,0.04)" />
+                  <rect x="100" y="52" width="36" height="116" rx="3" fill="url(#bar-before)" opacity="0.3" />
+                  <rect x="160" y="99" width="36" height="69" rx="3" fill="url(#bar-after)" />
+                  <text x="118" y="184" textAnchor="middle" fill="rgba(255,255,255,0.3)" fontSize="10" fontFamily="var(--font-nunito), system-ui">Avant</text>
+                  <text x="178" y="184" textAnchor="middle" fill="rgba(255,255,255,0.5)" fontSize="10" fontFamily="var(--font-nunito), system-ui">Après</text>
+                  <text x="118" y="46" textAnchor="middle" fill="rgba(255,255,255,0.35)" fontSize="11" fontFamily="var(--font-cormorant), Georgia, serif" fontWeight="600">8.2%</text>
+                  <text x="178" y="93" textAnchor="middle" fill="#B88A5A" fontSize="11" fontFamily="var(--font-cormorant), Georgia, serif" fontWeight="600">4.9%</text>
+                  <line x1="136" y1="65" x2="160" y2="108" stroke="#B88A5A" strokeWidth="1.5" opacity="0.5" />
+                  <rect x="92" y="8" width="112" height="22" rx="11" fill="rgba(184,138,90,0.12)" />
+                  <text x="148" y="23" textAnchor="middle" fill="#B88A5A" fontSize="10" fontFamily="var(--font-nunito), system-ui" fontWeight="700">−40% d&apos;absentéisme</text>
+                  <defs>
+                    <linearGradient id="bar-before" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="rgba(255,255,255,0.15)" />
+                      <stop offset="100%" stopColor="rgba(255,255,255,0.02)" />
+                    </linearGradient>
+                    <linearGradient id="bar-after" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#B88A5A" />
+                      <stop offset="100%" stopColor="#9A7242" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="max-w-2xl mx-auto mb-16 text-center">
-          <div id="ea-badge">
-            <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">
-              <span className="w-6 h-px bg-[#B88A5A]/40" />
-              {t("entreprises.approach.badge")}
-            </span>
-          </div>
-          <h2 id="ea-title" className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220] mt-5">
-            {t("entreprises.approach.heading1")}{" "}
-<span style={{
-  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
-  WebkitBackgroundClip: "text",
-  WebkitTextFillColor: "transparent",
-}}>
-  {t("entreprises.approach.heading2")}
-</span>
-          </h2>
-          <p id="ea-desc" className="text-[#2B2F36]/55 text-sm sm:text-base leading-relaxed mt-4 max-w-lg mx-auto">
-            {t("entreprises.approach.sub")}
-          </p>
-        </div>
-
-        {/* Desktop: connected horizontal timeline */}
-        <div className="hidden lg:block">
-          {/* Background timeline track */}
-          <div className="relative mb-12">
-            <div className="absolute top-8 left-[2.5rem] right-[2.5rem] h-px bg-gradient-to-r from-[#B88A5A]/5 via-[#B88A5A]/15 to-[#B88A5A]/5" />
-            <div className="grid grid-cols-4 gap-6">
-              {steps.map((s, i) => (
-                <div key={i} className="ea-card relative flex flex-col items-center text-center">
-                  {/* Circle marker */}
-                  <div className="relative z-10 w-16 h-16 rounded-full bg-[#E8E2D9] border-2 border-[#B88A5A]/20 flex items-center justify-center transition-all duration-300 group-hover:border-[#B88A5A]/40">
-                    <span className="text-[#B88A5A] font-heading font-bold text-sm">{s.num}</span>
+      {/* ── Value props — editorial list ── */}
+      <div className="section-padding px-6 pt-0">
+        <div className="max-w-7xl mx-auto">
+          <div className="vp-list divide-y divide-[#B88A5A]/8">
+            {valueProps.map((vp, i) => (
+              <div key={i} className="vp-row flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 py-8 sm:py-10">
+                <div className="flex items-start gap-6 sm:gap-10 w-full sm:w-auto">
+                  <span className="text-[#B88A5A]/20 font-heading font-bold text-3xl sm:text-4xl leading-none tabular-nums shrink-0">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <h3 className="text-[#0B1220] heading-serif font-semibold text-xl sm:text-2xl">{vp.title}</h3>
+                    <p className="text-graphite text-base leading-relaxed mt-1.5 max-w-lg">{vp.desc}</p>
                   </div>
-                  <h3 className="text-[#0B1220] font-heading font-semibold text-base mt-5">{s.title}</h3>
-                  <p className="text-[#2B2F36]/50 text-sm leading-relaxed mt-2 max-w-[220px] lg:max-w-none">{s.desc}</p>
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile/tablet: stacked with left connecting line */}
-        <div className="lg:hidden relative">
-          {/* Vertical timeline line */}
-          <div className="absolute left-[1.375rem] top-3 bottom-3 w-px bg-gradient-to-b from-[#B88A5A]/20 via-[#B88A5A]/10 to-[#B88A5A]/20" />
-          <div className="space-y-8">
-            {steps.map((s, i) => (
-              <div key={i} className="ea-card relative flex items-start gap-5">
-                <div className="relative z-10 w-11 h-11 rounded-full bg-[#E8E2D9] border-2 border-[#B88A5A]/20 flex items-center justify-center shrink-0">
-                  <span className="text-[#B88A5A] font-heading font-bold text-xs">{s.num}</span>
-                </div>
-                <div className="min-w-0 pt-2">
-                  <h3 className="text-[#0B1220] font-heading font-semibold text-base">{s.title}</h3>
-                  <p className="text-[#2B2F36]/50 text-sm leading-relaxed mt-1.5">{s.desc}</p>
-                </div>
+                <span className="text-[#B88A5A] font-heading font-bold text-base sm:text-lg whitespace-nowrap ml-[3.25rem] sm:ml-0">
+                  {vp.stat}
+                </span>
               </div>
             ))}
           </div>
         </div>
+      </div>
 
-        {/* ── Advisory Board ── */}
-      <div id="ea-experts" className="mt-24 pt-16 sm:pt-20 border-t border-[#B88A5A]/8 relative overflow-hidden">
-          {/* Subtle background image */}
-          <div className="absolute inset-0 pointer-events-none opacity-[0.18]">
-            <Image
-              src="/images/diverse-team.jpg"
-              alt=""
-              fill
-              className="object-cover object-center brightness-[0.7] saturate-[0.6]"
-              sizes="100vw"
-            />
-            <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, transparent 30%, rgba(184,138,90,0.08) 100%)" }} />
-          </div>
-
-          <div className="max-w-2xl mx-auto text-center mb-14 relative z-10">
-            <div id="ea-experts-badge">
-              <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">
-                <span className="w-6 h-px bg-[#B88A5A]/40" />
-                {t("entreprises.approach.boardBadge")}
-              </span>
-            </div>
-            <h2 className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220] mt-5">{t("entreprises.approach.boardHeading")}</h2>
-            <p className="text-[#2B2F36]/55 text-sm sm:text-base leading-relaxed mt-4 max-w-lg mx-auto">
-              {t("entreprises.approach.boardDesc")}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 sm:gap-12 max-w-3xl mx-auto relative z-10">
-            {experts.map((expert, i) => (
-              <div key={i} className="ea-expert text-center group relative">
-                {/* Decorative bg glow */}
+      {/* ── Stats bar — floating constellation ── */}
+      <div className="relative bg-[#0B1220] py-14 sm:py-16 overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle at 50% 0%, #B88A5A 0%, transparent 60%)" }} />
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="relative flex flex-wrap justify-center gap-x-16 sm:gap-x-24 gap-y-10">
+            {stats.map((s, i) => {
+              const offsets = ["translateY(0)", "translateY(-8px)", "translateY(4px)", "translateY(-12px)"];
+              return (
                 <div
-                  className="absolute -inset-4 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl pointer-events-none"
-                  style={{ background: `radial-gradient(circle, ${expert.glow}, transparent 70%)` }}
-                />
-                <div className={`relative w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full bg-gradient-to-br ${expert.gradient} flex items-center justify-center transition-all duration-500 group-hover:scale-105 group-hover:shadow-xl shadow-lg shadow-black/5`}>
-                  <span className="text-white font-heading font-bold text-lg sm:text-xl">{expert.initials}</span>
-                  {/* Ring */}
-                  <div className="absolute inset-0 rounded-full ring-1 ring-white/[0.15] ring-inset" />
+                  key={i}
+                  ref={(el) => { statRefs.current[i] = el; }}
+                  className="text-center"
+                  style={{ transform: offsets[i] }}
+                >
+                  <p className="text-white font-heading font-bold tracking-tight leading-none" style={{ fontSize: "clamp(2.5rem, 4vw, 3.5rem)" }}>
+                    {s.number}
+                  </p>
+                  <p className="text-white/70 text-sm mt-2">{s.label}</p>
                 </div>
-                <h3 className="text-[#0B1220] font-heading font-semibold text-sm sm:text-base mt-4">{expert.name}</h3>
-                <p className="text-[#2B2F36]/45 text-xs sm:text-sm mt-1">{expert.role}</p>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Comparison — split diptych ── */}
+      <div className="comp-section section-padding px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-10">
+            <p className="reveal inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">
+              <span className="w-6 h-px bg-[#B88A5A]/40" />
+              {comparison.heading}
+              <span className="w-6 h-px bg-[#B88A5A]/40" />
+            </p>
+            <p className="reveal text-graphite text-base leading-relaxed mt-3 max-w-md mx-auto">{comparison.sub}</p>
+          </div>
+
+          <div className="relative grid lg:grid-cols-2 gap-0 rounded-2xl overflow-hidden">
+            {/* Without — dimmed, translucent */}
+            <div className="comp-half relative bg-[#0B1220] p-8 sm:p-10 lg:p-12">
+              <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 30% 50%, #B88A5A 0%, transparent 60%)" }} />
+              <h3 className="relative text-white/60 font-heading font-semibold text-sm tracking-[0.15em] uppercase mb-8">Sans Wenaya</h3>
+              <div className="relative space-y-7">
+                {comparison.without.map((item, i) => (
+                  <div key={i} className="flex items-start gap-4">
+                    <span className="text-white/15 text-xl leading-none shrink-0 mt-0.5">✕</span>
+                    <div>
+                      <p className="text-white/70 font-heading font-semibold text-sm">{item.label}</p>
+                      <p className="text-white/50 text-sm leading-relaxed mt-1">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+
+            {/* With — bronze glow */}
+            <div className="comp-half relative bg-gradient-to-br from-[#1A1118] to-[#0B1220] p-8 sm:p-10 lg:p-12 overflow-hidden">
+              <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full opacity-[0.08]" style={{ background: "radial-gradient(circle, #B88A5A 0%, transparent 70%)" }} />
+              <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(184,138,90,0.03) 0%, transparent 50%)" }} />
+              <h3 className="relative text-[#B88A5A] font-heading font-semibold text-sm tracking-[0.15em] uppercase mb-8">Avec Wenaya</h3>
+              <div className="relative space-y-7">
+                {comparison.with.map((item, i) => (
+                  <div key={i} className="flex items-start gap-4">
+                    <span className="text-[#B88A5A] text-xl leading-none shrink-0 mt-0.5">✓</span>
+                    <div>
+                      <p className="text-white font-heading font-semibold text-sm">{item.label}</p>
+                      <p className="text-white/60 text-sm leading-relaxed mt-1">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Divider line between halves */}
+              <div className="absolute top-0 bottom-0 left-0 w-px bg-gradient-to-b from-transparent via-[#B88A5A]/20 to-transparent" />
+            </div>
           </div>
         </div>
       </div>

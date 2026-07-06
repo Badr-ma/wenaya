@@ -17,14 +17,23 @@ export default function Footer(): React.JSX.Element {
   const bgTextRef = useRef<HTMLDivElement>(null);
   const sweepRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
+  const mouseTickRef = useRef(false);
+  const lastMouseRef = useRef({ cx: 0, cy: 0 });
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    setMousePos({
-      x: (e.clientX - rect.left) / rect.width,
-      y: (e.clientY - rect.top) / rect.height,
+    lastMouseRef.current = { cx: e.clientX, cy: e.clientY };
+    if (mouseTickRef.current) return;
+    mouseTickRef.current = true;
+    requestAnimationFrame(() => {
+      mouseTickRef.current = false;
+      const el = sectionRef.current;
+      if (!el) return;
+      const { cx, cy } = lastMouseRef.current;
+      const rect = el.getBoundingClientRect();
+      setMousePos({
+        x: (cx - rect.left) / rect.width,
+        y: (cy - rect.top) / rect.height,
+      });
     });
   }, []);
 
