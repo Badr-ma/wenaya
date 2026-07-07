@@ -8,7 +8,6 @@ import Image from "next/image";
 import { formatDate, type PostWithAuthor } from "@/lib/blog-utils";
 import { useLocale } from "@/contexts/LanguageContext";
 
-gsap.registerPlugin(ScrollTrigger);
 
 function BlogCard({ post }: { post: PostWithAuthor }): React.JSX.Element {
   const { t } = useLocale();

@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import EntreprisesHero from "@/components/entreprises/Hero";
 import EntreprisesPrograms from "@/components/entreprises/Programs";
 import EntreprisesApproach from "@/components/entreprises/Approach";
-import EntreprisesCta from "@/components/entreprises/Cta";
-import EntreprisesFooter from "@/components/entreprises/Footer";
+
+const EntreprisesCta = dynamic(() => import("@/components/entreprises/Cta"), { ssr: true });
+const EntreprisesFooter = dynamic(() => import("@/components/entreprises/Footer"), { ssr: true });
 
 export const metadata: Metadata = {
   title: "Bien-être en Entreprise — Programmes Santé & Prévention | Wenaya",

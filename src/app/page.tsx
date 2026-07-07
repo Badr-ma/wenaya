@@ -15,23 +15,25 @@ export const metadata: Metadata = {
   },
 };
 
+import dynamic from "next/dynamic";
 import Banner from "@/components/Banner";
 import HeroSection from "@/components/HeroSection";
-import HowItWorks from "@/components/HowItWorks";
-import DiseaseMarquee from "@/components/DiseaseMarquee";
-import Biomarkers from "@/components/Biomarkers";
-import TestimonialsSection from "@/components/TestimonialsSection";
-import Testimonials from "@/components/Testimonials";
-import ComparisonTable from "@/components/ComparisonTable";
-import Pricing from "@/components/Pricing";
-import CtaSection from "@/components/CtaSection";
-import CoursAteliers from "@/components/CoursAteliers";
-import Footer from "@/components/Footer";
-import YoloSection from "@/components/YoloSection";
 import SectionBreak from "@/components/SectionBreak";
-import BlogSection from "@/components/blog/BlogSection";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { getPublishedPosts, authors, categories } from "@/lib/blog";
+
+const HowItWorks = dynamic(() => import("@/components/HowItWorks"), { ssr: true });
+const DiseaseMarquee = dynamic(() => import("@/components/DiseaseMarquee"), { ssr: true });
+const Biomarkers = dynamic(() => import("@/components/Biomarkers"), { ssr: true });
+const TestimonialsSection = dynamic(() => import("@/components/TestimonialsSection"), { ssr: true });
+const Testimonials = dynamic(() => import("@/components/Testimonials"), { ssr: true });
+const ComparisonTable = dynamic(() => import("@/components/ComparisonTable"), { ssr: true });
+const Pricing = dynamic(() => import("@/components/Pricing"), { ssr: true });
+const CoursAteliers = dynamic(() => import("@/components/CoursAteliers"), { ssr: true });
+const CtaSection = dynamic(() => import("@/components/CtaSection"), { ssr: true });
+const Footer = dynamic(() => import("@/components/Footer"), { ssr: true });
+const YoloSection = dynamic(() => import("@/components/YoloSection"), { ssr: true });
+const BlogSection = dynamic(() => import("@/components/blog/BlogSection"), { ssr: true });
 
 function Spacer(): React.JSX.Element {
   return <div className="h-4 sm:h-6" />;

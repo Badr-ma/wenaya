@@ -5,7 +5,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLocale } from "@/contexts/LanguageContext";
 
-gsap.registerPlugin(ScrollTrigger);
 
 const visualOffers = [
   {

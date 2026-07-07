@@ -6,7 +6,6 @@ import { useLocale } from "@/contexts/LanguageContext";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
 
 export default function CtaSection(): React.JSX.Element {
   const { t } = useLocale();

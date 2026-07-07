@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getPostBySlug, getPublishedPosts, authors, categories } from "@/lib/blog";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import Footer from "@/components/Footer";
 import BlogPostClient from "./BlogPostClient";
 
 interface Props {
@@ -94,6 +95,7 @@ export default async function BlogPostPage({ params }: Props) {
       />
       <ErrorBoundary>
         <BlogPostClient post={{ ...post, author, category }} related={related} />
+        <div data-section-bg="dark"><Footer /></div>
       </ErrorBoundary>
     </>
   );

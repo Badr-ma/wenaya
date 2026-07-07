@@ -8,7 +8,6 @@ import { useLocale } from "@/contexts/LanguageContext";
 import Link from "next/link";
 import HiggsField from "@/components/HiggsField";
 
-gsap.registerPlugin(ScrollTrigger);
 
 const practiceImages: string[] = [
   "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80&auto=format&fit=crop",

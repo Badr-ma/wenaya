@@ -7,7 +7,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLocale } from "@/contexts/LanguageContext";
 import HiggsField from "./HiggsField";
 
-gsap.registerPlugin(ScrollTrigger);
 
 const sessionsData = [
   { key: "yoga", img: "/images/cours-ateliers/yoga.jpg", accent: "#B88A5A" },

@@ -1,11 +1,11 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLocale } from "@/contexts/LanguageContext";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const socialLinks = [
   {
@@ -107,9 +107,13 @@ export default function EntreprisesFooter(): React.JSX.Element {
             <div className="relative z-10">
               <div className="flex flex-col lg:flex-row items-start justify-between gap-8 mb-14">
                 <div>
-                  <span className="text-3xl font-bold font-heading text-white tracking-tight">
-                    Wenaya
-                  </span>
+                  <Image
+                    src="/images/logo-full.png"
+                    alt="Wenaya"
+                    width={1097}
+                    height={222}
+                    className="h-7 sm:h-8 w-auto brightness-0 invert"
+                  />
                   <p className="text-white/45 text-sm mt-4 max-w-sm leading-relaxed">
                     {t("entreprises.footer.desc")}
                   </p>
@@ -134,26 +138,46 @@ export default function EntreprisesFooter(): React.JSX.Element {
               </div>
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
-                {footerLinks.map((group) => (
-                  <div key={group.title}>
-                    <h4 className="text-white/30 font-heading font-semibold text-xs mb-6 uppercase tracking-[0.15em]">
-                      {group.title}
-                    </h4>
-                    <ul className="space-y-3">
-                      {group.links.map((link) => (
-                        <li key={link}>
-                          <a
-                            href="#"
-                            onClick={(e) => e.preventDefault()}
-                            className="text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed"
-                          >
-                            {link}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
+                {footerLinks.map((group) => {
+                  const isContact = group.links.length === 4 && group.links[1] === footerContactRaw.address;
+                  const groupUrls = isContact
+                    ? null
+                    : group.title === footerSolutions.title
+                      ? ["/solutions/entreprises", "#", "#", "#"]
+                      : group.title === footerResources.title
+                        ? ["/blog", "/faq", "#", "#"]
+                        : group.title === footerAPropos.title
+                          ? ["/about", "/pratiques", "#", "#"]
+                          : null;
+                  return (
+                    <div key={group.title}>
+                      <h4 className="text-white/30 font-heading font-semibold text-xs mb-6 uppercase tracking-[0.15em]">
+                        {group.title}
+                      </h4>
+                      <ul className="space-y-3">
+                        {group.links.map((link, i) => {
+                          let href: string | null;
+                          let external = false;
+                          if (isContact) {
+                            if (i === 0) { href = `tel:${footerContactRaw.phone.replace(/\s/g, "")}`; external = true; }
+                            else if (i === 3) { href = `mailto:${footerContactRaw.email}`; external = true; }
+                            else href = null;
+                          } else {
+                            href = groupUrls?.[i] ?? "#";
+                          }
+                          if (href === null) {
+                            return <li key={link} className="text-white/45 text-sm leading-relaxed">{link}</li>;
+                          }
+                          const cls = "text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed";
+                          if (external) {
+                            return <li key={link}><a href={href} className={cls}>{link}</a></li>;
+                          }
+                          return <li key={link}><Link href={href} className={cls}>{link}</Link></li>;
+                        })}
+                      </ul>
+                    </div>
+                  );
+                })}
 
               </div>
 

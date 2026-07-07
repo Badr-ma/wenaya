@@ -6,8 +6,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import { useLocale } from "@/contexts/LanguageContext";
 
-gsap.registerPlugin(ScrollTrigger);
-
 const segmentImages = [
   "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80",
   "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
@@ -63,7 +61,7 @@ export default function EntreprisesPrograms(): React.JSX.Element {
                 {t("entreprises.programs.heading2")}
               </span>
             </h2>
-            <p className="seg-title text-graphite text-base leading-relaxed mt-4 max-w-lg mx-auto">
+            <p className="seg-title text-[#2B2F36]/55 text-base leading-relaxed mt-4 max-w-lg mx-auto">
               {t("entreprises.programs.sub")}
             </p>
           </div>
@@ -97,7 +95,7 @@ export default function EntreprisesPrograms(): React.JSX.Element {
                     </span>
                     <h3 className="text-[#0B1220] heading-serif font-semibold text-2xl sm:text-3xl mt-2">{a.title}</h3>
                     <span className="inline-block mt-1.5 text-[#B88A5A] text-xs font-semibold tracking-[0.12em] uppercase">{a.subtitle}</span>
-                    <p className="text-graphite text-base leading-relaxed mt-4">{a.desc}</p>
+                    <p className="text-[#2B2F36]/55 text-base leading-relaxed mt-4">{a.desc}</p>
                   </div>
                 </div>
               );

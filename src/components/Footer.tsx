@@ -7,7 +7,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLocale } from "@/contexts/LanguageContext";
 
-gsap.registerPlugin(ScrollTrigger);
 
 export default function Footer(): React.JSX.Element {
   const { t, tRaw } = useLocale();
@@ -181,7 +180,7 @@ export default function Footer(): React.JSX.Element {
                     {(tRaw<string[]>("footer.navigation.links")).map((label: string, i: number) => (
                       <li key={label}>
                         <Link
-                          href={["/about", "#", "#", "/solutions/entreprises"][i] || "#"}
+                          href={["/about", "#", "/pratiques", "/solutions/entreprises"][i] || "#"}
                           className="text-[#2B2F36]/70 hover:text-[#0B1220] transition-all duration-300 text-sm leading-relaxed"
                         >
                           {label}

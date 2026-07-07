@@ -6,7 +6,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLocale } from "@/contexts/LanguageContext";
 
-gsap.registerPlugin(ScrollTrigger);
 
 export default function ClinicsCta(): React.JSX.Element {
   const sectionRef = useRef<HTMLElement>(null);

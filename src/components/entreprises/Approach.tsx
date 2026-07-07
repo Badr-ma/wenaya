@@ -5,8 +5,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLocale } from "@/contexts/LanguageContext";
 
-gsap.registerPlugin(ScrollTrigger);
-
 export default function EntreprisesApproach(): React.JSX.Element {
   const { tRaw } = useLocale();
 
@@ -63,7 +61,7 @@ export default function EntreprisesApproach(): React.JSX.Element {
                     <span className="text-[#0B1220] heading-serif text-3xl sm:text-4xl tracking-tight">{featured.title}</span>
                     <span className="text-[#B88A5A] font-heading font-bold text-lg sm:text-xl tracking-tight whitespace-nowrap">{featured.stat}</span>
                   </div>
-                  <p className="text-graphite text-base sm:text-lg leading-relaxed">
+                  <p className="text-[#2B2F36]/55 text-base sm:text-lg leading-relaxed">
                     {featured.longDesc}
                   </p>
                   <a href="#" onClick={(e) => e.preventDefault()} className="inline-flex items-center gap-1.5 mt-5 text-[#B88A5A] hover:text-[#9A7242] text-xs font-semibold tracking-[0.12em] uppercase transition-colors">
@@ -126,7 +124,7 @@ export default function EntreprisesApproach(): React.JSX.Element {
                   </span>
                   <div>
                     <h3 className="text-[#0B1220] heading-serif font-semibold text-xl sm:text-2xl">{vp.title}</h3>
-                    <p className="text-graphite text-base leading-relaxed mt-1.5 max-w-lg">{vp.desc}</p>
+                    <p className="text-[#2B2F36]/55 text-base leading-relaxed mt-1.5 max-w-lg">{vp.desc}</p>
                   </div>
                 </div>
                 <span className="text-[#B88A5A] font-heading font-bold text-base sm:text-lg whitespace-nowrap ml-[3.25rem] sm:ml-0">

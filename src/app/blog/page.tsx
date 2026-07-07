@@ -1,5 +1,6 @@
 import { getPublishedPosts, authors, categories } from "@/lib/blog";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import Footer from "@/components/Footer";
 import BlogHero from "./BlogHero";
 import BlogListClient from "./BlogListClient";
 
@@ -18,6 +19,7 @@ export default function BlogPage() {
     <div className="min-h-screen bg-[#F2EFE9]">
       <BlogHero latest={latest} />
       <BlogListClient posts={enriched} categories={categories} />
+      <div data-section-bg="dark"><Footer /></div>
     </div>
     </ErrorBoundary>
   );
