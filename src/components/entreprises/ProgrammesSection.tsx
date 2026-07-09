@@ -1,0 +1,256 @@
+"use client";
+
+import { useRef, useEffect, useState, useCallback } from "react";
+import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useLocale } from "@/contexts/LanguageContext";
+
+interface Program {
+  badge: string; name: string; pitch: string; desc: string;
+  format: string; animator: string; link: string;
+}
+
+const cardImages = [
+  "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=2400&q=100",
+  "https://images.unsplash.com/photo-1552664730-d307ca884978?w=2400&q=100",
+  "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=2400&q=100",
+  "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=2400&q=100",
+];
+
+const EDGE_PX = 70;
+const EDGE_PX_MOBILE = 40;
+const SIDE_SCALE = 0.98;
+const SIDE_OPACITY = 0.92;
+const SPRING = { type: "spring" as const, stiffness: 320, damping: 28, mass: 0.8 };
+
+function CardContent({
+  program, image, isActive,
+}: {
+  program: Program; image: string; isActive: boolean;
+}) {
+  if (!isActive) {
+    return (
+      <div
+        className="w-full rounded-3xl overflow-hidden relative"
+        style={{
+          height: "clamp(360px, 56vw, 540px)",
+          boxShadow: "0 2px 12px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(0,0,0,0.04)",
+        }}
+      >
+        <Image src={image} alt="" fill className="object-cover" sizes="600px" draggable={false} />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className="w-full rounded-3xl overflow-hidden bg-white flex flex-col select-none"
+      style={{
+        height: "clamp(360px, 56vw, 540px)",
+        boxShadow: "0 20px 60px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.06)",
+      }}
+    >
+      <div className="relative h-[58%] min-h-[240px] overflow-hidden shrink-0">
+        <Image src={image} alt="" fill className="object-cover" sizes="600px" draggable={false} />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+        <div className="absolute top-5 left-5">
+          <span className="inline-block px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-white/90 text-[10px] font-bold tracking-[0.1em] uppercase border border-white/10">
+            {program.badge}
+          </span>
+        </div>
+      </div>
+
+      <div className="flex-1 flex flex-col justify-between p-6 sm:p-7 min-h-0">
+        <div>
+          <h3 className="heading-serif text-[#0B1220] text-2xl sm:text-3xl font-semibold leading-tight">
+            {program.name}
+          </h3>
+          <p className="text-[#B88A5A] text-sm font-medium mt-1.5">{program.pitch}</p>
+          <p className="text-[#2B2F36]/50 text-sm leading-relaxed mt-3 line-clamp-2">{program.desc}</p>
+        </div>
+
+        <div className="flex items-center justify-between pt-4 mt-3 border-t border-[#0B1220]/[0.05] shrink-0">
+          <div className="space-y-0.5">
+            <div className="flex items-center gap-1.5 text-[#2B2F36]/40 text-xs">
+              <svg className="w-3.5 h-3.5 shrink-0 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {program.format}
+            </div>
+            <div className="flex items-center gap-1.5 text-[#2B2F36]/30 text-xs">
+              <svg className="w-3.5 h-3.5 shrink-0 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+              </svg>
+              {program.animator}
+            </div>
+          </div>
+          <button className="px-5 h-9 rounded-full bg-[#0B1220] text-white text-xs font-semibold tracking-wide hover:bg-[#B88A5A] transition-colors duration-300 shrink-0">
+            Discover Program
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function ProgrammesSection() {
+  const { t, tRaw } = useLocale();
+  const programmes = tRaw<Program[]>("entreprises.programmes.list");
+
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [direction, setDirection] = useState<1 | -1>(1);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const measure = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.offsetWidth);
+      }
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const ctx = gsap.context(() => {
+      gsap.fromTo(".pg-head", { opacity: 0, y: 20 }, {
+        opacity: 1, y: 0, duration: 0.6, ease: "power3.out",
+        scrollTrigger: { trigger: el, start: "top 88%", toggleActions: "play none none none" },
+      });
+    }, el);
+    return () => ctx.revert();
+  }, []);
+
+  const total = programmes.length;
+  const prevIdx = (activeIdx - 1 + total) % total;
+  const nextIdx = (activeIdx + 1) % total;
+
+  const navigate = useCallback((dir: 1 | -1) => {
+    if (isAnimating || total === 0) return;
+    setIsAnimating(true);
+    setDirection(dir);
+    setActiveIdx(prev => (prev + dir + total) % total);
+    setTimeout(() => setIsAnimating(false), 500);
+  }, [isAnimating, total]);
+
+  const edge = containerWidth < 640 ? EDGE_PX_MOBILE : EDGE_PX;
+
+  function getPosition(idx: number): "active" | "prev" | "next" | null {
+    if (idx === activeIdx) return "active";
+    if (idx === prevIdx) return "prev";
+    if (idx === nextIdx) return "next";
+    return null;
+  }
+
+  function getAnimate(position: string, cw: number) {
+    const gap = edge;
+    const cardW = cw - 2 * gap;
+    if (position === "active") return { x: gap, scale: 1, opacity: 1, rotate: 0 };
+    if (position === "prev") return { x: gap - cardW + edge, scale: SIDE_SCALE, opacity: SIDE_OPACITY, rotate: -15 };
+    return { x: cw - gap - edge, scale: SIDE_SCALE, opacity: SIDE_OPACITY, rotate: 15 };
+  }
+
+  if (!total) return null;
+
+  return (
+    <section ref={sectionRef} className="relative bg-[#0B1220] py-24 sm:py-36 px-6 overflow-hidden">
+      <div className="max-w-6xl mx-auto">
+        <div className="pg-head max-w-2xl mb-16 sm:mb-20">
+          <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase mb-5">
+            <span className="w-8 h-px bg-[#B88A5A]/40" />
+            {t("entreprises.programmes.title")}
+          </span>
+          <h2 className="heading-serif text-white text-[clamp(2.2rem, 4vw, 3.8rem)] mt-5 leading-[1.06]">
+            {t("entreprises.programmes.subtitle")}
+          </h2>
+        </div>
+
+        <div className="flex items-center justify-center gap-4 sm:gap-6">
+          <button
+            onClick={() => navigate(-1)}
+            aria-label="Previous program"
+            className="hidden sm:flex w-10 h-10 rounded-full border border-white/[0.15] items-center justify-center text-white/30 hover:border-[#B88A5A]/50 hover:text-[#B88A5A] transition-colors duration-200 shrink-0 z-10"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          <div
+            ref={containerRef}
+            className="relative overflow-hidden rounded-3xl w-full max-w-[680px]"
+            style={{ height: "clamp(360px, 56vw, 540px)" }}
+          >
+            <AnimatePresence initial={false} custom={{ direction, cw: containerWidth }}>
+              {programmes.map((program, idx) => {
+                const position = getPosition(idx);
+                if (!position) return null;
+
+                const isActive = position === "active";
+
+                return (
+                    <motion.div
+                      key={idx}
+                      className="absolute top-0 left-0 will-change-transform"
+                      custom={{ direction, cw: containerWidth }}
+                      initial={{ x: direction > 0 ? containerWidth + 50 : -containerWidth - 50, opacity: 0, rotate: direction > 0 ? 15 : -15 }}
+                      animate={getAnimate(position, containerWidth)}
+                      exit={{ x: direction > 0 ? -containerWidth - 50 : containerWidth + 50, opacity: 0, rotate: direction > 0 ? -15 : 15 }}
+                      transition={SPRING}
+                      style={{
+                        width: containerWidth - 2 * EDGE_PX,
+                        zIndex: position === "active" ? 3 : position === "next" ? 2 : 1,
+                      }}
+                    drag={isActive ? "x" : false}
+                    dragConstraints={{ left: 0, right: 0 }}
+                    dragElastic={0.15}
+                    onDragEnd={(_: any, info: { offset: { x: number }; velocity: { x: number } }) => {
+                      if (!isActive) return;
+                      if (info.offset.x < -60 || info.velocity.x < -400) navigate(1);
+                      else if (info.offset.x > 60 || info.velocity.x > 400) navigate(-1);
+                    }}
+                  >
+                    <CardContent
+                      program={program}
+                      image={cardImages[idx % cardImages.length]}
+                      isActive={isActive}
+                    />
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          </div>
+
+          <button
+            onClick={() => navigate(1)}
+            aria-label="Next program"
+            className="hidden sm:flex w-10 h-10 rounded-full border border-white/[0.15] items-center justify-center text-white/30 hover:border-[#B88A5A]/50 hover:text-[#B88A5A] transition-colors duration-200 shrink-0 z-10"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="flex items-center justify-center gap-6 mt-10">
+          <span className="text-white/25 text-sm font-medium tabular-nums">
+            {activeIdx + 1} <span className="text-white/15">/ {total}</span>
+          </span>
+          <span className="text-white/15 text-[10px] font-semibold tracking-[0.15em] uppercase">
+            Swipe to explore
+          </span>
+        </div>
+      </div>
+    </section>
+  );
+}

@@ -3,9 +3,42 @@
 import Link from "next/link";
 import { useLocale } from "@/contexts/LanguageContext";
 import Footer from "@/components/Footer";
+import { useState } from "react";
 
 export default function ContactPage() {
   const { t } = useLocale();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    if (!firstName || !lastName || !email) {
+      setError("Veuillez remplir les champs obligatoires.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ firstName, lastName, email, phone, message, source: "contact" }),
+      });
+      if (!res.ok) throw new Error("Erreur serveur");
+      setSubmitted(true);
+    } catch {
+      setError("Une erreur est survenue. Veuillez réessayer.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex-1 bg-[#F2EFE9] pt-32 pb-20 px-6">
@@ -55,29 +88,42 @@ export default function ContactPage() {
 
             <div className="bg-white/60 rounded-2xl p-6 sm:p-8 border border-[#0B1220]/[0.06]">
               <h2 className="text-[#0B1220] font-heading font-semibold text-lg mb-6">{t("contact.formTitle")}</h2>
-              <form className="space-y-4">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <Input label={t("contact.prenom")} placeholder={t("contact.prenomPlaceholder")} />
-                  <Input label={t("contact.nom")} placeholder={t("contact.nomPlaceholder")} />
+              {submitted ? (
+                <div className="text-center py-12">
+                  <div className="w-14 h-14 rounded-full bg-[#B88A5A]/10 flex items-center justify-center mx-auto mb-5">
+                    <svg className="w-7 h-7 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <h3 className="text-[#0B1220] font-heading font-semibold text-lg mb-2">Merci !</h3>
+                  <p className="text-[#2B2F36]/50 text-sm">Votre message a bien été envoyé. Nous vous répondrons sous 24h.</p>
                 </div>
-                <Input label={t("contact.emailForm")} type="email" placeholder={t("contact.emailPlaceholder")} />
-                <Input label={t("contact.telephoneForm")} type="tel" placeholder={t("contact.telPlaceholder")} />
+              ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <Input label={t("contact.prenom")} placeholder={t("contact.prenomPlaceholder")} value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
+                  <Input label={t("contact.nom")} placeholder={t("contact.nomPlaceholder")} value={lastName} onChange={(e) => setLastName(e.target.value)} required />
+                </div>
+                <Input label={t("contact.emailForm")} type="email" placeholder={t("contact.emailPlaceholder")} value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <Input label={t("contact.telephoneForm")} type="tel" placeholder={t("contact.telPlaceholder")} value={phone} onChange={(e) => setPhone(e.target.value)} />
                 <div>
                   <label className="block text-[#0B1220]/60 text-xs font-medium tracking-wide mb-1.5">{t("contact.message")}</label>
-                  <textarea rows={4} placeholder={t("contact.messagePlaceholder")}
+                  <textarea rows={4} placeholder={t("contact.messagePlaceholder")} value={message} onChange={(e) => setMessage(e.target.value)}
                     className="w-full rounded-xl border border-[#0B1220]/[0.08] bg-white/80 px-4 py-3 text-sm text-[#0B1220] placeholder-[#0B1220]/25 outline-none transition-all duration-200 focus:border-[#B88A5A]/40 focus:bg-white focus:shadow-[0_0_0_3px_rgba(184,138,90,0.08)] resize-none"
                   />
                 </div>
-                <button type="button"
-                  className="w-full h-11 rounded-xl text-white text-sm font-semibold transition-all duration-300 hover:-translate-y-px"
+                {error && <p className="text-red-500/80 text-xs text-center">{error}</p>}
+                <button type="submit" disabled={loading}
+                  className="w-full h-11 rounded-xl text-white text-sm font-semibold transition-all duration-300 hover:-translate-y-px disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{
                     background: "linear-gradient(135deg, #B88A5A 0%, #9A7242 100%)",
                     boxShadow: "0 1px 0 rgba(255,255,255,0.14) inset, 0 4px 16px rgba(184,138,90,0.28)",
                   }}
                 >
-                  {t("contact.envoyer")}
+                  {loading ? "Envoi..." : t("contact.envoyer")}
                 </button>
               </form>
+              )}
             </div>
           </div>
 
@@ -95,11 +141,11 @@ export default function ContactPage() {
   );
 }
 
-function Input({ label, type = "text", placeholder }: { label: string; type?: string; placeholder: string }) {
+function Input({ label, type = "text", placeholder, value, onChange, required }: { label: string; type?: string; placeholder: string; value?: string; onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; required?: boolean }) {
   return (
     <div>
       <label className="block text-[#0B1220]/60 text-xs font-medium tracking-wide mb-1.5">{label}</label>
-      <input type={type} placeholder={placeholder}
+      <input type={type} placeholder={placeholder} value={value} onChange={onChange} required={required}
         className="w-full rounded-xl border border-[#0B1220]/[0.08] bg-white/80 px-4 py-3 text-sm text-[#0B1220] placeholder-[#0B1220]/25 outline-none transition-all duration-200 focus:border-[#B88A5A]/40 focus:bg-white focus:shadow-[0_0_0_3px_rgba(184,138,90,0.08)]"
       />
     </div>

@@ -74,22 +74,16 @@ export default function EntreprisesFooter(): React.JSX.Element {
         className="absolute top-0 right-0 w-[400px] h-[400px] pointer-events-none"
         style={{ background: "radial-gradient(circle at center, rgba(184,138,90,0.04) 0%, transparent 60%)" }}
       />
-      {/* WENAYA background text */}
+      {/* Logo background watermark */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-        <span
-          className="text-[clamp(8rem,25vw,40rem)] font-bold leading-none tracking-[-0.06em] whitespace-nowrap select-none text-transparent bg-clip-text bg-gradient-to-b from-white/[0.08] via-white/[0.05] to-[#B88A5A]/[0.05]"
-          style={{ fontStretch: "expanded" }}
-        >
-          WENAYA
-        </span>
+        <div className="relative w-[clamp(300px,90vw,2200px)] aspect-[1097/222] opacity-[0.06]">
+          <Image src="/images/logo-full.png" alt="" fill className="object-contain brightness-0 invert" sizes="90vw" />
+        </div>
       </div>
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none" aria-hidden>
-        <span
-          className="text-[clamp(8rem,25vw,40rem)] font-bold leading-none tracking-[-0.06em] whitespace-nowrap text-white/[0.02] blur-[6px]"
-          style={{ fontStretch: "expanded" }}
-        >
-          WENAYA
-        </span>
+        <div className="relative w-[clamp(300px,90vw,2200px)] aspect-[1097/222] opacity-[0.015] blur-[6px]">
+          <Image src="/images/logo-full.png" alt="" fill className="object-contain brightness-0 invert" sizes="90vw" />
+        </div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6">
@@ -119,21 +113,27 @@ export default function EntreprisesFooter(): React.JSX.Element {
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
-                  {socialLinks.map((s) => (
-                    <a
-                      key={s.label}
-                      href="#"
-                      onClick={(e) => e.preventDefault()}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                      className="w-10 h-10 rounded-full bg-white/[0.05] hover:bg-[#B88A5A] flex items-center justify-center text-white/40 hover:text-white transition-all duration-300 group border border-white/[0.06]"
-                      aria-label={s.label}
-                    >
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                        <path d={s.path} />
-                      </svg>
-                    </a>
-                  ))}
+                  {socialLinks.map((s) => {
+                    const urls: Record<string, string> = {
+                      LinkedIn: "https://linkedin.com/company/wenaya",
+                      Instagram: "https://instagram.com/wenaya",
+                      X: "https://x.com/wenaya",
+                    };
+                    return (
+                      <a
+                        key={s.label}
+                        href={urls[s.label] || "#"}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        className="w-10 h-10 rounded-full bg-white/[0.05] hover:bg-[#B88A5A] flex items-center justify-center text-white/40 hover:text-white transition-all duration-300 group border border-white/[0.06]"
+                        aria-label={s.label}
+                      >
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                          <path d={s.path} />
+                        </svg>
+                      </a>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -196,3 +196,4 @@ export default function EntreprisesFooter(): React.JSX.Element {
     </footer>
   );
 }
+

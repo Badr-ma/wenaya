@@ -2,8 +2,16 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import EntreprisesHero from "@/components/entreprises/Hero";
-import EntreprisesPrograms from "@/components/entreprises/Programs";
-import EntreprisesApproach from "@/components/entreprises/Approach";
+import HowItWorksSection from "@/components/entreprises/HowItWorksSection";
+import ModularitySection from "@/components/entreprises/ModularitySection";
+import ProgrammesSection from "@/components/entreprises/ProgrammesSection";
+import ThematiquesSection from "@/components/entreprises/ThematiquesSection";
+import ImageBreak from "@/components/entreprises/ImageBreak";
+import StatsTestimonialsSection from "@/components/entreprises/StatsTestimonialsSection";
+import DownloadsSection from "@/components/entreprises/DownloadsSection";
+import FaqSection from "@/components/entreprises/FaqSection";
+import ContactSection from "@/components/entreprises/ContactSection";
+import StickyCta from "@/components/entreprises/StickyCta";
 
 const EntreprisesCta = dynamic(() => import("@/components/entreprises/Cta"), { ssr: true });
 const EntreprisesFooter = dynamic(() => import("@/components/entreprises/Footer"), { ssr: true });
@@ -37,11 +45,19 @@ export default function EntreprisesPage() {
   return (
     <ErrorBoundary>
       <div className="flex flex-col">
-        <div data-section-bg="dark"><EntreprisesHero /></div>
-        <div data-section-bg="light"><EntreprisesApproach /></div>
-        <div data-section-bg="light"><EntreprisesPrograms /></div>
-        <div data-section-bg="dark"><EntreprisesCta /></div>
-        <div data-section-bg="dark"><EntreprisesFooter /></div>
+        <EntreprisesHero />
+        <StatsTestimonialsSection />
+        <ModularitySection />
+        <ProgrammesSection />
+        <HowItWorksSection />
+        <ThematiquesSection />
+        <ImageBreak />
+        <DownloadsSection />
+        <FaqSection />
+        <ContactSection />
+        <EntreprisesCta />
+        <EntreprisesFooter />
+        <StickyCta />
       </div>
     </ErrorBoundary>
   );
