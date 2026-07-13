@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useRef, useEffect } from "react";
 import { useLocale } from "@/contexts/LanguageContext";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 
 export default function CtaSection(): React.JSX.Element {

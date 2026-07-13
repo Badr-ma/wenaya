@@ -4,7 +4,6 @@ import { useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLocale } from "@/contexts/LanguageContext";
 
 const socialPaths: Record<string, string> = {
@@ -21,7 +20,7 @@ const socialUrls: Record<string, string> = {
   YouTube: "https://youtube.com/@wenaya",
 };
 
-const navUrls = ["/about", "#", "/pratiques", "/solutions/entreprises"];
+const navUrls = ["/about", "#", "/pratiques", "/solutions/entreprises", "/faq"];
 const legalUrls = ["/confidentialite", "/conditions"];
 
 export default function Footer(): React.JSX.Element {

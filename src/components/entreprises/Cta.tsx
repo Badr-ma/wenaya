@@ -1,9 +1,8 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLocale } from "@/contexts/LanguageContext";
 
 function scrollToContact() {
@@ -14,8 +13,6 @@ function scrollToContact() {
 export default function EntreprisesCta(): React.JSX.Element {
   const { t } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
-  const [email, setEmail] = useState("");
-  const [nlSubmitted, setNlSubmitted] = useState(false);
 
   useEffect(() => {
     const el = sectionRef.current;

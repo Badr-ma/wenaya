@@ -1,29 +1,23 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
 
 const cardKeys = [
-  { key: "clinics", featured: true, icon: (
+  { key: "clinics", featured: true, href: "/about", icon: (
     <svg viewBox="0 0 48 48" className="w-10 h-10" fill="none">
       <rect x="10" y="14" width="28" height="28" rx="3" stroke="currentColor" strokeWidth="1" />
       <path d="M22 24v8M18 28h8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
       <path d="M16 14V10a2 2 0 012-2h12a2 2 0 012 2v4" stroke="currentColor" strokeWidth="1" />
     </svg>
   )},
-  { key: "corporate", featured: false, icon: (
+  { key: "corporate", featured: false, href: "/solutions/entreprises", icon: (
     <svg viewBox="0 0 48 48" className="w-10 h-10" fill="none">
       <rect x="8" y="22" width="32" height="20" rx="2" stroke="currentColor" strokeWidth="1" />
       <rect x="16" y="10" width="16" height="12" rx="1" stroke="currentColor" strokeWidth="1" />
       <path d="M20 30h8M20 34h8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-    </svg>
-  )},
-  { key: "hospitality", featured: false, soon: true, icon: (
-    <svg viewBox="0 0 48 48" className="w-10 h-10" fill="none">
-      <path d="M8 40V14l16-8 16 8v26" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-      <rect x="18" y="26" width="12" height="14" rx="1" stroke="currentColor" strokeWidth="1" />
-      <path d="M14 40h20" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
     </svg>
   )},
 ];
@@ -39,9 +33,9 @@ export default function ComparisonTable(): React.JSX.Element {
     desc: t(`comparisonTable.${c.key}.desc`),
     cta: t(`comparisonTable.${c.key}.cta`),
     stats: t(`comparisonTable.${c.key}.stats`),
+    href: c.href,
     icon: c.icon,
     featured: c.featured,
-    soon: "soon" in c,
   }));
 
   useEffect(() => {
@@ -89,7 +83,7 @@ export default function ComparisonTable(): React.JSX.Element {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-5">
           {entries.map((e, i) => (
             <div
               key={e.title}
@@ -112,17 +106,12 @@ export default function ComparisonTable(): React.JSX.Element {
               <p className="text-[#B88A5A] text-xs mt-4 font-medium">
                 {e.stats}
               </p>
-              <a
-                href="#"
-                onClick={(e) => e.preventDefault()}
-                className={`mt-6 inline-flex items-center justify-center h-[44px] px-6 rounded-full text-sm font-medium transition-all duration-300 ${
-                  e.soon
-                    ? "bg-[#0B1220]/5 text-[#2B2F36] cursor-default"
-                    : "bg-[#0B1220] text-white hover:bg-[#2B2F36]"
-                }`}
+              <Link
+                href={e.href}
+                className="mt-6 inline-flex items-center justify-center h-[44px] px-6 rounded-full text-sm font-medium transition-all duration-300 bg-[#0B1220] text-white hover:bg-[#2B2F36]"
               >
                 {e.cta}
-              </a>
+              </Link>
             </div>
           ))}
         </div>

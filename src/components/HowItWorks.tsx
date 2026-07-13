@@ -44,56 +44,8 @@ function Card({
 
 /* ── 1. Assess — score arc 0→65 + metric pills ──────────────── */
 function AssessViz(): React.JSX.Element {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    let st: ScrollTrigger | null = null;
-    const timers: ReturnType<typeof setTimeout>[] = [];
-    let alive = true;
-    const raf = requestAnimationFrame(() => {
-      const scoreEl = el.querySelector<HTMLElement>(".as-score");
-      const arcEl = el.querySelector<SVGCircleElement>(".as-arc");
-      const pills = el.querySelectorAll<HTMLElement>(".as-pill");
-      const circ = 2 * Math.PI * 40;
-      let triggered = false;
-      st = ScrollTrigger.create({
-        trigger: el, start: "top 88%",
-        onEnter: () => {
-          if (triggered) return;
-          triggered = true;
-          let v = 0;
-          const si = setInterval(() => {
-            if (!alive) { clearInterval(si); return; }
-            v++;
-            if (scoreEl) scoreEl.textContent = String(v);
-            if (arcEl) arcEl.style.strokeDashoffset = String(circ - (circ * v) / 100);
-            if (v >= 65) clearInterval(si);
-          }, 22);
-          timers.push(setTimeout(() => clearInterval(si), 3000));
-          pills.forEach((p, i) =>
-            timers.push(setTimeout(() => {
-              if (!alive) return;
-              p.style.opacity = "1";
-              p.style.transform = "translateY(0)";
-            }, 1600 + i * 340))
-          );
-        },
-        once: true,
-      });
-      ScrollTrigger.refresh();
-    });
-    return () => {
-      cancelAnimationFrame(raf);
-      alive = false;
-      timers.forEach(clearTimeout);
-      if (st) st.kill();
-    };
-  }, []);
-
   return (
-    <div ref={ref} className="flex flex-col items-center gap-4">
+    <div className="flex flex-col items-center gap-4">
       <div className="relative w-[88px] h-[88px] flex items-center justify-center">
         <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
           <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(11,18,32,0.06)" strokeWidth="5" />
@@ -103,7 +55,6 @@ function AssessViz(): React.JSX.Element {
             strokeDasharray={2 * Math.PI * 40}
             strokeDashoffset={2 * Math.PI * 40}
             strokeLinecap="round"
-            style={{ transition: "stroke-dashoffset 0.08s linear" }}
           />
         </svg>
         <div className="text-center">
@@ -113,7 +64,7 @@ function AssessViz(): React.JSX.Element {
       </div>
       <div className="flex gap-5">
         {[{ label: "Bio", value: "84" }, { label: "Clin", value: "72" }, { label: "Âge", value: "34" }].map((m) => (
-          <div key={m.label} className="as-pill text-center transition-all duration-400" style={{ opacity: 0, transform: "translateY(8px)" }}>
+          <div key={m.label} className="as-pill text-center" style={{ opacity: 0, transform: "translateY(8px)" }}>
             <div className="font-heading font-bold text-sm text-[#0B1220]">{m.value}</div>
             <div className="text-[9px] text-[#2B2F36]/35 tracking-wider">{m.label}</div>
           </div>
@@ -126,59 +77,17 @@ function AssessViz(): React.JSX.Element {
 /* ── 2. Align — rows slide in + checkmarks ───────────────────── */
 function AlignViz(): React.JSX.Element {
   const { t } = useLocale();
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    let st: ScrollTrigger | null = null;
-    const timers: ReturnType<typeof setTimeout>[] = [];
-    let alive = true;
-    const raf = requestAnimationFrame(() => {
-      const items = el.querySelectorAll<HTMLElement>(".al-item");
-      const checks = el.querySelectorAll<HTMLElement>(".al-check");
-      let triggered = false;
-      st = ScrollTrigger.create({
-        trigger: el, start: "top 88%",
-        onEnter: () => {
-          if (triggered) return;
-          triggered = true;
-          items.forEach((it, i) =>
-            timers.push(setTimeout(() => {
-              if (!alive) return;
-              it.style.opacity = "1";
-              it.style.transform = "translateX(0)";
-            }, 300 + i * 480))
-          );
-          checks.forEach((c, i) =>
-            timers.push(setTimeout(() => {
-              if (!alive) return;
-              c.style.opacity = "1";
-            }, 620 + i * 480))
-          );
-        },
-        once: true,
-      });
-      ScrollTrigger.refresh();
-    });
-    return () => {
-      cancelAnimationFrame(raf);
-      alive = false;
-      timers.forEach(clearTimeout);
-      if (st) st.kill();
-    };
-  }, []);
 
   return (
-    <div ref={ref} className="w-full space-y-2.5">
-      {[t("howItWorks.align.alimentation"), t("howItWorks.align.activite"), t("howItWorks.align.sommeil")].map((label) => (
+    <div className="w-full space-y-2.5">
+      {[t("howItWorks.align.alimentation"), t("howItWorks.align.activite"), t("howItWorks.align.sommeil")].map((label, i) => (
         <div
-          key={label}
-          className="al-item flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-[#0B1220]/[0.06] border border-[#0B1220]/[0.08] transition-all duration-400"
+          key={`al-${i}`}
+          className="al-item flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-[#0B1220]/[0.06] border border-[#0B1220]/[0.08]"
           style={{ opacity: 0, transform: "translateX(-10px)" }}
         >
           <div
-            className="al-check w-5 h-5 rounded-full bg-[#BBF6F3] flex items-center justify-center shrink-0 transition-opacity duration-300"
+            className="al-check w-5 h-5 rounded-full bg-[#BBF6F3] flex items-center justify-center shrink-0"
             style={{ opacity: 0 }}
           >
             <svg className="w-2.5 h-2.5 text-[#0B1220]" fill="none" viewBox="0 0 10 10">
@@ -195,64 +104,21 @@ function AlignViz(): React.JSX.Element {
 /* ── 3. Activate — timeline dots animate ────────────────────── */
 function ActivateViz(): React.JSX.Element {
   const { t } = useLocale();
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    let st: ScrollTrigger | null = null;
-    const timers: ReturnType<typeof setTimeout>[] = [];
-    let alive = true;
-    const raf = requestAnimationFrame(() => {
-      const dots = el.querySelectorAll<HTMLElement>(".ac-dot");
-      const lines = el.querySelectorAll<HTMLElement>(".ac-line");
-      let triggered = false;
-      st = ScrollTrigger.create({
-        trigger: el, start: "top 88%",
-        onEnter: () => {
-          if (triggered) return;
-          triggered = true;
-          dots.forEach((d, i) =>
-            timers.push(setTimeout(() => {
-              if (!alive) return;
-              d.style.borderColor = "#BBF6F3";
-              d.style.backgroundColor = "#BBF6F3";
-              d.style.color = "#0B1220";
-            }, 500 + i * 650))
-          );
-          lines.forEach((l, i) =>
-            timers.push(setTimeout(() => {
-              if (!alive) return;
-              l.style.width = "100%";
-            }, 680 + i * 650))
-          );
-        },
-        once: true,
-      });
-      ScrollTrigger.refresh();
-    });
-    return () => {
-      cancelAnimationFrame(raf);
-      alive = false;
-      timers.forEach(clearTimeout);
-      if (st) st.kill();
-    };
-  }, []);
 
   return (
-    <div ref={ref} className="w-full flex flex-col gap-5">
+    <div className="w-full flex flex-col gap-5">
       <div className="flex items-center justify-between px-2 relative">
         {["J0", "J45", "J90"].map((label, i) => (
           <div key={label} className="flex flex-col items-center gap-2 relative z-10">
             <div
-              className="ac-dot w-10 h-10 rounded-full border-2 flex items-center justify-center font-heading font-bold text-xs transition-all duration-500"
+              className="ac-dot w-10 h-10 rounded-full border-2 flex items-center justify-center font-heading font-bold text-xs"
               style={{ borderColor: "rgba(11,18,32,0.1)", color: "rgba(11,18,32,0.3)" }}
             >
               {label}
             </div>
             {i < 2 && (
               <div className="absolute left-full top-5 -translate-y-1/2 w-[64px] h-px bg-[#0B1220]/[0.06] overflow-hidden" style={{ marginLeft: "4px" }}>
-                <div className="ac-line h-full bg-[#BBF6F3] transition-all duration-500" style={{ width: "0%" }} />
+                <div className="ac-line h-full bg-[#BBF6F3]" style={{ width: "0%" }} />
               </div>
             )}
           </div>
@@ -269,7 +135,6 @@ function ActivateViz(): React.JSX.Element {
 /* ── 4. Sustain — Function Health-style upward line chart ───── */
 function SustainViz(): React.JSX.Element {
   const { t } = useLocale();
-  const svgRef = useRef<SVGSVGElement>(null);
   const W = 200, H = 90;
   const pts = [0.15, 0.26, 0.40, 0.54, 0.65, 0.75, 0.84];
   const xs = pts.map((_, i) => 4 + (i / (pts.length - 1)) * (W - 8));
@@ -285,52 +150,18 @@ function SustainViz(): React.JSX.Element {
   const lastX = xs[xs.length - 1];
   const lastY = ys[ys.length - 1];
 
-  useEffect(() => {
-    const svg = svgRef.current;
-    if (!svg) return;
-    const lineEl = svg.querySelector<SVGPathElement>(".su-line");
-    const areaEl = svg.querySelector<SVGPathElement>(".su-area");
-    const dotEls = svg.querySelectorAll<SVGCircleElement>(".su-dot");
-    const endDot = svg.querySelector<SVGCircleElement>(".su-end");
-    const pulse = svg.querySelector<SVGCircleElement>(".su-pulse");
-
-    let triggered = false;
-    ScrollTrigger.create({
-      trigger: svg, start: "top 88%",
-      onEnter: () => {
-        if (triggered) return;
-        triggered = true;
-        if (lineEl) {
-          lineEl.style.transition = "stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1)";
-          lineEl.style.strokeDashoffset = "0";
-        }
-        setTimeout(() => { if (areaEl) areaEl.style.opacity = "1"; }, 500);
-        dotEls.forEach((d, i) =>
-          setTimeout(() => { d.style.opacity = "1"; d.setAttribute("r", "2.5"); }, 650 + i * 160)
-        );
-        setTimeout(() => {
-          if (endDot) { endDot.style.opacity = "1"; endDot.setAttribute("r", "4"); }
-          if (pulse) pulse.style.opacity = "0.35";
-        }, 650 + pts.length * 160 + 80);
-      },
-      once: true,
-    });
-  }, []);
-
   return (
     <div className="w-full flex flex-col gap-2.5">
-      {/* Label + badge */}
       <div className="flex items-center justify-between">
         <span className="text-[11px] text-[#2B2F36]/45 font-medium">{t("howItWorks.sustain.santeDurable")}</span>
         <span className="text-[10.5px] font-bold px-2 py-0.5 rounded-full text-[#B88A5A] bg-[#B88A5A]/10">+41%</span>
       </div>
 
-      {/* Chart */}
       <div
         className="w-full rounded-xl overflow-hidden"
         style={{ background: "rgba(11,18,32,0.06)", border: "1px solid rgba(11,18,32,0.09)" }}
       >
-        <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`} className="w-full" fill="none">
+        <svg viewBox={`0 0 ${W} ${H}`} className="w-full" fill="none">
           <defs>
             <linearGradient id="su-grad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#B88A5A" stopOpacity="0.18" />
@@ -338,7 +169,6 @@ function SustainViz(): React.JSX.Element {
             </linearGradient>
           </defs>
 
-          {/* Subtle grid */}
           {[0.3, 0.6].map((t) => (
             <line key={t}
               x1="4" y1={H - 8 - t * (H - 18)}
@@ -347,13 +177,10 @@ function SustainViz(): React.JSX.Element {
             />
           ))}
 
-          {/* Area */}
-          <path className="su-area" d={areaPath} fill="url(#su-grad)" style={{ opacity: 0, transition: "opacity 0.9s ease" }} />
+          <path className="su-area" d={areaPath} fill="url(#su-grad)" style={{ opacity: 0 }} />
 
-          {/* Track */}
           <path d={linePath} stroke="rgba(11,18,32,0.05)" strokeWidth="1.5" strokeLinecap="round" />
 
-          {/* Animated line */}
           <path
             className="su-line"
             d={linePath}
@@ -361,24 +188,20 @@ function SustainViz(): React.JSX.Element {
             strokeDasharray={350} strokeDashoffset={350}
           />
 
-          {/* Intermediate dots */}
           {xs.slice(0, -1).map((x, i) => (
             <circle key={i} className="su-dot" cx={x} cy={ys[i]} r="0"
-              fill="#B88A5A" style={{ opacity: 0, transition: "opacity 0.3s, r 0.3s" }} />
+              fill="#B88A5A" style={{ opacity: 0 }} />
           ))}
 
-          {/* Pulse ring */}
           <circle className="su-pulse" cx={lastX} cy={lastY} r="9"
             fill="none" stroke="#B88A5A" strokeWidth="1"
-            style={{ opacity: 0, transition: "opacity 0.5s" }} />
+            style={{ opacity: 0 }} />
 
-          {/* End dot */}
           <circle className="su-end" cx={lastX} cy={lastY} r="0"
-            fill="#B88A5A" style={{ opacity: 0, transition: "opacity 0.3s, r 0.3s" }} />
+            fill="#B88A5A" style={{ opacity: 0 }} />
         </svg>
       </div>
 
-      {/* X-axis labels */}
       <div className="flex items-center justify-between">
         <span className="text-[10px] text-[#2B2F36]/35">{t("howItWorks.sustain.mois1")}</span>
         <span className="text-[10px] text-[#2B2F36]/35">{t("howItWorks.sustain.mois12")}</span>
@@ -398,15 +221,69 @@ export default function HowItWorks(): React.JSX.Element {
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
+    let obs: IntersectionObserver;
     const ctx = gsap.context(() => {
       gsap.fromTo(headRef.current,
         { opacity: 0, y: 14 },
         { opacity: 1, y: 0, duration: 0.55, ease: "power2.out", scrollTrigger: { trigger: el, start: "top 82%" } }
       );
-      gsap.fromTo(gridRef.current,
+      const tl = gsap.timeline({ paused: true });
+
+      tl.fromTo(gridRef.current,
         { opacity: 0, y: 18 },
-        { opacity: 1, y: 0, duration: 0.6, delay: 0.08, ease: "power2.out", scrollTrigger: { trigger: el, start: "top 80%" } }
+        { opacity: 1, y: 0, duration: 0.6, delay: 0.08, ease: "power2.out" },
+        0
       );
+
+      /* Align — rows slide in + checkmarks */
+      tl.fromTo(".al-item", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.4, stagger: 0.48 }, 0.98);
+      tl.fromTo(".al-check", { opacity: 0 }, { opacity: 1, duration: 0.3, stagger: 0.48 }, 1.30);
+
+      /* Activate — dots & lines */
+      tl.fromTo(".ac-dot", {
+        borderColor: "rgba(11,18,32,0.1)", backgroundColor: "transparent", color: "rgba(11,18,32,0.3)",
+      }, {
+        borderColor: "#BBF6F3", backgroundColor: "#BBF6F3", color: "#0B1220",
+        duration: 0.4, stagger: 0.65,
+      }, 1.18);
+      tl.fromTo(".ac-line", { width: "0%" }, { width: "100%", duration: 0.5, stagger: 0.65 }, 1.36);
+
+      /* Assess — score arc + pills */
+      {
+        const circ = 2 * Math.PI * 40;
+        const arcEl = el.querySelector<SVGCircleElement>(".as-arc");
+        const scoreEl = el.querySelector<HTMLElement>(".as-score");
+        if (arcEl) {
+          tl.fromTo(arcEl, { strokeDashoffset: circ }, { strokeDashoffset: circ * 0.35, duration: 1.5, ease: "power2.out" }, 0.78);
+        }
+        if (scoreEl) {
+          const o = { val: 0 };
+          tl.to(o, {
+            val: 65, duration: 1.5, ease: "power2.out",
+            onUpdate: () => { scoreEl.textContent = String(Math.round(o.val)); },
+          }, 0.78);
+        }
+      }
+      tl.fromTo(".as-pill", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.4, stagger: 0.34 }, 2.28);
+
+      /* Sustain — chart */
+      tl.fromTo(".su-line", { strokeDashoffset: 350 }, { strokeDashoffset: 0, duration: 1.5, ease: "power2.out" }, 0.68);
+      tl.fromTo(".su-area", { opacity: 0 }, { opacity: 1, duration: 0.9 }, 1.18);
+      tl.fromTo(".su-dot", { opacity: 0 }, { opacity: 1, attr: { r: 2.5 }, duration: 0.3, stagger: 0.16 }, 1.33);
+      tl.fromTo(".su-end", { opacity: 0 }, { opacity: 1, attr: { r: 4 }, duration: 0.3 }, 2.37);
+      tl.fromTo(".su-pulse", { opacity: 0 }, { opacity: 0.35, duration: 0.5 }, 2.37);
+
+      /* Play via IntersectionObserver to avoid ScrollTrigger position-calculation races */
+      obs = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            tl.play();
+            obs.disconnect();
+          }
+        },
+        { threshold: 0, rootMargin: "-10% 0px" }
+      );
+      obs.observe(el);
       gsap.fromTo(ctaRef.current,
         { opacity: 0, y: 10 },
         { opacity: 1, y: 0, duration: 0.5, delay: 0.2, ease: "power2.out", scrollTrigger: { trigger: el, start: "top 75%" } }
@@ -417,6 +294,7 @@ export default function HowItWorks(): React.JSX.Element {
     if (document.readyState === "complete") onReady();
     else window.addEventListener("load", onReady);
     return () => {
+      obs.disconnect();
       ctx.revert();
       window.removeEventListener("load", onReady);
     };

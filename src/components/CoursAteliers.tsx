@@ -3,7 +3,6 @@
 import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLocale } from "@/contexts/LanguageContext";
 import HiggsField from "./HiggsField";
 
@@ -103,7 +102,7 @@ export default function CoursAteliers(): React.JSX.Element {
                 const desc = t(`coursAteliers.${s.key}.desc`);
 
                 return (
-                  <div key={s.key} className="ca-card group w-[calc(25%-12px)] shrink-0 snap-start rounded-2xl overflow-hidden flex flex-col transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_8px_40px_-4px_rgba(184,138,90,0.15)]"
+                  <div key={s.key} className="ca-card group w-[80vw] sm:w-[calc(50%-12px)] lg:w-[calc(25%-12px)] shrink-0 snap-start rounded-2xl overflow-hidden flex flex-col transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_8px_40px_-4px_rgba(184,138,90,0.15)]"
                     style={{ background: "#0B1220", border: "1px solid rgba(255,255,255,0.06)" }}
                   >
                     {/* Image area */}
@@ -113,7 +112,7 @@ export default function CoursAteliers(): React.JSX.Element {
                         alt={title}
                         fill
                         className="object-cover transition-all duration-700 group-hover:scale-[1.05]"
-                        sizes="(max-width: 640px) 50vw, 25vw"
+                        sizes="80vw"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/70 via-[#0B1220]/10 to-transparent" />
 

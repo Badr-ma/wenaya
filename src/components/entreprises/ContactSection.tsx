@@ -2,7 +2,6 @@
 
 import { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLocale } from "@/contexts/LanguageContext";
 
 export default function ContactSection() {

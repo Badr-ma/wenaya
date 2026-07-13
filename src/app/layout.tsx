@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     "wellness corporate Maroc",
     "santé mentale Casablanca",
     "prévention santé Maroc",
-    "wellness hôtellerie Maroc",
+
     "clinique multidisciplinaire Casablanca",
     "integrated health Morocco",
   ],
@@ -123,7 +123,7 @@ export default function RootLayout({
                   "@id": "https://www.wenaya.com/#organization",
                   "name": "Wenaya",
                   "url": "https://www.wenaya.com",
-                  "description": "Morocco's first integrated health and wellbeing platform combining physiotherapy, clinical psychology, nutrition, prevention, corporate wellness, and hospitality wellness.",
+                   "description": "Morocco's first integrated health and wellbeing platform combining physiotherapy, clinical psychology, nutrition, prevention, and corporate wellness.",
                   "foundingLocation": { "@type": "Place", "name": "Casablanca, Maroc" },
                   "areaServed": ["Maroc", "MENA"],
                   "availableLanguage": ["French", "Arabic", "English"],

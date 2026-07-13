@@ -1,8 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLocale } from "@/contexts/LanguageContext";
 
 
@@ -86,12 +86,12 @@ export default function ClinicsWhy(): React.JSX.Element {
           <p className="text-[#2B2F36]/45 text-sm max-w-md">
             {t("clinics.why.bottom")}
           </p>
-          <a href="#" className="inline-flex items-center gap-2 text-[#B88A5A] text-sm font-semibold hover:gap-3 transition-all duration-300">
+          <Link href="/about" className="inline-flex items-center gap-2 text-[#B88A5A] text-sm font-semibold hover:gap-3 transition-all duration-300">
             {t("clinics.why.cta")}
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
-          </a>
+          </Link>
         </div>
       </div>
     </section>

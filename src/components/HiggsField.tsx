@@ -199,6 +199,8 @@ export default function HiggsField({ className = "", parentRef, palette: customP
       eventTarget.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("resize", resize);
     };
+    // customPalette is intentionally read only at mount — adding it would reinitialize particles on every palette change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [parentRef]);
 
   return (

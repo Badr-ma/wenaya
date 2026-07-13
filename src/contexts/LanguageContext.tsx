@@ -35,6 +35,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         detected = browserLang === "en" ? "en" : "fr";
       }
     } catch {}
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLocaleState(detected);
     document.documentElement.lang = detected;
   }, []);

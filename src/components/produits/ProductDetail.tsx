@@ -129,24 +129,24 @@ export default function ProductDetail({ slug }: { slug: string }) {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 xl:gap-x-5 gap-y-12">
               {related.map((item) => (
-                <div key={item.slug} className="group">
+                <div key={item.slug} className="group relative">
                   <Link href={`/produits/${item.slug}`} className="block">
-                    <div className="relative aspect-square mb-4 overflow-hidden bg-[#E8E2D9] rounded-xl">
+                    <div className="relative aspect-square rounded-xl overflow-hidden">
                       <Image
                         src={item.image}
                         alt={item.title}
                         fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                        className="object-cover transition-opacity duration-500 group-hover:opacity-90"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                       />
                     </div>
-                    <h3 className="font-heading font-semibold text-sm text-[#0B1220] leading-snug transition-colors duration-300 group-hover:text-[#B88A5A]">
+                    <h3 className="font-heading font-bold text-sm text-[#0B1220] mt-3 leading-snug">
                       {item.title}
                     </h3>
-                    <div className="flex items-center gap-1.5 mt-1 mb-2">
+                    <div className="flex items-center gap-0.5 mt-1">
                       <DotRating rating={item.rating} />
-                      <span className="text-xs text-[#2B2F36]/40">
-                        <span className="text-[#2B2F36]/60 font-medium">{item.rating}</span>
+                      <span className="text-xs text-[#2B2F36]/50 ml-1">
+                        <span className="font-medium">{item.rating}</span>
                         <span className="mx-1">·</span>
                         {item.reviews} {t("produits.reviews")}
                       </span>

@@ -63,7 +63,8 @@ export default function BlogPostClient({
     return () => window.removeEventListener("scroll", onScroll);
   }, [headings]);
 
-  const shareUrl = typeof window !== "undefined" ? window.location.href : "";
+  const [shareUrl, setShareUrl] = useState("");
+  useEffect(() => { setShareUrl(window.location.href); }, []);
   const shareText = encodeURIComponent(post.title);
 
   return (

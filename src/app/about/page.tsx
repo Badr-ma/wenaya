@@ -5,10 +5,14 @@ import WhyWeExist from "@/components/about/WhyWeExist";
 import WenayaApproach from "@/components/about/WenayaApproach";
 import ExpertiseSection from "@/components/about/ExpertiseSection";
 import FutureVision from "@/components/about/FutureVision";
+import ClinicsHero from "@/components/clinics/Hero";
+import ClinicsPrograms from "@/components/clinics/Programs";
+import ClinicsWhy from "@/components/clinics/Why";
+import ClinicsCta from "@/components/clinics/Cta";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "À Propos — Wenaya, Première Plateforme de Santé Intégrée au Maroc",
+    title: "Cliniques — Wenaya, Première Plateforme de Santé Intégrée au Maroc",
   description:
     "Découvrez Wenaya : la première plateforme de santé intégrée au Maroc, fondée à Casablanca. Kinésithérapie, psychologie clinique, nutrition et bien-être corporate — coordonnés sous un seul écosystème.",
   keywords: [
@@ -21,7 +25,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: "https://www.wenaya.com/about" },
   openGraph: {
-    title: "À Propos — Wenaya, Première Plateforme de Santé Intégrée au Maroc",
+  title: "Cliniques — Wenaya, Première Plateforme de Santé Intégrée au Maroc",
     description:
       "Wenaya is Morocco's first integrated health and wellbeing platform — combining physiotherapy, clinical psychology, nutrition, prevention, and corporate wellness under one coordinated ecosystem.",
     url: "https://www.wenaya.com/about",
@@ -38,6 +42,10 @@ export default function AboutPage() {
         <WenayaApproach />
         <ExpertiseSection />
         <FutureVision />
+        <div data-section-bg="dark"><ClinicsHero /></div>
+        <div data-section-bg="light"><ClinicsPrograms /></div>
+        <div data-section-bg="light"><ClinicsWhy /></div>
+        <div data-section-bg="dark"><ClinicsCta /></div>
         <Footer />
       </div>
     </ErrorBoundary>

@@ -64,7 +64,7 @@ export default function ClinicsHero(): React.JSX.Element {
 
           <div className="ch-cta flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-10">
             <Link
-              href="#"
+              href="/about"
               className="inline-flex items-center justify-center h-11 px-7 rounded-xl text-white text-[13.5px] font-semibold transition-all duration-300 hover:-translate-y-px"
               style={{
                 background: "linear-gradient(135deg, #B88A5A 0%, #9A7242 100%)",
@@ -74,7 +74,7 @@ export default function ClinicsHero(): React.JSX.Element {
               {t("clinics.hero.cta1")}
             </Link>
             <Link
-              href="#"
+              href="/about"
               className="inline-flex items-center gap-2 h-11 px-6 rounded-xl text-white/45 text-[13.5px] font-medium border border-white/[0.1] transition-all duration-300 hover:text-white hover:border-white/[0.2]"
             >
               {t("clinics.hero.cta2")}

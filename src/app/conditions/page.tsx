@@ -3,7 +3,7 @@
 import { useLocale } from "@/contexts/LanguageContext";
 import Footer from "@/components/Footer";
 
-const contentKeys = ["presentation", "acceptance", "services", "appointment", "pricing", "responsibility", "intellectualProperty", "data", "modification", "law", "contactCgu"];
+const contentKeys = ["legalNotices", "definitions", "platformUsage", "serviceAndPayment", "intellectualProperty", "cguContent", "personalData", "cguAcceptance"];
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (

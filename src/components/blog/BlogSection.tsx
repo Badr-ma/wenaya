@@ -2,7 +2,6 @@
 
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import Image from "next/image";
 import { formatDate, type PostWithAuthor } from "@/lib/blog-utils";
