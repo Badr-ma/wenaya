@@ -294,7 +294,7 @@ const fr = {
     desc: "Centre de santé pluridisciplinaire à Casablanca — Kinésithérapie, ostéopathie, psychologie, neuropsychologie, nutrition, orthophonie, naturopathie, psychomotricité et thérapies complémentaires. Soins physiques et santé mentale pour toute la famille.",
     navigation: {
       title: "Navigation",
-      links: ["Cliniqus", "Spécialités", "Cours & Ateliers", "Pour les entreprises", "FAQ"],
+      links: ["Cliniques", "Spécialités", "Cours & Ateliers", "Pour les entreprises", "FAQ"],
     },
     infosLegales: {
       title: "Infos légales",
@@ -1074,6 +1074,13 @@ const fr = {
     noAccount: "Vous n'avez pas de compte ?",
     createAccount: "Créer un compte",
     footer: "Espace réservé aux patients et praticiens Wenaya",
+  },
+  promo: {
+    badge: "Offre limitée",
+    title: "Audit Bien-être Corporate Gratuit",
+    desc: "Découvrez nos programmes certifiés pour améliorer la santé et la performance de vos équipes.",
+    cta: "Réserver un appel",
+    href: "/solutions/entreprises#contact",
   },
 };
 

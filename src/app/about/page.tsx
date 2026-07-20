@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import AboutHero from "@/components/about/Hero";
 import WhyWeExist from "@/components/about/WhyWeExist";
 import WenayaApproach from "@/components/about/WenayaApproach";
@@ -23,7 +24,13 @@ export const metadata: Metadata = {
     "équipe médicale Casablanca",
     "prévention santé Maroc",
   ],
-  alternates: { canonical: "https://www.wenaya.com/about" },
+  alternates: {
+    canonical: "https://www.wenaya.com/about",
+    languages: {
+      "fr-MA": "https://www.wenaya.com/about",
+      "en": "https://www.wenaya.com/about",
+    },
+  },
   openGraph: {
   title: "Cliniques — Wenaya, Première Plateforme de Santé Intégrée au Maroc",
     description:
@@ -33,10 +40,33 @@ export const metadata: Metadata = {
   },
 };
 
+const serviceJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "MedicalBusiness",
+  name: "Wenaya Clinic",
+  url: "https://www.wenaya.com/about",
+  medicalSpecialty: [
+    { "@type": "MedicalSpecialty", name: "Kinésithérapie" },
+    { "@type": "MedicalSpecialty", name: "Ostéopathie" },
+    { "@type": "MedicalSpecialty", name: "Psychologie Clinique" },
+    { "@type": "MedicalSpecialty", name: "Neuropsychologie" },
+    { "@type": "MedicalSpecialty", name: "Nutrition" },
+    { "@type": "MedicalSpecialty", name: "Orthophonie" },
+    { "@type": "MedicalSpecialty", name: "Naturopathie" },
+    { "@type": "MedicalSpecialty", name: "Psychomotricité" },
+  ],
+};
+
 export default function AboutPage() {
   return (
-    <ErrorBoundary>
-      <div className="flex flex-col">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+      />
+      <ErrorBoundary>
+        <Breadcrumbs />
+        <div className="flex flex-col">
         <AboutHero />
         <WhyWeExist />
         <WenayaApproach />
@@ -48,6 +78,7 @@ export default function AboutPage() {
         <div data-section-bg="dark"><ClinicsCta /></div>
         <Footer />
       </div>
-    </ErrorBoundary>
+      </ErrorBoundary>
+    </>
   );
 }

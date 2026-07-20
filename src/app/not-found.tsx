@@ -1,4 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Page Introuvable — 404 | Wenaya",
+  description:
+    "La page que vous recherchez n'existe pas ou a été déplacée. Retournez à l'accueil de Wenaya pour découvrir nos services de santé intégrée à Casablanca.",
+  robots: { index: false, follow: true },
+};
 
 export default function NotFound(): React.JSX.Element {
   return (

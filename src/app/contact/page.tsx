@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useLocale } from "@/contexts/LanguageContext";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import Footer from "@/components/Footer";
 import { useState } from "react";
 
@@ -41,6 +42,7 @@ export default function ContactPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <Breadcrumbs />
       <div className="flex-1 bg-[#F2EFE9] pt-32 pb-20 px-6">
         <div className="max-w-2xl mx-auto text-center mb-14">
           <div className="inline-flex items-center gap-2.5 mb-6 justify-center">

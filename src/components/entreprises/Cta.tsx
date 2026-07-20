@@ -38,8 +38,8 @@ export default function EntreprisesCta(): React.JSX.Element {
           className="object-cover"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-[#0B1220]/70" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/90 via-transparent to-[#0B1220]/30" />
+        <div className="absolute inset-0 bg-[#0B1220]/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/40 via-transparent to-[#0B1220]/10" />
       </div>
 
       <div className="relative z-10 w-full px-6 py-20">
@@ -69,16 +69,15 @@ export default function EntreprisesCta(): React.JSX.Element {
           </p>
 
           <div className="cta-line flex flex-col sm:flex-row items-center justify-center gap-3 mt-10">
-            <a
-              href="https://calendar.app.google/YyAirdPSc2ugGbnh9"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 h-12 px-8 rounded-full text-white text-sm font-semibold transition-all duration-300 hover:-translate-y-px active:translate-y-0"
-              style={{
-                background: "linear-gradient(135deg, #C99B68 0%, #9A7242 100%)",
-                boxShadow: "0 1px 0 rgba(255,255,255,0.14) inset, 0 6px 28px rgba(184,138,90,0.35)",
-              }}
-            >
+              <a
+                href="https://calendar.app.google/YyAirdPSc2ugGbnh9"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 h-12 px-8 rounded-full text-white text-sm font-semibold transition-all duration-300 hover:-translate-y-px active:translate-y-0"
+                style={{
+                  background: "#B88A5A",
+                }}
+              >
               {t("entreprises.cta.cta1")}
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />

@@ -31,7 +31,7 @@ export default function ModularitySection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative bg-[#F2EFE9] py-24 sm:py-36 px-6 overflow-hidden">
+    <section ref={sectionRef} className="relative bg-[#F2EFE9] py-24 sm:py-36 px-6 overflow-hidden scroll-mt-20">
       <div className="max-w-7xl mx-auto">
         <div className="mo-head max-w-2xl mb-16 sm:mb-20">
           <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase mb-5">

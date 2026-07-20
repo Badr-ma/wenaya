@@ -173,7 +173,7 @@ export default function Nav(): React.JSX.Element {
 
   return (
     <>
-    <header className={`fixed top-0 left-0 right-0 z-[100] flex justify-center px-4 sm:px-8 pt-2 sm:pt-4 transition-transform duration-300 ease-in-out will-change-transform ${hidden ? "-translate-y-full" : "translate-y-0"}`}>
+    <header className={`fixed left-0 right-0 z-[100] flex justify-center px-4 sm:px-8 transition-transform duration-300 ease-in-out will-change-transform ${hidden ? "-translate-y-full" : "translate-y-0"} ${pathname === "/" ? "top-[40px] pt-2 sm:pt-4" : "top-0 pt-2 sm:pt-4"}`}>
       {/* ── Main bar ── */}
       <div
         className={`flex-1 max-w-7xl flex items-center justify-between h-[52px] sm:h-[64px] px-4 sm:px-5 rounded-full shadow-sm transition-all duration-500 ${barBg}`}
@@ -214,6 +214,7 @@ export default function Nav(): React.JSX.Element {
                   { label: t("nav.aPropos"), href: "/about" },
                   { label: t("nav.solutions"), href: "/solutions/entreprises" },
                   { label: t("nav.produits"), href: "/produits" },
+                  { label: "Blog", href: "/blog-demo" },
                 ].map((link) => (
                     <li key={link.label}>
                       <Link
@@ -255,10 +256,9 @@ export default function Nav(): React.JSX.Element {
               <Link
                 href="#"
                 onClick={(e) => e.preventDefault()}
-                className="hidden sm:inline-flex items-center justify-center px-5 py-1.5 rounded-full text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-px active:translate-y-0"
+                className="hidden sm:inline-flex items-center justify-center px-5 py-1.5 rounded-full text-sm font-semibold text-[#0B1220] transition-all duration-300 hover:-translate-y-px active:translate-y-0"
                 style={{
-                  background: "linear-gradient(135deg, #B88A5A 0%, #9A7242 100%)",
-                  boxShadow: "0 1px 0 rgba(255,255,255,0.15) inset, 0 4px 16px rgba(184,138,90,0.28)",
+                  background: "#B88A5A",
                 }}
               >
                 {t("nav.reserver")}

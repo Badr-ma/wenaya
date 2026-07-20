@@ -70,7 +70,7 @@ export default function HeroSection(): React.JSX.Element {
       />
 
       {/* ── Content ── */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pt-20 sm:pt-28 pb-16 sm:pb-20">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pt-28 sm:pt-36 pb-16 sm:pb-20">
         <div className="max-w-2xl">
           <div>
             {/* Eyebrow */}
@@ -124,8 +124,7 @@ export default function HeroSection(): React.JSX.Element {
                 onClick={(e) => e.preventDefault()}
                 className="inline-flex items-center justify-center h-11 px-7 rounded-xl text-white text-[13.5px] font-semibold transition-all duration-300 hover:-translate-y-px active:translate-y-0"
                 style={{
-                  background: "linear-gradient(135deg, #C99B68 0%, #9A7242 100%)",
-                  boxShadow: "0 1px 0 rgba(255,255,255,0.16) inset, 0 6px 24px rgba(184,138,90,0.35)",
+                  background: "#B88A5A",
                 }}
               >
                 {t("hero.cta")}

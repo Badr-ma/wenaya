@@ -31,10 +31,10 @@ export default function EntreprisesHero(): React.JSX.Element {
           sizes="100vw"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0B1220]/85 via-[#0B1220]/60 to-[#0B1220]/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0B1220]/30 via-[#0B1220]/15 to-transparent" />
       </div>
 
-      <div className="relative z-10 w-full px-6 pt-32 pb-20 lg:pt-40 lg:pb-28">
+      <div className="relative z-10 w-full px-6 pt-40 pb-20 lg:pt-48 lg:pb-28">
         <div className="max-w-7xl mx-auto">
           <div className="max-w-xl">
             <div className="eh-fade">
@@ -77,8 +77,7 @@ export default function EntreprisesHero(): React.JSX.Element {
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 h-12 px-8 rounded-full text-white text-sm font-semibold transition-all duration-300 hover:-translate-y-px active:translate-y-0 sm:w-auto w-full"
                 style={{
-                  background: "linear-gradient(135deg, #C99B68 0%, #9A7242 100%)",
-                  boxShadow: "0 1px 0 rgba(255,255,255,0.14) inset, 0 6px 28px rgba(184,138,90,0.35)",
+                  background: "#B88A5A",
                 }}
               >
                 {t("entreprises.hero.cta1")}
@@ -88,7 +87,7 @@ export default function EntreprisesHero(): React.JSX.Element {
               </a>
               <a
                 href="#downloads"
-                className="inline-flex items-center justify-center gap-2 h-12 px-7 rounded-full text-white/30 text-sm font-medium border border-white/[0.1] transition-all duration-300 hover:text-white hover:border-white/[0.2] sm:w-auto w-full"
+                className="inline-flex items-center justify-center gap-2 h-12 px-7 rounded-full text-white text-sm font-semibold border border-white/20 transition-all duration-300 hover:text-white hover:border-white/40 hover:bg-white/10 sm:w-auto w-full"
               >
                 {t("entreprises.hero.cta2")}
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>

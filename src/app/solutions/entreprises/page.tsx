@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import EntreprisesHero from "@/components/entreprises/Hero";
 import HowItWorksSection from "@/components/entreprises/HowItWorksSection";
 import ModularitySection from "@/components/entreprises/ModularitySection";
@@ -31,7 +32,13 @@ export const metadata: Metadata = {
     "employee wellbeing program Casablanca",
     "burnout prevention Maroc",
   ],
-  alternates: { canonical: "https://www.wenaya.com/solutions/entreprises" },
+  alternates: {
+    canonical: "https://www.wenaya.com/solutions/entreprises",
+    languages: {
+      "fr-MA": "https://www.wenaya.com/solutions/entreprises",
+      "en": "https://www.wenaya.com/solutions/entreprises",
+    },
+  },
   openGraph: {
     title: "Bien-être en Entreprise — Programmes Santé & Prévention | Wenaya",
     description:
@@ -44,7 +51,8 @@ export const metadata: Metadata = {
 export default function EntreprisesPage() {
   return (
     <ErrorBoundary>
-      <div className="flex flex-col">
+      <Breadcrumbs />
+      <div className="flex flex-col min-h-dvh">
         <EntreprisesHero />
         <StatsTestimonialsSection />
         <ModularitySection />
@@ -56,7 +64,9 @@ export default function EntreprisesPage() {
         <FaqSection />
         <ContactSection />
         <EntreprisesCta />
-        <EntreprisesFooter />
+        <div className="mt-auto">
+          <EntreprisesFooter />
+        </div>
         <StickyCta />
       </div>
     </ErrorBoundary>

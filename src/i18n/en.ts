@@ -1040,6 +1040,13 @@ const en: Translations = {
     createAccount: "Create an account",
     footer: "Space reserved for Wenaya patients and practitioners",
   },
+  promo: {
+    badge: "Limited Time",
+    title: "Free Corporate Wellness Audit",
+    desc: "Discover our certified programs to boost your team's health and performance.",
+    cta: "Book a call",
+    href: "/solutions/entreprises#contact",
+  },
 };
 
 export default en;

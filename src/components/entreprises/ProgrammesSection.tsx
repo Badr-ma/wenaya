@@ -20,7 +20,7 @@ const cardImages = [
 ];
 
 const EDGE_PX = 130;
-const EDGE_PX_MOBILE = 80;
+const EDGE_PX_MOBILE = 50;
 const SIDE_SCALE = 0.82;
 const SIDE_OPACITY = 0.4;
 const SPRING = { type: "spring" as const, stiffness: 500, damping: 35, mass: 0.5 };
@@ -35,7 +35,7 @@ function CardContent({
       <div
         className="w-full rounded-3xl overflow-hidden relative"
         style={{
-          height: "clamp(300px, 48vw, 460px)",
+          height: "clamp(280px, 52vw, 460px)",
           boxShadow: "0 2px 12px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(0,0,0,0.04)",
         }}
       >
@@ -49,47 +49,47 @@ function CardContent({
     <div
       className="w-full rounded-3xl overflow-hidden bg-white flex flex-col select-none"
       style={{
-        height: "clamp(300px, 48vw, 460px)",
+        height: "clamp(280px, 52vw, 460px)",
         boxShadow: "0 20px 60px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.06)",
       }}
     >
-      <div className="relative h-[48%] min-h-[160px] overflow-hidden shrink-0">
+      <div className="relative h-[40%] sm:h-[48%] min-h-[120px] sm:min-h-[160px] overflow-hidden shrink-0">
         <Image src={image} alt="" fill className="object-cover" sizes="600px" draggable={false} />
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
-        <div className="absolute top-5 left-5">
-          <span className="inline-block px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-white/90 text-[10px] font-bold tracking-[0.1em] uppercase border border-white/10">
+        <div className="absolute top-3 left-3 sm:top-5 sm:left-5">
+          <span className="inline-block px-2 py-0.5 sm:px-3 sm:py-1 rounded-full bg-white/10 backdrop-blur-md text-white/90 text-[9px] sm:text-[10px] font-bold tracking-[0.1em] uppercase border border-white/10">
             {program.badge}
           </span>
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col justify-between p-4 sm:p-5 min-h-0">
+      <div className="flex-1 flex flex-col justify-between p-3 sm:p-5 min-h-0">
         <div>
-          <h3 className="heading-serif text-[#0B1220] text-xl sm:text-2xl font-semibold leading-tight">
+          <h3 className="heading-serif text-[#0B1220] text-lg sm:text-2xl font-semibold leading-tight">
             {program.name}
           </h3>
-          <p className="text-[#B88A5A] text-xs font-medium mt-1">{program.pitch}</p>
-          <p className="text-[#2B2F36]/50 text-[13px] leading-relaxed mt-2 line-clamp-2">{program.desc}</p>
+          <p className="text-[#B88A5A] text-[10px] sm:text-xs font-medium mt-1">{program.pitch}</p>
+          <p className="text-[#2B2F36]/50 text-xs sm:text-[13px] leading-relaxed mt-2 line-clamp-2">{program.desc}</p>
         </div>
 
-        <div className="flex items-center justify-between pt-3 mt-2 border-t border-[#0B1220]/[0.05] shrink-0">
-          <div className="space-y-0.5">
-            <div className="flex items-center gap-1.5 text-[#2B2F36]/40 text-xs">
-              <svg className="w-3.5 h-3.5 shrink-0 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <div className="flex items-center justify-between pt-2 sm:pt-3 mt-2 border-t border-[#0B1220]/[0.05] shrink-0">
+          <div className="space-y-0.5 min-w-0">
+            <div className="flex items-center gap-1 sm:gap-1.5 text-[#2B2F36]/40 text-[10px] sm:text-xs">
+              <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              {program.format}
+              <span className="truncate">{program.format}</span>
             </div>
-            <div className="flex items-center gap-1.5 text-[#2B2F36]/30 text-xs">
-              <svg className="w-3.5 h-3.5 shrink-0 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <div className="flex items-center gap-1 sm:gap-1.5 text-[#2B2F36]/30 text-[10px] sm:text-xs">
+              <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
               </svg>
-              {program.animator}
+              <span className="truncate">{program.animator}</span>
             </div>
           </div>
           <Link
             href={`/solutions/entreprises/programmes#${program.link.split("/").pop()}`}
-            className="px-5 h-9 rounded-full bg-[#0B1220] text-white text-xs font-semibold tracking-wide hover:bg-[#B88A5A] transition-colors duration-300 shrink-0 inline-flex items-center"
+            className="px-3 sm:px-5 h-8 sm:h-9 rounded-full bg-[#0B1220] text-white text-[10px] sm:text-xs font-semibold tracking-wide hover:bg-[#B88A5A] transition-colors duration-300 shrink-0 inline-flex items-center"
           >
             Discover Program
           </Link>
@@ -166,14 +166,14 @@ export default function ProgrammesSection() {
   if (!total) return null;
 
   return (
-    <section ref={sectionRef} className="relative bg-[#0B1220] py-24 sm:py-36 px-6 overflow-hidden">
+    <section ref={sectionRef} className="relative bg-[#F2EFE9] pt-24 sm:pt-36 pb-12 sm:pb-20 px-6 overflow-hidden">
       <div className="max-w-6xl mx-auto">
         <div className="pg-head max-w-2xl mb-16 sm:mb-20">
           <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase mb-5">
             <span className="w-8 h-px bg-[#B88A5A]/40" />
             {t("entreprises.programmes.title")}
           </span>
-          <h2 className="heading-serif text-white text-[clamp(2.2rem, 4vw, 3.8rem)] mt-5 leading-[1.06]">
+          <h2 className="heading-serif text-[#0B1220] text-[clamp(2.2rem, 4vw, 3.8rem)] mt-5 leading-[1.06]">
             {t("entreprises.programmes.subtitle")}
           </h2>
         </div>
@@ -182,17 +182,17 @@ export default function ProgrammesSection() {
           <button
             onClick={() => navigate(-1)}
             aria-label="Previous program"
-            className="flex w-10 h-10 rounded-full border border-white/[0.15] items-center justify-center text-white/30 hover:border-[#B88A5A]/50 hover:text-[#B88A5A] transition-colors duration-200 shrink-0 z-10"
+            className="flex w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#0B1220]/[0.15] items-center justify-center text-[#0B1220]/30 hover:border-[#B88A5A]/50 hover:text-[#B88A5A] transition-colors duration-200 shrink-0 z-10"
           >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
           </button>
 
           <div
             ref={containerRef}
-            className="relative rounded-3xl w-full max-w-[600px]"
-            style={{ height: "clamp(300px, 48vw, 460px)" }}
+            className="relative rounded-3xl w-full max-w-[600px] mx-auto"
+            style={{ height: "clamp(280px, 52vw, 460px)" }}
           >
             <AnimatePresence initial={false} custom={{ direction, cw: containerWidth }}>
               {programmes.map((program, idx) => {
@@ -237,19 +237,19 @@ export default function ProgrammesSection() {
           <button
             onClick={() => navigate(1)}
             aria-label="Next program"
-            className="flex w-10 h-10 rounded-full border border-white/[0.15] items-center justify-center text-white/30 hover:border-[#B88A5A]/50 hover:text-[#B88A5A] transition-colors duration-200 shrink-0 z-10"
+            className="flex w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#0B1220]/[0.15] items-center justify-center text-[#0B1220]/30 hover:border-[#B88A5A]/50 hover:text-[#B88A5A] transition-colors duration-200 shrink-0 z-10"
           >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
           </button>
         </div>
 
         <div className="flex items-center justify-center gap-6 mt-10">
-          <span className="text-white/25 text-sm font-medium tabular-nums">
-            {activeIdx + 1} <span className="text-white/15">/ {total}</span>
+          <span className="text-[#0B1220]/25 text-sm font-medium tabular-nums">
+            {activeIdx + 1} <span className="text-[#0B1220]/15">/ {total}</span>
           </span>
-          <span className="text-white/15 text-[10px] font-semibold tracking-[0.15em] uppercase">
+          <span className="text-[#0B1220]/15 text-[10px] font-semibold tracking-[0.15em] uppercase">
             Swipe to explore
           </span>
         </div>

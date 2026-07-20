@@ -15,23 +15,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const staticPages = [
     { url: BASE, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 1.0 },
-    { url: `${BASE}/about`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.8 },
-    { url: `${BASE}/blog`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.9 },
+    { url: `${BASE}/about`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.9 },
+    { url: `${BASE}/solutions/entreprises`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.9 },
+    { url: `${BASE}/solutions/entreprises/programmes`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.8 },
+    { url: `${BASE}/produits`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.9 },
     { url: `${BASE}/pratiques`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.8 },
-    { url: `${BASE}/produits`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.8 },
-    { url: `${BASE}/conditions`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.3 },
-    { url: `${BASE}/confidentialite`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.3 },
-    { url: `${BASE}/contact`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
-    { url: `${BASE}/faq`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
-    { url: `${BASE}/login`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.3 },
-    { url: `${BASE}/solutions/entreprises`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.5 },
+    { url: `${BASE}/blog`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.9 },
+    { url: `${BASE}/faq`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
+    { url: `${BASE}/contact`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.8 },
+    { url: `${BASE}/confidentialite`, lastModified: new Date(), changeFrequency: "yearly" as const, priority: 0.2 },
+    { url: `${BASE}/conditions`, lastModified: new Date(), changeFrequency: "yearly" as const, priority: 0.2 },
   ];
 
   const blogSlugs = posts.map((post) => ({
     url: `${BASE}/blog/${post.slug}`,
     lastModified: new Date(post.publishedAt),
     changeFrequency: "monthly" as const,
-    priority: 0.7,
+    priority: 0.8,
   }));
 
   const productSlugsEntries = productSlugs.map((slug) => ({

@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getPostBySlug, getPublishedPosts, authors, categories } from "@/lib/blog";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import Footer from "@/components/Footer";
 import BlogPostClient from "./BlogPostClient";
 
@@ -94,6 +95,7 @@ export default async function BlogPostPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <ErrorBoundary>
+        <Breadcrumbs />
         <BlogPostClient post={{ ...post, author, category }} related={related} />
         <div data-section-bg="dark"><Footer /></div>
       </ErrorBoundary>

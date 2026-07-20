@@ -33,7 +33,7 @@ export default function HowItWorksSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative bg-[#F2EFE9] py-24 sm:py-36 px-6 overflow-hidden">
+    <section ref={sectionRef} className="relative bg-[#F2EFE9] py-24 sm:py-36 px-6 overflow-hidden scroll-mt-20">
       <div className="max-w-6xl mx-auto">
         <div className="hw-head max-w-2xl mb-20 sm:mb-28">
           <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase mb-5">
@@ -49,7 +49,7 @@ export default function HowItWorksSection() {
           {howSteps.map((step, i) => (
             <div key={i} className="hw-step">
               <div className="flex items-center gap-3 mb-5">
-                <div className="w-9 h-9 rounded-full bg-[#0B1220] flex items-center justify-center">
+                <div className="w-9 h-9 rounded-full bg-[#B88A5A] flex items-center justify-center">
                   <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d={stepsMeta[i].icon} />
                   </svg>

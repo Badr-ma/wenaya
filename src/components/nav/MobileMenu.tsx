@@ -81,10 +81,9 @@ export default function MobileMenu({
             <Link
               href="#"
               onClick={(e) => { e.preventDefault(); onClose(); }}
-              className="flex items-center justify-center h-12 rounded-xl text-white text-sm font-semibold transition-all duration-300"
+              className="flex items-center justify-center h-12 rounded-xl text-[#0B1220] text-sm font-semibold transition-all duration-300"
               style={{
-                background: "linear-gradient(135deg, #B88A5A 0%, #9A7242 100%)",
-                boxShadow: "0 4px 20px rgba(184,138,90,0.3)",
+                background: "#B88A5A",
               }}
             >
               {t("nav.reserver")}

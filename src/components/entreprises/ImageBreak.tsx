@@ -30,14 +30,16 @@ export default function ImageBreak(): React.JSX.Element {
         className="object-cover"
         sizes="100vw"
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#0B1220]/60 via-[#0B1220]/30 to-[#0B1220]/60" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/40 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#0B1220]/20 via-[#0B1220]/10 to-[#0B1220]/20" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/30 via-transparent to-[#0B1220]/10" />
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="text-center max-w-xl px-6">
-          <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.22em] uppercase">Wenaya</span>
-          <p className="text-white/60 text-sm mt-3 italic" style={{ fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif" }}>
-            {t("entreprises.imageBreak.quote")}
-          </p>
+          <div className="bg-[#0B1220]/40 backdrop-blur-md rounded-2xl px-8 py-6 border border-white/[0.06]">
+            <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.22em] uppercase">Wenaya</span>
+            <p className="text-white/90 text-sm mt-3 italic" style={{ fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif" }}>
+              {t("entreprises.imageBreak.quote")}
+            </p>
+          </div>
         </div>
       </div>
     </section>

@@ -23,7 +23,7 @@ export default function DownloadsSection() {
   }, []);
 
   return (
-    <section id="downloads" ref={sectionRef} className="relative bg-[#F2EFE9] py-16 sm:py-28 px-6 overflow-hidden">
+    <section id="downloads" ref={sectionRef} className="relative bg-[#F2EFE9] py-16 sm:py-28 px-6 overflow-hidden scroll-mt-20">
       <div className="max-w-3xl mx-auto relative z-10">
         <div className="text-center mb-10 sm:mb-16 max-w-xl mx-auto">
           <div className="inline-flex items-center gap-2.5 mb-5">

@@ -4,6 +4,7 @@ import "./globals.css";
 import Nav from "@/components/Nav";
 import GsapInit from "@/components/GsapInit";
 import LenisProvider from "@/components/LenisProvider";
+import CorporateConsultationWidget from "@/components/CorporateConsultationWidget";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 
 const nunito = Nunito({
@@ -96,6 +97,8 @@ export const metadata: Metadata = {
     canonical: "https://www.wenaya.com",
     languages: {
       "fr-MA": "https://www.wenaya.com",
+      "en": "https://www.wenaya.com",
+      "x-default": "https://www.wenaya.com",
     },
   },
 };
@@ -180,6 +183,7 @@ export default function RootLayout({
           <LenisProvider>
             <Nav />
             {children}
+            <CorporateConsultationWidget />
           </LenisProvider>
         </LanguageProvider>
       </body>

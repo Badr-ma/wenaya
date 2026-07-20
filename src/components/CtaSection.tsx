@@ -138,8 +138,7 @@ export default function CtaSection(): React.JSX.Element {
             onClick={(e) => e.preventDefault()}
             className="inline-flex items-center justify-center gap-2 h-12 px-8 rounded-xl text-white text-sm font-semibold transition-all duration-300 hover:-translate-y-px active:translate-y-0"
             style={{
-              background: "linear-gradient(135deg, #C99B68 0%, #9A7242 100%)",
-              boxShadow: "0 1px 0 rgba(255,255,255,0.14) inset, 0 6px 28px rgba(184,138,90,0.35)",
+              background: "#B88A5A",
             }}
           >
             {t("ctaSection.cta")}

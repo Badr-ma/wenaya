@@ -32,8 +32,7 @@ export default function StickyCta() {
           onClick={scrollToContact}
           className="w-full h-11 rounded-xl text-white text-sm font-semibold transition-all duration-300 active:scale-[0.98]"
           style={{
-            background: "linear-gradient(135deg, #C99B68 0%, #9A7242 100%)",
-            boxShadow: "0 1px 0 rgba(255,255,255,0.14) inset, 0 6px 28px rgba(184,138,90,0.35)",
+            background: "#B88A5A",
           }}
         >
           {t("entreprises.stickyCta.cta")}

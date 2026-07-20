@@ -64,6 +64,7 @@ export default function BlogPostClient({
   }, [headings]);
 
   const [shareUrl, setShareUrl] = useState("");
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- hydration-safe: only runs once on mount
   useEffect(() => { setShareUrl(window.location.href); }, []);
   const shareText = encodeURIComponent(post.title);
 

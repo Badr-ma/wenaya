@@ -13,10 +13,11 @@ const portraitImages = [
 ];
 
 function animateCounter(el: HTMLElement, target: string) {
-  const num = parseInt(target.replace(/\D/g, ""));
+  const prefix = target.startsWith("+") ? "+" : target.startsWith("\u2212") ? "\u2212" : "";
+  const numStr = target.replace(/[^0-9]/g, "");
+  const num = parseInt(numStr, 10);
   if (!num) return;
-  const suffix = target.replace(/[\d,.]/g, "");
-  const prefix = target.includes("+") ? "+" : "";
+  const suffix = target.replace(/[0-9+\u2212]/g, "");
   gsap.fromTo(el, { textContent: 0 }, {
     textContent: num, duration: 2.2, ease: "power2.out", snap: { textContent: 1 },
     onUpdate() { el.textContent = prefix + Math.round(Number(el.textContent)) + suffix; },
@@ -50,22 +51,13 @@ function StatsSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative bg-[#0B1220] py-6 sm:py-8 px-6 overflow-hidden">
-      <div className="absolute inset-0">
-        <Image
-          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=3840&q=100"
-          alt=""
-          fill
-          className="object-cover opacity-[0.06]"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0B1220] via-[#0B1220]/95 to-[#0B1220]" />
-      </div>
-
+    <section ref={sectionRef} className="relative py-6 sm:py-8 px-6 overflow-hidden" style={{ background: "linear-gradient(165deg, #D4A56A 0%, #C99B5E 25%, #B88A5A 50%, #A07848 80%, #8E6A3E 100%)" }}>
+      <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.12) 45%, rgba(255,255,255,0.06) 55%, transparent 70%)" }} />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="st-reveal max-w-2xl mb-4">
-          <span className="inline-flex items-center gap-2 text-[#B88A5A] text-[9px] font-semibold tracking-[0.2em] uppercase mb-1">
-            <span className="w-5 h-px bg-[#B88A5A]/40" />
+          <span className="inline-flex items-center gap-2 text-white text-[9px] font-semibold tracking-[0.2em] uppercase mb-1">
+            <span className="w-5 h-px bg-white/40" />
             {t("entreprises.stats.title")}
           </span>
           <h2 className="heading-serif text-white text-[clamp(0.8rem, 1.3vw, 1rem)] mt-1 leading-snug font-medium">
@@ -80,9 +72,9 @@ function StatsSection() {
                 <p className="stat-num text-white font-heading font-bold tracking-tight leading-none" data-target={stat.value} style={{ fontSize: "clamp(1.1rem, 2vw, 1.6rem)" }}>
                   {stat.value}
                 </p>
-                <p className="text-white/50 text-[10px] leading-none">{stat.label}</p>
+                <p className="text-white/70 text-[10px] leading-none">{stat.label}</p>
               </div>
-              <p className="text-white/15 text-[7px] mt-0.5 tracking-wide">{stat.source}</p>
+              <p className="text-white/30 text-[7px] mt-0.5 tracking-wide">{stat.source}</p>
             </div>
           ))}
         </div>
