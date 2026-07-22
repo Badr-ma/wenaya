@@ -1,3 +1,10 @@
+/**
+ * Blog Demo Page — a standalone blog post demo replicating Spring Health's layout.
+ * Has its own color identity (teal-green accent #1A6B52, white background).
+ * Features: two-column hero (image + metadata), sticky TOC sidebar, article body,
+ * stat cards, blockquote, FAQ accordion, author bio, related articles, CTA, newsletter.
+ * Client component with GSAP animations.
+ */
 "use client";
 
 import { useState, useEffect } from "react";

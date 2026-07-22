@@ -1,3 +1,8 @@
+/**
+ * Blog Post Page — server component that renders a single blog post.
+ * Fetches post by slug, generates dynamic metadata (title, description, OG image),
+ * renders structured data (BlogPosting schema), breadcrumbs, and the BlogPostClient.
+ */
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getPostBySlug, getPublishedPosts, authors, categories } from "@/lib/blog";
@@ -22,6 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: post.metaTitle,
     description: post.metaDescription,
+    alternates: { canonical: `https://www.wenaya.com/blog/${slug}` },
     openGraph: {
       title: post.metaTitle,
       description: post.metaDescription,

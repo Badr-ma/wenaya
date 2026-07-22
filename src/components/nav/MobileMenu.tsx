@@ -1,3 +1,8 @@
+/**
+ * Mobile Menu — fullscreen slide-in navigation for mobile devices.
+ * Shows all nav links vertically with active state indicators.
+ * Renders as a fullscreen overlay when toggled open.
+ */
 "use client";
 
 import Link from "next/link";
@@ -52,6 +57,7 @@ export default function MobileMenu({
               { label: t("nav.aPropos"), href: "/about" },
               { label: t("nav.produits"), href: "/produits" },
               { label: t("nav.solutions"), href: "/solutions/entreprises" },
+              { label: "Spécialistes", href: "/specialistes" },
             ].map(({ label, href }) => (
               <li key={label}>
                 <Link

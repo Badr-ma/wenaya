@@ -1,3 +1,8 @@
+/**
+ * Product Detail Page — server component for individual product pages (/produits/[slug]).
+ * Fetches product by slug, generates metadata, shows ProductDetail component.
+ * Returns 404 if product not found.
+ */
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ErrorBoundary } from "@/components/ErrorBoundary";

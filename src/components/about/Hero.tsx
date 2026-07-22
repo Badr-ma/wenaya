@@ -1,3 +1,8 @@
+/**
+ * About Hero — two-column hero for the /about page.
+ * Left: headline, description, founding year badge. Right: team photo.
+ * Features: GSAP entrance animations.
+ */
 "use client";
 
 import { useRef, useEffect } from "react";

@@ -1,3 +1,9 @@
+/**
+ * Blog Post Client — the client-rendered blog post content.
+ * Features: sticky table of contents sidebar, share buttons (copy link, Twitter, LinkedIn),
+ * author bio card, related posts grid, newsletter signup, reading progress bar,
+ * and Framer Motion animations for content blocks.
+ */
 "use client";
 
 import { useRef, useState, useEffect, useMemo } from "react";

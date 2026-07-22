@@ -1,3 +1,7 @@
+/**
+ * Product Detail — expanded product card showing full details, description,
+ * dosage info, and ingredients. Used as a modal/expanded view within ProductsGrid.
+ */
 "use client";
 
 import { useMemo } from "react";

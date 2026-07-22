@@ -1,3 +1,8 @@
+/**
+ * Site Footer — full-width dark footer with logo, description, nav columns (solutions,
+ * services, company, legal), social icons, newsletter input, and copyright.
+ * Features: GSAP fade-in animation, newsletter form, and social media links.
+ */
 "use client";
 
 import { useRef, useEffect } from "react";
@@ -106,7 +111,7 @@ export default function Footer(): React.JSX.Element {
                       href={socialUrls[label] || "#"}
                       rel="noopener noreferrer"
                       target="_blank"
-                      className="w-10 h-10 rounded-full bg-white/[0.05] hover:bg-[#B88A5A] flex items-center justify-center text-white/40 hover:text-white transition-all duration-300 group border border-white/[0.06]"
+                      className="w-11 h-11 rounded-full bg-white/[0.05] hover:bg-[#B88A5A] flex items-center justify-center text-white/40 hover:text-white transition-all duration-300 group border border-white/[0.06]"
                       aria-label={label}
                     >
                       <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">

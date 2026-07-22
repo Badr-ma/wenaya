@@ -1,3 +1,9 @@
+/**
+ * Blog List Client — filterable/sortable blog post grid for /blog page.
+ * Features: category filter tabs, search input, sort dropdown,
+ * and a responsive card grid with Framer Motion animations.
+ * Displays post cards with image, category badge, title, excerpt, and author.
+ */
 "use client";
 
 import { useState, useRef } from "react";

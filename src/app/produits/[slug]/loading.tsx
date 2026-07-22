@@ -1,3 +1,4 @@
+/** Product Detail Loading State — skeleton UI shown while the product detail page loads */
 export default function Loading() {
   return (
     <section className="bg-[#F2EFE9] min-h-screen pt-28 sm:pt-36 pb-20 sm:pb-28 px-6">

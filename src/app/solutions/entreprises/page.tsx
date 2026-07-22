@@ -34,10 +34,6 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical: "https://www.wenaya.com/solutions/entreprises",
-    languages: {
-      "fr-MA": "https://www.wenaya.com/solutions/entreprises",
-      "en": "https://www.wenaya.com/solutions/entreprises",
-    },
   },
   openGraph: {
     title: "Bien-être en Entreprise — Programmes Santé & Prévention | Wenaya",

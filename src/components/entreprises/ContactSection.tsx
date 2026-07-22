@@ -1,3 +1,8 @@
+/**
+ * Contact Section — corporate inquiry form with fields for company name, email,
+ * message, and employee count. Two-column layout: form on left, info on right.
+ * Features: GSAP scroll animations, form validation, and success state.
+ */
 "use client";
 
 import { useRef, useEffect, useState } from "react";

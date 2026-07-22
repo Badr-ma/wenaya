@@ -1,3 +1,8 @@
+/**
+ * Disease Marquee — infinite horizontal scrolling ticker showing wellness topics and conditions.
+ * Two rows: one scrolling left, one scrolling right. Used on the homepage for visual interest.
+ * Features: GSAP-controlled animation with pause-on-hover.
+ */
 "use client";
 
 import { useRef, useEffect } from "react";

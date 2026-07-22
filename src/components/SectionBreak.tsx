@@ -1,3 +1,7 @@
+/**
+ * Section Break — decorative horizontal divider between homepage sections.
+ * Animated line that expands on scroll with GSAP. Adds visual rhythm to the page.
+ */
 "use client";
 
 import { useRef, useEffect } from "react";

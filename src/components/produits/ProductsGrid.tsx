@@ -1,3 +1,8 @@
+/**
+ * Products Grid — filterable, searchable product listing for /produits page.
+ * Features: multi-select goal/category/topic filters, search, sort, grid/list toggle,
+ * product cards with images and badges. Syncs state to nav filter bar via custom DOM events.
+ */
 "use client";
 
 import { useState, useMemo, useEffect, useRef, useCallback } from "react";
@@ -186,43 +191,45 @@ export default function ProductsGrid(): React.JSX.Element {
         </div>
 
         {/* ── Filter bar ── */}
-        <div data-filter-bar className="flex items-center gap-4 sm:gap-5 flex-wrap mb-10">
-          <MinimalDropdown
-            label="Goals"
-            options={goalOptions}
-            selected={selectedGoals}
-            onChange={setSelectedGoals}
-            multi
-          />
-          <MinimalDropdown
-            label={selectedCategory ? t(`produits.filters.${selectedCategory}`) : "Categories"}
-            options={categoryOptions}
-            selected={selectedCategory ? [selectedCategory] : []}
-            onChange={(v) => setSelectedCategory(v[0] || null)}
-            multi={false}
-          />
-          <MinimalDropdown
-            label="Topics"
-            options={topicOptions}
-            selected={selectedTopics}
-            onChange={setSelectedTopics}
-            multi
-          />
-          <MinimalDropdown
-            label={sort === "bestRated" ? "Best rated" : sort === "mostPopular" ? "Most popular" : "Newest"}
-            options={["bestRated", "mostPopular", "newest"]}
-            selected={[sort]}
-            onChange={(v) => setSort(v[0] || "bestRated")}
-            multi={false}
-          />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder={t("produits.search")}
-            className="w-[140px] sm:w-[160px] py-1 bg-transparent border-b border-[#0B1220]/[0.08] text-xs text-[#0B1220] placeholder-[#2B2F36]/20 outline-none focus:border-[#0B1220]/30 transition-colors"
-          />
-          <span className="text-xs text-[#2B2F36]/25 whitespace-nowrap">
+        <div data-filter-bar className="mb-10">
+          <div className="flex items-center gap-3 sm:gap-5 overflow-x-auto pb-2 -mx-6 px-6 sm:mx-0 sm:px-0 sm:flex-wrap scrollbar-hide">
+            <MinimalDropdown
+              label="Goals"
+              options={goalOptions}
+              selected={selectedGoals}
+              onChange={setSelectedGoals}
+              multi
+            />
+            <MinimalDropdown
+              label={selectedCategory ? t(`produits.filters.${selectedCategory}`) : "Categories"}
+              options={categoryOptions}
+              selected={selectedCategory ? [selectedCategory] : []}
+              onChange={(v) => setSelectedCategory(v[0] || null)}
+              multi={false}
+            />
+            <MinimalDropdown
+              label="Topics"
+              options={topicOptions}
+              selected={selectedTopics}
+              onChange={setSelectedTopics}
+              multi
+            />
+            <MinimalDropdown
+              label={sort === "bestRated" ? "Best rated" : sort === "mostPopular" ? "Most popular" : "Newest"}
+              options={["bestRated", "mostPopular", "newest"]}
+              selected={[sort]}
+              onChange={(v) => setSort(v[0] || "bestRated")}
+              multi={false}
+            />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder={t("produits.search")}
+              className="shrink-0 w-[140px] sm:w-[160px] py-1 bg-transparent border-b border-[#0B1220]/[0.08] text-xs text-[#0B1220] placeholder-[#2B2F36]/20 outline-none focus:border-[#0B1220]/30 transition-colors"
+            />
+          </div>
+          <span className="text-xs text-[#2B2F36]/25 whitespace-nowrap mt-2 block">
             {total} {t("produits.count")}
           </span>
         </div>

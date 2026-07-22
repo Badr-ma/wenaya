@@ -1,3 +1,9 @@
+/**
+ * Blog Hero — featured/latest blog post hero card at the top of /blog.
+ * Two-column layout: large featured image on left, post metadata on right
+ * (category badge, title, excerpt, author avatar, date, read time).
+ * Uses Framer Motion for scroll-triggered fade-in.
+ */
 "use client";
 
 import Link from "next/link";

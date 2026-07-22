@@ -1,3 +1,8 @@
+/**
+ * Contact API Route — handles POST requests from the contact form.
+ * Validates required fields, sanitizes input, and returns success/error response.
+ * In production, this would send an email or store in a database.
+ */
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {

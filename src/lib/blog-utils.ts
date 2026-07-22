@@ -1,7 +1,13 @@
+/**
+ * Blog utility helpers — formatting and display constants.
+ * Used by blog components for consistent styling and date presentation.
+ */
 import { Post, Author, Category } from "./blog";
 
+/** Convenience type — a Post with optional author/category references resolved */
 export type PostWithAuthor = Post & { author?: Author; category?: Category };
 
+/** Formats a date string to French locale (e.g., "15 juin 2026") */
 export function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString("fr-FR", {
     day: "numeric",
@@ -10,6 +16,7 @@ export function formatDate(dateStr: string): string {
   });
 }
 
+/** Tailwind color classes per blog category — controls badge colors on blog cards */
 export const categoryColors: Record<string, string> = {
   longevity: "bg-emerald-500/10 text-emerald-600 border-emerald-200",
   biomarkers: "bg-blue-500/10 text-blue-600 border-blue-200",

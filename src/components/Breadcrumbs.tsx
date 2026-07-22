@@ -1,3 +1,8 @@
+/**
+ * Breadcrumbs — renders a JSON-LD BreadcrumbList structured data schema for SEO.
+ * Visually hidden (sr-only) — only the JSON-LD schema is visible to search engines.
+ * Generates breadcrumb trail based on the current URL pathname.
+ */
 "use client";
 
 import Link from "next/link";

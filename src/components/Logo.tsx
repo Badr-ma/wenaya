@@ -1,3 +1,4 @@
+/** Logo component — renders the Wenaya logo image with responsive sizing */
 import Image from "next/image";
 
 export default function Logo() {

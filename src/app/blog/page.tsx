@@ -1,3 +1,8 @@
+/**
+ * Blog Listing Page — server component that fetches all published posts
+ * and renders the blog hero (featured post) + filterable blog list grid.
+ * Includes BlogPosting structured data, breadcrumbs, and pagination.
+ */
 import type { Metadata } from "next";
 import { getPublishedPosts, authors, categories } from "@/lib/blog";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
@@ -21,10 +26,6 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical: "https://www.wenaya.com/blog",
-    languages: {
-      "fr-MA": "https://www.wenaya.com/blog",
-      "en": "https://www.wenaya.com/blog",
-    },
   },
   openGraph: {
     title: "Blog Santé & Bien-être — Wenaya",

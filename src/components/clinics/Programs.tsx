@@ -1,3 +1,8 @@
+/**
+ * Clinic Programs — displays the available clinic programs and services.
+ * Card-based layout showing each program with description and CTA.
+ * Features: GSAP staggered fade-in animations and i18n translations.
+ */
 "use client";
 
 import { useRef, useEffect } from "react";

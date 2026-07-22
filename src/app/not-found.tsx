@@ -1,3 +1,8 @@
+/**
+ * 404 Not Found page — displayed when a route doesn't match any page.
+ * Marked noindex so search engines don't index error pages.
+ * Includes a large "404" visual, bilingual message, and a back-to-home CTA.
+ */
 import type { Metadata } from "next";
 import Link from "next/link";
 

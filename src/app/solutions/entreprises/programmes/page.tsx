@@ -1,3 +1,8 @@
+/**
+ * Programmes Page — detailed showcase of Wenaya's corporate wellness programs.
+ * Client component with program cards, pricing tiers, feature comparisons,
+ * and CTA sections. Extensive page with multiple program options.
+ */
 "use client";
 
 import { useState, useRef } from "react";
@@ -16,142 +21,8 @@ interface ProgramExtras {
   forWho: string;
   outcomes: string[];
   modules: { title: string; desc: string }[];
-  images: string[];
   chartData: { label: string; value: number }[];
 }
-
-const extras: Record<string, ProgramExtras> = {
-  pcm: {
-    benefits: [
-      "Prévenir les conflits en identifiant les profils de personnalité de chaque collaborateur",
-      "Améliorer la collaboration transverse et la cohésion d'équipe",
-      "Développer un leadership agile qui s'adapte à chaque interlocuteur",
-      "Réduire le turnover en créant un environnement de travail plus inclusif",
-    ],
-    forWho: "Managers, équipes projets, directions RH — toute organisation souhaitant améliorer sa communication interne et prévenir les tensions relationnelles.",
-    outcomes: [
-      "Une cartographie des profils de communication de votre équipe",
-      "Des outils concrets pour adapter son message à chaque profil",
-      "Un plan d'action pour désamorcer les conflits récurrents",
-      "Un langage commun partagé par l'ensemble des participants",
-    ],
-    modules: [
-      { title: "Fondamentaux du PCM", desc: "Découvrir les 6 types de personnalité, leur structure et leur langage spécifique." },
-      { title: "Communication adaptée", desc: "Apprendre à identifier le profil de son interlocuteur et adapter son discours en temps réel." },
-      { title: "Gestion des conflits", desc: "Utiliser le PCM pour désamorcer les tensions et transformer les divergences en opportunités." },
-      { title: "Leadership situationnel", desc: " Appiquer le modèle à son style de management pour fédérer des équipes hétérogènes." },
-    ],
-    images: [
-      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&q=90",
-      "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=90",
-      "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=90",
-    ],
-    chartData: [
-      { label: "Communication", value: 95 },
-      { label: "Résolution conflits", value: 88 },
-      { label: "Cohésion équipe", value: 92 },
-      { label: "Leadership adaptatif", value: 85 },
-    ],
-  },
-  "leadership-360": {
-    benefits: [
-      "Développer une intelligence émotionnelle au service de la performance collective",
-      "Acquérir des outils de communication non-violente pour désamorcer les tensions",
-      "Prendre des décisions éclairées même en situation d'incertitude",
-      "Fédérer ses équipes autour d'une vision partagée et d'objectifs communs",
-    ],
-    forWho: "Managers confirmés, directeurs, chefs de projet, talents à haut potentiel — pour toutes les organisations qui veulent renforcer leur ligne managériale.",
-    outcomes: [
-      "Un bilan individuel de ses compétences leadership",
-      "Une boîte à outils personnalisée (intelligence émotionnelle, CNV, prise de décision)",
-      "Un plan de développement sur 6 mois avec des objectifs mesurables",
-      "Un réseau de pairs pour continuer à progresser après la formation",
-    ],
-    modules: [
-      { title: "Intelligence émotionnelle", desc: "Comprendre et réguler ses émotions pour mieux diriger. Développer l'empathie et l'écoute active." },
-      { title: "Communication non-violente", desc: "Maîtriser l'expression de ses besoins et la gestion des feedbacks difficiles." },
-      { title: "Prise de décision", desc: "Structurer sa réflexion en contexte complexe. Distinguer urgence, importance et impact." },
-      { title: "Leadership inspirant", desc: "Définir sa vision, incarner ses valeurs et mobiliser ses équipes autour d'un cap commun." },
-      { title: "Résilience & adaptation", desc: "Développer sa capacité à rebondir face aux crises et à accompagner le changement." },
-      { title: "Coaching individuel", desc: "Séances personnalisées pour ancrer les apprentissages et travailler ses axes de progression." },
-    ],
-    images: [
-      "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&q=90",
-      "https://images.unsplash.com/photo-1543269865-cbf427effbad?w=800&q=90",
-      "https://images.unsplash.com/photo-1552581234-26160f608093?w=800&q=90",
-    ],
-    chartData: [
-      { label: "Intelligence émotionnelle", value: 94 },
-      { label: "Communication", value: 90 },
-      { label: "Prise de décision", value: 87 },
-      { label: "Mobilisation équipe", value: 91 },
-    ],
-  },
-  "art-des-priorites": {
-    benefits: [
-      "Réduire la charge mentale et le stress lié à la surcharge de travail",
-      "Retrouver jusqu'à 30% de temps productif grâce à une meilleure priorisation",
-      "Améliorer la qualité de vie au travail et prévenir les risques de burnout",
-      "Donner à vos équipes des méthodes concrètes applicables dès le lendemain",
-    ],
-    forWho: "Tous les collaborateurs, des équipes opérationnelles aux cadres dirigeants — particulièrement adapté aux environnements à forte sollicitation.",
-    outcomes: [
-      "Une méthode de priorisation personnalisée (matrice d'Eisenhower, Getting Things Done, etc.)",
-      "Des rituels quotidiens pour commencer et terminer sa journée avec clarté",
-      "Des techniques de gestion des interruptions et des sollicitations multiples",
-      "Un équilibre retrouvé entre vie professionnelle et personnelle",
-    ],
-    modules: [
-      { title: "Diagnostic de sa charge mentale", desc: "Identifier ses sources de stress et ses voleurs de temps. Mesurer sa charge mentale réelle." },
-      { title: "Méthodes de priorisation", desc: "Maîtriser les outils de priorisation : matrice d'Eisenhower, méthode Ivy Lee, Time Blocking." },
-      { title: "Organisation personnelle", desc: "Mettre en place des rituels d'organisation adaptés à son profil et à son environnement." },
-      { title: "Délégation & collaboration", desc: "Apprendre à déléguer efficacement et à collaborer sans se laisser déborder." },
-    ],
-    images: [
-      "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=800&q=90",
-      "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=90",
-      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=90",
-    ],
-    chartData: [
-      { label: "Réduction stress", value: 89 },
-      { label: "Optimisation temps", value: 93 },
-      { label: "Équilibre vie pro/perso", value: 86 },
-      { label: "Productivité", value: 91 },
-    ],
-  },
-  "people-model-canvas": {
-    benefits: [
-      "Structurer sa stratégie RH autour d'un cadre innovant et éprouvé",
-      "Fidéliser ses talents en repensant l'expérience collaborateur",
-      "Renforcer sa marque employeur pour attirer les meilleurs profils",
-      "Mesurer l'impact des initiatives RH sur la performance business",
-    ],
-    forWho: "Directeurs RH, DRH, responsables RSE, dirigeants — pour les organisations de 50 à 5000+ collaborateurs.",
-    outcomes: [
-      "Un diagnostic complet de votre stratégie RH actuelle",
-      "Un People Model Canvas personnalisé pour votre organisation",
-      "Un plan d'action priorisé sur 12 à 24 mois",
-      "Des indicateurs clés pour mesurer l'impact de votre transformation RH",
-    ],
-    modules: [
-      { title: "Diagnostic RH", desc: "Auditer votre stratégie RH actuelle : rétention, engagement, marque employeur, bien-être." },
-      { title: "People Model Canvas", desc: "Construire votre modèle RH idéal en utilisant le cadre stratégique du PMC." },
-      { title: "Plan d'action", desc: "Prioriser les initiatives, définir les jalons et allouer les ressources nécessaires." },
-      { title: "Suivi & mesure", desc: "Mettre en place des indicateurs d'impact et un tableau de bord de pilotage RH." },
-    ],
-    images: [
-      "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=90",
-      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=90",
-      "https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=800&q=90",
-    ],
-    chartData: [
-      { label: "Stratégie RH", value: 92 },
-      { label: "Fidélisation talents", value: 88 },
-      { label: "Marque employeur", value: 85 },
-      { label: "Impact business", value: 90 },
-    ],
-  },
-};
 
 /* ── 3D scroll animations ── */
 
@@ -229,6 +100,29 @@ function getSlug(link: string) {
   return link.split("/").pop() ?? "";
 }
 
+const programImages: Record<string, string[]> = {
+  pcm: [
+    "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&q=90",
+    "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=90",
+    "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=90",
+  ],
+  "leadership-360": [
+    "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&q=90",
+    "https://images.unsplash.com/photo-1543269865-cbf427effbad?w=800&q=90",
+    "https://images.unsplash.com/photo-1552581234-26160f608093?w=800&q=90",
+  ],
+  "art-des-priorites": [
+    "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=800&q=90",
+    "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=90",
+    "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=90",
+  ],
+  "people-model-canvas": [
+    "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=90",
+    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=90",
+    "https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=800&q=90",
+  ],
+};
+
 function DiamondPattern() {
   return (
     <svg className="absolute inset-0 w-full h-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg">
@@ -294,11 +188,13 @@ function ImpactChart({ data }: { data: { label: string; value: number }[] }) {
 export default function ProgrammesPage() {
   const { t, tRaw } = useLocale();
   const programmes = tRaw<Program[]>("entreprises.programmes.list");
+  const programmeExtras = tRaw<Record<string, ProgramExtras>>("entreprises.programmes.details");
   const [activeIdx, setActiveIdx] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const program = programmes[activeIdx];
   const slug = getSlug(program?.link ?? "");
-  const info = extras[slug];
+  const info = programmeExtras[slug];
+  const images = programImages[slug];
 
   if (!program) return null;
 
@@ -314,7 +210,7 @@ export default function ProgrammesPage() {
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
-            Retour
+            {t("entreprises.programmes.back")}
           </Link>
           <span className="text-white/30 text-[10px] font-semibold tracking-[0.15em] uppercase">
             {t("entreprises.programmes.title")}
@@ -363,7 +259,7 @@ export default function ProgrammesPage() {
                 href="/solutions/entreprises"
                 className="block w-full text-center py-2 rounded-lg border border-white/[0.12] text-white/50 text-xs font-medium hover:bg-white/[0.04] transition-all"
               >
-                Retour entreprises
+                {t("entreprises.programmes.backEnterprise")}
               </Link>
             </div>
           </div>
@@ -399,7 +295,7 @@ export default function ProgrammesPage() {
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
-            Retour
+            {t("entreprises.programmes.back")}
           </Link>
           <span className="block text-white/30 text-[10px] font-semibold tracking-[0.15em] uppercase mt-4">
             {t("entreprises.programmes.title")}
@@ -439,7 +335,7 @@ export default function ProgrammesPage() {
             href="/solutions/entreprises"
             className="block w-full text-center py-2.5 rounded-lg border border-white/[0.12] text-white/50 text-xs font-medium hover:bg-white/[0.04] hover:text-white/70 transition-all duration-200"
           >
-            Retour entreprises
+            {t("entreprises.programmes.backEnterprise")}
           </Link>
         </div>
       </aside>
@@ -492,7 +388,7 @@ export default function ProgrammesPage() {
         <FadeSection className="relative bg-white overflow-hidden">
           <div className="grid lg:grid-cols-2 min-h-[420px]">
             <div className="px-6 sm:px-12 lg:px-16 xl:px-24 py-20 lg:py-28 flex flex-col justify-center">
-              <span className="text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">Aperçu du programme</span>
+              <span className="text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">{t("entreprises.programmes.overviewLabel")}</span>
               <div className="relative mt-6">
                 <span className="absolute -top-3 -left-4 text-[#B88A5A]/10 text-7xl font-serif leading-none select-none">&ldquo;</span>
                 <p className="text-[#2B2F36]/70 text-base sm:text-lg leading-[1.8] relative z-10">
@@ -504,7 +400,7 @@ export default function ProgrammesPage() {
               <div className="relative h-64 lg:h-auto overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-r from-white via-white/60 to-transparent z-10" />
                 <Image
-                  src={info.images[0]}
+                  src={images[0]}
                   alt=""
                   fill
                   className="object-cover"
@@ -519,11 +415,11 @@ export default function ProgrammesPage() {
           <>
             {/* ── FULL-BLEED BANNER ── */}
             <section className="relative h-[50vh] min-h-[320px] overflow-hidden">
-              <Image src={info.images[1]} alt="" fill className="object-cover" sizes="100vw" />
+              <Image src={images[1]} alt="" fill className="object-cover" sizes="100vw" />
               <div className="absolute inset-0 bg-gradient-to-r from-[#0B1220]/70 via-[#0B1220]/30 to-transparent" />
               <div className="absolute inset-0 flex items-center">
                 <div className="px-6 sm:px-12 lg:px-16 xl:px-24 max-w-2xl">
-                  <span className="text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">En pratique</span>
+                  <span className="text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">{t("entreprises.programmes.overviewLabel")}</span>
                   <p className="text-white/80 text-lg sm:text-xl leading-relaxed mt-4 max-w-xl">
                     {program.pitch}
                   </p>
@@ -538,7 +434,7 @@ export default function ProgrammesPage() {
                 <div className="flex items-center gap-4 mb-3">
                   <span className="w-6 h-px bg-[#B88A5A]/40" />
                   <span className="text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">
-                    Bénéfices
+                    {t("entreprises.programmes.benefitsLabel")}
                   </span>
                 </div>
                 <div className="divide-y divide-[#0B1220]/[0.06] mt-10">
@@ -568,7 +464,7 @@ export default function ProgrammesPage() {
             <FadeSection className="relative bg-[#0B1220] overflow-hidden">
               <ParallaxDotsPattern />
               <div className="absolute inset-0 opacity-[0.08]">
-                <Image src={info.images[2]} alt="" fill className="object-cover" sizes="100vw" />
+                <Image src={images[2]} alt="" fill className="object-cover" sizes="100vw" />
               </div>
               <div className="relative px-6 sm:px-12 lg:px-16 xl:px-24 py-20 lg:py-28">
                 <div className="max-w-3xl mx-auto text-center">
@@ -576,7 +472,7 @@ export default function ProgrammesPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
                   </svg>
                   <span className="block text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase mt-6 mb-8">
-                    À qui s&apos;adresse ce programme
+                    {t("entreprises.programmes.targetLabel")}
                   </span>
                   <div className="relative">
                     <svg className="absolute -top-4 -left-2 text-[#B88A5A]/10 w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
@@ -599,11 +495,11 @@ export default function ProgrammesPage() {
                 <div className="flex items-center gap-4 mb-3">
                   <span className="w-6 h-px bg-[#B88A5A]/40" />
                   <span className="text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">
-                    Résultats
+                    {t("entreprises.programmes.outcomesLabel")}
                   </span>
                 </div>
                 <h2 className="heading-serif text-[#0B1220] text-2xl sm:text-3xl font-semibold mt-2 mb-10">
-                  Ce que vos équipes repartent avec
+                  {t("entreprises.programmes.outcomesTitle")}
                 </h2>
                 <div className="grid sm:grid-cols-2 gap-x-8 gap-y-6">
                   {info.outcomes.map((o, i) => (
@@ -631,11 +527,11 @@ export default function ProgrammesPage() {
                 <div className="flex items-center gap-4 mb-3">
                   <span className="w-6 h-px bg-[#B88A5A]/40" />
                   <span className="text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">
-                    Impact
+                    {t("entreprises.programmes.impactLabel")}
                   </span>
                 </div>
                 <h2 className="heading-serif text-[#0B1220] text-2xl sm:text-3xl font-semibold mt-2 mb-4">
-                  Domaines d&apos;impact clés
+                  {t("entreprises.programmes.impactTitle")}
                 </h2>
                 <ImpactChart data={info.chartData} />
               </div>
@@ -649,11 +545,11 @@ export default function ProgrammesPage() {
                   <div className="flex items-center gap-4 mb-3">
                     <span className="w-6 h-px bg-[#B88A5A]/40" />
                     <span className="text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">
-                      Programme détaillé
+                      {t("entreprises.programmes.modulesLabel")}
                     </span>
                   </div>
                   <h2 className="heading-serif text-white text-2xl sm:text-3xl font-semibold mt-2 mb-12">
-                    Structure du programme
+                    {t("entreprises.programmes.modulesTitle")}
                   </h2>
                   <div className="relative">
                     <div className="absolute left-[19px] top-0 bottom-0 w-px bg-gradient-to-b from-[#B88A5A]/40 via-[#B88A5A]/10 to-transparent" />
@@ -687,13 +583,13 @@ export default function ProgrammesPage() {
           <div className="relative px-6 sm:px-12 lg:px-16 xl:px-24 py-20 lg:py-28">
             <div className="max-w-2xl mx-auto text-center">
               <span className="text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">
-                Prêt à passer à l&apos;action ?
+                {t("entreprises.programmes.ctaLabel")}
               </span>
               <h2 className="heading-serif text-[#0B1220] text-[clamp(1.8rem,3.5vw,3rem)] font-semibold mt-4 leading-[1.08]">
-                Transformez la santé de vos équipes
+                {t("entreprises.programmes.ctaTitle")}
               </h2>
               <p className="text-[#2B2F36]/50 text-sm sm:text-base mt-4 max-w-md mx-auto">
-                Réservez un audit gratuit de 30 minutes pour identifier les besoins spécifiques de votre entreprise.
+                {t("entreprises.programmes.ctaDesc")}
               </p>
               <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link
@@ -706,7 +602,7 @@ export default function ProgrammesPage() {
                     boxShadow: "0 4px 20px rgba(184,138,90,0.3)",
                   }}
                 >
-                  Réserver un audit gratuit
+                  {t("entreprises.programmes.ctaPrimary")}
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
@@ -715,10 +611,10 @@ export default function ProgrammesPage() {
                   href="/solutions/entreprises"
                   className="inline-flex items-center gap-2 px-8 h-12 rounded-full border border-[#0B1220]/10 text-[#2B2F36]/50 text-sm font-medium hover:border-[#B88A5A]/30 hover:text-[#B88A5A] transition-all duration-200"
                 >
-                  Découvrir nos autres programmes
+                  {t("entreprises.programmes.ctaSecondary")}
                 </Link>
               </div>
-              <p className="text-[#2B2F36]/30 text-xs mt-4">Réponse sous 24h ouvrées. Sans engagement.</p>
+              <p className="text-[#2B2F36]/30 text-xs mt-4">{t("entreprises.programmes.ctaNote")}</p>
             </div>
           </div>
         </FadeSection>

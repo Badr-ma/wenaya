@@ -1,3 +1,9 @@
+/**
+ * Navigation Bar — fixed top bar with logo, nav links, language switcher, login/CTA buttons.
+ * Features: scroll-hide/show, theme detection (dark/light based on section background),
+ * filter bar mode for /produits and /pratiques (sticky filter bar replaces main nav),
+ * and responsive mobile menu with hamburger toggle.
+ */
 "use client";
 
 import Link from "next/link";
@@ -13,17 +19,18 @@ import PratiquesFilterBar from "./nav/PratiquesFilterBar";
 export default function Nav(): React.JSX.Element {
   const pathname = usePathname();
   const { t } = useLocale();
-  const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const lastScrollRef = useRef(0);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
-  const lastThemeRef = useRef<"dark" | "light">("dark");
-  const pathnameRef = useRef(pathname);
-  const filtersPastRef = useRef(false);
+  const [scrolled, setScrolled] = useState(false); // Whether user has scrolled past 40px
+  const [hidden, setHidden] = useState(false); // Whether nav is hidden (scrolling down)
+  const lastScrollRef = useRef(0); // Previous scroll position for direction detection
+  const [mobileOpen, setMobileOpen] = useState(false); // Mobile menu toggle
+  const [theme, setTheme] = useState<"dark" | "light">("dark"); // Nav color theme based on current section
+  const lastThemeRef = useRef<"dark" | "light">("dark"); // Avoids unnecessary re-renders on same theme
+  const pathnameRef = useRef(pathname); // Ref to pathname for use inside scroll handlers
+  const filtersPastRef = useRef(false); // Whether filter bar has scrolled past nav
 
   useEffect(() => { pathnameRef.current = pathname; });
 
+  // Filter state for /produits page — synced via custom DOM events
   const [filtersPast, setFiltersPast] = useState(false);
   const [filterSearch, setFilterSearch] = useState("");
   const [filterCount, setFilterCount] = useState(0);
@@ -32,33 +39,37 @@ export default function Nav(): React.JSX.Element {
   const [filterTopics, setFilterTopics] = useState<string[]>([]);
   const [filterSort, setFilterSort] = useState("bestRated");
 
+  // Filter state for /pratiques page — synced via custom DOM events
   const [pratiquesSearch, setPratiquesSearch] = useState("");
   const [pratiquesActiveFilter, setPratiquesActiveFilter] = useState("all");
 
+  /** Listen for "products-update" custom events — keeps nav filter bar in sync with ProductsGrid */
   useEffect(() => {
     const handler = (e: Event) => {
-      const d = (e as CustomEvent).detail;
-      setFilterSearch(d.search);
-      setFilterCount(d.count);
-      setFilterGoals(d.selectedGoals);
-      setFilterCategory(d.selectedCategory);
-      setFilterTopics(d.selectedTopics);
-      setFilterSort(d.sort);
+      const detail = (e as CustomEvent).detail;
+      if (detail.search !== undefined) setFilterSearch(detail.search);
+      if (detail.count !== undefined) setFilterCount(detail.count);
+      if (detail.selectedGoals !== undefined) setFilterGoals(detail.selectedGoals);
+      if (detail.selectedCategory !== undefined) setFilterCategory(detail.selectedCategory);
+      if (detail.selectedTopics !== undefined) setFilterTopics(detail.selectedTopics);
+      if (detail.sort !== undefined) setFilterSort(detail.sort);
     };
     window.addEventListener("products-update", handler);
     return () => window.removeEventListener("products-update", handler);
   }, []);
 
+  /** Listen for "pratiques-update" custom events — keeps nav filter bar in sync with PratiquesGrid */
   useEffect(() => {
     const handler = (e: Event) => {
-      const d = (e as CustomEvent).detail;
-      setPratiquesSearch(d.searchQuery);
-      setPratiquesActiveFilter(d.activeFilter);
+      const detail = (e as CustomEvent).detail;
+      if (detail.searchQuery !== undefined) setPratiquesSearch(detail.searchQuery);
+      if (detail.activeFilter !== undefined) setPratiquesActiveFilter(detail.activeFilter);
     };
     window.addEventListener("pratiques-update", handler);
     return () => window.removeEventListener("pratiques-update", handler);
   }, []);
 
+  /** Forwards filter changes to the page via custom DOM events (cross-component communication) */
   const handleFilterChange = (key: string, value: unknown) => {
     window.dispatchEvent(new CustomEvent("products-filter-request", { detail: { key, value } }));
   };
@@ -67,11 +78,12 @@ export default function Nav(): React.JSX.Element {
     window.dispatchEvent(new CustomEvent("pratiques-filter-request", { detail: { key, value } }));
   };
 
+  /** Scroll handler — detects scroll direction to show/hide nav, and sets scrolled state for background opacity */
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 40);
-      if ((pathnameRef.current === "/produits" || pathnameRef.current === "/pratiques") && filtersPastRef.current) {
+      if (y <= 40) {
         setHidden(false);
       } else if (y > 80 && y > lastScrollRef.current) {
         setHidden(true);
@@ -84,6 +96,7 @@ export default function Nav(): React.JSX.Element {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  /** Detects when the filter bar scrolls past the nav — switches to compact filter bar mode */
   useEffect(() => {
     if (pathname !== "/produits" && pathname !== "/pratiques") {
       // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -112,6 +125,7 @@ export default function Nav(): React.JSX.Element {
     return () => { filtersPastRef.current = false; };
   }, [pathname]);
 
+  /** Section theme detector — reads data-section-bg attributes to switch nav between dark/light */
   useEffect(() => {
     let ticking = false;
     const detectSection = () => {
@@ -165,7 +179,6 @@ export default function Nav(): React.JSX.Element {
     ? "text-white/52 hover:text-white"
     : "text-[#0B1220]/52 hover:text-[#0B1220]";
   const linkActive_ = isDark ? "text-white" : "text-[#0B1220]";
-  const linkUnderline = isDark ? "bg-white/20" : "bg-black/[0.08]";
   const sepStyle = isDark ? "bg-white/[0.1]" : "bg-black/[0.08]";
   const loginBtn = isDark
     ? "bg-white/[0.07] border border-white/[0.09] text-white/65 hover:bg-white/[0.11] hover:text-white hover:border-white/[0.14]"
@@ -214,7 +227,7 @@ export default function Nav(): React.JSX.Element {
                   { label: t("nav.aPropos"), href: "/about" },
                   { label: t("nav.solutions"), href: "/solutions/entreprises" },
                   { label: t("nav.produits"), href: "/produits" },
-                  { label: "Blog", href: "/blog-demo" },
+                  { label: t("nav.specialistes"), href: "/specialistes" },
                 ].map((link) => (
                     <li key={link.label}>
                       <Link
@@ -231,9 +244,6 @@ export default function Nav(): React.JSX.Element {
                             isActive(link.href) ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
                           }`}
                           style={{ transformOrigin: "left" }}
-                        />
-                        <span
-                          className={`absolute bottom-0.5 left-4 right-4 h-px rounded-full ${linkUnderline} origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100`}
                         />
                       </Link>
                     </li>
@@ -266,7 +276,7 @@ export default function Nav(): React.JSX.Element {
 
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
-                className={`lg:hidden relative flex flex-col items-center justify-center w-9 h-9 rounded-xl transition-colors ${isDark ? "hover:bg-white/[0.06]" : "hover:bg-black/[0.06]"}`}
+                className={`lg:hidden relative flex flex-col items-center justify-center w-11 h-11 rounded-xl transition-colors ${isDark ? "hover:bg-white/[0.06]" : "hover:bg-black/[0.06]"}`}
                 aria-label={t("nav.menu")}
               >
                 <span className={`block w-[17px] h-[1.5px] rounded-full transition-all duration-300 origin-center ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "rotate-45 translate-y-[3px]" : ""}`} />

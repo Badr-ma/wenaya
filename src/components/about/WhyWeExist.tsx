@@ -1,3 +1,8 @@
+/**
+ * Why We Exist — mission statement section for the about page.
+ * Two-column layout: text explaining Wenaya's founding mission on left,
+ * clinic/team image on right. GSAP scroll-triggered animations.
+ */
 "use client";
 
 import { useRef, useEffect } from "react";

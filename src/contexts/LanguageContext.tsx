@@ -1,3 +1,7 @@
+/**
+ * Language Context — provides locale state, t() translation function, and language switching
+ * to all components in the app. Detects language from localStorage or browser settings on mount.
+ */
 "use client";
 
 import {
@@ -10,8 +14,10 @@ import {
 } from "react";
 import { useTranslations } from "@/i18n";
 
+/** Supported locales — French (default) and English */
 type Locale = "fr" | "en";
 
+/** Shape of the language context value exposed to consuming components */
 interface LanguageContextValue {
   locale: Locale;
   setLocale: (locale: Locale) => void;
@@ -20,11 +26,14 @@ interface LanguageContextValue {
   tRaw: <T>(path: string) => T;
 }
 
+/** Language context — initialized as null, must be used within LanguageProvider */
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
+/** Provider component — manages locale state and provides t() to the component tree */
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>("fr");
 
+  /** On mount: detect language from localStorage → browser language → default to French */
   useEffect(() => {
     let detected: Locale = "fr";
     try {
@@ -40,6 +49,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     document.documentElement.lang = detected;
   }, []);
 
+  /** Sets locale, persists to localStorage, and updates the <html lang> attribute */
   const setLocale = useCallback((l: Locale) => {
     setLocaleState(l);
     try { localStorage.setItem("wenaya-locale", l); } catch {}
@@ -59,6 +69,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   );
 }
 
+/** Custom hook — returns the language context; throws if used outside LanguageProvider */
 export function useLocale(): LanguageContextValue {
   const ctx = useContext(LanguageContext);
   if (!ctx) throw new Error("useLocale must be used within a LanguageProvider");

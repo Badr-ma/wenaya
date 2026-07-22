@@ -1,3 +1,7 @@
+/**
+ * Downloads Section — provides downloadable resources (PDFs, brochures) for corporate prospects.
+ * Features: Framer Motion card animations, download icons, and file size indicators.
+ */
 "use client";
 
 import { useRef, useEffect } from "react";

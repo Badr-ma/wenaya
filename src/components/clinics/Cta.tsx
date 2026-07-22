@@ -1,3 +1,8 @@
+/**
+ * Clinics CTA — final call-to-action for the clinics section.
+ * Dark background with headline, description, and appointment booking CTA.
+ * Features: GSAP fade-in animation.
+ */
 "use client";
 
 import Link from "next/link";

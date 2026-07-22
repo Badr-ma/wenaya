@@ -1,3 +1,7 @@
+/**
+ * Login Layout — provides SEO metadata for the /login page.
+ * Sets robots noindex to keep login page out of search results.
+ */
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

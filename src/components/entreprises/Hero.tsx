@@ -1,3 +1,8 @@
+/**
+ * Corporate Hero — full-width hero section for the /solutions/entreprises page.
+ * Two-column layout: left has headline, description, CTA button, and trust indicators;
+ * right has a rounded image of a corporate wellness session. GSAP entrance animations.
+ */
 "use client";
 
 import { useRef, useEffect } from "react";

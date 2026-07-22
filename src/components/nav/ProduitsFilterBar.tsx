@@ -1,3 +1,8 @@
+/**
+ * Products Filter Bar — compact filter controls that replace the main nav
+ * when the /produits page filter bar scrolls past the nav.
+ * Shows search, category dropdown, goals, and result count.
+ */
 "use client";
 
 import { MinimalDropdown } from "../produits/FilterDropdown";
@@ -89,7 +94,7 @@ export default function ProduitsFilterBar({
         />
         <button
           onClick={onToggleMobile}
-          className={`lg:hidden relative flex flex-col items-center justify-center w-9 h-9 rounded-xl transition-colors ml-1 sm:ml-0 ${isDark ? "hover:bg-white/[0.06]" : "hover:bg-black/[0.06]"}`}
+          className={`lg:hidden relative flex flex-col items-center justify-center w-11 h-11 rounded-xl transition-colors ml-1 sm:ml-0 ${isDark ? "hover:bg-white/[0.06]" : "hover:bg-black/[0.06]"}`}
           aria-label={t("nav.menu")}
         >
           <span className={`block w-[17px] h-[1.5px] rounded-full transition-all duration-300 origin-center ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "rotate-45 translate-y-[3px]" : ""}`} />

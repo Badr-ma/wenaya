@@ -1,3 +1,8 @@
+/**
+ * Testimonials Section — stats bar (patients, satisfaction, disciplines, experience)
+ * combined with a testimonials carousel. Stats animate on scroll, testimonials auto-rotate.
+ * Features: GSAP animations, auto-play carousel with progress indicator dots.
+ */
 "use client";
 
 import { useRef, useEffect, useCallback, type ReactNode } from "react";

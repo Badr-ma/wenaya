@@ -1,5 +1,12 @@
+/**
+ * Root Layout — wraps every page in the app.
+ * Provides: fonts, global CSS, language context, smooth scroll (Lenis),
+ * GSAP init, navigation bar, and the corporate consultation floating widget.
+ * Also injects the site-wide JSON-LD structured data and Content-Security-Policy.
+ */
 import type { Metadata } from "next";
 import { Cormorant_Garamond, JetBrains_Mono, Nunito, Open_Sans } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import GsapInit from "@/components/GsapInit";
@@ -7,6 +14,7 @@ import LenisProvider from "@/components/LenisProvider";
 import CorporateConsultationWidget from "@/components/CorporateConsultationWidget";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 
+/** Nunito — used for headings and UI text via --font-heading CSS variable */
 const nunito = Nunito({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "900"],
@@ -14,6 +22,7 @@ const nunito = Nunito({
   display: "swap",
 });
 
+/** Open Sans — primary body font via --font-open-sans CSS variable */
 const openSans = Open_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -21,6 +30,7 @@ const openSans = Open_Sans({
   display: "swap",
 });
 
+/** Cormorant Garamond — serif font for hero headlines and decorative text */
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["400", "500"],
@@ -28,12 +38,14 @@ const cormorant = Cormorant_Garamond({
   display: "swap",
 });
 
+/** JetBrains Mono — monospace font for code/data display */
 const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
   display: "swap",
 });
 
+/** Global SEO metadata — applied as defaults for all pages (individual pages can override title/description) */
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.wenaya.com"),
   title: {
@@ -95,14 +107,16 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "https://www.wenaya.com",
-    languages: {
-      "fr-MA": "https://www.wenaya.com",
-      "en": "https://www.wenaya.com",
-      "x-default": "https://www.wenaya.com",
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GSC_VERIFICATION || "",
+    other: {
+      "msvalidate.01": process.env.NEXT_PUBLIC_BING_VERIFICATION || "",
     },
   },
 };
 
+/** Root layout — renders the <html> shell with all global providers */
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -115,6 +129,7 @@ export default function RootLayout({
           httpEquiv="Content-Security-Policy"
           content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://images.unsplash.com data: blob:; media-src 'self'; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'"
         />
+        {/* JSON-LD structured data — Organization, MedicalBusiness/LocalBusiness, and WebSite schemas for Google rich results */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -178,12 +193,27 @@ export default function RootLayout({
         />
       </head>
       <body>
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga4-init" strategy="afterInteractive">
+              {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', { page_path: window.location.pathname });`}
+            </Script>
+          </>
+        )}
+        {/* LanguageProvider — i18n context wrapping the entire app, enables useLocale() and t() */}
         <LanguageProvider>
-          <GsapInit />
-          <LenisProvider>
-            <Nav />
-            {children}
-            <CorporateConsultationWidget />
+          <GsapInit /> {/* Registers GSAP plugins globally (ScrollTrigger, etc.) */}
+          <LenisProvider> {/* Enables Lenis smooth scrolling across the site */}
+            <Nav /> {/* Global navigation bar — fixed position, theme-aware */}
+            {children} {/* Page content rendered here */}
+            <CorporateConsultationWidget /> {/* Floating consultation pill on /solutions/entreprises */}
           </LenisProvider>
         </LanguageProvider>
       </body>

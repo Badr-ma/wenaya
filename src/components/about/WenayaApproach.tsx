@@ -1,3 +1,8 @@
+/**
+ * Wenaya Approach — explains the integrated health methodology.
+ * Three pillars: Assessment, Personalization, Prevention. Each with icon and description.
+ * Features: GSAP staggered animations and i18n translations.
+ */
 "use client";
 
 import { useRef, useEffect } from "react";

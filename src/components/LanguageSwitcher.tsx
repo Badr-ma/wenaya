@@ -1,3 +1,7 @@
+/**
+ * Language Switcher — toggles between French (FR) and English (EN).
+ * Displays the non-active language label as a clickable button.
+ */
 "use client";
 
 import { useLocale } from "@/contexts/LanguageContext";

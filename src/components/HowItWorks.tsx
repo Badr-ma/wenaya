@@ -1,3 +1,9 @@
+/**
+ * How It Works — 3-step process section explaining the Wenaya journey.
+ * Steps: Discovery (assessment), Personalization (custom plan), Transformation (results).
+ * Features: GSAP scroll-triggered sequential animations, numbered step indicators,
+ * and a CTA at the bottom.
+ */
 "use client";
 
 import { useRef, useEffect } from "react";

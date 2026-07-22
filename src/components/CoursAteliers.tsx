@@ -1,3 +1,8 @@
+/**
+ * Courses & Workshops section — displays upcoming wellness courses and workshops.
+ * Features: horizontal scroll carousel, image cards with GSAP animations,
+ * and category/filter tabs (all, yoga, nutrition, mindfulness, etc.).
+ */
 "use client";
 
 import { useRef, useEffect, useState } from "react";
@@ -152,7 +157,7 @@ export default function CoursAteliers(): React.JSX.Element {
           </div>
 
           {/* Swipe button */}
-          <div className="absolute right-0 top-0 bottom-0 w-28 sm:w-32 z-20 pointer-events-none flex items-center justify-end">
+          <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 z-20 pointer-events-none flex items-center justify-end">
             <div className="w-full h-full bg-gradient-to-l from-[#0B1220] via-[#0B1220]/70 to-transparent rounded-r-2xl flex items-center justify-center pr-2 pointer-events-auto cursor-pointer group/overlay"
               onClick={scrollMore}
             >

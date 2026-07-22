@@ -1,3 +1,7 @@
+/**
+ * Programmes Layout — provides metadata for the /solutions/entreprises/programmes page.
+ * Client component pages can't export Metadata directly, so layout handles it.
+ */
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 

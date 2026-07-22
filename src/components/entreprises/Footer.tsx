@@ -1,3 +1,8 @@
+/**
+ * Corporate Footer — simplified footer specifically for the /solutions/entreprises pages.
+ * Dark background with logo, nav links, social icons, and legal links.
+ * Separate from the main site Footer for a consistent B2B experience.
+ */
 "use client";
 
 import { useRef, useEffect } from "react";
@@ -144,7 +149,7 @@ export default function EntreprisesFooter(): React.JSX.Element {
                     : group.title === footerSolutions.title
                       ? ["/solutions/entreprises", "#", "#", "#"]
                       : group.title === footerResources.title
-                        ? ["/blog", "/faq", "#", "#"]
+                        ? ["/faq", "#", "#"]
                         : group.title === footerAPropos.title
                           ? ["/about", "/pratiques", "#", "#"]
                           : null;

@@ -1,3 +1,7 @@
+/**
+ * Top Banner — small promotional bar at the very top of the homepage.
+ * Displays a dismissible message with a CTA link.
+ */
 "use client";
 
 import { useLocale } from "@/contexts/LanguageContext";

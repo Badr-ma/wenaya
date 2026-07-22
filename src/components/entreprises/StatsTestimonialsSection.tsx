@@ -1,3 +1,8 @@
+/**
+ * Stats & Testimonials — two-part section: top has key corporate metrics
+ * (companies served, employees reached, satisfaction, ROI), bottom has
+ * client testimonials carousel. GSAP scroll-triggered animations.
+ */
 "use client";
 
 import { useRef, useEffect } from "react";

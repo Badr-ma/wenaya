@@ -1,3 +1,8 @@
+/**
+ * Pratiques Filter Bar — compact filter controls that replace the main nav
+ * when the /pratiques page filter bar scrolls past the nav.
+ * Shows search input and active filter indicator.
+ */
 "use client";
 
 interface Props {

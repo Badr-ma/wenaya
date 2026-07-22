@@ -1,3 +1,8 @@
+/**
+ * Why Wenaya — explains why patients should choose Wenaya clinics.
+ * Feature grid with icons and descriptions (personalized care, multidisciplinary team, etc.).
+ * Features: GSAP scroll animations and CTA link.
+ */
 "use client";
 
 import Link from "next/link";

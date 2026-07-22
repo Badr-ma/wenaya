@@ -1,3 +1,8 @@
+/**
+ * Sticky CTA — fixed bottom bar on the entreprises page that appears after scrolling.
+ * Shows a "Book a Free Consultation" CTA button. Only visible on /solutions/entreprises.
+ * Auto-hides after 15 seconds or when user clicks the CTA.
+ */
 "use client";
 
 import { useEffect, useState } from "react";

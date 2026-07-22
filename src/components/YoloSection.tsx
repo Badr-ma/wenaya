@@ -1,3 +1,9 @@
+/**
+ * YoloSection — interactive exploration hub with a visual map of wellness areas.
+ * Features: clickable nodes (kinésithérapie, nutrition, psychologie, etc.) on a visual grid,
+ * GSAP scroll-triggered animations, and expandable detail cards for each area.
+ * Dark background section near the bottom of the homepage.
+ */
 "use client";
 
 import { useRef, useEffect } from "react";

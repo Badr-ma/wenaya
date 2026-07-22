@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
+/** Next.js configuration — image optimization, redirects, and security headers */
 const nextConfig: NextConfig = {
+  /** Image optimization settings — allows Unsplash remote images with responsive sizing */
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
@@ -9,6 +11,7 @@ const nextConfig: NextConfig = {
     deviceSizes: [480, 640, 768, 1024, 1280, 1536],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
+  /** URL redirects — sends old /corporate path to new /solutions/entreprises */
   async redirects() {
     return [
       {
@@ -18,6 +21,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  /** Security headers applied to all routes — prevents clickjacking, MIME sniffing, and restricts permissions */
   async headers() {
     return [
       {

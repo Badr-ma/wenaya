@@ -1,3 +1,8 @@
+/**
+ * Products Page — filterable product listing page for /produits.
+ * Renders the ProductsGrid component (search, filters, sort, grid view).
+ * Includes breadcrumbs, SEO metadata with keywords, and Footer.
+ */
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
@@ -11,10 +16,6 @@ export const metadata: Metadata = {
     "Découvrez notre sélection de produits santé et bien-être : compléments nutritionnels, appareils de thérapie, wearables, soins de la peau et programmes personnalisés par nos spécialistes.",
   alternates: {
     canonical: "https://www.wenaya.com/produits",
-    languages: {
-      "fr-MA": "https://www.wenaya.com/produits",
-      "en": "https://www.wenaya.com/produits",
-    },
   },
   openGraph: {
     title: "Nos Produits — Wenaya",

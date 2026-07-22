@@ -1,3 +1,8 @@
+/**
+ * Corporate CTA — final call-to-action section for the entreprises page.
+ * Dark background with headline, description, and CTA button.
+ * Features: GSAP fade-in animation and atmospheric gradient overlays.
+ */
 "use client";
 
 import { useRef, useEffect } from "react";

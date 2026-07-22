@@ -1,3 +1,8 @@
+/**
+ * FAQ Page — frequently asked questions with JSON-LD FAQPage schema.
+ * Renders the FaqSection component with GSAP-powered accordion.
+ * Includes breadcrumbs and SEO metadata with keywords.
+ */
 import type { Metadata } from "next";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -17,10 +22,6 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical: "https://www.wenaya.com/faq",
-    languages: {
-      "fr-MA": "https://www.wenaya.com/faq",
-      "en": "https://www.wenaya.com/faq",
-    },
   },
   openGraph: {
     title: "FAQ — Questions Fréquentes sur Wenaya",

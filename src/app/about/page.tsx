@@ -1,3 +1,9 @@
+/**
+ * About Page — server component assembling all about page sections.
+ * Sections: Hero, Why We Exist, Wenaya Approach, Expertise, Future Vision,
+ * Clinics overview (Hero + Programs), and Footer.
+ * Includes MedicalBusiness/Service structured data for SEO.
+ */
 import type { Metadata } from "next";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -26,10 +32,6 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical: "https://www.wenaya.com/about",
-    languages: {
-      "fr-MA": "https://www.wenaya.com/about",
-      "en": "https://www.wenaya.com/about",
-    },
   },
   openGraph: {
   title: "Cliniques — Wenaya, Première Plateforme de Santé Intégrée au Maroc",

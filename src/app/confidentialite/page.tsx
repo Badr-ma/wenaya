@@ -1,3 +1,8 @@
+/**
+ * Privacy Policy Page — legal page explaining data privacy practices.
+ * Client component that renders the privacy policy content with i18n.
+ * Includes metadata via separate layout.tsx (can't export Metadata from client components).
+ */
 "use client";
 
 import { useLocale } from "@/contexts/LanguageContext";

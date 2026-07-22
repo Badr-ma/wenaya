@@ -1,8 +1,13 @@
+/**
+ * Products API Route — serves product data as JSON for the /produits page.
+ * Supports search, filtering by goals/category/topics, and sorting.
+ * Reads from the French translations data and returns filtered results.
+ */
 import { NextRequest, NextResponse } from "next/server";
 import fr from "@/i18n/fr";
 import en from "@/i18n/en";
 
-export const runtime = "nodejs";
+export const runtime = "nodejs"; // Required for fs access in some environments
 
 type ProductItem = {
   slug: string;

@@ -1,3 +1,9 @@
+/**
+ * Filter Dropdown — reusable dropdown component for filter options.
+ * MinimalDropdown: compact version for the nav filter bar.
+ * Full FilterDropdown: larger version for the page filter section.
+ * Both support multi-select and click-outside-to-close.
+ */
 "use client";
 
 import { useState, useRef, useEffect } from "react";

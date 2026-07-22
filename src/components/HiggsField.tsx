@@ -1,3 +1,8 @@
+/**
+ * HiggsField — interactive particle field visualization used as a background effect.
+ * Renders animated particles that respond to mouse movement on a canvas element.
+ * Used inside the PratiquesGrid for visual flair.
+ */
 "use client";
 
 import { useRef, useEffect } from "react";

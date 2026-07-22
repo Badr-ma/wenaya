@@ -1,3 +1,8 @@
+/**
+ * Comparison Table — side-by-side comparison of Wenaya vs traditional healthcare.
+ * Highlights Wenaya's advantages in a visual table format with checkmarks and X marks.
+ * Features: GSAP scroll-triggered fade-in animation.
+ */
 "use client";
 
 import Link from "next/link";

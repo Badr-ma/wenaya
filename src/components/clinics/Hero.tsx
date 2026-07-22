@@ -1,3 +1,8 @@
+/**
+ * Clinics Hero — hero section for the clinic/clinics page.
+ * Two-column: headline, description, and CTA on left; clinic image on right.
+ * Features: GSAP entrance animations and founding year badge.
+ */
 "use client";
 
 import Link from "next/link";

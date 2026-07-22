@@ -1,3 +1,8 @@
+/**
+ * Pricing section — displays three pricing tiers for Wenaya services.
+ * Each card shows price, features, and a CTA. Features: GSAP staggered
+ * fade-in animation on scroll, and a "most popular" badge on the middle card.
+ */
 "use client";
 
 import { useRef, useEffect } from "react";

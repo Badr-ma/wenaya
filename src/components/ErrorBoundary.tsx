@@ -1,3 +1,7 @@
+/**
+ * Error Boundary — React class component that catches JavaScript errors
+ * in its child tree and renders a fallback UI instead of crashing the page.
+ */
 "use client";
 
 import { Component, ReactNode } from "react";

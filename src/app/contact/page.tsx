@@ -1,3 +1,9 @@
+/**
+ * Contact Page — contact form and clinic information.
+ * Features: form with name/email/subject/message fields, validation, success state,
+ * clinic address, phone, email, and Google Maps embed.
+ * Client component with i18n translations.
+ */
 "use client";
 
 import Link from "next/link";

@@ -1,3 +1,9 @@
+/**
+ * Programs Section — displays the corporate wellness program tiers.
+ * Interactive card-based UI with expandable details for each program level.
+ * Features: tabbed navigation between program types, image carousels,
+ * and CTA links to contact form.
+ */
 "use client";
 
 import { useRef, useEffect, useState, useCallback } from "react";
@@ -20,7 +26,7 @@ const cardImages = [
 ];
 
 const EDGE_PX = 130;
-const EDGE_PX_MOBILE = 50;
+const EDGE_PX_MOBILE = 24;
 const SIDE_SCALE = 0.82;
 const SIDE_OPACITY = 0.4;
 const SPRING = { type: "spring" as const, stiffness: 500, damping: 35, mass: 0.5 };
@@ -53,7 +59,7 @@ function CardContent({
         boxShadow: "0 20px 60px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.06)",
       }}
     >
-      <div className="relative h-[40%] sm:h-[48%] min-h-[120px] sm:min-h-[160px] overflow-hidden shrink-0">
+      <div className="relative h-[35%] sm:h-[48%] min-h-[90px] sm:min-h-[160px] overflow-hidden shrink-0">
         <Image src={image} alt="" fill className="object-cover" sizes="600px" draggable={false} />
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
         <div className="absolute top-3 left-3 sm:top-5 sm:left-5">
@@ -63,24 +69,24 @@ function CardContent({
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col justify-between p-3 sm:p-5 min-h-0">
+      <div className="flex-1 flex flex-col justify-between p-2.5 sm:p-5 min-h-0">
         <div>
-          <h3 className="heading-serif text-[#0B1220] text-lg sm:text-2xl font-semibold leading-tight">
+          <h3 className="heading-serif text-[#0B1220] text-base sm:text-2xl font-semibold leading-tight">
             {program.name}
           </h3>
-          <p className="text-[#B88A5A] text-[10px] sm:text-xs font-medium mt-1">{program.pitch}</p>
-          <p className="text-[#2B2F36]/50 text-xs sm:text-[13px] leading-relaxed mt-2 line-clamp-2">{program.desc}</p>
+          <p className="text-[#B88A5A] text-[9px] sm:text-xs font-medium mt-0.5 sm:mt-1">{program.pitch}</p>
+          <p className="text-[#2B2F36]/50 text-[11px] sm:text-[13px] leading-snug sm:leading-relaxed mt-1.5 sm:mt-2 line-clamp-2">{program.desc}</p>
         </div>
 
-        <div className="flex items-center justify-between pt-2 sm:pt-3 mt-2 border-t border-[#0B1220]/[0.05] shrink-0">
-          <div className="space-y-0.5 min-w-0">
-            <div className="flex items-center gap-1 sm:gap-1.5 text-[#2B2F36]/40 text-[10px] sm:text-xs">
+        <div className="flex items-center justify-between gap-2 pt-2 sm:pt-3 mt-1.5 sm:mt-2 border-t border-[#0B1220]/[0.05] shrink-0">
+          <div className="space-y-0 min-w-0">
+            <div className="flex items-center gap-1 sm:gap-1.5 text-[#2B2F36]/40 text-[9px] sm:text-xs">
               <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <span className="truncate">{program.format}</span>
             </div>
-            <div className="flex items-center gap-1 sm:gap-1.5 text-[#2B2F36]/30 text-[10px] sm:text-xs">
+            <div className="flex items-center gap-1 sm:gap-1.5 text-[#2B2F36]/30 text-[9px] sm:text-xs">
               <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
               </svg>
@@ -89,9 +95,9 @@ function CardContent({
           </div>
           <Link
             href={`/solutions/entreprises/programmes#${program.link.split("/").pop()}`}
-            className="px-3 sm:px-5 h-8 sm:h-9 rounded-full bg-[#0B1220] text-white text-[10px] sm:text-xs font-semibold tracking-wide hover:bg-[#B88A5A] transition-colors duration-300 shrink-0 inline-flex items-center"
+            className="px-2.5 sm:px-5 h-7 sm:h-9 rounded-full bg-[#0B1220] text-white text-[9px] sm:text-xs font-semibold tracking-wide hover:bg-[#B88A5A] transition-colors duration-300 shrink-0 inline-flex items-center whitespace-nowrap"
           >
-            Discover Program
+            Discover
           </Link>
         </div>
       </div>
@@ -182,7 +188,7 @@ export default function ProgrammesSection() {
           <button
             onClick={() => navigate(-1)}
             aria-label="Previous program"
-            className="flex w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#0B1220]/[0.15] items-center justify-center text-[#0B1220]/30 hover:border-[#B88A5A]/50 hover:text-[#B88A5A] transition-colors duration-200 shrink-0 z-10"
+            className="flex w-11 h-11 sm:w-10 sm:h-10 rounded-full border border-[#0B1220]/[0.15] items-center justify-center text-[#0B1220]/30 hover:border-[#B88A5A]/50 hover:text-[#B88A5A] transition-colors duration-200 shrink-0 z-10"
           >
             <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -237,7 +243,7 @@ export default function ProgrammesSection() {
           <button
             onClick={() => navigate(1)}
             aria-label="Next program"
-            className="flex w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#0B1220]/[0.15] items-center justify-center text-[#0B1220]/30 hover:border-[#B88A5A]/50 hover:text-[#B88A5A] transition-colors duration-200 shrink-0 z-10"
+            className="flex w-11 h-11 sm:w-10 sm:h-10 rounded-full border border-[#0B1220]/[0.15] items-center justify-center text-[#0B1220]/30 hover:border-[#B88A5A]/50 hover:text-[#B88A5A] transition-colors duration-200 shrink-0 z-10"
           >
             <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />

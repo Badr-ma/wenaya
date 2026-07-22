@@ -1,13 +1,20 @@
+/**
+ * Global CSS — Tailwind v4 config, design tokens, base styles, and utility animations.
+ * Theme colors are defined here and used throughout all components.
+ */
 @import "tailwindcss";
 
+/** Tailwind v4 theme tokens — extends default Tailwind with custom colors, fonts, and spacing */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+/** Font families — mapped from CSS variables set by next/font/google in layout.tsx */
   --font-sans: var(--font-open-sans), "Open Sans", ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-nunito), "Nunito", ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-cormorant), "Cormorant Garamond", ui-serif, Georgia, serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
+  /** Brand colors — deep navy, bronze, warm sand, ivory, graphite, and YOLO section colors */
   --color-deep-navy: #0B1220;
   --color-bronze: #B88A5A;
   --color-warm-sand: #F2EFE9;
@@ -17,6 +24,7 @@
   --color-yolo-orange: #AA412A;
 }
 
+/** CSS custom properties — default background (warm sand) and foreground (deep navy) */
 :root {
   --background: #F2EFE9;
   --foreground: #0B1220;
@@ -26,6 +34,7 @@ html {
   scroll-behavior: auto;
 }
 
+/** Global body styles — sets default background, text color, font, and prevents horizontal scroll */
 body {
   background: var(--background);
   color: var(--foreground);
@@ -33,11 +42,13 @@ body {
   overflow-x: hidden;
 }
 
+/** Text selection color — bronze highlight when user selects text */
 ::selection {
   background-color: #B88A5A;
   color: white;
 }
 
+/** Noise texture overlay — adds subtle grain to sections for premium feel */
 .noise {
   position: relative;
 }
@@ -51,6 +62,7 @@ body {
   background-size: 128px;
 }
 
+/** Bronze accent line — decorative top-line on section headers */
 .accent-top::after {
   content: "";
   position: absolute;
@@ -63,6 +75,7 @@ body {
   opacity: 0.25;
 }
 
+/** Lenis smooth scroll overrides — disables native scroll-behavior, prevents overscroll on iframes */
 .lenis.lenis-smooth {
   scroll-behavior: auto;
 }
@@ -79,6 +92,7 @@ body {
   pointer-events: none;
 }
 
+/** Utility class — serif heading style used for section titles */
 .heading-serif {
   font-family: var(--font-serif);
   font-weight: 500;
@@ -86,11 +100,13 @@ body {
   letter-spacing: -0.01em;
 }
 
+/** Responsive section padding — clamps between 2.5rem and 4rem based on viewport width */
 .section-padding {
   padding-top: clamp(2.5rem, 5vw, 4rem);
   padding-bottom: clamp(2.5rem, 5vw, 4rem);
 }
 
+/** Keyframe animations — marquee (horizontal scroll), progress bar, and soft pulse */
 @keyframes marquee {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
@@ -124,5 +140,24 @@ body {
 }
 
 .animate-pulse-soft { animation: pulse-soft 3s ease-in-out infinite; }
+
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Leaflet map custom marker */
+.custom-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12) !important;
+}
+
+.leaflet-popup-content {
+  margin: 12px !important;
+  font-family: var(--font-open-sans), "Open Sans", sans-serif !important;
+}
 
 

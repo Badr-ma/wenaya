@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 
+const BASE = "https://www.wenaya.com";
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
@@ -9,6 +11,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/api/", "/login"],
       },
     ],
-    sitemap: "https://www.wenaya.com/sitemap.xml",
+    sitemap: `${BASE}/sitemap.xml`,
   };
 }

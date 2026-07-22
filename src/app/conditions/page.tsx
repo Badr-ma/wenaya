@@ -1,3 +1,8 @@
+/**
+ * Terms & Conditions Page — legal page with general terms of use.
+ * Client component that renders terms content with i18n.
+ * Includes metadata via separate layout.tsx.
+ */
 "use client";
 
 import { useLocale } from "@/contexts/LanguageContext";

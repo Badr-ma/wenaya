@@ -1,3 +1,8 @@
+/**
+ * Biomarkers Section — interactive visualization showing 6 key health biomarkers.
+ * Features: animated card grid with GSAP, hover effects, and a CTA button.
+ * Displays biomarker categories (blood pressure, glucose, cholesterol, etc.)
+ */
 "use client";
 
 import { useRef, useEffect } from "react";
@@ -77,8 +82,8 @@ export default function Biomarkers(): React.JSX.Element {
           {pillars.map((p, i) => {
             const col = i % 3;
             const row = Math.floor(i / 3);
-            const borderRight = col < 2 ? "border-r border-r-[#0B1220]/[0.07]" : "";
-            const borderBottom = row < 1 ? "border-b border-b-[#0B1220]/[0.07]" : "";
+            const borderRight = col < 2 ? "sm:border-r sm:border-r-[#0B1220]/[0.07]" : "";
+            const borderBottom = row < 1 ? "border-b border-b-[#0B1220]/[0.07] sm:border-b" : "";
 
             return (
               <div

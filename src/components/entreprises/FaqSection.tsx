@@ -1,3 +1,8 @@
+/**
+ * Corporate FAQ Section — accordion-style frequently asked questions for the entreprises page.
+ * Features: Framer Motion expand/collapse animations, GSAP scroll-triggered entrance,
+ * and single-open accordion behavior.
+ */
 "use client";
 
 import { useRef, useEffect, useState } from "react";

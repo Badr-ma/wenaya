@@ -1,7 +1,13 @@
+/**
+ * Blog data layer — reads MDX blog posts from the filesystem,
+ * parses frontmatter with gray-matter, and exports typed data models.
+ * Used by the homepage, blog listing page, blog post pages, and sitemap.
+ */
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 
+/** Author model — represents a blog post author with avatar and bio */
 export interface Author {
   id: string;
   name: string;
@@ -10,6 +16,7 @@ export interface Author {
   bio: string;
 }
 
+/** Category model — groups blog posts into topics (longevity, biomarkers, etc.) */
 export interface Category {
   id: string;
   name: string;
@@ -17,6 +24,7 @@ export interface Category {
   description: string;
 }
 
+/** Post model — represents a single blog post with all metadata from MDX frontmatter */
 export interface Post {
   slug: string;
   title: string;
@@ -34,6 +42,7 @@ export interface Post {
   readingTime: number;
 }
 
+/** Static author data — hardcoded list of blog authors */
 export const authors: Author[] = [
   {
     id: "1",
@@ -58,6 +67,7 @@ export const authors: Author[] = [
   },
 ];
 
+/** Static category data — predefined blog categories with slugs for URL routing */
 export const categories: Category[] = [
   { id: "1", name: "Longevity", slug: "longevity", description: "The science of extending healthy lifespan." },
   { id: "2", name: "Biomarkers", slug: "biomarkers", description: "Understanding the data behind your health." },
@@ -66,8 +76,10 @@ export const categories: Category[] = [
   { id: "5", name: "Prevention", slug: "prevention", description: "Proactive strategies for optimal health." },
 ];
 
+/** Directory path to the MDX blog content files */
 const CONTENT_DIR = path.join(process.cwd(), "src", "content", "blog");
 
+/** Parses a single MDX file — extracts frontmatter and body content into a Post object */
 function parseMdxFile(filePath: string): Post | null {
   const raw = fs.readFileSync(filePath, "utf-8");
   const { data, content } = matter(raw);
@@ -92,6 +104,7 @@ function parseMdxFile(filePath: string): Post | null {
   };
 }
 
+/** Returns all blog posts (drafts + published), sorted by published date descending */
 export function getAllPosts(): Post[] {
   if (!fs.existsSync(CONTENT_DIR)) return [];
   const files = fs.readdirSync(CONTENT_DIR).filter((f) => f.endsWith(".mdx"));
@@ -101,10 +114,12 @@ export function getAllPosts(): Post[] {
     .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 }
 
+/** Returns only published blog posts — used for public-facing blog pages and sitemap */
 export function getPublishedPosts(): Post[] {
   return getAllPosts().filter((p) => p.status === "published");
 }
 
+/** Finds a single blog post by its URL slug — returns undefined if not found */
 export function getPostBySlug(slug: string): Post | undefined {
   return getAllPosts().find((p) => p.slug === slug);
 }

@@ -1,3 +1,8 @@
+/**
+ * Modularity Section — explains Wenaya's modular approach to corporate wellness.
+ * Two-column layout: text on left explaining flexibility, image on right.
+ * GSAP scroll-triggered fade-in animations.
+ */
 "use client";
 
 import { useRef, useEffect } from "react";

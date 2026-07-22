@@ -1,3 +1,8 @@
+/**
+ * Login Page — patient login form with email/password fields.
+ * Client component with form validation and success/error states.
+ * Marked noindex in layout metadata (not for search engines).
+ */
 "use client";
 
 import Link from "next/link";

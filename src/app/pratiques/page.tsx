@@ -1,3 +1,8 @@
+/**
+ * Pratiques Page — listing of all wellness practices (kinésithérapie, psychologie, etc.).
+ * Renders the PratiquesGrid component with search, filters, and animated card grid.
+ * Includes breadcrumbs, SEO metadata, and Footer.
+ */
 import type { Metadata } from "next";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -10,10 +15,6 @@ export const metadata: Metadata = {
     "Découvrez toutes les pratiques Wenaya : kinésithérapie, ostéopathie, psychologie clinique, neuropsychologie, nutrition, orthophonie, naturopathie, psychomotricité et thérapies complémentaires à Casablanca.",
   alternates: {
     canonical: "https://www.wenaya.com/pratiques",
-    languages: {
-      "fr-MA": "https://www.wenaya.com/pratiques",
-      "en": "https://www.wenaya.com/pratiques",
-    },
   },
   openGraph: {
     title: "Nos Pratiques — Wenaya",

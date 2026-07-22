@@ -1,3 +1,8 @@
+/**
+ * Blog Section — homepage preview of the 3 latest blog posts.
+ * Displays post cards with featured image, category badge, title, excerpt, and author.
+ * Features: GSAP staggered fade-in, "View All Posts" CTA link to /blog.
+ */
 "use client";
 
 import { useRef, useEffect } from "react";

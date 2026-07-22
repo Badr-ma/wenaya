@@ -1,3 +1,8 @@
+/**
+ * How It Works — step-by-step process for implementing corporate wellness.
+ * Shows 4 steps: Assessment → Design → Launch → Measure.
+ * Features: numbered indicators, GSAP scroll animations, and a CTA.
+ */
 "use client";
 
 import { useRef, useEffect } from "react";

@@ -1,3 +1,8 @@
+/**
+ * Thématiques Section — showcases the different wellness themes Wenaya covers
+ * (mental health, musculoskeletal, nutrition, stress management).
+ * Features: image cards in a grid layout with GSAP scroll animations.
+ */
 "use client";
 
 import { useRef, useEffect } from "react";

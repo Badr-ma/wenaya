@@ -1,3 +1,8 @@
+/**
+ * FAQ Section — accordion-style frequently asked questions.
+ * Each question expands/collapses on click with smooth height animation.
+ * Features: GSAP scroll-triggered stagger animation, single-open accordion behavior.
+ */
 "use client";
 
 import { useRef, useEffect, useState } from "react";

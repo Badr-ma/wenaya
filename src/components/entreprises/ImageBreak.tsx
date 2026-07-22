@@ -1,3 +1,7 @@
+/**
+ * Image Break — full-width parallax image section that breaks up the content flow.
+ * Shows a corporate wellness photograph with overlay text. GSAP scroll-driven parallax.
+ */
 "use client";
 
 import { useRef, useEffect } from "react";

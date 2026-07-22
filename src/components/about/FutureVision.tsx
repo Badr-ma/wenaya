@@ -1,3 +1,8 @@
+/**
+ * Future Vision — forward-looking section about where Wenaya is heading.
+ * Two-column: text about expansion and innovation on left, future vision image on right.
+ * GSAP scroll-triggered animations.
+ */
 "use client";
 
 import { useRef, useEffect } from "react";
