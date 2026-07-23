@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import SpecialistsList from "@/components/specialistes/SpecialistsList";
 import Footer from "@/components/Footer";
-import { getAllSpecialists } from "@/lib/specialistes";
+import { getAllSpecialistsAsync } from "@/lib/specialistes";
 
 export const metadata: Metadata = {
   title: "Nos Spécialistes — Wenaya Casablanca",
@@ -17,8 +17,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function SpecialistsPage() {
-  const specialists = getAllSpecialists();
+export default async function SpecialistsPage() {
+  const specialists = await getAllSpecialistsAsync();
 
   const jsonLd = {
     "@context": "https://schema.org",

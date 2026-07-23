@@ -2,19 +2,20 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import SpecialistDetail from "@/components/specialistes/SpecialistDetail";
-import { getSpecialistBySlug, getAllSpecialists } from "@/lib/specialistes";
+import { getSpecialistBySlugAsync, getAllSpecialistsAsync } from "@/lib/specialistes";
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
+  const { getAllSpecialists } = await import("@/lib/specialistes");
   return getAllSpecialists().map((s) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const specialist = getSpecialistBySlug(slug);
+  const specialist = await getSpecialistBySlugAsync(slug);
   if (!specialist) return {};
 
   const description = `${specialist.name}, ${specialist.role} à Casablanca. ${specialist.yearsExperience} ans d'expérience. ${specialist.specialtyTags.slice(0, 3).join(", ")}. Note ${specialist.rating}/5 (${specialist.reviewCount} avis).`;
@@ -42,7 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function SpecialistPage({ params }: Props) {
   const { slug } = await params;
-  const specialist = getSpecialistBySlug(slug);
+  const specialist = await getSpecialistBySlugAsync(slug);
   if (!specialist) notFound();
 
   const jsonLd = {

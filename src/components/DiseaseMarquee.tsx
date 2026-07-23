@@ -1,21 +1,52 @@
 /**
  * Disease Marquee — infinite horizontal scrolling ticker showing wellness topics and conditions.
- * Two rows: one scrolling left, one scrolling right. Used on the homepage for visual interest.
- * Features: GSAP-controlled animation with pause-on-hover.
+ * Three rows scrolling in alternating directions. Used on the homepage for visual interest.
+ * Fetches editable data from Redis (via API), falls back to i18n hardcoded values.
  */
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
 
+interface MarqueeData {
+  badge: string;
+  heading1: string;
+  heading2: string;
+  sub: string;
+  specialites: string[];
+  services: string[];
+  therapies: string[];
+  pillShape?: "pill" | "square" | "rounded";
+}
+
 export default function DiseaseMarquee(): React.JSX.Element {
   const { t, tRaw } = useLocale();
-  const servicesRow1 = [...tRaw<string[]>("diseaseMarquee.specialites"), ...tRaw<string[]>("diseaseMarquee.specialites")];
-  const servicesRow2 = [...tRaw<string[]>("diseaseMarquee.services"), ...tRaw<string[]>("diseaseMarquee.services")];
-  const servicesRow3 = [...tRaw<string[]>("diseaseMarquee.therapies"), ...tRaw<string[]>("diseaseMarquee.therapies")];
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
+
+  const [remote, setRemote] = useState<MarqueeData | null>(null);
+
+  useEffect(() => {
+    fetch("/api/admin/specialties")
+      .then((r) => r.json())
+      .then((j) => {
+        if (j.source === "redis" && j.data) setRemote(j.data);
+      })
+      .catch(() => {});
+  }, []);
+
+  const badge = remote?.badge ?? t("diseaseMarquee.badge");
+  const heading1 = remote?.heading1 ?? t("diseaseMarquee.heading1");
+  const heading2 = remote?.heading2 ?? t("diseaseMarquee.heading2");
+  const sub = remote?.sub ?? t("diseaseMarquee.sub");
+  const row1Src = remote?.specialites ?? tRaw<string[]>("diseaseMarquee.specialites");
+  const row2Src = remote?.services ?? tRaw<string[]>("diseaseMarquee.services");
+  const row3Src = remote?.therapies ?? tRaw<string[]>("diseaseMarquee.therapies");
+
+  const servicesRow1 = [...row1Src, ...row1Src];
+  const servicesRow2 = [...row2Src, ...row2Src];
+  const servicesRow3 = [...row3Src, ...row3Src];
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -38,27 +69,33 @@ export default function DiseaseMarquee(): React.JSX.Element {
     return () => ctx.revert();
   }, []);
 
+  const shapeClass = remote?.pillShape === "square"
+    ? "rounded-none"
+    : remote?.pillShape === "rounded"
+      ? "rounded-lg"
+      : "rounded-full";
+
   const pillClass =
-    "inline-block mx-2 px-4 py-2 rounded-full bg-white border border-[#0B1220]/[0.04] text-[#2B2F36]/50 text-sm font-medium transition-all duration-300 hover:bg-[rgba(184,138,90,0.08)] hover:border-[#B88A5A]/30 hover:text-[#0B1220] hover:scale-105";
+    `inline-block mx-2 px-4 py-2 ${shapeClass} bg-white border border-[#0B1220]/[0.04] text-[#2B2F36]/50 text-sm font-medium transition-all duration-300 hover:bg-[rgba(184,138,90,0.08)] hover:border-[#B88A5A]/30 hover:text-[#0B1220] hover:scale-105`;
 
   return (
     <section ref={sectionRef} className="bg-[#F2EFE9] py-10 sm:py-18 overflow-hidden">
       <div ref={headingRef} className="text-center mb-8 sm:mb-12 px-6">
         <span className="text-[#B88A5A] font-semibold text-sm tracking-widest uppercase">
-          {t("diseaseMarquee.badge")}
+          {badge}
         </span>
         <h2 className="heading-serif text-3xl sm:text-4xl text-[#0B1220] mt-3 tracking-tight">
-          {t("diseaseMarquee.heading1")}{" "}
-<span style={{
-  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
-  WebkitBackgroundClip: "text",
-  WebkitTextFillColor: "transparent",
-}}>
-  {t("diseaseMarquee.heading2")}
-</span>
+          {heading1}{" "}
+          <span style={{
+            background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}>
+            {heading2}
+          </span>
         </h2>
         <p className="text-[#2B2F36]/60 text-sm mt-3 max-w-xl mx-auto">
-          {t("diseaseMarquee.sub")}
+          {sub}
         </p>
       </div>
 
