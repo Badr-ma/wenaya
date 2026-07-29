@@ -214,7 +214,7 @@ export default function SpecialistDetail({ specialist }: { specialist: Specialis
             </div>
             <div className="lg:col-span-7">
               <div className="sp-reveal rounded-xl overflow-hidden h-[300px] sm:h-[350px]">
-                <MapView specialists={[{ slug: specialist.slug, name: specialist.name, role: specialist.role, specialty: specialist.specialty, image: specialist.image, location: specialist.location }]} />
+                <MapView specialists={[{ slug: specialist.slug, name: specialist.name, role: specialist.role, specialty: specialist.specialty, image: specialist.image, location: specialist.location }]} activeSpecialistSlug={null} onPinClick={() => {}} />
               </div>
             </div>
           </div>

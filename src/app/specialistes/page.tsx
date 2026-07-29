@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import SpecialistsList from "@/components/specialistes/SpecialistsList";
+import SpecialistsPageBody from "@/components/specialistes/SpecialistsPage";
 import Footer from "@/components/Footer";
 import { getAllSpecialistsAsync } from "@/lib/specialistes";
 
@@ -44,7 +44,7 @@ export default async function SpecialistsPage() {
     <ErrorBoundary>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="flex flex-col min-h-screen">
-        <SpecialistsList specialists={specialists} />
+        <SpecialistsPageBody specialists={specialists} />
         <Footer />
       </div>
     </ErrorBoundary>

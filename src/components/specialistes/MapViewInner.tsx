@@ -1,6 +1,7 @@
 "use client";
 
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { useEffect, useRef } from "react";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import Link from "next/link";
 import "leaflet/dist/leaflet.css";
@@ -19,26 +20,35 @@ type SpecialistLocation = {
   };
 };
 
-const createSpecialistIcon = (specialty: string) => {
-  const colors: Record<string, string> = {
-    "Kinésithérapie": "#B88A5A",
-    "Médecine générale": "#0B1220",
-    "Ostéopathie": "#2B8A3E",
-    "Psychologie": "#5B21B6",
-    "Nutrition": "#DC2626",
-  };
+const colors: Record<string, string> = {
+  "Kinésithérapie": "#B88A5A",
+  "Médecine générale": "#0B1220",
+  "Ostéopathie": "#2B8A3E",
+  "Psychologie": "#5B21B6",
+  "Nutrition": "#DC2626",
+  "Naturopathie": "#D97706",
+  "Orthophonie": "#0891B2",
+  "Psychomotricité": "#7C3AED",
+  "Médecine du Sport": "#059669",
+};
+
+function createMarkerIcon(specialty: string, isActive: boolean) {
   const color = colors[specialty] || "#B88A5A";
+  const size = isActive ? 44 : 32;
+  const border = isActive ? "4px solid #FFD700" : "3px solid white";
+  const shadow = isActive ? "0 0 20px rgba(255,215,0,0.5)" : "0 2px 8px rgba(0,0,0,0.3)";
 
   return L.divIcon({
     className: "custom-marker",
     html: `<div style="
-      width: 32px;
-      height: 32px;
+      width: ${size}px;
+      height: ${size}px;
       background: ${color};
-      border: 3px solid white;
+      border: ${border};
       border-radius: 50% 50% 50% 0;
       transform: rotate(-45deg);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      box-shadow: ${shadow};
+      transition: all 0.3s ease;
     "><div style="
       width: 100%;
       height: 100%;
@@ -47,22 +57,99 @@ const createSpecialistIcon = (specialty: string) => {
       justify-content: center;
       transform: rotate(45deg);
       color: white;
-      font-size: 12px;
+      font-size: ${isActive ? 16 : 12}px;
       font-weight: bold;
-    "></div></div>`,
-    iconSize: [32, 42],
-    iconAnchor: [16, 42],
-    popupAnchor: [0, -42],
+    ">${isActive ? "●" : ""}</div></div>`,
+    iconSize: [size, size * 1.3],
+    iconAnchor: [size / 2, size * 1.3],
+    popupAnchor: [0, -size * 1.3],
   });
-};
+}
 
-export default function MapViewInner({ specialists }: { specialists: SpecialistLocation[] }) {
-  const center: [number, number] = [33.5731, -7.5898];
+function SpecialistMarker({
+  specialist,
+  isActive,
+  onPinClick,
+}: {
+  specialist: SpecialistLocation;
+  isActive: boolean;
+  onPinClick: (slug: string) => void;
+}) {
+  const markerRef = useRef<L.Marker | null>(null);
+
+  useEffect(() => {
+    const marker = markerRef.current;
+    if (!marker) return;
+    marker.setIcon(createMarkerIcon(specialist.specialty, isActive));
+    if (isActive) {
+      marker.openPopup();
+    }
+  }, [isActive, specialist.specialty]);
 
   return (
-    <div className="w-full h-[400px] rounded-xl overflow-hidden border border-[#0B1220]/10">
+    <Marker
+      ref={markerRef}
+      position={[specialist.location.lat, specialist.location.lng]}
+      icon={createMarkerIcon(specialist.specialty, false)}
+      eventHandlers={{
+        click: () => onPinClick(specialist.slug),
+      }}
+    >
+      <Popup>
+        <div className="p-1 min-w-[180px]">
+          <div className="flex items-center gap-3 mb-2">
+            <img
+              src={specialist.image}
+              alt={specialist.name}
+              className="w-10 h-10 rounded-full object-cover"
+            />
+            <div>
+              <h3 className="font-semibold text-sm text-[#0B1220]">{specialist.name}</h3>
+              <p className="text-xs text-[#2B2F36]/60">{specialist.role}</p>
+            </div>
+          </div>
+          <p className="text-xs text-[#2B2F36]/50 mb-2">{specialist.location.address}</p>
+          <Link
+            href={`/specialistes/${specialist.slug}`}
+            className="inline-block text-xs font-medium text-[#B88A5A] hover:text-[#B88A5A]/70 transition-colors"
+          >
+            See profile →
+          </Link>
+        </div>
+      </Popup>
+    </Marker>
+  );
+}
+
+function FitBoundsOnLoad({ specialists }: { specialists: SpecialistLocation[] }) {
+  const map = useMap();
+  const fitted = useRef(false);
+
+  useEffect(() => {
+    if (fitted.current || specialists.length === 0) return;
+    fitted.current = true;
+    const bounds = L.latLngBounds(
+      specialists.map((s) => [s.location.lat, s.location.lng] as [number, number])
+    );
+    map.fitBounds(bounds, { padding: [60, 60] });
+  }, [map, specialists]);
+
+  return null;
+}
+
+export default function MapViewInner({
+  specialists,
+  activeSpecialistSlug,
+  onPinClick,
+}: {
+  specialists: SpecialistLocation[];
+  activeSpecialistSlug: string | null;
+  onPinClick: (slug: string) => void;
+}) {
+  return (
+    <div className="w-full h-full rounded-xl overflow-hidden border border-[#0B1220]/10">
       <MapContainer
-        center={center}
+        center={[33.5731, -7.5898]}
         zoom={13}
         scrollWheelZoom={false}
         style={{ height: "100%", width: "100%" }}
@@ -71,35 +158,14 @@ export default function MapViewInner({ specialists }: { specialists: SpecialistL
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+        <FitBoundsOnLoad specialists={specialists} />
         {specialists.map((specialist) => (
-          <Marker
+          <SpecialistMarker
             key={specialist.slug}
-            position={[specialist.location.lat, specialist.location.lng]}
-            icon={createSpecialistIcon(specialist.specialty)}
-          >
-            <Popup>
-              <div className="p-1 min-w-[180px]">
-                <div className="flex items-center gap-3 mb-2">
-                  <img
-                    src={specialist.image}
-                    alt={specialist.name}
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
-                  <div>
-                    <h3 className="font-semibold text-sm text-[#0B1220]">{specialist.name}</h3>
-                    <p className="text-xs text-[#2B2F36]/60">{specialist.role}</p>
-                  </div>
-                </div>
-                <p className="text-xs text-[#2B2F36]/50 mb-2">{specialist.location.address}</p>
-                <Link
-                  href={`/specialistes/${specialist.slug}`}
-                  className="inline-block text-xs font-medium text-[#B88A5A] hover:text-[#B88A5A]/70 transition-colors"
-                >
-                  Voir le profil →
-                </Link>
-              </div>
-            </Popup>
-          </Marker>
+            specialist={specialist}
+            isActive={activeSpecialistSlug === specialist.slug}
+            onPinClick={onPinClick}
+          />
         ))}
       </MapContainer>
     </div>

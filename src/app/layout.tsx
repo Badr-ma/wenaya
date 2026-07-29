@@ -12,6 +12,7 @@ import Nav from "@/components/Nav";
 import GsapInit from "@/components/GsapInit";
 import LenisProvider from "@/components/LenisProvider";
 import CorporateConsultationWidget from "@/components/CorporateConsultationWidget";
+import ScrollToTop from "@/components/ScrollToTop";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 
 /** Nunito — used for headings and UI text via --font-heading CSS variable */
@@ -210,8 +211,9 @@ gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', { page_path: window.location.
         {/* LanguageProvider — i18n context wrapping the entire app, enables useLocale() and t() */}
         <LanguageProvider>
           <GsapInit /> {/* Registers GSAP plugins globally (ScrollTrigger, etc.) */}
+          <Nav /> {/* Global navigation bar — fixed position, theme-aware — placed outside Lenis so position:fixed works correctly */}
           <LenisProvider> {/* Enables Lenis smooth scrolling across the site */}
-            <Nav /> {/* Global navigation bar — fixed position, theme-aware */}
+            <ScrollToTop />
             {children} {/* Page content rendered here */}
             <CorporateConsultationWidget /> {/* Floating consultation pill on /solutions/entreprises */}
           </LenisProvider>
