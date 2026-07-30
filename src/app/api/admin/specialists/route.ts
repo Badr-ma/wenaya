@@ -5,14 +5,10 @@
  */
 import { NextRequest, NextResponse } from "next/server";
 import { getRedis } from "@/lib/redis";
-import { verifyToken } from "@/lib/admin-auth";
+import { verifyToken, getTokenFromRequest } from "@/lib/admin-auth";
 import { specialists as defaults, type Specialist } from "@/lib/specialistes";
 
 const KEY = "admin:specialists";
-
-function authHeader(req: NextRequest): string | null {
-  return req.headers.get("authorization")?.replace("Bearer ", "") || null;
-}
 
 export async function GET() {
   const redis = getRedis();
@@ -32,7 +28,7 @@ export async function GET() {
 }
 
 export async function PUT(req: NextRequest) {
-  const token = authHeader(req);
+  const token = getTokenFromRequest(req);
   if (!token || !verifyToken(token).valid) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -60,7 +56,7 @@ export async function PUT(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const token = authHeader(req);
+  const token = getTokenFromRequest(req);
   if (!token || !verifyToken(token).valid) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }

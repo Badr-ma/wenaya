@@ -5,6 +5,7 @@
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import { getRedis } from "./redis";
+import type { NextRequest } from "next/server";
 
 const TOKEN_TTL_MS = 60 * 60 * 1000; // 1 hour
 const BCRYPT_ROUNDS = 10;
@@ -91,4 +92,30 @@ export function verifyToken(token: string): { valid: boolean; username?: string 
   } catch {
     return { valid: false };
   }
+}
+
+/* ── Cookie-based auth ── */
+
+export function getTokenFromRequest(req: NextRequest): string | null {
+  // Check Authorization header first
+  const auth = req.headers.get("authorization")?.replace("Bearer ", "");
+  if (auth) return auth;
+
+  // Fall back to cookie
+  const cookie = req.cookies.get("wenaya_admin_token")?.value;
+  return cookie || null;
+}
+
+export function setAuthCookie(response: Response, token: string): void {
+  response.headers.set(
+    "Set-Cookie",
+    `wenaya_admin_token=${token}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=3600`
+  );
+}
+
+export function clearAuthCookie(response: Response): void {
+  response.headers.set(
+    "Set-Cookie",
+    "wenaya_admin_token=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0"
+  );
 }

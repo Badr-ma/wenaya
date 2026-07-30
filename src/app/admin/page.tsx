@@ -1,11 +1,7 @@
-/**
- * Admin Dashboard — edit DiseaseMarquee content and specialist profiles.
- * Password-protected. All edits persist to Upstash Redis (if configured).
- * Falls back to hardcoded defaults when Redis is unavailable.
- */
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import HomepageEditor from "@/components/admin/HomepageEditor";
 
 /* ── Types ── */
 
@@ -61,7 +57,91 @@ async function apiFetch(url: string, token: string, init?: RequestInit) {
   });
 }
 
-/* ── List editor ── */
+/* ── Login component ── */
+
+function LoginForm({
+  onLogin,
+}: {
+  onLogin: (token: string, user: { username: string; name: string }) => void;
+}) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [authError, setAuthError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const login = async () => {
+    setAuthError("");
+    setLoading(true);
+    try {
+      const res = await fetch("/api/admin/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setAuthError(data.error || "Login failed");
+        setLoading(false);
+        return;
+      }
+      const user = { username: data.username, name: data.name };
+      localStorage.setItem("wenaya_admin_token", data.token);
+      localStorage.setItem("wenaya_admin_user", JSON.stringify(user));
+      onLogin(data.token, user);
+    } catch {
+      setAuthError("Network error");
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#F2EFE9] flex items-center justify-center px-6">
+      <div className="w-full max-w-sm">
+        <div
+          className="bg-white/70 backdrop-blur-xl rounded-3xl p-8 border border-[#0B1220]/[0.06]"
+          style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.06)" }}
+        >
+          <h1 className="text-center font-heading text-[#0B1220] text-2xl font-bold mb-1">Wenaya Admin</h1>
+          <p className="text-center text-[#2B2F36]/40 text-xs mb-6">Content management</p>
+          <form
+            onSubmit={(e) => { e.preventDefault(); login(); }}
+            className="space-y-4"
+          >
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Username"
+              autoFocus
+              className="w-full rounded-xl border border-[#0B1220]/[0.08] bg-white/80 px-4 py-3 text-sm text-[#0B1220] placeholder-[#2B2F36]/25 outline-none focus:border-[#B88A5A]/40 focus:shadow-[0_0_0_3px_rgba(184,138,90,0.08)] transition-all"
+            />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              className="w-full rounded-xl border border-[#0B1220]/[0.08] bg-white/80 px-4 py-3 text-sm text-[#0B1220] placeholder-[#2B2F36]/25 outline-none focus:border-[#B88A5A]/40 focus:shadow-[0_0_0_3px_rgba(184,138,90,0.08)] transition-all"
+            />
+            {authError && <p className="text-red-500 text-xs">{authError}</p>}
+            <button
+              type="submit"
+              disabled={loading || !username || !password}
+              className="w-full h-11 rounded-xl text-white text-sm font-semibold transition-all disabled:opacity-40"
+              style={{
+                background: "linear-gradient(135deg, #B88A5A 0%, #9A7242 100%)",
+                boxShadow: "0 1px 0 rgba(255,255,255,0.14) inset, 0 4px 16px rgba(184,138,90,0.28)",
+              }}
+            >
+              {loading ? "..." : "Log in"}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── List editor (reused from specialists/marquee) ── */
 
 function ListEditor({
   label,
@@ -122,17 +202,122 @@ function ListEditor({
   );
 }
 
-/* ── Main page ── */
+/* ── Specialist editor ── */
+
+function SpecialistEditor({
+  specialist: s,
+  idx,
+  onUpdate,
+  onUpdateService,
+}: {
+  specialist: Specialist;
+  idx: number;
+  onUpdate: (idx: number, field: string, value: unknown) => void;
+  onUpdateService: (specIdx: number, svcIdx: number, field: string, value: string) => void;
+}) {
+  const field = (label: string, field: string, opts?: { rows?: number }) => (
+    <div>
+      <label className="block text-xs font-medium text-[#2B2F36]/60 mb-1">{label}</label>
+      {opts?.rows ? (
+        <textarea
+          value={String(s[field] ?? "")}
+          onChange={(e) => onUpdate(idx, field, e.target.value)}
+          rows={opts.rows}
+          className="w-full px-3 py-2 rounded-lg border border-[#0B1220]/[0.08] bg-white text-[13px] text-[#0B1220] outline-none focus:border-[#B88A5A]/40 transition-colors resize-none"
+        />
+      ) : (
+        <input
+          value={String(s[field] ?? "")}
+          onChange={(e) => onUpdate(idx, field, e.target.value)}
+          className="w-full px-3 py-2 rounded-lg border border-[#0B1220]/[0.08] bg-white text-[13px] text-[#0B1220] outline-none focus:border-[#B88A5A]/40 transition-colors"
+        />
+      )}
+    </div>
+  );
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {field("Name", "name")}
+        {field("Role", "role")}
+        {field("Specialty", "specialty")}
+        {field("Order #", "orderNumber")}
+        {field("Image URL", "image")}
+        {field("Rating", "rating")}
+        {field("Review count", "reviewCount")}
+        {field("Years of experience", "yearsExperience")}
+      </div>
+
+      {field("Bio", "bio", { rows: 3 })}
+      {field("Approach", "approach", { rows: 3 })}
+
+      <div>
+        <label className="block text-xs font-medium text-[#2B2F36]/60 mb-1">Languages (comma-separated)</label>
+        <input
+          value={Array.isArray(s.languages) ? s.languages.join(", ") : ""}
+          onChange={(e) => onUpdate(idx, "languages", e.target.value.split(",").map((l: string) => l.trim()).filter(Boolean))}
+          className="w-full px-3 py-2 rounded-lg border border-[#0B1220]/[0.08] bg-white text-[13px] text-[#0B1220] outline-none focus:border-[#B88A5A]/40 transition-colors"
+        />
+      </div>
+
+      <ListEditor
+        label="Specialty tags"
+        items={Array.isArray(s.specialtyTags) ? s.specialtyTags : []}
+        onChange={(v) => onUpdate(idx, "specialtyTags", v)}
+      />
+
+      <ListEditor
+        label="Certifications"
+        items={Array.isArray(s.certifications) ? s.certifications : []}
+        onChange={(v) => onUpdate(idx, "certifications", v)}
+      />
+
+      <div>
+        <p className="text-xs font-medium text-[#2B2F36]/60 mb-3">Services</p>
+        <div className="space-y-3">
+          {Array.isArray(s.services) &&
+            s.services.map((svc, si) => (
+              <div key={svc.id} className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-3 rounded-lg bg-[#0B1220]/[0.02] border border-[#0B1220]/[0.04]">
+                <input
+                  value={svc.title}
+                  onChange={(e) => onUpdateService(idx, si, "title", e.target.value)}
+                  placeholder="Title"
+                  className="px-2.5 py-1.5 rounded border border-[#0B1220]/[0.08] bg-white text-[12px] text-[#0B1220] outline-none focus:border-[#B88A5A]/40"
+                />
+                <input
+                  value={svc.duration}
+                  onChange={(e) => onUpdateService(idx, si, "duration", e.target.value)}
+                  placeholder="Duration"
+                  className="px-2.5 py-1.5 rounded border border-[#0B1220]/[0.08] bg-white text-[12px] text-[#0B1220] outline-none focus:border-[#B88A5A]/40"
+                />
+                <input
+                  value={svc.price}
+                  onChange={(e) => onUpdateService(idx, si, "price", e.target.value)}
+                  placeholder="Price"
+                  className="px-2.5 py-1.5 rounded border border-[#0B1220]/[0.08] bg-white text-[12px] text-[#0B1220] outline-none focus:border-[#B88A5A]/40"
+                />
+                <input
+                  value={svc.description}
+                  onChange={(e) => onUpdateService(idx, si, "description", e.target.value)}
+                  placeholder="Description"
+                  className="px-2.5 py-1.5 rounded border border-[#0B1220]/[0.08] bg-white text-[12px] text-[#0B1220] outline-none focus:border-[#B88A5A]/40"
+                />
+              </div>
+            ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Main admin page ── */
 
 export default function AdminPage() {
   const [token, setToken] = useState<string | null>(null);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [authError, setAuthError] = useState("");
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState<{ username: string; name: string } | null>(null);
 
-  const [tab, setTab] = useState<"marquee" | "specialists">("marquee");
+  const [tab, setTab] = useState<"homepage" | "marquee" | "specialists">("homepage");
 
   const [specData, setSpecData] = useState<SpecialtiesData | null>(null);
   const [specialists, setSpecialists] = useState<Specialist[]>([]);
@@ -141,7 +326,7 @@ export default function AdminPage() {
   const [saveMsg, setSaveMsg] = useState("");
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
 
-  /* Check localStorage for existing token on mount */
+  // Check localStorage for existing token
   useEffect(() => {
     const stored = localStorage.getItem("wenaya_admin_token");
     const userStr = localStorage.getItem("wenaya_admin_user");
@@ -152,51 +337,35 @@ export default function AdminPage() {
     setLoading(false);
   }, []);
 
-  const login = async () => {
-    setAuthError("");
-    setLoading(true);
+  const loadSpecialties = useCallback(async (tok: string) => {
     try {
-      const res = await fetch("/api/admin/auth", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setAuthError(data.error || "Login failed");
-        setLoading(false);
-        return;
-      }
-      localStorage.setItem("wenaya_admin_token", data.token);
-      localStorage.setItem("wenaya_admin_user", JSON.stringify({ username: data.username, name: data.name }));
-      setCurrentUser({ username: data.username, name: data.name });
-      setToken(data.token);
-    } catch {
-      setAuthError("Network error");
-      setLoading(false);
-    }
-  };
-
-  const loadAll = useCallback(async (tok: string) => {
-    try {
-      const [specRes, specialistsRes] = await Promise.all([
-        apiFetch("/api/admin/specialties", tok),
-        apiFetch("/api/admin/specialists", tok),
-      ]);
-      const specJson = await specRes.json();
-      const specialistsJson = await specialistsRes.json();
-      setSpecData(specJson.data);
-      setSpecialists(specialistsJson.data);
-      setDataSource(specJson.source === "redis" ? "Redis" : "Defaults");
-    } catch {
-      /* empty */
-    }
-    setLoading(false);
+      const res = await apiFetch("/api/admin/specialties", tok);
+      const json = await res.json();
+      setSpecData(json.data);
+      setDataSource(json.source === "redis" ? "Redis" : "Defaults");
+    } catch { /* empty */ }
   }, []);
 
+  const loadSpecialists = useCallback(async (tok: string) => {
+    try {
+      const res = await apiFetch("/api/admin/specialists", tok);
+      const json = await res.json();
+      setSpecialists(json.data);
+    } catch { /* empty */ }
+  }, []);
+
+  const loadAll = useCallback(async (tok: string) => {
+    await Promise.all([loadSpecialties(tok), loadSpecialists(tok)]);
+    setLoading(false);
+  }, [loadSpecialties, loadSpecialists]);
+
   useEffect(() => {
-    if (token) loadAll(token);
-  }, [token, loadAll]);
+    if (token) {
+      if (tab === "marquee") loadSpecialties(token);
+      if (tab === "specialists") loadSpecialists(token);
+      if (tab === "homepage") setLoading(false);
+    }
+  }, [token, tab, loadSpecialties, loadSpecialists]);
 
   const saveSpec = async () => {
     if (!token || !specData) return;
@@ -270,60 +439,24 @@ export default function AdminPage() {
     });
   };
 
+  const handleLogin = (tok: string, user: { username: string; name: string }) => {
+    setToken(tok);
+    setCurrentUser(user);
+  };
+
+  const logout = () => {
+    localStorage.removeItem("wenaya_admin_token");
+    localStorage.removeItem("wenaya_admin_user");
+    window.location.href = "/login";
+  };
+
   /* ── Login screen ── */
   if (!token) {
-    return (
-      <div className="min-h-screen bg-[#F2EFE9] flex items-center justify-center px-6">
-        <div className="w-full max-w-sm">
-          <div
-            className="bg-white/70 backdrop-blur-xl rounded-3xl p-8 border border-[#0B1220]/[0.06]"
-            style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.06)" }}
-          >
-            <h1 className="text-center font-heading text-[#0B1220] text-2xl font-bold mb-1">Wenaya Admin</h1>
-            <p className="text-center text-[#2B2F36]/40 text-xs mb-6">Content management</p>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                login();
-              }}
-              className="space-y-4"
-            >
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Username"
-                autoFocus
-                className="w-full rounded-xl border border-[#0B1220]/[0.08] bg-white/80 px-4 py-3 text-sm text-[#0B1220] placeholder-[#2B2F36]/25 outline-none focus:border-[#B88A5A]/40 focus:shadow-[0_0_0_3px_rgba(184,138,90,0.08)] transition-all"
-              />
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                className="w-full rounded-xl border border-[#0B1220]/[0.08] bg-white/80 px-4 py-3 text-sm text-[#0B1220] placeholder-[#2B2F36]/25 outline-none focus:border-[#B88A5A]/40 focus:shadow-[0_0_0_3px_rgba(184,138,90,0.08)] transition-all"
-              />
-              {authError && <p className="text-red-500 text-xs">{authError}</p>}
-              <button
-                type="submit"
-                disabled={loading || !username || !password}
-                className="w-full h-11 rounded-xl text-white text-sm font-semibold transition-all disabled:opacity-40"
-                style={{
-                  background: "linear-gradient(135deg, #B88A5A 0%, #9A7242 100%)",
-                  boxShadow: "0 1px 0 rgba(255,255,255,0.14) inset, 0 4px 16px rgba(184,138,90,0.28)",
-                }}
-              >
-                {loading ? "..." : "Log in"}
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    );
+    return <LoginForm onLogin={handleLogin} />;
   }
 
-  /* ── Dashboard ── */
-  if (loading) {
+  /* ── Loading ── */
+  if (loading && tab !== "homepage") {
     return (
       <div className="min-h-screen bg-[#F2EFE9] flex items-center justify-center">
         <p className="text-[#2B2F36]/40 text-sm">Loading...</p>
@@ -331,11 +464,17 @@ export default function AdminPage() {
     );
   }
 
+  const tabs = [
+    { id: "homepage" as const, label: "Homepage" },
+    { id: "marquee" as const, label: "Specialties" },
+    { id: "specialists" as const, label: `Specialists (${specialists.length})` },
+  ];
+
   return (
     <div className="min-h-screen bg-[#F2EFE9]">
       {/* Header */}
       <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-xl border-b border-[#0B1220]/[0.06]">
-        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <span className="font-heading font-bold text-[#0B1220]">Wenaya Admin</span>
             {currentUser && (
@@ -343,26 +482,26 @@ export default function AdminPage() {
                 {currentUser.name || currentUser.username}
               </span>
             )}
-            <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#0B1220]/[0.04] text-[#2B2F36]/40">
-              {dataSource}
-            </span>
+            {tab !== "homepage" && dataSource && (
+              <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#0B1220]/[0.04] text-[#2B2F36]/40">
+                {dataSource}
+              </span>
+            )}
           </div>
           <div className="flex items-center gap-3">
             {saveMsg && (
               <span className={`text-xs ${saveMsg === "Saved" ? "text-emerald-600" : "text-[#B88A5A]"}`}>{saveMsg}</span>
             )}
+            {tab !== "homepage" && (
+              <button
+                onClick={resetAll}
+                className="text-[11px] px-3 py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors font-medium"
+              >
+                Reset defaults
+              </button>
+            )}
             <button
-              onClick={resetAll}
-              className="text-[11px] px-3 py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors font-medium"
-            >
-              Reset defaults
-            </button>
-            <button
-              onClick={() => {
-                localStorage.removeItem("wenaya_admin_token");
-                localStorage.removeItem("wenaya_admin_user");
-                window.location.href = "/login";
-              }}
+              onClick={logout}
               className="text-[11px] px-3 py-1.5 rounded-lg bg-[#0B1220]/[0.04] text-[#2B2F36]/50 hover:bg-[#0B1220]/[0.08] transition-colors font-medium"
             >
               Log out
@@ -371,21 +510,29 @@ export default function AdminPage() {
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-6 py-8">
-        {/* Tabs */}
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Navigation tabs */}
         <div className="flex gap-1 mb-8 bg-[#0B1220]/[0.03] rounded-xl p-1 w-fit">
-          {(["marquee", "specialists"] as const).map((t) => (
+          {tabs.map((t) => (
             <button
-              key={t}
-              onClick={() => { setTab(t); setSelectedIdx(null); }}
+              key={t.id}
+              onClick={() => {
+                setTab(t.id);
+                setSelectedIdx(null);
+                if (t.id === "marquee") loadSpecialties(token);
+                if (t.id === "specialists") loadSpecialists(token);
+              }}
               className={`px-5 py-2 rounded-lg text-[13px] font-medium transition-all ${
-                tab === t ? "bg-white text-[#0B1220] shadow-sm" : "text-[#2B2F36]/40 hover:text-[#2B2F36]/60"
+                tab === t.id ? "bg-white text-[#0B1220] shadow-sm" : "text-[#2B2F36]/40 hover:text-[#2B2F36]/60"
               }`}
             >
-              {t === "marquee" ? "Disease Marquee" : `Specialists (${specialists.length})`}
+              {t.label}
             </button>
           ))}
         </div>
+
+        {/* ── Homepage Tab ── */}
+        {tab === "homepage" && token && <HomepageEditor token={token} />}
 
         {/* ── Marquee Tab ── */}
         {tab === "marquee" && specData && (
@@ -471,7 +618,6 @@ export default function AdminPage() {
         {/* ── Specialists Tab ── */}
         {tab === "specialists" && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* Sidebar list */}
             <div className="lg:col-span-4 space-y-1">
               <button
                 onClick={() => { setSelectedIdx(null); saveSpecialists(); }}
@@ -496,7 +642,6 @@ export default function AdminPage() {
               ))}
             </div>
 
-            {/* Editor */}
             <div className="lg:col-span-8">
               {selectedIdx === null ? (
                 <div className="flex items-center justify-center h-64 text-[#2B2F36]/30 text-sm">
@@ -513,115 +658,6 @@ export default function AdminPage() {
             </div>
           </div>
         )}
-      </div>
-    </div>
-  );
-}
-
-/* ── Specialist editor form ── */
-
-function SpecialistEditor({
-  specialist: s,
-  idx,
-  onUpdate,
-  onUpdateService,
-}: {
-  specialist: Specialist;
-  idx: number;
-  onUpdate: (idx: number, field: string, value: unknown) => void;
-  onUpdateService: (specIdx: number, svcIdx: number, field: string, value: string) => void;
-}) {
-  const field = (label: string, field: string, opts?: { rows?: number }) => (
-    <div>
-      <label className="block text-xs font-medium text-[#2B2F36]/60 mb-1">{label}</label>
-      {opts?.rows ? (
-        <textarea
-          value={String(s[field] ?? "")}
-          onChange={(e) => onUpdate(idx, field, e.target.value)}
-          rows={opts.rows}
-          className="w-full px-3 py-2 rounded-lg border border-[#0B1220]/[0.08] bg-white text-[13px] text-[#0B1220] outline-none focus:border-[#B88A5A]/40 transition-colors resize-none"
-        />
-      ) : (
-        <input
-          value={String(s[field] ?? "")}
-          onChange={(e) => onUpdate(idx, field, e.target.value)}
-          className="w-full px-3 py-2 rounded-lg border border-[#0B1220]/[0.08] bg-white text-[13px] text-[#0B1220] outline-none focus:border-[#B88A5A]/40 transition-colors"
-        />
-      )}
-    </div>
-  );
-
-  return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {field("Name", "name")}
-        {field("Role", "role")}
-        {field("Specialty", "specialty")}
-        {field("Order #", "orderNumber")}
-        {field("Image URL", "image")}
-        {field("Rating", "rating")}
-        {field("Review count", "reviewCount")}
-        {field("Years of experience", "yearsExperience")}
-      </div>
-
-      {field("Bio", "bio", { rows: 3 })}
-      {field("Approach", "approach", { rows: 3 })}
-
-      <div>
-        <label className="block text-xs font-medium text-[#2B2F36]/60 mb-1">Languages (comma-separated)</label>
-        <input
-          value={Array.isArray(s.languages) ? s.languages.join(", ") : ""}
-          onChange={(e) => onUpdate(idx, "languages", e.target.value.split(",").map((l: string) => l.trim()).filter(Boolean))}
-          className="w-full px-3 py-2 rounded-lg border border-[#0B1220]/[0.08] bg-white text-[13px] text-[#0B1220] outline-none focus:border-[#B88A5A]/40 transition-colors"
-        />
-      </div>
-
-      <ListEditor
-        label="Specialty tags"
-        items={Array.isArray(s.specialtyTags) ? s.specialtyTags : []}
-        onChange={(v) => onUpdate(idx, "specialtyTags", v)}
-      />
-
-      <ListEditor
-        label="Certifications"
-        items={Array.isArray(s.certifications) ? s.certifications : []}
-        onChange={(v) => onUpdate(idx, "certifications", v)}
-      />
-
-      {/* Services */}
-      <div>
-        <p className="text-xs font-medium text-[#2B2F36]/60 mb-3">Services</p>
-        <div className="space-y-3">
-          {Array.isArray(s.services) &&
-            s.services.map((svc, si) => (
-              <div key={svc.id} className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-3 rounded-lg bg-[#0B1220]/[0.02] border border-[#0B1220]/[0.04]">
-                <input
-                  value={svc.title}
-                  onChange={(e) => onUpdateService(idx, si, "title", e.target.value)}
-                  placeholder="Title"
-                  className="px-2.5 py-1.5 rounded border border-[#0B1220]/[0.08] bg-white text-[12px] text-[#0B1220] outline-none focus:border-[#B88A5A]/40"
-                />
-                <input
-                  value={svc.duration}
-                  onChange={(e) => onUpdateService(idx, si, "duration", e.target.value)}
-                  placeholder="Duration"
-                  className="px-2.5 py-1.5 rounded border border-[#0B1220]/[0.08] bg-white text-[12px] text-[#0B1220] outline-none focus:border-[#B88A5A]/40"
-                />
-                <input
-                  value={svc.price}
-                  onChange={(e) => onUpdateService(idx, si, "price", e.target.value)}
-                  placeholder="Price"
-                  className="px-2.5 py-1.5 rounded border border-[#0B1220]/[0.08] bg-white text-[12px] text-[#0B1220] outline-none focus:border-[#B88A5A]/40"
-                />
-                <input
-                  value={svc.description}
-                  onChange={(e) => onUpdateService(idx, si, "description", e.target.value)}
-                  placeholder="Description"
-                  className="px-2.5 py-1.5 rounded border border-[#0B1220]/[0.08] bg-white text-[12px] text-[#0B1220] outline-none focus:border-[#B88A5A]/40"
-                />
-              </div>
-            ))}
-        </div>
       </div>
     </div>
   );

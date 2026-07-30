@@ -1,7 +1,3 @@
-/**
- * Admin Auth API — validates username + password against bcrypt hashes in Redis,
- * returns a signed HMAC token with the username embedded.
- */
 import { NextRequest, NextResponse } from "next/server";
 import { getUser, verifyBcrypt, signToken } from "@/lib/admin-auth";
 
@@ -24,7 +20,15 @@ export async function POST(req: NextRequest) {
     }
 
     const token = signToken(user.username);
-    return NextResponse.json({ token, name: user.name, username: user.username });
+    const res = NextResponse.json({ token, name: user.name, username: user.username });
+
+    // Set HttpOnly cookie for server-side auth (alongside localStorage for client-side)
+    res.headers.set(
+      "Set-Cookie",
+      `wenaya_admin_token=${token}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=3600`
+    );
+
+    return res;
   } catch {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }

@@ -22,8 +22,10 @@ import HeroSection from "@/components/HeroSection";
 import SectionBreak from "@/components/SectionBreak";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { getPublishedPosts, authors, categories } from "@/lib/blog";
+import { getHomepagePublished } from "@/lib/homepage";
+import HomepageRenderer from "@/components/homepage/HomepageRenderer";
+import type { HomepageConfig } from "@/lib/homepage-types";
 
-/** Lazy-loaded sections — imported dynamically for code splitting and faster initial load */
 const HowItWorks = dynamic(() => import("@/components/HowItWorks"), { ssr: true });
 const DiseaseMarquee = dynamic(() => import("@/components/DiseaseMarquee"), { ssr: true });
 const Biomarkers = dynamic(() => import("@/components/Biomarkers"), { ssr: true });
@@ -37,14 +39,29 @@ const YoloSection = dynamic(() => import("@/components/YoloSection"), { ssr: tru
 const BlogSection = dynamic(() => import("@/components/blog/BlogSection"), { ssr: true });
 const ExpertiseSection = dynamic(() => import("@/components/about/ExpertiseSection"), { ssr: true });
 
-/** Tiny vertical spacer between sections */
-function Spacer(): React.JSX.Element {
+function Spacer() {
   return <div className="h-4 sm:h-6" />;
 }
 
-/** Homepage — assembles all landing page sections in order with data-section-bg for nav theme detection */
-export default function Home() {
-  /** Fetch the 3 most recent published blog posts for the homepage blog preview */
+async function getHomeConfig(): Promise<HomepageConfig | null> {
+  try {
+    return await getHomepagePublished();
+  } catch {
+    return null;
+  }
+}
+
+export default async function Home() {
+  const published = await getHomeConfig();
+
+  if (published && published.sections.length > 0) {
+    return (
+      <ErrorBoundary>
+        <HomepageRenderer config={published} />
+      </ErrorBoundary>
+    );
+  }
+
   const posts = getPublishedPosts();
   const enriched = posts.slice(0, 3).map((p) => ({
     ...p,
@@ -54,32 +71,31 @@ export default function Home() {
 
   return (
     <ErrorBoundary>
-      {/* ── Page sections (data-section-bg tells the nav to switch dark/light theme) ── */}
       <div className="flex flex-col min-h-screen">
-        <div data-section-bg="dark"><Banner /></div> {/* Top promotional banner */}
-        <div data-section-bg="dark"><HeroSection /></div> {/* Hero with video background, headline, trust bar */}
-        <SectionBreak /> {/* Decorative divider */}
-        <div data-section-bg="light"><HowItWorks /></div> {/* How it works — 3-step process */}
-        <Spacer />
-        <div data-section-bg="light"><DiseaseMarquee /></div> {/* Scrolling disease/wellness topics marquee */}
-        <Spacer />
-        <div data-section-bg="light"><Biomarkers /></div> {/* Biomarker visualization section */}
-        <Spacer />
-        <div data-section-bg="light"><TestimonialsSection /></div> {/* Stats + patient testimonials */}
+        <div data-section-bg="dark"><Banner /></div>
+        <div data-section-bg="dark"><HeroSection /></div>
         <SectionBreak />
-        <div data-section-bg="light"><ExpertiseSection /></div> {/* Medical specialties — links to specialist profiles */}
+        <div data-section-bg="light"><HowItWorks /></div>
         <Spacer />
-        <div data-section-bg="light"><ComparisonTable /></div> {/* Wenaya vs competitors comparison */}
+        <div data-section-bg="light"><DiseaseMarquee /></div>
         <Spacer />
-        <div data-section-bg="light"><Pricing /></div> {/* Pricing cards */}
+        <div data-section-bg="light"><Biomarkers /></div>
         <Spacer />
-        <div data-section-bg="dark"><CoursAteliers /></div> {/* Courses & workshops section */}
-        <div data-section-bg="dark"><CtaSection /></div> {/* Final CTA with quote */}
+        <div data-section-bg="light"><TestimonialsSection /></div>
+        <SectionBreak />
+        <div data-section-bg="light"><ExpertiseSection /></div>
         <Spacer />
-        <div data-section-bg="light"><BlogSection posts={enriched} /></div> {/* Latest blog posts preview */}
+        <div data-section-bg="light"><ComparisonTable /></div>
         <Spacer />
-        <div data-section-bg="dark"><YoloSection /></div> {/* Interactive visual/exploration section */}
-        <div data-section-bg="dark"><Footer /></div> {/* Site footer */}
+        <div data-section-bg="light"><Pricing /></div>
+        <Spacer />
+        <div data-section-bg="dark"><CoursAteliers /></div>
+        <div data-section-bg="dark"><CtaSection /></div>
+        <Spacer />
+        <div data-section-bg="light"><BlogSection posts={enriched} /></div>
+        <Spacer />
+        <div data-section-bg="dark"><YoloSection /></div>
+        <div data-section-bg="dark"><Footer /></div>
       </div>
     </ErrorBoundary>
   );

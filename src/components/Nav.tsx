@@ -15,6 +15,7 @@ import Logo from "./Logo";
 import MobileMenu from "./nav/MobileMenu";
 import ProduitsFilterBar from "./nav/ProduitsFilterBar";
 import PratiquesFilterBar from "./nav/PratiquesFilterBar";
+import { useLenis } from "lenis/react";
 
 export default function Nav(): React.JSX.Element {
   const pathname = usePathname();
@@ -78,23 +79,19 @@ export default function Nav(): React.JSX.Element {
     window.dispatchEvent(new CustomEvent("pratiques-filter-request", { detail: { key, value } }));
   };
 
-  /** Scroll handler — detects scroll direction to show/hide nav, and sets scrolled state for background opacity */
-  useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 40);
-      if (y <= 40) {
-        setHidden(false);
-      } else if (y > 80 && y > lastScrollRef.current) {
-        setHidden(true);
-      } else if (y <= 80 || y < lastScrollRef.current) {
-        setHidden(false);
-      }
-      lastScrollRef.current = y;
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  /** Scroll handler — uses Lenis scroll value to detect direction and show/hide nav */
+  useLenis((lenis) => {
+    const y = lenis.animatedScroll ?? lenis.scroll;
+    setScrolled(y > 40);
+    if (y <= 40) {
+      setHidden(false);
+    } else if (y > 80 && y > lastScrollRef.current) {
+      setHidden(true);
+    } else if (y <= 80 || y < lastScrollRef.current) {
+      setHidden(false);
+    }
+    lastScrollRef.current = y;
+  });
 
   /** Detects when the filter bar scrolls past the nav — switches to compact filter bar mode */
   useEffect(() => {
@@ -186,7 +183,7 @@ export default function Nav(): React.JSX.Element {
 
   return (
     <>
-    <header className={`fixed left-0 right-0 z-[100] flex justify-center px-4 sm:px-8 transition-transform duration-300 ease-in-out will-change-transform ${hidden ? "-translate-y-full" : "translate-y-0"} ${pathname === "/" ? "top-[40px] pt-2 sm:pt-4" : "top-0 pt-2 sm:pt-4"}`}>
+    <header className={`fixed left-0 right-0 z-[100] flex justify-center px-4 sm:px-8 transition-transform duration-300 ease-in-out will-change-transform ${hidden ? "-translate-y-[calc(100%+40px)]" : "translate-y-0"} ${pathname === "/" ? "top-[40px] pt-2 sm:pt-4" : "top-0 pt-2 sm:pt-4"}`}>
       {/* ── Main bar ── */}
       <div
         className={`flex-1 max-w-7xl flex items-center justify-between h-[52px] sm:h-[64px] px-4 sm:px-5 rounded-full shadow-sm transition-all duration-500 ${barBg}`}
