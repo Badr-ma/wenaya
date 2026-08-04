@@ -8,6 +8,7 @@
 
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
+import type { YoloContent } from "@/lib/homepage-types";
 
 const signals = [
   { label: "Sleep", x: 50, y: 15 },
@@ -19,7 +20,11 @@ const signals = [
   { label: "Longevity", x: 23, y: 28 },
 ];
 
-export default function YoloSection(): React.JSX.Element {
+interface YoloSectionProps {
+  content?: YoloContent;
+}
+
+export default function YoloSection({ content }: YoloSectionProps): React.JSX.Element {
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const badgeRef = useRef<HTMLDivElement>(null);

@@ -17,13 +17,196 @@ export type SectionType =
   | "image-text"
   | "full-width-cta";
 
-export interface HomepageSection {
+/**
+ * Typed content contracts per homepage section type.
+ *
+ * Every field is optional: existing Redis configs store `content: {}` (or
+ * legacy free-form keys) and must keep working without a migration. The
+ * optional shape lets old stored data round-trip through the type system.
+ *
+ * Components consume overrides via `content?.field ?? t("i18n.key")` in a
+ * later step; i18n remains the fallback default.
+ */
+
+export interface BannerContent {
+  bannerText?: string;
+}
+
+export interface HeroContent {
+  eyebrow?: string;
+  heading1?: string;
+  heading2?: string;
+  sub?: string;
+  ctaLabel?: string;
+  /** Stored but not yet consumed — the Hero component does not render a CTA link today. */
+  ctaUrl?: string;
+  /** Stored but not yet consumed — the Hero component has no video element today. */
+  videoUrl?: string;
+}
+
+export interface HowItWorksContent {
+  badge?: string;
+  heading1?: string;
+  heading2?: string;
+  sub?: string;
+  cta1?: string;
+  cta2?: string;
+}
+
+/**
+ * Presentation overrides only. The specialty/service/therapy row data is
+ * intentionally NOT duplicated here — it lives in the `admin:specialties`
+ * Redis key and is served by /api/admin/specialties.
+ */
+export interface DiseaseMarqueeContent {
+  badge?: string;
+  heading1?: string;
+  heading2?: string;
+  sub?: string;
+}
+
+export interface BiomarkersContent {
+  badge?: string;
+  heading1?: string;
+  heading2?: string;
+  sub?: string;
+  soins?: string;
+  bottom?: string;
+  cta?: string;
+}
+
+export interface TestimonialsContent {
+  heading1?: string;
+  heading2?: string;
+  sub?: string;
+}
+
+export interface ExpertiseContent {
+  badge?: string;
+  heading1?: string;
+  heading2?: string;
+  p1?: string;
+  cta?: string;
+}
+
+export interface ComparisonTableContent {
+  badge?: string;
+  heading1?: string;
+  heading2?: string;
+  sub?: string;
+}
+
+export interface PricingContent {
+  eyebrow?: string;
+  heading1?: string;
+  heading2?: string;
+  sub?: string;
+}
+
+export interface CoursAteliersContent {
+  badge?: string;
+  heading1?: string;
+  heading2?: string;
+  cta?: string;
+  swipe?: string;
+}
+
+export interface CtaContent {
+  heading1?: string;
+  heading2?: string;
+  sub?: string;
+  ctaLabel?: string;
+  /** Stored but not yet consumed — CtaSection renders a hardcoded CTA button without a link today. */
+  ctaUrl?: string;
+}
+
+/**
+ * Posts are auto-fetched from /api/blog/posts (top 3 published MDX posts).
+ * These fields only override the section's headline presentation.
+ */
+export interface BlogContent {
+  heading1?: string;
+  heading2?: string;
+  sub?: string;
+  voirTous?: string;
+}
+
+/** Reserved for future CMS-ification — YoloSection is currently fully hardcoded. */
+export interface YoloContent {
+  title?: string;
+  subtitle?: string;
+  desc?: string;
+}
+
+export interface FooterContent {
+  desc?: string;
+  hours?: string;
+}
+
+/** Structured stats replacing the legacy flat `stat_0_value` / `stat_0_label` keys. */
+export interface StatisticsContent {
+  stats?: { value: string; label: string }[];
+}
+
+export interface ImageTextContent {
+  heading?: string;
+  text?: string;
+  imageUrl?: string;
+  ctaLabel?: string;
+  ctaUrl?: string;
+}
+
+export interface FullWidthCtaContent {
+  heading?: string;
+  sub?: string;
+  ctaLabel?: string;
+  ctaUrl?: string;
+  bgImage?: string;
+}
+
+/**
+ * Maps each section type to the exact content shape it may hold.
+ * Indexing with the `SectionType` union yields the union of all content
+ * shapes for the heterogeneous `sections[]` array; the renderer narrows
+ * per-case in a later step.
+ */
+export type SectionContentMap = {
+  banner: BannerContent;
+  hero: HeroContent;
+  "how-it-works": HowItWorksContent;
+  "disease-marquee": DiseaseMarqueeContent;
+  biomarkers: BiomarkersContent;
+  testimonials: TestimonialsContent;
+  expertise: ExpertiseContent;
+  "comparison-table": ComparisonTableContent;
+  pricing: PricingContent;
+  "cours-ateliers": CoursAteliersContent;
+  cta: CtaContent;
+  blog: BlogContent;
+  yolo: YoloContent;
+  footer: FooterContent;
+  statistics: StatisticsContent;
+  "image-text": ImageTextContent;
+  "full-width-cta": FullWidthCtaContent;
+};
+
+/**
+ * Discriminated union on `type`: switching on `section.type` narrows
+ * `section.content` to that section's exact content contract, so the
+ * renderer passes typed content to each component without casts.
+ */
+interface HomepageSectionBase {
   id: string;
-  type: SectionType;
   order: number;
   enabled: boolean;
-  content: Record<string, unknown>;
 }
+
+export type HomepageSection = {
+  [T in SectionType]: HomepageSectionBase & {
+    type: T;
+    content: SectionContentMap[T];
+  };
+}[SectionType];
 
 export interface HomepageConfig {
   sections: HomepageSection[];

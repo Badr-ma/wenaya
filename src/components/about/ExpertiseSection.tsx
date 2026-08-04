@@ -5,10 +5,15 @@ import Link from "next/link";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
 import { specialists } from "@/lib/specialistes";
+import type { ExpertiseContent } from "@/lib/homepage-types";
 
 const featuredSpecialists = specialists.slice(0, 10);
 
-export default function ExpertiseSection(): React.JSX.Element {
+interface ExpertiseSectionProps {
+  content?: ExpertiseContent;
+}
+
+export default function ExpertiseSection({ content }: ExpertiseSectionProps): React.JSX.Element {
   const { t } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -40,23 +45,23 @@ export default function ExpertiseSection(): React.JSX.Element {
             <div id="es-badge">
               <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">
                 <span className="w-6 h-px bg-[#B88A5A]/40" />
-                {t("expertiseSection.badge")}
+                {content?.badge ?? t("expertiseSection.badge")}
               </span>
             </div>
 
             <h2 id="es-title" className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220] mt-5">
-              {t("expertiseSection.heading1")}{" "}
+              {content?.heading1 ?? t("expertiseSection.heading1")}{" "}
               <span style={{
                 background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
               }}>
-                {t("expertiseSection.heading2")}
+                {content?.heading2 ?? t("expertiseSection.heading2")}
               </span>
             </h2>
 
             <div id="es-text" className="text-[#2B2F36]/50 text-xs sm:text-sm leading-relaxed mt-5">
-              <p>{t("expertiseSection.p1")}</p>
+              <p>{content?.p1 ?? t("expertiseSection.p1")}</p>
             </div>
           </div>
 
@@ -87,7 +92,7 @@ export default function ExpertiseSection(): React.JSX.Element {
 
           <div id="es-cta">
             <Link href="/specialistes" className="group inline-flex items-center gap-3 bg-[#0B1220] text-white text-sm font-semibold h-[50px] px-8 rounded-full transition-all duration-300 hover:bg-[#B88A5A] hover:shadow-lg hover:shadow-[rgba(184,138,90,0.2)]">
-              {t("expertiseSection.cta")}
+              {content?.cta ?? t("expertiseSection.cta")}
               <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>

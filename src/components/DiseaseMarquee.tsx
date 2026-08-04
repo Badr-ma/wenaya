@@ -8,6 +8,7 @@
 import { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
+import type { DiseaseMarqueeContent } from "@/lib/homepage-types";
 
 interface MarqueeData {
   badge: string;
@@ -20,7 +21,11 @@ interface MarqueeData {
   pillShape?: "pill" | "square" | "rounded";
 }
 
-export default function DiseaseMarquee(): React.JSX.Element {
+interface DiseaseMarqueeProps {
+  content?: DiseaseMarqueeContent;
+}
+
+export default function DiseaseMarquee({ content }: DiseaseMarqueeProps): React.JSX.Element {
   const { t, tRaw } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
@@ -36,10 +41,10 @@ export default function DiseaseMarquee(): React.JSX.Element {
       .catch(() => {});
   }, []);
 
-  const badge = remote?.badge ?? t("diseaseMarquee.badge");
-  const heading1 = remote?.heading1 ?? t("diseaseMarquee.heading1");
-  const heading2 = remote?.heading2 ?? t("diseaseMarquee.heading2");
-  const sub = remote?.sub ?? t("diseaseMarquee.sub");
+  const badge = content?.badge ?? remote?.badge ?? t("diseaseMarquee.badge");
+  const heading1 = content?.heading1 ?? remote?.heading1 ?? t("diseaseMarquee.heading1");
+  const heading2 = content?.heading2 ?? remote?.heading2 ?? t("diseaseMarquee.heading2");
+  const sub = content?.sub ?? remote?.sub ?? t("diseaseMarquee.sub");
   const row1Src = remote?.specialites ?? tRaw<string[]>("diseaseMarquee.specialites");
   const row2Src = remote?.services ?? tRaw<string[]>("diseaseMarquee.services");
   const row3Src = remote?.therapies ?? tRaw<string[]>("diseaseMarquee.therapies");

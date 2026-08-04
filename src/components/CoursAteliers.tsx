@@ -9,6 +9,7 @@ import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
+import type { CoursAteliersContent } from "@/lib/homepage-types";
 import HiggsField from "./HiggsField";
 
 
@@ -21,7 +22,11 @@ const sessionsData = [
   { key: "pilates", img: "/images/cours-ateliers/yoga.jpg", accent: "#D4A870" },
 ] as const;
 
-export default function CoursAteliers(): React.JSX.Element {
+interface CoursAteliersProps {
+  content?: CoursAteliersContent;
+}
+
+export default function CoursAteliers({ content }: CoursAteliersProps): React.JSX.Element {
   const { t } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);

@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useMemo, useState, useEffect } from "react";
-import type { HomepageConfig, HomepageSection } from "@/lib/homepage-types";
+import type { HomepageConfig, HomepageSection, BlogContent } from "@/lib/homepage-types";
 import { SECTION_META } from "@/lib/homepage-types";
 import SectionBreak from "@/components/SectionBreak";
 import type { PostWithAuthor } from "@/lib/blog-utils";
@@ -75,39 +75,39 @@ export default function HomepageRenderer({ config }: { config: HomepageConfig })
 function SectionComponent({ section }: { section: HomepageSection }) {
   switch (section.type) {
     case "banner":
-      return <Banner />;
+      return <Banner content={section.content} />;
     case "hero":
-      return <HeroSection />;
+      return <HeroSection content={section.content} />;
     case "how-it-works":
-      return <HowItWorks />;
+      return <HowItWorks content={section.content} />;
     case "disease-marquee":
-      return <DiseaseMarquee />;
+      return <DiseaseMarquee content={section.content} />;
     case "biomarkers":
-      return <Biomarkers />;
+      return <Biomarkers content={section.content} />;
     case "testimonials":
-      return <TestimonialsSection />;
+      return <TestimonialsSection content={section.content} />;
     case "expertise":
-      return <ExpertiseSection />;
+      return <ExpertiseSection content={section.content} />;
     case "comparison-table":
-      return <ComparisonTable />;
+      return <ComparisonTable content={section.content} />;
     case "pricing":
-      return <Pricing />;
+      return <Pricing content={section.content} />;
     case "cours-ateliers":
-      return <CoursAteliers />;
+      return <CoursAteliers content={section.content} />;
     case "cta":
-      return <CtaSection />;
+      return <CtaSection content={section.content} />;
     case "yolo":
-      return <YoloSection />;
+      return <YoloSection content={section.content} />;
     case "footer":
-      return <Footer />;
+      return <Footer content={section.content} />;
     case "blog":
-      return <BlogSectionWrapper />;
+      return <BlogSectionWrapper content={section.content} />;
     default:
       return null;
   }
 }
 
-function BlogSectionWrapper() {
+function BlogSectionWrapper({ content }: { content: BlogContent }) {
   const [posts, setPosts] = useState<PostWithAuthor[]>([]);
   useEffect(() => {
     fetch("/api/blog/posts")
@@ -116,6 +116,6 @@ function BlogSectionWrapper() {
       .catch(() => {});
   }, []);
   if (posts.length === 0) return null;
-  return <BlogSection posts={posts} />;
+  return <BlogSection posts={posts} content={content} />;
 }
 

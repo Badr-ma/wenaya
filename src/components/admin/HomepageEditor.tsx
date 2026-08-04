@@ -130,7 +130,7 @@ export default function HomepageEditor({ token }: Props) {
       ...config,
       sections: config.sections.map((s) =>
         s.id === id
-          ? { ...s, content: { ...s.content, [field]: value } }
+          ? ({ ...s, content: { ...s.content, [field]: value } } as HomepageSection)
           : s
       ),
     };
@@ -364,7 +364,7 @@ function SectionEditor({
   onUpdate: (field: string, value: unknown) => void;
 }) {
   const meta = SECTION_META[section.type];
-  const content = section.content || {};
+  const content = (section.content || {}) as Record<string, unknown>;
 
   const field = (label: string, key: string, opts?: { rows?: number; placeholder?: string }) => (
     <div className="mb-3">
@@ -465,10 +465,52 @@ function SectionEditor({
           </div>
         );
 
+      case "how-it-works":
+        return (
+          <div className="space-y-2">
+            <p className="text-[11px] text-[#2B2F36]/30 italic">The 4 step cards are managed through i18n. Override fields below:</p>
+            {field("Badge text", "badge")}
+            {field("Heading line 1", "heading1")}
+            {field("Heading line 2", "heading2")}
+            {field("Description", "sub", { rows: 2 })}
+            {field("Primary CTA label", "cta1")}
+            {field("Secondary CTA label", "cta2")}
+          </div>
+        );
+
+      case "biomarkers":
+        return (
+          <div className="space-y-2">
+            <p className="text-[11px] text-[#2B2F36]/30 italic">The 3 pillar cards are managed through i18n. Override fields below:</p>
+            {field("Badge text", "badge")}
+            {field("Heading line 1", "heading1")}
+            {field("Heading line 2", "heading2")}
+            {field("Description", "sub", { rows: 2 })}
+            {field("Care count label", "soins")}
+            {field("Bottom description", "bottom", { rows: 2 })}
+            {field("CTA label", "cta")}
+          </div>
+        );
+
       case "testimonials":
         return (
           <div className="space-y-2">
-            <p className="text-[11px] text-[#2B2F36]/30 italic">Testimonials are managed through i18n translation files.</p>
+            <p className="text-[11px] text-[#2B2F36]/30 italic">Testimonial cards are managed through i18n. Override the heading fields below:</p>
+            {field("Heading line 1", "heading1")}
+            {field("Heading line 2", "heading2")}
+            {field("Description", "sub", { rows: 2 })}
+          </div>
+        );
+
+      case "expertise":
+        return (
+          <div className="space-y-2">
+            <p className="text-[11px] text-[#2B2F36]/30 italic">Specialist cards are managed through i18n. Override fields below:</p>
+            {field("Badge text", "badge")}
+            {field("Heading line 1", "heading1")}
+            {field("Heading line 2", "heading2")}
+            {field("Description", "p1", { rows: 2 })}
+            {field("CTA label", "cta")}
           </div>
         );
 
@@ -476,7 +518,7 @@ function SectionEditor({
         return (
           <div className="space-y-2">
             <p className="text-[11px] text-[#2B2F36]/30 italic">Blog section automatically shows the latest 3 posts.</p>
-            {field("Heading override", "heading")}
+            {field("Heading line 1 override", "heading1")}
           </div>
         );
 
@@ -484,7 +526,7 @@ function SectionEditor({
         return (
           <div className="space-y-2">
             <p className="text-[11px] text-[#2B2F36]/30 italic">
-              This section type ({section.type}) is rendered with default content. No editable fields available.
+              This section is rendered with its default content. It has no editable CMS fields yet.
             </p>
           </div>
         );

@@ -11,6 +11,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import { useLocale } from "@/contexts/LanguageContext";
+import type { HowItWorksContent } from "@/lib/homepage-types";
 
 
 /* ── Card shell ─────────────────────────────────────────────── */
@@ -217,7 +218,11 @@ function SustainViz(): React.JSX.Element {
 }
 
 /* ── Section ─────────────────────────────────────────────────── */
-export default function HowItWorks(): React.JSX.Element {
+interface HowItWorksProps {
+  content?: HowItWorksContent;
+}
+
+export default function HowItWorks({ content }: HowItWorksProps): React.JSX.Element {
   const { t } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const headRef = useRef<HTMLDivElement>(null);
@@ -324,21 +329,21 @@ export default function HowItWorks(): React.JSX.Element {
         <div ref={headRef} className="text-center mb-10 sm:mb-14 max-w-xl mx-auto">
           <div className="inline-flex items-center gap-2 mb-5">
             <div className="w-4 h-px bg-[#B88A5A]/40" />
-            <span className="text-[#B88A5A] text-[10.5px] font-bold tracking-[0.22em] uppercase">{t("howItWorks.badge")}</span>
+            <span className="text-[#B88A5A] text-[10.5px] font-bold tracking-[0.22em] uppercase">{content?.badge ?? t("howItWorks.badge")}</span>
             <div className="w-4 h-px bg-[#B88A5A]/40" />
           </div>
           <h2 className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220]">
-            {t("howItWorks.heading1")}{" "}
+            {content?.heading1 ?? t("howItWorks.heading1")}{" "}
             <span style={{
               background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
             }}>
-              {t("howItWorks.heading2")}
+              {content?.heading2 ?? t("howItWorks.heading2")}
             </span>
           </h2>
           <p className="text-[#2B2F36]/55 text-[14px] sm:text-[15px] mt-4 leading-relaxed">
-            {t("howItWorks.sub")}
+            {content?.sub ?? t("howItWorks.sub")}
           </p>
         </div>
 
@@ -369,14 +374,14 @@ export default function HowItWorks(): React.JSX.Element {
             className="inline-flex items-center justify-center h-11 px-7 rounded-xl text-white text-[13.5px] font-semibold transition-all duration-300 hover:-translate-y-px"
             style={{ background: "#0B1220", boxShadow: "0 4px 20px rgba(11,18,32,0.18)" }}
           >
-            {t("howItWorks.cta1")}
+            {content?.cta1 ?? t("howItWorks.cta1")}
           </Link>
           <Link
             href="#"
             onClick={(e) => e.preventDefault()}
             className="inline-flex items-center gap-2 h-11 px-7 rounded-xl border border-[#0B1220]/[0.12] text-[#0B1220]/60 text-[13.5px] font-medium transition-all duration-300 hover:text-[#0B1220] hover:border-[#0B1220]/[0.22] hover:bg-[#0B1220]/[0.03]"
           >
-            {t("howItWorks.cta2")}
+            {content?.cta2 ?? t("howItWorks.cta2")}
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>

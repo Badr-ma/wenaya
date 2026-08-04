@@ -11,6 +11,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { formatDate, type PostWithAuthor } from "@/lib/blog-utils";
 import { useLocale } from "@/contexts/LanguageContext";
+import type { BlogContent } from "@/lib/homepage-types";
 
 
 function BlogCard({ post }: { post: PostWithAuthor }): React.JSX.Element {
@@ -52,7 +53,7 @@ function BlogCard({ post }: { post: PostWithAuthor }): React.JSX.Element {
   );
 }
 
-export default function BlogSection({ posts }: { posts: PostWithAuthor[] }): React.JSX.Element {
+export default function BlogSection({ posts, content }: { posts: PostWithAuthor[]; content?: BlogContent }): React.JSX.Element {
   const { t } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
@@ -77,20 +78,20 @@ export default function BlogSection({ posts }: { posts: PostWithAuthor[] }): Rea
             <span className="text-[#B88A5A] text-[10.5px] font-bold tracking-[0.22em] uppercase">{t("blog.badge")}</span>
             <div className="w-4 h-px bg-[#B88A5A]/40" />
           </div>
-          <h2 className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220]">{t("blog.heading1")}{" "}
+          <h2 className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220]">{content?.heading1 ?? t("blog.heading1")}{" "}
 <span style={{
   background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent",
 }}>
-  {t("blog.heading2")}
+  {content?.heading2 ?? t("blog.heading2")}
 </span></h2>
           <p className="text-[#2B2F36]/55 text-[14px] sm:text-[15px] mt-4 leading-relaxed">
-            {t("blog.sub")}
+            {content?.sub ?? t("blog.sub")}
           </p>
           <Link href="/blog"
             className="mt-6 inline-flex items-center gap-1.5 text-xs font-medium text-[#B88A5A] hover:text-[#B88A5A]/70 transition-colors">
-            <span>{t("blog.voirTous")}</span>
+            <span>{content?.voirTous ?? t("blog.voirTous")}</span>
             <svg className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
             </svg>

@@ -8,9 +8,13 @@
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
+import type { BiomarkersContent } from "@/lib/homepage-types";
 
+interface BiomarkersProps {
+  content?: BiomarkersContent;
+}
 
-export default function Biomarkers(): React.JSX.Element {
+export default function Biomarkers({ content }: BiomarkersProps): React.JSX.Element {
   const { t, tRaw } = useLocale();
   const pillarKeys = ["prevention", "performance", "recuperation"];
   const pillars = pillarKeys.map((key, i) => {
@@ -50,7 +54,7 @@ export default function Biomarkers(): React.JSX.Element {
           <div className="inline-flex items-center gap-2.5 mb-5">
             <div className="w-1 h-1 rounded-full bg-[#B88A5A]" />
             <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.22em] uppercase">
-              {t("biomarkers.badge")}
+              {content?.badge ?? t("biomarkers.badge")}
             </span>
           </div>
           <h2
@@ -63,17 +67,17 @@ export default function Biomarkers(): React.JSX.Element {
               letterSpacing: "-0.015em",
             }}
           >
-            {t("biomarkers.heading1")}<br />
+            {content?.heading1 ?? t("biomarkers.heading1")}<br />
 <span style={{
   background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent",
 }}>
-  {t("biomarkers.heading2")}
+  {content?.heading2 ?? t("biomarkers.heading2")}
 </span>
           </h2>
           <p className="text-[#2B2F36]/50 text-[14px] leading-relaxed max-w-md mx-auto mt-4">
-            {t("biomarkers.sub")}
+            {content?.sub ?? t("biomarkers.sub")}
           </p>
         </div>
 
@@ -129,7 +133,7 @@ export default function Biomarkers(): React.JSX.Element {
                       textTransform: "uppercase",
                     }}
                   >
-                    {t("biomarkers.soins")}
+                    {content?.soins ?? t("biomarkers.soins")}
                   </span>
                 </div>
 
@@ -158,14 +162,14 @@ export default function Biomarkers(): React.JSX.Element {
         {/* Bottom CTA */}
         <div className="bio-cell mt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 pt-8 border-t border-[#0B1220]/[0.06]">
           <p className="text-[#2B2F36]/50 text-sm max-w-md">
-            {t("biomarkers.bottom")}
+            {content?.bottom ?? t("biomarkers.bottom")}
           </p>
           <a
             href="#"
             onClick={(e) => e.preventDefault()}
             className="inline-flex items-center gap-2 text-[#B88A5A] text-sm font-semibold hover:gap-3 transition-all duration-300"
           >
-            {t("biomarkers.cta")}
+            {content?.cta ?? t("biomarkers.cta")}
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>

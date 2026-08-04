@@ -4,9 +4,14 @@ import Link from "next/link";
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
+import type { HeroContent } from "@/lib/homepage-types";
 
 /* ── Hero Section ──────────────────────────────────────────── */
-export default function HeroSection(): React.JSX.Element {
+interface HeroSectionProps {
+  content?: HeroContent;
+}
+
+export default function HeroSection({ content }: HeroSectionProps): React.JSX.Element {
   const { t } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const trustRef = useRef<HTMLDivElement>(null);
@@ -77,7 +82,7 @@ export default function HeroSection(): React.JSX.Element {
             <div className="hero-eyebrow inline-flex items-center gap-2.5 mb-8">
               <div className="w-1.5 h-1.5 rounded-full bg-[#B88A5A] shrink-0" />
               <span className="text-[#B88A5A]/75 text-[11px] font-semibold tracking-[0.24em] uppercase">
-                {t("hero.eyebrow")}
+                {content?.eyebrow ?? t("hero.eyebrow")}
               </span>
               <div className="w-8 h-px bg-[#B88A5A]/30" />
               <span className="text-white/28 text-[11px] tracking-[0.14em] uppercase">{t("hero.depuis")}</span>
@@ -93,7 +98,7 @@ export default function HeroSection(): React.JSX.Element {
                 letterSpacing: "-0.02em",
               }}
             >
-              <span className="hero-line block">{t("hero.vousMéritez")}</span>
+              <span className="hero-line block">{content?.heading1 ?? t("hero.vousMéritez")}</span>
               <span className="hero-line block">
                 {t("hero.uneSante")}{" "}
                 <span
@@ -104,7 +109,7 @@ export default function HeroSection(): React.JSX.Element {
                     fontStyle: "italic",
                   }}
                 >
-                  {t("hero.complete")}
+                  {content?.heading2 ?? t("hero.complete")}
                 </span>
               </span>
             </h1>
@@ -114,7 +119,7 @@ export default function HeroSection(): React.JSX.Element {
               className="hero-sub mt-7 max-w-[480px] leading-[1.78]"
               style={{ color: "rgba(255,255,255,0.5)", fontSize: "clamp(0.93rem, 1.4vw, 1.05rem)" }}
             >
-              {t("hero.sub")}
+              {content?.sub ?? t("hero.sub")}
             </p>
 
             {/* CTAs */}
@@ -127,7 +132,7 @@ export default function HeroSection(): React.JSX.Element {
                   background: "#B88A5A",
                 }}
               >
-                {t("hero.cta")}
+                {content?.ctaLabel ?? t("hero.cta")}
               </Link>
             </div>
           </div>

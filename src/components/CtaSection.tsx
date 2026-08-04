@@ -4,9 +4,13 @@ import Link from "next/link";
 import { useRef, useEffect } from "react";
 import { useLocale } from "@/contexts/LanguageContext";
 import { gsap } from "gsap";
+import type { CtaContent } from "@/lib/homepage-types";
 
+interface CtaSectionProps {
+  content?: CtaContent;
+}
 
-export default function CtaSection(): React.JSX.Element {
+export default function CtaSection({ content }: CtaSectionProps): React.JSX.Element {
   const { t } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -107,7 +111,7 @@ export default function CtaSection(): React.JSX.Element {
             letterSpacing: "-0.02em",
           }}
         >
-          {t("ctaSection.heading1")}<br />
+          {content?.heading1 ?? t("ctaSection.heading1")}<br />
           <span
             style={{
               background: "linear-gradient(135deg, #D4A870 0%, #B88A5A 50%, #E8C99A 100%)",
@@ -116,7 +120,7 @@ export default function CtaSection(): React.JSX.Element {
               fontStyle: "italic",
             }}
           >
-            {t("ctaSection.heading2")}
+            {content?.heading2 ?? t("ctaSection.heading2")}
           </span>
         </h2>
 
@@ -128,7 +132,7 @@ export default function CtaSection(): React.JSX.Element {
             fontSize: "clamp(0.9rem, 1.3vw, 1.05rem)",
           }}
         >
-          {t("ctaSection.sub")}
+          {content?.sub ?? t("ctaSection.sub")}
         </p>
 
         {/* CTAs */}
@@ -141,7 +145,7 @@ export default function CtaSection(): React.JSX.Element {
               background: "#B88A5A",
             }}
           >
-            {t("ctaSection.cta")}
+            {content?.ctaLabel ?? t("ctaSection.cta")}
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>

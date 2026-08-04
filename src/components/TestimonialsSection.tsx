@@ -8,6 +8,7 @@
 import { useRef, useEffect, useCallback, type ReactNode } from "react";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
+import type { TestimonialsContent } from "@/lib/homepage-types";
 
 type TestimonialItem = {
   type: "testimonial";
@@ -64,7 +65,11 @@ function GridCell({ children, className }: { children: ReactNode; className?: st
   return <div className={`flex-1 flex flex-col gap-6 ${className ?? ""}`}>{children}</div>;
 }
 
-export default function TestimonialsSection(): React.JSX.Element {
+interface TestimonialsSectionProps {
+  content?: TestimonialsContent;
+}
+
+export default function TestimonialsSection({ content }: TestimonialsSectionProps): React.JSX.Element {
   const { t } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
@@ -105,17 +110,17 @@ export default function TestimonialsSection(): React.JSX.Element {
       <div className="max-w-7xl mx-auto">
         <div ref={headingRef} className="flex flex-col items-center text-center mb-8 sm:mb-16 lg:mb-24">
           <h2 className="heading-serif text-4xl sm:text-5xl text-[#0B1220]">
-            {t("testimonialsSection.heading1")}{" "}
+            {content?.heading1 ?? t("testimonialsSection.heading1")}{" "}
 <span style={{
   background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent",
 }}>
-  {t("testimonialsSection.heading2")}
+  {content?.heading2 ?? t("testimonialsSection.heading2")}
 </span>
           </h2>
           <p className="text-[#2B2F36]/55 text-sm sm:text-base mt-4 max-w-lg leading-relaxed">
-            {t("testimonialsSection.sub")}
+            {content?.sub ?? t("testimonialsSection.sub")}
           </p>
         </div>
 

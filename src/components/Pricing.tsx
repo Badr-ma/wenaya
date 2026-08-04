@@ -8,10 +8,15 @@
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
+import type { PricingContent } from "@/lib/homepage-types";
 
 const planKeys = ["plan1", "plan2", "plan3"];
 
-export default function Pricing(): React.JSX.Element {
+interface PricingProps {
+  content?: PricingContent;
+}
+
+export default function Pricing({ content }: PricingProps): React.JSX.Element {
   const { t, tRaw } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);

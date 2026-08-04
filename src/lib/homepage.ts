@@ -74,7 +74,7 @@ export async function updateSection(id: string, updates: Partial<HomepageSection
   const draft = await getHomepageDraft();
   const idx = draft.sections.findIndex((s) => s.id === id);
   if (idx === -1) return null;
-  draft.sections[idx] = { ...draft.sections[idx], ...updates };
+  draft.sections[idx] = { ...draft.sections[idx], ...updates } as HomepageSection;
   await saveHomepageDraft(draft);
   return draft;
 }
