@@ -166,15 +166,15 @@ export default function YoloSection({ content }: YoloSectionProps): React.JSX.El
                 WebkitTextFillColor: "transparent",
               }}
             >
-              YOLO
+              {content?.title ?? "YOLO"}
             </h2>
 
             <p ref={subtitleRef} className="text-xl sm:text-2xl text-white/80 mt-4 font-serif leading-snug max-w-lg">
-              The AI Agent Dedicated to Longevity.
+              {content?.subtitle ?? "The AI Agent Dedicated to Longevity."}
             </p>
 
             <p ref={descRef} className="text-white/35 text-sm sm:text-base mt-6 leading-relaxed max-w-md">
-              A continuous intelligence layer designed to help individuals understand their health, anticipate risks, and make better decisions over time.
+              {content?.desc ?? "A continuous intelligence layer designed to help individuals understand their health, anticipate risks, and make better decisions over time."}
             </p>
 
             <div ref={buttonsRef} className="flex flex-wrap gap-4 mt-6 sm:mt-12">

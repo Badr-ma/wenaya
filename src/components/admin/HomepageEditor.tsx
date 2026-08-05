@@ -3,6 +3,9 @@
 import { useState, useEffect, useCallback } from "react";
 import type { HomepageConfig, HomepageSection, SectionType } from "@/lib/homepage-types";
 import { SECTION_META } from "@/lib/homepage-types";
+import type { HomepageFieldDef } from "@/lib/homepage-editor-fields";
+import { SECTION_EDITOR_DEFS } from "@/lib/homepage-editor-fields";
+import { useLocale } from "@/contexts/LanguageContext";
 import HomepageRenderer from "@/components/homepage/HomepageRenderer";
 
 interface Props {
@@ -21,7 +24,9 @@ async function apiFetch(url: string, token: string, init?: RequestInit) {
 }
 
 export default function HomepageEditor({ token }: Props) {
+  const { t } = useLocale();
   const [config, setConfig] = useState<HomepageConfig | null>(null);
+  const [published, setPublished] = useState<HomepageConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [saveMsg, setSaveMsg] = useState("");
   const [saving, setSaving] = useState(false);
@@ -32,9 +37,14 @@ export default function HomepageEditor({ token }: Props) {
 
   const load = useCallback(async () => {
     try {
-      const res = await apiFetch("/api/admin/homepage", token);
-      const json = await res.json();
-      setConfig(json.data);
+      const [draftRes, pubRes] = await Promise.all([
+        apiFetch("/api/admin/homepage", token),
+        fetch("/api/homepage"),
+      ]);
+      const draftJson = await draftRes.json();
+      const pubJson = await pubRes.json();
+      if (draftJson.data) setConfig(draftJson.data);
+      if (pubJson.data) setPublished(pubJson.data);
     } catch { /* empty */ }
     setLoading(false);
   }, [token]);
@@ -64,6 +74,7 @@ export default function HomepageEditor({ token }: Props) {
     setSaveMsg("");
     try {
       const res = await apiFetch("/api/admin/homepage/publish", token, { method: "POST" });
+      if (res.ok && config) setPublished(config);
       setSaveMsg(res.ok ? "Published!" : "Error publishing");
     } catch {
       setSaveMsg("Network error");
@@ -128,11 +139,18 @@ export default function HomepageEditor({ token }: Props) {
     if (!config) return;
     const next: HomepageConfig = {
       ...config,
-      sections: config.sections.map((s) =>
-        s.id === id
-          ? ({ ...s, content: { ...s.content, [field]: value } } as HomepageSection)
-          : s
-      ),
+      sections: config.sections.map((s) => {
+        if (s.id !== id) return s;
+        const content: Record<string, unknown> = {
+          ...(s.content as Record<string, unknown>),
+        };
+        if (value === "" || value === null) {
+          delete content[field];
+        } else {
+          content[field] = value;
+        }
+        return { ...s, content } as HomepageSection;
+      }),
     };
     setConfig(next);
   };
@@ -295,6 +313,8 @@ export default function HomepageEditor({ token }: Props) {
                 {isEditing && (
                   <SectionEditor
                     section={section}
+                    published={published}
+                    t={t}
                     onUpdate={(field, value) => updateSectionContent(section.id, field, value)}
                   />
                 )}
@@ -356,181 +376,111 @@ export default function HomepageEditor({ token }: Props) {
 
 /* ── Section Editor ── */
 
+/**
+ * True when a value actually exists. Empty strings are treated as "no value" —
+ * mirroring the sections' `content?.key ?? t("i18n.key")` fallback so that
+ * clearing a field restores the default content instead of rendering a blank.
+ */
+function hasValue(v: unknown): boolean {
+  return v !== undefined && v !== null && String(v) !== "";
+}
+
 function SectionEditor({
   section,
+  published,
+  t,
   onUpdate,
 }: {
   section: HomepageSection;
+  published: HomepageConfig | null;
+  t: (path: string) => string;
   onUpdate: (field: string, value: unknown) => void;
 }) {
   const meta = SECTION_META[section.type];
+  const def = SECTION_EDITOR_DEFS[section.type];
   const content = (section.content || {}) as Record<string, unknown>;
 
-  const field = (label: string, key: string, opts?: { rows?: number; placeholder?: string }) => (
+  /**
+   * Effective value currently displayed by the website, resolved with the
+   * priority: draft CMS value > published CMS value > default i18n value.
+   * Nothing is written to Redis here — this is only the value shown in the input.
+   */
+  const resolveValue = (field: HomepageFieldDef): string => {
+    if (hasValue(content[field.key])) return String(content[field.key]);
+    const pubSection = published?.sections.find((s) => s.type === section.type);
+    const pubContent = (pubSection?.content || {}) as Record<string, unknown>;
+    if (hasValue(pubContent[field.key])) return String(pubContent[field.key]);
+    if (field.i18nPath) return t(field.i18nPath);
+    if (field.defaultText !== undefined) return field.defaultText;
+    return "";
+  };
+
+  const Field = ({ f }: { f: HomepageFieldDef }) => (
     <div className="mb-3">
-      <label className="block text-[11px] font-medium text-[#2B2F36]/50 mb-1">{label}</label>
-      {opts?.rows ? (
+      <label className="block text-[11px] font-medium text-[#2B2F36]/50 mb-1">{f.label}</label>
+      {f.rows ? (
         <textarea
-          value={String(content[key] ?? "")}
-          onChange={(e) => onUpdate(key, e.target.value)}
-          rows={opts.rows}
-          placeholder={opts.placeholder}
-          className="w-full px-3 py-2 rounded-lg border border-[#0B1220]/[0.08] bg-[#FAF8F4] text-[12px] text-[#0B1220] outline-none focus:border-[#B88A5A]/40 transition-colors resize-none"
+          value={resolveValue(f)}
+          onChange={(e) => onUpdate(f.key, e.target.value)}
+          rows={f.rows}
+          placeholder={f.placeholder}
+          className="w-full px-3 py-2 rounded-lg border border-[#0B1220]/[0.08] bg-white text-[12px] text-[#0B1220] outline-none focus:border-[#B88A5A]/40 transition-colors resize-none"
         />
       ) : (
         <input
-          value={String(content[key] ?? "")}
-          onChange={(e) => onUpdate(key, e.target.value)}
-          placeholder={opts?.placeholder}
-          className="w-full px-3 py-2 rounded-lg border border-[#0B1220]/[0.08] bg-[#FAF8F4] text-[12px] text-[#0B1220] outline-none focus:border-[#B88A5A]/40 transition-colors"
+          value={resolveValue(f)}
+          onChange={(e) => onUpdate(f.key, e.target.value)}
+          placeholder={f.placeholder}
+          className="w-full px-3 py-2 rounded-lg border border-[#0B1220]/[0.08] bg-white text-[12px] text-[#0B1220] outline-none focus:border-[#B88A5A]/40 transition-colors"
         />
       )}
     </div>
   );
 
   const renderEditor = () => {
-    switch (section.type) {
-      case "banner":
-        return (
-          <div className="space-y-2">
-            <p className="text-[11px] text-[#2B2F36]/30 italic">Text is managed through i18n translation files.</p>
-            {field("Banner text override", "bannerText")}
-          </div>
-        );
-
-      case "hero":
-        return (
-          <div className="space-y-2">
-            <p className="text-[11px] text-[#2B2F36]/30 italic">Default content is managed through i18n. Override fields below:</p>
-            {field("Eyebrow text", "eyebrow")}
-            {field("Heading line 1", "heading1")}
-            {field("Heading line 2", "heading2")}
-            {field("Description", "sub", { rows: 2 })}
-            {field("Primary CTA label", "ctaLabel")}
-            {field("Primary CTA URL", "ctaUrl")}
-            {field("Video URL", "videoUrl")}
-          </div>
-        );
-
-      case "cta":
-        return (
-          <div className="space-y-2">
-            <p className="text-[11px] text-[#2B2F36]/30 italic">Default content is managed through i18n.</p>
-            {field("Heading line 1 override", "heading1")}
-            {field("Heading line 2 override", "heading2")}
-            {field("Description override", "sub", { rows: 2 })}
-            {field("CTA label", "ctaLabel")}
-            {field("CTA URL", "ctaUrl")}
-          </div>
-        );
-
-      case "statistics":
-        return (
-          <div className="space-y-2">
-            {[0, 1, 2, 3].map((i) => (
-              <div key={i} className="grid grid-cols-2 gap-2 p-3 rounded-lg bg-[#0B1220]/[0.02]">
-                {field(`Stat ${i + 1} — Value`, `stat_${i}_value`, { placeholder: "e.g. 35" })}
-                {field(`Stat ${i + 1} — Label`, `stat_${i}_label`, { placeholder: "e.g. Therapists" })}
-              </div>
-            ))}
-          </div>
-        );
-
-      case "image-text":
-        return (
-          <div className="space-y-2">
-            {field("Heading", "heading")}
-            {field("Text", "text", { rows: 3 })}
-            {field("Image URL", "imageUrl")}
-            {field("CTA label", "ctaLabel")}
-            {field("CTA URL", "ctaUrl")}
-          </div>
-        );
-
-      case "full-width-cta":
-        return (
-          <div className="space-y-2">
-            {field("Heading", "heading")}
-            {field("Description", "sub", { rows: 2 })}
-            {field("CTA label", "ctaLabel")}
-            {field("CTA URL", "ctaUrl")}
-            {field("Background image URL", "bgImage")}
-          </div>
-        );
-
-      case "disease-marquee":
-        return (
-          <div className="space-y-2">
-            <p className="text-[11px] text-[#2B2F36]/30 italic">Manage marquee content in the <strong>Specialties</strong> tab.</p>
-          </div>
-        );
-
-      case "how-it-works":
-        return (
-          <div className="space-y-2">
-            <p className="text-[11px] text-[#2B2F36]/30 italic">The 4 step cards are managed through i18n. Override fields below:</p>
-            {field("Badge text", "badge")}
-            {field("Heading line 1", "heading1")}
-            {field("Heading line 2", "heading2")}
-            {field("Description", "sub", { rows: 2 })}
-            {field("Primary CTA label", "cta1")}
-            {field("Secondary CTA label", "cta2")}
-          </div>
-        );
-
-      case "biomarkers":
-        return (
-          <div className="space-y-2">
-            <p className="text-[11px] text-[#2B2F36]/30 italic">The 3 pillar cards are managed through i18n. Override fields below:</p>
-            {field("Badge text", "badge")}
-            {field("Heading line 1", "heading1")}
-            {field("Heading line 2", "heading2")}
-            {field("Description", "sub", { rows: 2 })}
-            {field("Care count label", "soins")}
-            {field("Bottom description", "bottom", { rows: 2 })}
-            {field("CTA label", "cta")}
-          </div>
-        );
-
-      case "testimonials":
-        return (
-          <div className="space-y-2">
-            <p className="text-[11px] text-[#2B2F36]/30 italic">Testimonial cards are managed through i18n. Override the heading fields below:</p>
-            {field("Heading line 1", "heading1")}
-            {field("Heading line 2", "heading2")}
-            {field("Description", "sub", { rows: 2 })}
-          </div>
-        );
-
-      case "expertise":
-        return (
-          <div className="space-y-2">
-            <p className="text-[11px] text-[#2B2F36]/30 italic">Specialist cards are managed through i18n. Override fields below:</p>
-            {field("Badge text", "badge")}
-            {field("Heading line 1", "heading1")}
-            {field("Heading line 2", "heading2")}
-            {field("Description", "p1", { rows: 2 })}
-            {field("CTA label", "cta")}
-          </div>
-        );
-
-      case "blog":
-        return (
-          <div className="space-y-2">
-            <p className="text-[11px] text-[#2B2F36]/30 italic">Blog section automatically shows the latest 3 posts.</p>
-            {field("Heading line 1 override", "heading1")}
-          </div>
-        );
-
-      default:
-        return (
-          <div className="space-y-2">
-            <p className="text-[11px] text-[#2B2F36]/30 italic">
-              This section is rendered with its default content. It has no editable CMS fields yet.
-            </p>
-          </div>
-        );
+    /* Specialized editor — marquee content lives in the Specialties tab. */
+    if (section.type === "disease-marquee") {
+      return (
+        <div className="space-y-2">
+          <p className="text-[11px] text-[#2B2F36]/30 italic">
+            Manage marquee content in the <strong>Specialties</strong> tab.
+          </p>
+        </div>
+      );
     }
+
+    /* Legacy statistics editor — kept as-is (see Statistics audit in Step 7). */
+    if (section.type === "statistics") {
+      return (
+        <div className="space-y-2">
+          {[0, 1, 2, 3].map((i) => (
+            <div key={i} className="grid grid-cols-2 gap-2 p-3 rounded-lg bg-[#0B1220]/[0.02]">
+              <Field key={`${i}-value`} f={{ label: `Stat ${i + 1} — Value`, key: `stat_${i}_value`, placeholder: "e.g. 35" }} />
+              <Field key={`${i}-label`} f={{ label: `Stat ${i + 1} — Label`, key: `stat_${i}_label`, placeholder: "e.g. Therapists" }} />
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    if (def) {
+      return (
+        <div className="space-y-2">
+          {def.helper && <p className="text-[11px] text-[#2B2F36]/30 italic">{def.helper}</p>}
+          {def.fields.map((f) => (
+            <Field key={f.key} f={f} />
+          ))}
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-2">
+        <p className="text-[11px] text-[#2B2F36]/30 italic">
+          This section is rendered with its default content. It has no editable CMS fields yet.
+        </p>
+      </div>
+    );
   };
 
   return (

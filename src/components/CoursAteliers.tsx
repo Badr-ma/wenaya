@@ -86,15 +86,15 @@ export default function CoursAteliers({ content }: CoursAteliersProps): React.JS
         <div className="ca-head text-center mb-8 sm:mb-10">
           <span className="inline-flex items-center gap-2.5 mb-3">
             <div className="w-1 h-1 rounded-full bg-[#B88A5A]" />
-            <span className="text-[#B88A5A]/50 text-[10px] font-semibold tracking-[0.24em] uppercase">{t("coursAteliers.badge")}</span>
+            <span className="text-[#B88A5A]/50 text-[10px] font-semibold tracking-[0.24em] uppercase">{content?.badge ?? t("coursAteliers.badge")}</span>
           </span>
-          <h2 className="heading-serif text-white text-[clamp(1.6rem,3.5vw,3rem)]">{t("coursAteliers.heading1")}{" "}
+          <h2 className="heading-serif text-white text-[clamp(1.6rem,3.5vw,3rem)]">{content?.heading1 ?? t("coursAteliers.heading1")}{" "}
 <span style={{
   background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent",
 }}>
-  {t("coursAteliers.heading2")}
+  {content?.heading2 ?? t("coursAteliers.heading2")}
 </span></h2>
         </div>
 
@@ -175,7 +175,7 @@ export default function CoursAteliers({ content }: CoursAteliersProps): React.JS
                   </svg>
                 </div>
                 <span className="text-[#B88A5A]/40 text-[9px] font-semibold tracking-[0.15em] uppercase whitespace-nowrap">
-                  {t("coursAteliers.swipe")}
+                  {content?.swipe ?? t("coursAteliers.swipe")}
                 </span>
               </div>
             </div>
@@ -210,7 +210,7 @@ export default function CoursAteliers({ content }: CoursAteliersProps): React.JS
             className="inline-flex items-center gap-3 text-[#B88A5A] text-sm font-semibold transition-all duration-500 group rounded-xl border border-[#B88A5A]/20 px-5 py-2.5 hover:bg-[#B88A5A]/5 hover:border-[#B88A5A]/30 hover:gap-4"
           >
             <span className="w-6 h-px bg-[#B88A5A]/40 transition-all duration-500 group-hover:w-8" />
-            {t("coursAteliers.cta")}
+            {content?.cta ?? t("coursAteliers.cta")}
             <svg className="w-3.5 h-3.5 transition-transform duration-500 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>

@@ -106,7 +106,7 @@ export default function Footer({ content }: FooterProps): React.JSX.Element {
                     className="h-7 sm:h-8 w-auto brightness-0 invert"
                   />
                   <p className="text-white/45 text-sm mt-4 max-w-sm leading-relaxed">
-                    {t("footer.desc")}
+                    {content?.desc ?? t("footer.desc")}
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
@@ -183,7 +183,7 @@ export default function Footer({ content }: FooterProps): React.JSX.Element {
                   {t("footer.copyright").replace("{year}", String(new Date().getFullYear()))}
                 </p>
                 <p className="text-white/20 text-xs">
-                  {t("footer.hours")}
+                  {content?.hours ?? t("footer.hours")}
                 </p>
               </div>
             </div>
