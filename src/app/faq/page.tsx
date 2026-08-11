@@ -8,6 +8,7 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import FaqSection from "@/components/faq/FaqSection";
 import Footer from "@/components/Footer";
+import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "FAQ — Questions Fréquentes sur Wenaya",
@@ -21,14 +22,20 @@ export const metadata: Metadata = {
     "rendez-vous nutrition Maroc",
   ],
   alternates: {
-    canonical: "https://www.wenaya.com/faq",
+    canonical: `${SITE_URL}/faq`,
   },
   openGraph: {
+    ...OG_DEFAULTS,
     title: "FAQ — Questions Fréquentes sur Wenaya",
     description:
       "Answers to the most common questions about Wenaya's integrated health platform and corporate wellness programs in Morocco.",
-    url: "https://www.wenaya.com/faq",
-    type: "website",
+    url: `${SITE_URL}/faq`,
+  },
+  twitter: {
+    ...TWITTER_DEFAULTS,
+    title: "FAQ — Questions Fréquentes sur Wenaya",
+    description:
+      "Answers to the most common questions about Wenaya's integrated health platform and corporate wellness programs in Morocco.",
   },
 };
 
@@ -95,11 +102,13 @@ export default function FaqPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <ErrorBoundary>
-        <Breadcrumbs />
-        <div className="flex flex-col min-h-screen">
-          <FaqSection />
-          <div data-section-bg="dark"><Footer /></div>
-        </div>
+        <main>
+          <Breadcrumbs />
+          <div className="flex flex-col min-h-screen">
+            <FaqSection />
+          </div>
+        </main>
+        <div data-section-bg="dark"><Footer /></div>
       </ErrorBoundary>
     </>
   );

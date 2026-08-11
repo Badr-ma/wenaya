@@ -9,20 +9,28 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ProductsGrid from "@/components/produits/ProductsGrid";
 import Footer from "@/components/Footer";
+import { getProduits } from "@/lib/produits";
+import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Nos Produits — Compléments, Appareils & Programmes Bien-être | Wenaya",
   description:
     "Découvrez notre sélection de produits santé et bien-être : compléments nutritionnels, appareils de thérapie, wearables, soins de la peau et programmes personnalisés par nos spécialistes.",
   alternates: {
-    canonical: "https://www.wenaya.com/produits",
+    canonical: `${SITE_URL}/produits`,
   },
   openGraph: {
+    ...OG_DEFAULTS,
     title: "Nos Produits — Wenaya",
     description:
       "Produits de santé, bien-être et longévité sélectionnés par nos spécialistes pour une santé optimale.",
-    url: "https://www.wenaya.com/produits",
-    type: "website",
+    url: `${SITE_URL}/produits`,
+  },
+  twitter: {
+    ...TWITTER_DEFAULTS,
+    title: "Nos Produits — Wenaya",
+    description:
+      "Produits de santé, bien-être et longévité sélectionnés par nos spécialistes pour une santé optimale.",
   },
 };
 
@@ -64,13 +72,16 @@ function ProductsSkeleton() {
 }
 
 export default function ProduitsPage() {
+  const initial = getProduits({ locale: "fr", page: 1, limit: 12, sort: "bestRated" });
   return (
     <ErrorBoundary>
       <div className="flex flex-col min-h-screen">
-        <Breadcrumbs />
-        <Suspense fallback={<ProductsSkeleton />}>
-          <ProductsGrid />
-        </Suspense>
+        <main>
+          <Breadcrumbs />
+          <Suspense fallback={<ProductsSkeleton />}>
+            <ProductsGrid initial={initial} />
+          </Suspense>
+        </main>
         <Footer />
       </div>
     </ErrorBoundary>

@@ -13,6 +13,7 @@ import DownloadsSection from "@/components/entreprises/DownloadsSection";
 import FaqSection from "@/components/entreprises/FaqSection";
 import ContactSection from "@/components/entreprises/ContactSection";
 import StickyCta from "@/components/entreprises/StickyCta";
+import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 
 const EntreprisesCta = dynamic(() => import("@/components/entreprises/Cta"), { ssr: true });
 const EntreprisesFooter = dynamic(() => import("@/components/entreprises/Footer"), { ssr: true });
@@ -33,14 +34,20 @@ export const metadata: Metadata = {
     "burnout prevention Maroc",
   ],
   alternates: {
-    canonical: "https://www.wenaya.com/solutions/entreprises",
+    canonical: `${SITE_URL}/solutions/entreprises`,
   },
   openGraph: {
+    ...OG_DEFAULTS,
     title: "Bien-être en Entreprise — Programmes Santé & Prévention | Wenaya",
     description:
       "Wenaya designs evidence-based corporate wellness programs for Moroccan and international organizations. Mental health, physiotherapy, nutrition, prevention — measurable and tailored to your workforce.",
-    url: "https://www.wenaya.com/solutions/entreprises",
-    type: "website",
+    url: `${SITE_URL}/solutions/entreprises`,
+  },
+  twitter: {
+    ...TWITTER_DEFAULTS,
+    title: "Bien-être en Entreprise — Programmes Santé & Prévention | Wenaya",
+    description:
+      "Wenaya designs evidence-based corporate wellness programs for Moroccan and international organizations. Mental health, physiotherapy, nutrition, prevention — measurable and tailored to your workforce.",
   },
 };
 
@@ -49,17 +56,19 @@ export default function EntreprisesPage() {
     <ErrorBoundary>
       <Breadcrumbs />
       <div className="flex flex-col min-h-dvh">
-        <EntreprisesHero />
-        <StatsTestimonialsSection />
-        <ModularitySection />
-        <ProgrammesSection />
-        <HowItWorksSection />
-        <ThematiquesSection />
-        <ImageBreak />
-        <DownloadsSection />
-        <FaqSection />
-        <ContactSection />
-        <EntreprisesCta />
+        <main>
+          <EntreprisesHero />
+          <StatsTestimonialsSection />
+          <ModularitySection />
+          <ProgrammesSection />
+          <HowItWorksSection />
+          <ThematiquesSection />
+          <ImageBreak />
+          <DownloadsSection />
+          <FaqSection />
+          <ContactSection />
+          <EntreprisesCta />
+        </main>
         <div className="mt-auto">
           <EntreprisesFooter />
         </div>

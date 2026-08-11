@@ -4,6 +4,7 @@
  */
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Programmes Bien-être Labellisés pour Entreprises | Wenaya Corporate",
@@ -21,11 +22,21 @@ export const metadata: Metadata = {
     "bien-être collaborateurs Maroc",
     "formation leadership Casablanca",
   ],
+  alternates: {
+    canonical: `${SITE_URL}/solutions/entreprises/programmes`,
+  },
   openGraph: {
+    ...OG_DEFAULTS,
     title: "Programmes Labellisés Bien-être en Entreprise | Wenaya",
     description:
       "4 programmes certifiés pour transformer la santé, la communication et la performance de vos équipes. PCM, Leadership 360°, Art des Priorités, People Model Canvas.",
-    url: "https://www.wenaya.com/solutions/entreprises/programmes",
+    url: `${SITE_URL}/solutions/entreprises/programmes`,
+  },
+  twitter: {
+    ...TWITTER_DEFAULTS,
+    title: "Programmes Labellisés Bien-être en Entreprise | Wenaya",
+    description:
+      "4 programmes certifiés pour transformer la santé, la communication et la performance de vos équipes. PCM, Leadership 360°, Art des Priorités, People Model Canvas.",
   },
 };
 

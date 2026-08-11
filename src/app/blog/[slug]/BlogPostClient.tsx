@@ -181,7 +181,7 @@ export default function BlogPostClient({
         <div className="lg:grid lg:grid-cols-[220px_1fr_180px] lg:gap-8 xl:gap-12">
           <aside className="hidden lg:block">
             <div className="sticky top-32">
-              <h4 className="text-[10px] font-mono text-gray-400 uppercase tracking-widest mb-4">{t("blog.contenu")}</h4>
+              <h2 className="text-[10px] font-mono text-gray-400 uppercase tracking-widest mb-4">{t("blog.contenu")}</h2>
               <nav className="space-y-2.5">
                 {headings.map((h) => (
                   <a
@@ -216,6 +216,9 @@ export default function BlogPostClient({
                 <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
                   components={{
+                    h1: ({ children, ...props }) => (
+                      <h2 id={headingId(String(children))} {...props}>{children}</h2>
+                    ),
                     h2: ({ children, ...props }) => {
                       const text = String(children);
                       const id = headingId(text);
@@ -282,7 +285,7 @@ export default function BlogPostClient({
 
           <aside className="hidden lg:block">
             <div className="sticky top-32">
-              <h4 className="text-[10px] font-mono text-gray-400 uppercase tracking-widest mb-4">{t("blog.partager")}</h4>
+              <h2 className="text-[10px] font-mono text-gray-400 uppercase tracking-widest mb-4">{t("blog.partager")}</h2>
               <div className="flex flex-col gap-3">
                 <a
                   href={`https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`}

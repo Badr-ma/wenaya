@@ -39,35 +39,43 @@ export default function HomepageRenderer({ config }: { config: HomepageConfig })
       .sort((a, b) => a.order - b.order);
   }, [config]);
 
+  const contentSections = useMemo(() => sections.filter((s) => s.type !== "footer"), [sections]);
+  const footerSections = useMemo(() => sections.filter((s) => s.type === "footer"), [sections]);
+
   let lastTheme: string | null = null;
+
+  const renderSection = (section: HomepageSection, i: number) => {
+    const meta = SECTION_META[section.type];
+    const needsBreak = meta?.hasSectionBreak;
+    const needsSpacer = meta?.hasSpacerBefore;
+    const currentTheme = meta?.theme ?? "light";
+
+    let separator = null;
+    if (i > 0 && lastTheme && lastTheme !== currentTheme) {
+      separator = <SectionBreak />;
+    } else if (i > 0 && needsBreak) {
+      separator = <SectionBreak />;
+    } else if (needsSpacer) {
+      separator = <Spacer />;
+    }
+    lastTheme = currentTheme;
+
+    return (
+      <span key={section.id}>
+        {separator}
+        <SectionWrapper section={section}>
+          <SectionComponent section={section} />
+        </SectionWrapper>
+      </span>
+    );
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
-      {sections.map((section, i) => {
-        const meta = SECTION_META[section.type];
-        const needsBreak = meta?.hasSectionBreak;
-        const needsSpacer = meta?.hasSpacerBefore;
-        const currentTheme = meta?.theme ?? "light";
-
-        let separator = null;
-        if (i > 0 && lastTheme && lastTheme !== currentTheme) {
-          separator = <SectionBreak />;
-        } else if (i > 0 && needsBreak) {
-          separator = <SectionBreak />;
-        } else if (needsSpacer) {
-          separator = <Spacer />;
-        }
-        lastTheme = currentTheme;
-
-        return (
-          <span key={section.id}>
-            {separator}
-            <SectionWrapper section={section}>
-              <SectionComponent section={section} />
-            </SectionWrapper>
-          </span>
-        );
-      })}
+      <main>
+        {contentSections.map((section, i) => renderSection(section, i))}
+      </main>
+      {footerSections.map((section, i) => renderSection(section, contentSections.length + i))}
     </div>
   );
 }

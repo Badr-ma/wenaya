@@ -27,6 +27,7 @@ export default function ConfidentialitePage() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <main className="flex-1 flex flex-col">
       <div className="flex-1 bg-[#F2EFE9] pt-32 pb-20 px-6">
         <div className="max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2.5 mb-8">
@@ -57,6 +58,7 @@ export default function ConfidentialitePage() {
           </div>
         </div>
       </div>
+      </main>
       <Footer />
     </div>
   );

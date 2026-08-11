@@ -8,20 +8,27 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PratiquesGrid from "@/components/pratiques/PratiquesGrid";
 import Footer from "@/components/Footer";
+import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Nos Pratiques — Kinésithérapie, Ostéopathie, Psychologie & Nutrition | Wenaya",
   description:
     "Découvrez toutes les pratiques Wenaya : kinésithérapie, ostéopathie, psychologie clinique, neuropsychologie, nutrition, orthophonie, naturopathie, psychomotricité et thérapies complémentaires à Casablanca.",
   alternates: {
-    canonical: "https://www.wenaya.com/pratiques",
+    canonical: `${SITE_URL}/pratiques`,
   },
   openGraph: {
+    ...OG_DEFAULTS,
     title: "Nos Pratiques — Wenaya",
     description:
       "Kinésithérapie, ostéopathie, psychologie, nutrition et plus — une approche intégrée pour votre santé à Casablanca.",
-    url: "https://www.wenaya.com/pratiques",
-    type: "website",
+    url: `${SITE_URL}/pratiques`,
+  },
+  twitter: {
+    ...TWITTER_DEFAULTS,
+    title: "Nos Pratiques — Wenaya",
+    description:
+      "Kinésithérapie, ostéopathie, psychologie, nutrition et plus — une approche intégrée pour votre santé à Casablanca.",
   },
 };
 
@@ -29,8 +36,10 @@ export default function PratiquesPage() {
   return (
     <ErrorBoundary>
       <div className="flex flex-col min-h-screen">
-        <Breadcrumbs />
-        <PratiquesGrid />
+        <main>
+          <Breadcrumbs />
+          <PratiquesGrid />
+        </main>
         <Footer />
       </div>
     </ErrorBoundary>

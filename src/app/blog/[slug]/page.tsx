@@ -10,6 +10,7 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import Footer from "@/components/Footer";
 import BlogPostClient from "./BlogPostClient";
+import { SITE_URL, OG_DEFAULTS } from "@/lib/site-config";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -24,16 +25,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = getPostBySlug(slug);
   if (!post) return {};
   const author = authors.find((a) => a.id === post.authorId);
+  const category = categories.find((c) => c.id === post.categoryId);
   return {
     title: post.metaTitle,
     description: post.metaDescription,
-    alternates: { canonical: `https://www.wenaya.com/blog/${slug}` },
+    category: category?.name,
+    alternates: { canonical: `${SITE_URL}/blog/${slug}` },
     openGraph: {
+      ...OG_DEFAULTS,
       title: post.metaTitle,
       description: post.metaDescription,
+      url: `${SITE_URL}/blog/${slug}`,
       images: [{ url: post.ogImage }],
       type: "article",
-      locale: "fr_FR",
+      locale: "fr_MA",
       publishedTime: post.publishedAt,
       authors: author ? [author.name] : undefined,
     },
@@ -53,7 +58,7 @@ export default async function BlogPostPage({ params }: Props) {
 
   const author = authors.find((a) => a.id === post.authorId);
   const category = categories.find((c) => c.id === post.categoryId);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://wenaya.com";
+  const siteUrl = SITE_URL;
 
   const related = getPublishedPosts()
     .filter((p) => p.slug !== post.slug && p.categoryId === post.categoryId)
@@ -75,7 +80,6 @@ export default async function BlogPostPage({ params }: Props) {
     author: author ? {
       "@type": "Person",
       name: author.name,
-      url: `${siteUrl}/blog?author=${author.id}`,
     } : undefined,
     publisher: {
       "@type": "Organization",
@@ -91,7 +95,7 @@ export default async function BlogPostPage({ params }: Props) {
     },
     keywords: post.tags.join(", "),
     articleSection: category?.name,
-    inLanguage: "fr-FR",
+    inLanguage: "fr-MA",
   };
 
   return (
@@ -101,8 +105,10 @@ export default async function BlogPostPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <ErrorBoundary>
-        <Breadcrumbs />
-        <BlogPostClient post={{ ...post, author, category }} related={related} />
+        <main>
+          <Breadcrumbs labels={{ [slug]: post.title }} />
+          <BlogPostClient post={{ ...post, author, category }} related={related} />
+        </main>
         <div data-section-bg="dark"><Footer /></div>
       </ErrorBoundary>
     </>

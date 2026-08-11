@@ -62,13 +62,13 @@ function DotRating({ rating }: { rating: number }) {
   );
 }
 
-export default function ProductsGrid(): React.JSX.Element {
+export default function ProductsGrid({ initial }: { initial?: ApiResponse }): React.JSX.Element {
   const { t, locale } = useLocale();
-  const [items, setItems] = useState<ProductItem[]>([]);
+  const [items, setItems] = useState<ProductItem[]>(initial?.items ?? []);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const [total, setTotal] = useState(0);
+  const [hasMore, setHasMore] = useState(initial?.hasMore ?? true);
+  const [total, setTotal] = useState(initial?.total ?? 0);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("bestRated");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -128,6 +128,16 @@ export default function ProductsGrid(): React.JSX.Element {
   useEffect(() => {
     let cancelled = false;
     (async () => {
+      const isDefaultView =
+        !search &&
+        sort === "bestRated" &&
+        !selectedCategory &&
+        selectedGoals.length === 0 &&
+        selectedTopics.length === 0;
+      if (initial && page === 1 && isDefaultView) {
+        initialLoadDone.current = true;
+        return;
+      }
       const data = await fetchPage(page, filterKey);
       if (cancelled) return;
       if (data) {
@@ -137,7 +147,7 @@ export default function ProductsGrid(): React.JSX.Element {
       }
     })();
     return () => { cancelled = true; };
-  }, [page, filterKey, fetchPage]);
+  }, [page, filterKey, fetchPage, initial]);
 
   useEffect(() => {
     const el = sentinelRef.current;
@@ -248,9 +258,9 @@ export default function ProductsGrid(): React.JSX.Element {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                   />
                 </div>
-                <h3 className="font-heading font-bold text-lg text-[#0B1220] mt-4 leading-snug">
+                <h2 className="font-heading font-bold text-lg text-[#0B1220] mt-4 leading-snug">
                   {product.title}
-                </h3>
+                </h2>
                 <div className="flex items-center gap-0.5 mt-1 mb-4">
                   <DotRating rating={product.rating} />
                   <span className="text-xs text-[#2B2F36]/50 ml-1">

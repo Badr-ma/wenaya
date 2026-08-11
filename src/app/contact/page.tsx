@@ -48,6 +48,7 @@ export default function ContactPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <main className="flex-1 flex flex-col">
       <Breadcrumbs />
       <div className="flex-1 bg-[#F2EFE9] pt-32 pb-20 px-6">
         <div className="max-w-2xl mx-auto text-center mb-14">
@@ -144,6 +145,7 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
+      </main>
       <Footer />
     </div>
   );

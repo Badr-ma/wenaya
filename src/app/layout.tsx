@@ -15,6 +15,7 @@ import CorporateConsultationWidget from "@/components/CorporateConsultationWidge
 import ScrollToTop from "@/components/ScrollToTop";
 import CookieConsent from "@/components/CookieConsent";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { SITE_URL, SITE_NAME } from "@/lib/site-config";
 
 /** Nunito — used for headings and UI text via --font-heading CSS variable */
 const nunito = Nunito({
@@ -49,11 +50,12 @@ const jetbrains = JetBrains_Mono({
 
 /** Global SEO metadata — applied as defaults for all pages (individual pages can override title/description) */
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.wenaya.com"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Wenaya — Plateforme de Santé Intégrée | Casablanca, Maroc",
     template: "%s | Wenaya",
   },
+  applicationName: SITE_NAME,
   description:
     "Wenaya est la première plateforme de santé intégrée au Maroc. Kinésithérapie, psychologie clinique, nutrition et bien-être corporate — depuis Casablanca.",
   keywords: [
@@ -69,32 +71,26 @@ export const metadata: Metadata = {
     "clinique multidisciplinaire Casablanca",
     "integrated health Morocco",
   ],
-  authors: [{ name: "Wenaya", url: "https://www.wenaya.com" }],
+  authors: [{ name: "Wenaya", url: SITE_URL }],
   creator: "Wenaya",
   publisher: "Wenaya",
+  referrer: "strict-origin-when-cross-origin",
+  formatDetection: { telephone: false, email: false, address: false },
   openGraph: {
     type: "website",
     locale: "fr_MA",
-    url: "https://www.wenaya.com",
+    url: SITE_URL,
     siteName: "Wenaya",
     title: "Wenaya — Plateforme de Santé Intégrée | Casablanca, Maroc",
     description:
       "Morocco's first integrated health and wellbeing platform. Physiotherapy, clinical psychology, nutrition, and corporate wellness — from Casablanca.",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Wenaya — Plateforme de Santé Intégrée au Maroc",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Wenaya — Plateforme de Santé Intégrée | Casablanca, Maroc",
     description:
       "Morocco's first integrated health and wellbeing platform. Physiotherapy, psychology, nutrition, and corporate wellness — from Casablanca.",
-    images: ["/og-image.jpg"],
+    images: ["/opengraph-image"],
   },
   robots: {
     index: true,
@@ -108,7 +104,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://www.wenaya.com",
+    canonical: SITE_URL,
   },
   verification: {
     google: process.env.NEXT_PUBLIC_GSC_VERIFICATION || "",
@@ -140,9 +136,13 @@ export default function RootLayout({
               "@graph": [
                 {
                   "@type": "Organization",
-                  "@id": "https://www.wenaya.com/#organization",
+                  "@id": `${SITE_URL}/#organization`,
                   "name": "Wenaya",
-                  "url": "https://www.wenaya.com",
+                  "url": SITE_URL,
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": `${SITE_URL}/images/logo-full.png`,
+                  },
                    "description": "Morocco's first integrated health and wellbeing platform combining physiotherapy, clinical psychology, nutrition, prevention, and corporate wellness.",
                   "foundingLocation": { "@type": "Place", "name": "Casablanca, Maroc" },
                   "areaServed": ["Maroc", "MENA"],
@@ -150,9 +150,9 @@ export default function RootLayout({
                 },
                 {
                   "@type": ["MedicalBusiness", "LocalBusiness"],
-                  "@id": "https://www.wenaya.com/#clinic",
+                  "@id": `${SITE_URL}/#clinic`,
                   "name": "Wenaya Clinic",
-                  "parentOrganization": { "@id": "https://www.wenaya.com/#organization" },
+                  "parentOrganization": { "@id": `${SITE_URL}/#organization` },
                   "address": {
                     "@type": "PostalAddress",
                     "streetAddress": "88 Rue De Jabal Azourki",
@@ -183,10 +183,10 @@ export default function RootLayout({
                 },
                 {
                   "@type": "WebSite",
-                  "@id": "https://www.wenaya.com/#website",
-                  "url": "https://www.wenaya.com",
+                  "@id": `${SITE_URL}/#website`,
+                  "url": SITE_URL,
                   "name": "Wenaya",
-                  "publisher": { "@id": "https://www.wenaya.com/#organization" },
+                  "publisher": { "@id": `${SITE_URL}/#organization` },
                   "inLanguage": ["fr-MA", "ar-MA", "en"],
                 },
               ],

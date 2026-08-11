@@ -1,15 +1,15 @@
 /**
  * Dynamic sitemap generator — combines static pages, blog posts, product pages, and specialist pages.
- * Runs at build time to generate /sitemap.xml for search engine crawling.
+ * Generated per request so Redis-backed specialists are always included and stay in sync
+ * with the dynamic /specialistes pages.
  */
 import type { MetadataRoute } from "next";
 import { getPublishedPosts } from "@/lib/blog";
-import { getAllSpecialists } from "@/lib/specialistes";
+import { getAllSpecialistsAsync } from "@/lib/specialistes";
+import { SITE_URL } from "@/lib/site-config";
 
-const BASE = "https://www.wenaya.com";
-
-/** Fixed last-modified date — update when site content structurally changes */
-const LAST_MODIFIED = new Date("2025-07-22");
+/** Regenerate the sitemap on every request so CMS/Redis additions appear immediately */
+export const dynamic = "force-dynamic";
 
 /** Dynamically imports the French translations to extract product slugs */
 async function getProductSlugs(): Promise<string[]> {
@@ -21,27 +21,31 @@ async function getProductSlugs(): Promise<string[]> {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = getPublishedPosts();
   const productSlugs = await getProductSlugs();
-  const specialists = getAllSpecialists();
+  const specialists = await getAllSpecialistsAsync();
 
-  /** Static pages — core site pages with priority weights for SEO */
+  /**
+   * Static pages — core site pages with priority weights for SEO.
+   * No lastModified: the data layer exposes no reliable content modification date
+   * for these pages, so no timestamp is emitted rather than inventing one.
+   */
   const staticPages = [
-    { url: BASE, lastModified: LAST_MODIFIED, changeFrequency: "weekly" as const, priority: 1.0 },
-    { url: `${BASE}/about`, lastModified: LAST_MODIFIED, changeFrequency: "monthly" as const, priority: 0.9 },
-    { url: `${BASE}/solutions/entreprises`, lastModified: LAST_MODIFIED, changeFrequency: "monthly" as const, priority: 0.9 },
-    { url: `${BASE}/solutions/entreprises/programmes`, lastModified: LAST_MODIFIED, changeFrequency: "monthly" as const, priority: 0.8 },
-    { url: `${BASE}/produits`, lastModified: LAST_MODIFIED, changeFrequency: "weekly" as const, priority: 0.9 },
-    { url: `${BASE}/pratiques`, lastModified: LAST_MODIFIED, changeFrequency: "monthly" as const, priority: 0.8 },
-    { url: `${BASE}/specialistes`, lastModified: LAST_MODIFIED, changeFrequency: "weekly" as const, priority: 0.9 },
-    { url: `${BASE}/blog`, lastModified: LAST_MODIFIED, changeFrequency: "weekly" as const, priority: 0.9 },
-    { url: `${BASE}/faq`, lastModified: LAST_MODIFIED, changeFrequency: "monthly" as const, priority: 0.7 },
-    { url: `${BASE}/contact`, lastModified: LAST_MODIFIED, changeFrequency: "monthly" as const, priority: 0.8 },
-    { url: `${BASE}/confidentialite`, lastModified: LAST_MODIFIED, changeFrequency: "yearly" as const, priority: 0.2 },
-    { url: `${BASE}/conditions`, lastModified: LAST_MODIFIED, changeFrequency: "yearly" as const, priority: 0.2 },
+    { url: SITE_URL, changeFrequency: "weekly" as const, priority: 1.0 },
+    { url: `${SITE_URL}/about`, changeFrequency: "monthly" as const, priority: 0.9 },
+    { url: `${SITE_URL}/solutions/entreprises`, changeFrequency: "monthly" as const, priority: 0.9 },
+    { url: `${SITE_URL}/solutions/entreprises/programmes`, changeFrequency: "monthly" as const, priority: 0.8 },
+    { url: `${SITE_URL}/produits`, changeFrequency: "weekly" as const, priority: 0.9 },
+    { url: `${SITE_URL}/pratiques`, changeFrequency: "monthly" as const, priority: 0.8 },
+    { url: `${SITE_URL}/specialistes`, changeFrequency: "weekly" as const, priority: 0.9 },
+    { url: `${SITE_URL}/blog`, changeFrequency: "weekly" as const, priority: 0.9 },
+    { url: `${SITE_URL}/faq`, changeFrequency: "monthly" as const, priority: 0.7 },
+    { url: `${SITE_URL}/contact`, changeFrequency: "monthly" as const, priority: 0.8 },
+    { url: `${SITE_URL}/confidentialite`, changeFrequency: "yearly" as const, priority: 0.2 },
+    { url: `${SITE_URL}/conditions`, changeFrequency: "yearly" as const, priority: 0.2 },
   ];
 
-  /** Blog post URLs — generated from published posts data */
+  /** Blog post URLs — lastModified uses each post's authored publishedAt date */
   const blogEntries = posts.map((post) => ({
-    url: `${BASE}/blog/${post.slug}`,
+    url: `${SITE_URL}/blog/${post.slug}`,
     lastModified: new Date(post.publishedAt),
     changeFrequency: "monthly" as const,
     priority: 0.8,
@@ -49,16 +53,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   /** Product detail page URLs — generated from product slugs */
   const productEntries = productSlugs.map((slug) => ({
-    url: `${BASE}/produits/${slug}`,
-    lastModified: LAST_MODIFIED,
+    url: `${SITE_URL}/produits/${slug}`,
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));
 
-  /** Specialist profile page URLs — generated from specialist data */
+  /**
+   * Specialist profile page URLs — uses the async Redis-backed source so admin-added
+   * specialists are included automatically (same source as the /specialistes pages).
+   */
   const specialistEntries = specialists.map((s) => ({
-    url: `${BASE}/specialistes/${s.slug}`,
-    lastModified: LAST_MODIFIED,
+    url: `${SITE_URL}/specialistes/${s.slug}`,
     changeFrequency: "monthly" as const,
     priority: 0.8,
   }));

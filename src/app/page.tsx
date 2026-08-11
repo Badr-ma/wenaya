@@ -1,18 +1,26 @@
 import type { Metadata } from "next";
+import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 
-/** Homepage SEO metadata — title, description, canonical, Open Graph */
+/** Homepage SEO metadata — title, description, canonical, Open Graph, Twitter */
 export const metadata: Metadata = {
   title: "Wenaya — Santé Intégrée & Bien-être | Casablanca, Maroc",
   description:
     "Wenaya est la première plateforme de santé intégrée au Maroc. Kinésithérapie, psychologie clinique, nutrition et bien-être corporate — depuis Casablanca. Notée 4,7/5 sur Google Maps.",
   alternates: {
-    canonical: "https://www.wenaya.com",
+    canonical: SITE_URL,
   },
   openGraph: {
+    ...OG_DEFAULTS,
     title: "Wenaya — Santé Intégrée & Bien-être | Casablanca, Maroc",
     description:
       "Morocco's first integrated health and wellbeing platform. Physiotherapy, clinical psychology, nutrition, and corporate wellness — from Casablanca.",
-    url: "https://www.wenaya.com",
+    url: SITE_URL,
+  },
+  twitter: {
+    ...TWITTER_DEFAULTS,
+    title: "Wenaya — Santé Intégrée & Bien-être | Casablanca, Maroc",
+    description:
+      "Morocco's first integrated health and wellbeing platform. Physiotherapy, clinical psychology, nutrition, and corporate wellness — from Casablanca.",
   },
 };
 
@@ -25,6 +33,19 @@ import { getPublishedPosts, authors, categories } from "@/lib/blog";
 import { getHomepagePublished } from "@/lib/homepage";
 import HomepageRenderer from "@/components/homepage/HomepageRenderer";
 import type { HomepageConfig } from "@/lib/homepage-types";
+
+/** Homepage WebPage schema — ties the homepage to the Organization and WebSite entities from the root layout */
+const homepageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  url: SITE_URL,
+  name: "Wenaya — Santé Intégrée & Bien-être | Casablanca, Maroc",
+  description:
+    "Wenaya est la première plateforme de santé intégrée au Maroc. Kinésithérapie, psychologie clinique, nutrition et bien-être corporate — depuis Casablanca.",
+  inLanguage: "fr-MA",
+  isPartOf: { "@id": `${SITE_URL}/#website` },
+  mainEntity: { "@id": `${SITE_URL}/#organization` },
+};
 
 const HowItWorks = dynamic(() => import("@/components/HowItWorks"), { ssr: true });
 const DiseaseMarquee = dynamic(() => import("@/components/DiseaseMarquee"), { ssr: true });
@@ -57,6 +78,10 @@ export default async function Home() {
   if (published && published.sections.length > 0) {
     return (
       <ErrorBoundary>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageJsonLd) }}
+        />
         <HomepageRenderer config={published} />
       </ErrorBoundary>
     );
@@ -71,30 +96,36 @@ export default async function Home() {
 
   return (
     <ErrorBoundary>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageJsonLd) }}
+      />
       <div className="flex flex-col min-h-screen">
-        <div data-section-bg="dark"><Banner /></div>
-        <div data-section-bg="dark"><HeroSection /></div>
-        <SectionBreak />
-        <div data-section-bg="light"><HowItWorks /></div>
-        <Spacer />
-        <div data-section-bg="light"><DiseaseMarquee /></div>
-        <Spacer />
-        <div data-section-bg="light"><Biomarkers /></div>
-        <Spacer />
-        <div data-section-bg="light"><TestimonialsSection /></div>
-        <SectionBreak />
-        <div data-section-bg="light"><ExpertiseSection /></div>
-        <Spacer />
-        <div data-section-bg="light"><ComparisonTable /></div>
-        <Spacer />
-        <div data-section-bg="light"><Pricing /></div>
-        <Spacer />
-        <div data-section-bg="dark"><CoursAteliers /></div>
-        <div data-section-bg="dark"><CtaSection /></div>
-        <Spacer />
-        <div data-section-bg="light"><BlogSection posts={enriched} /></div>
-        <Spacer />
-        <div data-section-bg="dark"><YoloSection /></div>
+        <main>
+          <div data-section-bg="dark"><Banner /></div>
+          <div data-section-bg="dark"><HeroSection /></div>
+          <SectionBreak />
+          <div data-section-bg="light"><HowItWorks /></div>
+          <Spacer />
+          <div data-section-bg="light"><DiseaseMarquee /></div>
+          <Spacer />
+          <div data-section-bg="light"><Biomarkers /></div>
+          <Spacer />
+          <div data-section-bg="light"><TestimonialsSection /></div>
+          <SectionBreak />
+          <div data-section-bg="light"><ExpertiseSection /></div>
+          <Spacer />
+          <div data-section-bg="light"><ComparisonTable /></div>
+          <Spacer />
+          <div data-section-bg="light"><Pricing /></div>
+          <Spacer />
+          <div data-section-bg="dark"><CoursAteliers /></div>
+          <div data-section-bg="dark"><CtaSection /></div>
+          <Spacer />
+          <div data-section-bg="light"><BlogSection posts={enriched} /></div>
+          <Spacer />
+          <div data-section-bg="dark"><YoloSection /></div>
+        </main>
         <div data-section-bg="dark"><Footer /></div>
       </div>
     </ErrorBoundary>

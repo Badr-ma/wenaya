@@ -17,6 +17,7 @@ import ClinicsPrograms from "@/components/clinics/Programs";
 import ClinicsWhy from "@/components/clinics/Why";
 import ClinicsCta from "@/components/clinics/Cta";
 import Footer from "@/components/Footer";
+import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 
 export const metadata: Metadata = {
     title: "Cliniques — Wenaya, Première Plateforme de Santé Intégrée au Maroc",
@@ -31,42 +32,28 @@ export const metadata: Metadata = {
     "prévention santé Maroc",
   ],
   alternates: {
-    canonical: "https://www.wenaya.com/about",
+    canonical: `${SITE_URL}/about`,
   },
   openGraph: {
-  title: "Cliniques — Wenaya, Première Plateforme de Santé Intégrée au Maroc",
+    ...OG_DEFAULTS,
+    title: "Cliniques — Wenaya, Première Plateforme de Santé Intégrée au Maroc",
     description:
       "Wenaya is Morocco's first integrated health and wellbeing platform — combining physiotherapy, clinical psychology, nutrition, prevention, and corporate wellness under one coordinated ecosystem.",
-    url: "https://www.wenaya.com/about",
-    type: "website",
+    url: `${SITE_URL}/about`,
   },
-};
-
-const serviceJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "MedicalBusiness",
-  name: "Wenaya Clinic",
-  url: "https://www.wenaya.com/about",
-  medicalSpecialty: [
-    { "@type": "MedicalSpecialty", name: "Kinésithérapie" },
-    { "@type": "MedicalSpecialty", name: "Ostéopathie" },
-    { "@type": "MedicalSpecialty", name: "Psychologie Clinique" },
-    { "@type": "MedicalSpecialty", name: "Neuropsychologie" },
-    { "@type": "MedicalSpecialty", name: "Nutrition" },
-    { "@type": "MedicalSpecialty", name: "Orthophonie" },
-    { "@type": "MedicalSpecialty", name: "Naturopathie" },
-    { "@type": "MedicalSpecialty", name: "Psychomotricité" },
-  ],
+  twitter: {
+    ...TWITTER_DEFAULTS,
+    title: "Cliniques — Wenaya, Première Plateforme de Santé Intégrée au Maroc",
+    description:
+      "Wenaya is Morocco's first integrated health and wellbeing platform — combining physiotherapy, clinical psychology, nutrition, prevention, and corporate wellness under one coordinated ecosystem.",
+  },
 };
 
 export default function AboutPage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
-      />
       <ErrorBoundary>
+        <main>
         <Breadcrumbs />
         <div className="flex flex-col">
         <AboutHero />
@@ -78,8 +65,9 @@ export default function AboutPage() {
         <div data-section-bg="light"><ClinicsPrograms /></div>
         <div data-section-bg="light"><ClinicsWhy /></div>
         <div data-section-bg="dark"><ClinicsCta /></div>
-        <Footer />
       </div>
+      </main>
+      <Footer />
       </ErrorBoundary>
     </>
   );

@@ -3,20 +3,27 @@
  * Needed because the page is a client component and can't export Metadata.
  */
 import type { Metadata } from "next";
+import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Politique de Confidentialité — Wenaya",
   description:
     "Politique de confidentialité de Wenaya Clinic Casablanca. Protection des données personnelles, cookies, droits des patients — conforme au RGPD et à la loi 09-08 marocaine.",
   alternates: {
-    canonical: "https://www.wenaya.com/confidentialite",
+    canonical: `${SITE_URL}/confidentialite`,
   },
   openGraph: {
+    ...OG_DEFAULTS,
     title: "Politique de Confidentialité — Wenaya",
     description:
       "Protection des données personnelles chez Wenaya. Politique de confidentialité conforme au RGPD et à la loi marocaine 09-08.",
-    url: "https://www.wenaya.com/confidentialite",
-    type: "website",
+    url: `${SITE_URL}/confidentialite`,
+  },
+  twitter: {
+    ...TWITTER_DEFAULTS,
+    title: "Politique de Confidentialité — Wenaya",
+    description:
+      "Protection des données personnelles chez Wenaya. Politique de confidentialité conforme au RGPD et à la loi marocaine 09-08.",
   },
 };
 

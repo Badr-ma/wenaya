@@ -3,6 +3,7 @@
  * Needed because contact/page.tsx is a client component and can't export Metadata.
  */
 import type { Metadata } from "next";
+import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Contact — Wenaya Clinic Casablanca | Prendre Rendez-vous",
@@ -16,14 +17,20 @@ export const metadata: Metadata = {
     "Wenaya Clinic adresse",
   ],
   alternates: {
-    canonical: "https://www.wenaya.com/contact",
+    canonical: `${SITE_URL}/contact`,
   },
   openGraph: {
+    ...OG_DEFAULTS,
     title: "Contact — Wenaya Clinic Casablanca",
     description:
       "Contactez Wenaya Clinic à Casablanca. Kinésithérapie, psychologie, nutrition et bien-être. Prenez rendez-vous en ligne.",
-    url: "https://www.wenaya.com/contact",
-    type: "website",
+    url: `${SITE_URL}/contact`,
+  },
+  twitter: {
+    ...TWITTER_DEFAULTS,
+    title: "Contact — Wenaya Clinic Casablanca",
+    description:
+      "Contactez Wenaya Clinic à Casablanca. Kinésithérapie, psychologie, nutrition et bien-être. Prenez rendez-vous en ligne.",
   },
 };
 

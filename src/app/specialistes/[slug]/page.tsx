@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import SpecialistDetail from "@/components/specialistes/SpecialistDetail";
 import { getSpecialistBySlugAsync, getAllSpecialistsAsync } from "@/lib/specialistes";
+import { SITE_URL, OG_DEFAULTS } from "@/lib/site-config";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -24,11 +26,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${specialist.name} — ${specialist.role} | Wenaya Casablanca`,
     description,
     keywords: [specialist.name, specialist.role, specialist.specialty, "Casablanca", "Wenaya", ...specialist.specialtyTags],
-    alternates: { canonical: `https://www.wenaya.com/specialistes/${slug}` },
+    alternates: { canonical: `${SITE_URL}/specialistes/${slug}` },
     openGraph: {
+      ...OG_DEFAULTS,
       title: `${specialist.name} — ${specialist.role}`,
       description,
-      url: `https://www.wenaya.com/specialistes/${slug}`,
+      url: `${SITE_URL}/specialistes/${slug}`,
       type: "profile",
       images: [{ url: specialist.image, width: 400, height: 400, alt: specialist.name }],
     },
@@ -49,11 +52,13 @@ export default async function SpecialistPage({ params }: Props) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Physician",
+    "@id": `${SITE_URL}/specialistes/${slug}`,
     name: specialist.name,
     description: specialist.bio,
     image: specialist.image,
-    url: `https://www.wenaya.com/specialistes/${slug}`,
+    url: `${SITE_URL}/specialistes/${slug}`,
     medicalSpecialty: specialist.specialty,
+    worksFor: { "@id": `${SITE_URL}/#clinic` },
     address: {
       "@type": "PostalAddress",
       streetAddress: specialist.location.address,
@@ -93,7 +98,10 @@ export default async function SpecialistPage({ params }: Props) {
   return (
     <ErrorBoundary>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <SpecialistDetail specialist={specialist} />
+      <main>
+        <Breadcrumbs labels={{ [slug]: specialist.name }} />
+        <SpecialistDetail specialist={specialist} />
+      </main>
     </ErrorBoundary>
   );
 }

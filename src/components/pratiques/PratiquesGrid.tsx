@@ -213,9 +213,9 @@ export default function PratiquesGrid(): React.JSX.Element {
 
                 {/* Content */}
                 <div className="flex flex-col gap-2.5 px-5 py-4 sm:px-6 sm:py-5 flex-1">
-                  <h3 className="font-heading font-bold text-[17px] sm:text-[19px] text-[#0B1220] leading-snug">
+                  <h2 className="font-heading font-bold text-[17px] sm:text-[19px] text-[#0B1220] leading-snug">
                     {item.title}
-                  </h3>
+                  </h2>
 
                   <p className="text-[#2B2F36]/50 text-[12.5px] sm:text-[13px] leading-relaxed line-clamp-3">
                     {item.desc}

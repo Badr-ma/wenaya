@@ -8,6 +8,7 @@ import { getPublishedPosts, authors, categories } from "@/lib/blog";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import Footer from "@/components/Footer";
+import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import BlogHero from "./BlogHero";
 import BlogListClient from "./BlogListClient";
 
@@ -25,14 +26,20 @@ export const metadata: Metadata = {
     "biomarqueurs explication",
   ],
   alternates: {
-    canonical: "https://www.wenaya.com/blog",
+    canonical: `${SITE_URL}/blog`,
   },
   openGraph: {
+    ...OG_DEFAULTS,
     title: "Blog Santé & Bien-être — Wenaya",
     description:
       "Articles, guides et conseils santé par les experts de Wenaya Casablanca.",
-    url: "https://www.wenaya.com/blog",
-    type: "website",
+    url: `${SITE_URL}/blog`,
+  },
+  twitter: {
+    ...TWITTER_DEFAULTS,
+    title: "Blog Santé & Bien-être — Wenaya",
+    description:
+      "Articles, guides et conseils santé par les experts de Wenaya Casablanca.",
   },
 };
 
@@ -49,9 +56,11 @@ export default function BlogPage() {
   return (
     <ErrorBoundary>
     <div className="min-h-screen bg-[#F2EFE9]">
-      <Breadcrumbs />
-      <BlogHero latest={latest} />
-      <BlogListClient posts={enriched} categories={categories} />
+      <main>
+        <Breadcrumbs />
+        <BlogHero latest={latest} />
+        <BlogListClient posts={enriched} categories={categories} />
+      </main>
       <div data-section-bg="dark"><Footer /></div>
     </div>
     </ErrorBoundary>

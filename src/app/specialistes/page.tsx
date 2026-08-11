@@ -3,17 +3,23 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import SpecialistsPageBody from "@/components/specialistes/SpecialistsPage";
 import Footer from "@/components/Footer";
 import { getAllSpecialistsAsync } from "@/lib/specialistes";
+import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Nos Spécialistes — Wenaya Casablanca",
   description: "Découvrez l'équipe de spécialistes de Wenaya à Casablanca : kinésithérapeutes, ostéopathes, psychologues, nutritionnistes, orthophonistes et plus. Prenez rendez-vous en ligne.",
   keywords: ["spécialistes", "Casablanca", "kinésithérapie", "ostéopathie", "psychologie", "nutrition", "Wenaya", "rendez-vous médecin"],
-  alternates: { canonical: "https://www.wenaya.com/specialistes" },
+  alternates: { canonical: `${SITE_URL}/specialistes` },
   openGraph: {
+    ...OG_DEFAULTS,
     title: "Nos Spécialistes — Wenaya Casablanca",
     description: "Découvrez l'équipe de spécialistes de Wenaya à Casablanca. Prenez rendez-vous en ligne.",
-    url: "https://www.wenaya.com/specialistes",
-    type: "website",
+    url: `${SITE_URL}/specialistes`,
+  },
+  twitter: {
+    ...TWITTER_DEFAULTS,
+    title: "Nos Spécialistes — Wenaya Casablanca",
+    description: "Découvrez l'équipe de spécialistes de Wenaya à Casablanca. Prenez rendez-vous en ligne.",
   },
 };
 
@@ -23,8 +29,8 @@ export default async function SpecialistsPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "MedicalBusiness",
+    "@id": `${SITE_URL}/#clinic`,
     name: "Wenaya Clinic",
-    url: "https://www.wenaya.com",
     address: {
       "@type": "PostalAddress",
       addressLocality: "Casablanca",
@@ -36,7 +42,7 @@ export default async function SpecialistsPage() {
       name: s.name,
       jobTitle: s.role,
       medicalSpecialty: s.specialty,
-      url: `https://www.wenaya.com/specialistes/${s.slug}`,
+      url: `${SITE_URL}/specialistes/${s.slug}`,
     })),
   };
 
@@ -44,7 +50,9 @@ export default async function SpecialistsPage() {
     <ErrorBoundary>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="flex flex-col min-h-screen">
-        <SpecialistsPageBody specialists={specialists} />
+        <main>
+          <SpecialistsPageBody specialists={specialists} />
+        </main>
         <Footer />
       </div>
     </ErrorBoundary>

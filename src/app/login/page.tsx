@@ -45,6 +45,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <main className="flex-1 flex flex-col">
       <div className="flex-1 bg-[#F2EFE9] flex items-center justify-center px-6 pt-24 pb-20">
         <div className="w-full max-w-md">
           <div
@@ -101,6 +102,7 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+      </main>
     </div>
   );
 }

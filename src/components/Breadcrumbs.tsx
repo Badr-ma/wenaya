@@ -7,6 +7,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { SITE_URL } from "@/lib/site-config";
 
 interface BreadcrumbItem {
   label: string;
@@ -24,6 +25,7 @@ const routeLabels: Record<string, Record<string, string>> = {
     conditions: "Conditions Générales",
     confidentialite: "Politique de Confidentialité",
     login: "Connexion",
+    specialistes: "Spécialistes",
     solutions: "Solutions",
     entreprises: "Entreprises",
     programmes: "Programmes",
@@ -38,13 +40,14 @@ const routeLabels: Record<string, Record<string, string>> = {
     conditions: "Terms & Conditions",
     confidentialite: "Privacy Policy",
     login: "Login",
+    specialistes: "Specialists",
     solutions: "Solutions",
     entreprises: "Enterprise",
     programmes: "Programs",
   },
 };
 
-export default function Breadcrumbs(): React.JSX.Element | null {
+export default function Breadcrumbs({ labels }: { labels?: Record<string, string> }): React.JSX.Element | null {
   const pathname = usePathname();
   const locale = "fr";
 
@@ -56,7 +59,7 @@ export default function Breadcrumbs(): React.JSX.Element | null {
 
   for (const segment of segments) {
     path += `/${segment}`;
-    const label = routeLabels[locale]?.[segment] || segment;
+    const label = labels?.[segment] || routeLabels[locale]?.[segment] || segment;
     items.push({ label, href: path });
   }
 
@@ -69,7 +72,7 @@ export default function Breadcrumbs(): React.JSX.Element | null {
       "@type": "ListItem",
       position: i + 1,
       name: item.label,
-      item: `https://www.wenaya.com${item.href}`,
+      item: `${SITE_URL}${item.href}`,
     })),
   };
 
