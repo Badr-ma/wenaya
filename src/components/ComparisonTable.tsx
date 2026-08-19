@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
+import { h } from "@/lib/href";
 import type { ComparisonTableContent } from "@/lib/homepage-types";
 
 const cardKeys = [
@@ -33,7 +34,7 @@ interface ComparisonTableProps {
 }
 
 export default function ComparisonTable({ content }: ComparisonTableProps): React.JSX.Element {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -43,7 +44,7 @@ export default function ComparisonTable({ content }: ComparisonTableProps): Reac
     desc: t(`comparisonTable.${c.key}.desc`),
     cta: t(`comparisonTable.${c.key}.cta`),
     stats: t(`comparisonTable.${c.key}.stats`),
-    href: c.href,
+    href: h(locale, c.href),
     icon: c.icon,
     featured: c.featured,
   }));

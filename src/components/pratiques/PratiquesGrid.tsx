@@ -11,6 +11,7 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLocale } from "@/contexts/LanguageContext";
+import { h } from "@/lib/href";
 import Link from "next/link";
 import HiggsField from "@/components/HiggsField";
 
@@ -42,7 +43,7 @@ const bronzePalette: [number, number, number][] = [
 ];
 
 export default function PratiquesGrid(): React.JSX.Element {
-  const { t, tRaw } = useLocale();
+  const { t, tRaw, locale } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const items = tRaw<{ title: string; desc: string }[]>("pratiques.items");
   const [activeFilter, setActiveFilter] = useState("all");
@@ -238,7 +239,7 @@ export default function PratiquesGrid(): React.JSX.Element {
         {/* CTA */}
         <div className="text-center mt-12 sm:mt-16">
           <Link
-            href="/contact"
+            href={h(locale, "/contact")}
             className="inline-flex items-center gap-3 h-11 px-7 rounded-xl text-[13px] font-semibold text-white transition-all duration-300 hover:-translate-y-px active:translate-y-0"
             style={{
               background: "linear-gradient(135deg, #C99B68 0%, #9A7242 100%)",

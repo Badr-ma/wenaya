@@ -5,6 +5,8 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import Link from "next/link";
 import "leaflet/dist/leaflet.css";
+import { useLocale } from "@/contexts/LanguageContext";
+import { h } from "@/lib/href";
 
 type SpecialistLocation = {
   slug: string;
@@ -75,6 +77,7 @@ function SpecialistMarker({
   isActive: boolean;
   onPinClick: (slug: string) => void;
 }) {
+  const { t, locale } = useLocale();
   const markerRef = useRef<L.Marker | null>(null);
 
   useEffect(() => {
@@ -110,10 +113,10 @@ function SpecialistMarker({
           </div>
           <p className="text-xs text-[#2B2F36]/50 mb-2">{specialist.location.address}</p>
           <Link
-            href={`/specialistes/${specialist.slug}`}
+            href={h(locale, `/specialistes/${specialist.slug}`)}
             className="inline-block text-xs font-medium text-[#B88A5A] hover:text-[#B88A5A]/70 transition-colors"
           >
-            See profile →
+            {t("specialistes.list.viewProfile")} →
           </Link>
         </div>
       </Popup>

@@ -21,6 +21,10 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  /** Enables app/global-not-found.tsx — restores the custom French 404 for unmatched URLs (multi-root-layout app) */
+  experimental: {
+    globalNotFound: true,
+  },
   /** Security headers applied to all routes — prevents clickjacking, MIME sniffing, and restricts permissions */
   async headers() {
     return [

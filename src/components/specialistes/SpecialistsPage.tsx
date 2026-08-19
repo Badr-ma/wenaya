@@ -9,7 +9,7 @@ import { useLocale } from "@/contexts/LanguageContext";
 import type { Specialist } from "@/lib/specialistes";
 
 export default function SpecialistsPage({ specialists }: { specialists: Specialist[] }) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
   const [showSplitView, setShowSplitView] = useState(false);
@@ -109,7 +109,7 @@ export default function SpecialistsPage({ specialists }: { specialists: Speciali
             <div className="flex-1 min-w-0">
               {filtered.length === 0 ? (
                 <p className="text-sm text-[#2B2F36]/30 py-12 text-center">
-                  No specialists match your search.
+                  {t("specialistes.list.noResults")}
                 </p>
               ) : (
                 filtered.map((specialist, i) => (
@@ -128,7 +128,7 @@ export default function SpecialistsPage({ specialists }: { specialists: Speciali
             <div className="lg:w-[420px] xl:w-[480px] shrink-0">
               <div className="lg:sticky lg:top-28 h-[500px] lg:h-[calc(100vh-160px)]">
                 <MapView
-                  specialists={filtered}
+                  specialists={filtered.map((s) => ({ ...s, role: locale === "en" ? (s.roleEn ?? s.role) : s.role }))}
                   activeSpecialistSlug={activeSlug}
                   onPinClick={(slug) => {
                     setMapActiveSlug(slug === mapActiveSlug ? null : slug);
@@ -144,7 +144,7 @@ export default function SpecialistsPage({ specialists }: { specialists: Speciali
           <div>
             {filtered.length === 0 ? (
               <p className="text-sm text-[#2B2F36]/30 py-12 text-center">
-                No specialists match your search.
+                {t("specialistes.list.noResults")}
               </p>
             ) : (
               filtered.map((specialist, i) => (

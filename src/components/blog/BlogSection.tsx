@@ -11,14 +11,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { formatDate, type PostWithAuthor } from "@/lib/blog-utils";
 import { useLocale } from "@/contexts/LanguageContext";
+import { h } from "@/lib/href";
 import type { BlogContent } from "@/lib/homepage-types";
 
 
 function BlogCard({ post }: { post: PostWithAuthor }): React.JSX.Element {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   return (
     <Link
-      href={`/blog/${post.slug}`}
+      href={h(locale, `/blog/${post.slug}`)}
       className="group block bg-[#E8E2D9] rounded-2xl border border-[#0B1220]/[0.06] overflow-hidden transition-all duration-500 hover:shadow-[0_8px_32px_rgba(184,138,90,0.06)] hover:border-[#B88A5A]/25 hover:-translate-y-0.5"
     >
       <div className="relative overflow-hidden aspect-[16/10]">
@@ -34,7 +35,7 @@ function BlogCard({ post }: { post: PostWithAuthor }): React.JSX.Element {
         )}
       </div>
       <div className="p-5">
-        <span className="text-[10px] font-medium text-[#2B2F36]/40">{formatDate(post.publishedAt)}</span>
+        <span className="text-[10px] font-medium text-[#2B2F36]/40">{formatDate(post.publishedAt, locale)}</span>
         <h3 className="font-heading font-bold text-[#0B1220] text-sm mt-1.5 leading-snug transition-colors duration-300 group-hover:text-[#B88A5A]">
           {post.title}
         </h3>
@@ -54,7 +55,7 @@ function BlogCard({ post }: { post: PostWithAuthor }): React.JSX.Element {
 }
 
 export default function BlogSection({ posts, content }: { posts: PostWithAuthor[]; content?: BlogContent }): React.JSX.Element {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -89,7 +90,7 @@ export default function BlogSection({ posts, content }: { posts: PostWithAuthor[
           <p className="text-[#2B2F36]/55 text-[14px] sm:text-[15px] mt-4 leading-relaxed">
             {content?.sub ?? t("blog.sub")}
           </p>
-          <Link href="/blog"
+          <Link href={h(locale, "/blog")}
             className="mt-6 inline-flex items-center gap-1.5 text-xs font-medium text-[#B88A5A] hover:text-[#B88A5A]/70 transition-colors">
             <span>{content?.voirTous ?? t("blog.voirTous")}</span>
             <svg className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

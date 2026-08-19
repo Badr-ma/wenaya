@@ -4,6 +4,7 @@ import { useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
+import { h } from "@/lib/href";
 import { specialists } from "@/lib/specialistes";
 import type { ExpertiseContent } from "@/lib/homepage-types";
 
@@ -14,7 +15,7 @@ interface ExpertiseSectionProps {
 }
 
 export default function ExpertiseSection({ content }: ExpertiseSectionProps): React.JSX.Element {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -68,7 +69,7 @@ export default function ExpertiseSection({ content }: ExpertiseSectionProps): Re
           <div className="relative w-full">
             <div ref={scrollRef} className="flex gap-4 overflow-x-auto pb-4 w-full snap-x snap-mandatory scrollbar-hide">
               {featuredSpecialists.map((s) => (
-                <Link key={s.slug} href={`/specialistes/${s.slug}`} className="es-img group relative shrink-0 w-[280px] h-[280px] rounded-xl overflow-hidden block z-10 snap-center">
+                <Link key={s.slug} href={h(locale, `/specialistes/${s.slug}`)} className="es-img group relative shrink-0 w-[280px] h-[280px] rounded-xl overflow-hidden block z-10 snap-center">
                   <img
                     src={s.image}
                     alt={s.name}
@@ -77,7 +78,7 @@ export default function ExpertiseSection({ content }: ExpertiseSectionProps): Re
                   <div className="absolute inset-0 rounded-xl ring-1 ring-inset ring-black/[0.04] pointer-events-none" />
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#0B1220]/70 to-transparent p-3 sm:p-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
                     <p className="text-white text-sm font-heading font-bold">{s.name}</p>
-                    <p className="text-white/60 text-xs">{s.role}</p>
+                    <p className="text-white/60 text-xs">{locale === "en" ? (s.roleEn ?? s.role) : s.role}</p>
                   </div>
                 </Link>
               ))}
@@ -91,7 +92,7 @@ export default function ExpertiseSection({ content }: ExpertiseSectionProps): Re
           </div>
 
           <div id="es-cta">
-            <Link href="/specialistes" className="group inline-flex items-center gap-3 bg-[#0B1220] text-white text-sm font-semibold h-[50px] px-8 rounded-full transition-all duration-300 hover:bg-[#B88A5A] hover:shadow-lg hover:shadow-[rgba(184,138,90,0.2)]">
+            <Link href={h(locale, "/specialistes")} className="group inline-flex items-center gap-3 bg-[#0B1220] text-white text-sm font-semibold h-[50px] px-8 rounded-full transition-all duration-300 hover:bg-[#B88A5A] hover:shadow-lg hover:shadow-[rgba(184,138,90,0.2)]">
               {content?.cta ?? t("expertiseSection.cta")}
               <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />

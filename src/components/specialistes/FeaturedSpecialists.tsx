@@ -3,13 +3,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useLocale } from "@/contexts/LanguageContext";
+import { h } from "@/lib/href";
 import type { Specialist } from "@/lib/specialistes";
 
 export default function FeaturedSpecialists({ specialists }: { specialists: Specialist[] }) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   if (!specialists.length) return null;
 
   const [first, second, third] = specialists;
+  const role = (s: Specialist) => (locale === "en" ? s.roleEn ?? s.role : s.role);
 
   return (
     <section className="py-6 sm:py-8">
@@ -24,7 +26,7 @@ export default function FeaturedSpecialists({ specialists }: { specialists: Spec
         <div className="flex flex-col md:flex-row gap-4 sm:gap-6">
           {first && (
             <Link
-              href={`/specialistes/${first.slug}`}
+              href={h(locale, `/specialistes/${first.slug}`)}
               className="group relative w-full md:w-[58%] aspect-[4/5] md:aspect-auto md:h-[520px] overflow-hidden rounded-xl bg-[#E8E2D9]"
             >
               <Image
@@ -42,7 +44,7 @@ export default function FeaturedSpecialists({ specialists }: { specialists: Spec
                 <h3 className="font-heading font-bold text-xl sm:text-2xl text-white">
                   {first.name}
                 </h3>
-                <p className="text-sm text-white/60 mt-1">{first.role}</p>
+                <p className="text-sm text-white/60 mt-1">{role(first)}</p>
               </div>
             </Link>
           )}
@@ -50,7 +52,7 @@ export default function FeaturedSpecialists({ specialists }: { specialists: Spec
           <div className="flex flex-row md:flex-col w-full md:w-[42%] gap-4 sm:gap-6">
             {second && (
               <Link
-                href={`/specialistes/${second.slug}`}
+                href={h(locale, `/specialistes/${second.slug}`)}
                 className="group relative flex-1 aspect-[4/3] md:aspect-auto md:min-h-[200px] overflow-hidden rounded-xl bg-[#E8E2D9]"
               >
                 <Image
@@ -68,13 +70,13 @@ export default function FeaturedSpecialists({ specialists }: { specialists: Spec
                   <h3 className="font-heading font-bold text-lg sm:text-xl text-white">
                     {second.name}
                   </h3>
-                  <p className="text-xs text-white/60 mt-0.5">{second.role}</p>
+                  <p className="text-xs text-white/60 mt-0.5">{role(second)}</p>
                 </div>
               </Link>
             )}
             {third && (
               <Link
-                href={`/specialistes/${third.slug}`}
+                href={h(locale, `/specialistes/${third.slug}`)}
                 className="group relative flex-1 aspect-[4/3] md:aspect-auto md:min-h-[200px] overflow-hidden rounded-xl bg-[#E8E2D9]"
               >
                 <Image
@@ -92,7 +94,7 @@ export default function FeaturedSpecialists({ specialists }: { specialists: Spec
                   <h3 className="font-heading font-bold text-lg sm:text-xl text-white">
                     {third.name}
                   </h3>
-                  <p className="text-xs text-white/60 mt-0.5">{third.role}</p>
+                  <p className="text-xs text-white/60 mt-0.5">{role(third)}</p>
                 </div>
               </Link>
             )}

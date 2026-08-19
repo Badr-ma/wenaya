@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 function isCorporateRoute(pathname: string): boolean {
-  return pathname.startsWith("/solutions/entreprises");
+  return pathname.startsWith("/solutions/entreprises") || pathname.startsWith("/en/solutions/entreprises");
 }
 
 export default function CorporateConsultationWidget() {
@@ -90,7 +90,7 @@ export default function CorporateConsultationWidget() {
             Book a free consultation with our corporate wellness specialists.
           </p>
           <Link
-            href="/solutions/entreprises#contact"
+            href={pathname.startsWith("/en") ? "/en/solutions/entreprises#contact" : "/solutions/entreprises#contact"}
             onClick={close}
             className="flex items-center justify-center w-full py-2.5 rounded-full text-white text-[13px] font-semibold transition-all duration-300 hover:-translate-y-px"
             style={{ backgroundColor: "#1A6B52" }}

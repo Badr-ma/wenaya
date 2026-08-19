@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useLocale } from "@/contexts/LanguageContext";
 
 type SpecialistLocation = {
   slug: string;
@@ -25,6 +26,7 @@ export default function MapView({
   activeSpecialistSlug: string | null;
   onPinClick: (slug: string) => void;
 }) {
+  const { t } = useLocale();
   const [MapComponent, setMapComponent] = useState<React.ComponentType<{
     specialists: SpecialistLocation[];
     activeSpecialistSlug: string | null;
@@ -40,7 +42,7 @@ export default function MapView({
   if (!MapComponent) {
     return (
       <div className="w-full h-full bg-[#E8E2D9] rounded-xl flex items-center justify-center">
-        <div className="animate-pulse text-[#2B2F36]/30 text-sm">Chargement de la carte...</div>
+        <div className="animate-pulse text-[#2B2F36]/30 text-sm">{t("specialistes.list.mapLoading")}</div>
       </div>
     );
   }

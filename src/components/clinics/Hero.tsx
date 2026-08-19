@@ -9,10 +9,11 @@ import Link from "next/link";
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
+import { h } from "@/lib/href";
 
 export default function ClinicsHero(): React.JSX.Element {
   const sectionRef = useRef<HTMLElement>(null);
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -69,7 +70,7 @@ export default function ClinicsHero(): React.JSX.Element {
 
           <div className="ch-cta flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-10">
             <Link
-              href="/about"
+              href={h(locale, "/about")}
               className="inline-flex items-center justify-center h-11 px-7 rounded-xl text-white text-[13.5px] font-semibold transition-all duration-300 hover:-translate-y-px"
               style={{
                 background: "linear-gradient(135deg, #B88A5A 0%, #9A7242 100%)",
@@ -79,7 +80,7 @@ export default function ClinicsHero(): React.JSX.Element {
               {t("clinics.hero.cta1")}
             </Link>
             <Link
-              href="/about"
+              href={h(locale, "/about")}
               className="inline-flex items-center gap-2 h-11 px-6 rounded-xl text-white/45 text-[13.5px] font-medium border border-white/[0.1] transition-all duration-300 hover:text-white hover:border-white/[0.2]"
             >
               {t("clinics.hero.cta2")}

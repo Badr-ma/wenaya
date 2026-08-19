@@ -49,15 +49,17 @@ const routeLabels: Record<string, Record<string, string>> = {
 
 export default function Breadcrumbs({ labels }: { labels?: Record<string, string> }): React.JSX.Element | null {
   const pathname = usePathname();
-  const locale = "fr";
+  const locale = pathname.startsWith("/en") ? "en" : "fr";
 
-  if (pathname === "/") return null;
+  if (pathname === "/" || pathname === "/en") return null;
 
   const segments = pathname.split("/").filter(Boolean);
+  const homeHref = locale === "en" ? "/en" : "/";
   const items: BreadcrumbItem[] = [];
-  let path = "";
+  let path = locale === "en" ? "/en" : "";
 
   for (const segment of segments) {
+    if (segment === "en" && path === "/en") continue;
     path += `/${segment}`;
     const label = labels?.[segment] || routeLabels[locale]?.[segment] || segment;
     items.push({ label, href: path });
@@ -89,10 +91,10 @@ export default function Breadcrumbs({ labels }: { labels?: Record<string, string
         <ol className="flex items-center gap-1.5 text-xs text-[#0B1220]/40">
           <li>
             <Link
-              href="/"
+              href={homeHref}
               className="hover:text-[#B88A5A] transition-colors"
             >
-              Accueil
+              {locale === "en" ? "Home" : "Accueil"}
             </Link>
           </li>
           {items.map((item, i) => (

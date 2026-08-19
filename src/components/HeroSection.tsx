@@ -55,6 +55,7 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
         loop
         playsInline
         preload="metadata"
+        poster="/videos/forest-poster.webp"
         className="absolute inset-0 w-full h-full object-cover"
         style={{ objectPosition: "center 30%" }}
       >

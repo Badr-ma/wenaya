@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useLocale } from "@/contexts/LanguageContext";
+import { h } from "@/lib/href";
 import type { Specialist } from "@/lib/specialistes";
 
 export default function SpecialistListItem({
@@ -20,12 +21,12 @@ export default function SpecialistListItem({
   onLeave: () => void;
   onClick: () => void;
 }) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
 
   return (
     <Link
       id={`specialist-${specialist.slug}`}
-      href={`/specialistes/${specialist.slug}`}
+      href={h(locale, `/specialistes/${specialist.slug}`)}
       onClick={onClick}
       onMouseEnter={() => onHover(specialist.slug)}
       onMouseLeave={onLeave}
@@ -55,7 +56,7 @@ export default function SpecialistListItem({
           <h3 className="font-heading font-bold text-lg sm:text-xl text-[#0B1220] transition-colors group-hover:text-[#B88A5A] truncate">
             {specialist.name}
           </h3>
-          <p className="text-sm text-[#2B2F36]/40 mt-0.5">{specialist.role}</p>
+          <p className="text-sm text-[#2B2F36]/40 mt-0.5">{locale === "en" ? (specialist.roleEn ?? specialist.role) : specialist.role}</p>
         </div>
 
         <div className="flex flex-wrap items-center gap-3 mt-2">
@@ -71,14 +72,6 @@ export default function SpecialistListItem({
         </div>
 
         <div className="hidden sm:flex items-center gap-4 mt-2">
-          <div className="flex items-center gap-1">
-            {[1, 2, 3, 4, 5].map((d) => (
-              <svg key={d} className="w-3 h-3" viewBox="0 0 10 10">
-                <circle cx="5" cy="5" r="4" fill={specialist.rating >= d ? "#FEBB58" : "#D4C9B8"} />
-              </svg>
-            ))}
-            <span className="text-[12px] text-[#0B1220] font-medium ml-1">{specialist.rating}</span>
-          </div>
           <span className="text-[12px] text-[#2B2F36]/40">{specialist.languages.join(" · ")}</span>
         </div>
 

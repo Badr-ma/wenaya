@@ -32,6 +32,7 @@ export interface Specialist {
   slug: string;
   name: string;
   role: string;
+  roleEn?: string;
   specialty: string;
   image: string;
   rating: number;
@@ -63,6 +64,7 @@ export const specialists: Specialist[] = [
     slug: "nadine-kita",
     name: "Nadine Kita",
     role: "Kinésithérapeute",
+    roleEn: "Physiotherapist",
     specialty: "Kinésithérapie",
     image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&q=80&auto=format&fit=crop",
     rating: 4.8,
@@ -168,6 +170,7 @@ export const specialists: Specialist[] = [
     slug: "dr-amal-benali",
     name: "Dr. Amal Benali",
     role: "Médecin Généraliste",
+    roleEn: "General Practitioner",
     specialty: "Médecine Générale",
     image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&q=80&auto=format&fit=crop",
     rating: 4.9,
@@ -216,6 +219,7 @@ export const specialists: Specialist[] = [
     slug: "khalid-ouazzani",
     name: "Khalid Ouazzani",
     role: "Ostéopathe",
+    roleEn: "Osteopath",
     specialty: "Ostéopathie",
     image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&q=80&auto=format&fit=crop",
     rating: 4.7,
@@ -263,6 +267,7 @@ export const specialists: Specialist[] = [
     slug: "nadia-tazi",
     name: "Nadia Tazi",
     role: "Psychologue Clinicienne",
+    roleEn: "Clinical Psychologist",
     specialty: "Psychologie",
     image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80&auto=format&fit=crop",
     rating: 4.9,
@@ -311,6 +316,7 @@ export const specialists: Specialist[] = [
     slug: "yassine-el-amrani",
     name: "Yassine El Amrani",
     role: "Nutritionniste",
+    roleEn: "Nutritionist",
     specialty: "Nutrition",
     image: "https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?w=400&q=80&auto=format&fit=crop",
     rating: 4.6,
@@ -357,6 +363,7 @@ export const specialists: Specialist[] = [
     slug: "sara-mansouri",
     name: "Sara Mansouri",
     role: "Psychomotricienne",
+    roleEn: "Psychomotor Therapist",
     specialty: "Psychomotricité",
     image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80&auto=format&fit=crop",
     rating: 4.8,
@@ -402,6 +409,7 @@ export const specialists: Specialist[] = [
     slug: "mehdi-irzi",
     name: "Mehdi Irzi",
     role: "Orthophoniste",
+    roleEn: "Speech Therapist",
     specialty: "Orthophonie",
     image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80&auto=format&fit=crop",
     rating: 4.7,
@@ -448,6 +456,7 @@ export const specialists: Specialist[] = [
     slug: "najat-berrada",
     name: "Najat Berrada",
     role: "Naturopathe",
+    roleEn: "Naturopath",
     specialty: "Naturopathie",
     image: "https://images.unsplash.com/photo-1594824476967-48c8b964ac31?w=400&q=80&auto=format&fit=crop",
     rating: 4.6,
@@ -493,6 +502,7 @@ export const specialists: Specialist[] = [
     slug: "omar-tazi",
     name: "Omar Tazi",
     role: "Médecin du Sport",
+    roleEn: "Sports Physician",
     specialty: "Médecine du Sport",
     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80&auto=format&fit=crop",
     rating: 4.9,
@@ -540,6 +550,7 @@ export const specialists: Specialist[] = [
     slug: "fatima-zahra-alami",
     name: "Fatima Zahra Alami",
     role: "Diététicienne-Nutritionniste",
+    roleEn: "Dietitian-Nutritionist",
     specialty: "Nutrition",
     image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&q=80&auto=format&fit=crop",
     rating: 4.7,

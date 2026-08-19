@@ -9,11 +9,12 @@ import Link from "next/link";
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
+import { h } from "@/lib/href";
 
 
 export default function ClinicsCta(): React.JSX.Element {
   const sectionRef = useRef<HTMLElement>(null);
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -70,7 +71,7 @@ export default function ClinicsCta(): React.JSX.Element {
         </p>
 
         <div className="cc-actions flex flex-col sm:flex-row items-center justify-center gap-3 mt-10">
-          <Link href="/about"
+          <Link href={h(locale, "/about")}
             className="inline-flex items-center justify-center h-12 px-8 rounded-xl text-white text-sm font-semibold transition-all duration-300 hover:-translate-y-px"
             style={{
               background: "linear-gradient(135deg, #B88A5A 0%, #9A7242 100%)",
@@ -82,7 +83,7 @@ export default function ClinicsCta(): React.JSX.Element {
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
           </Link>
-          <Link href="/about"
+          <Link href={h(locale, "/about")}
             className="inline-flex items-center h-12 px-7 rounded-xl text-white/40 text-sm font-medium border border-white/[0.08] transition-all duration-300 hover:text-white hover:border-white/[0.16]"
           >
             {t("clinics.cta.cta2")}

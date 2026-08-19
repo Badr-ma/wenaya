@@ -11,6 +11,7 @@ interface MobileMenuProps {
   open: boolean;
   onClose: () => void;
   isActive: (href: string) => boolean;
+  h: (path: string) => string;
   t: (key: string) => string;
 }
 
@@ -18,6 +19,7 @@ export default function MobileMenu({
   open,
   onClose,
   isActive,
+  h,
   t,
 }: MobileMenuProps) {
   return (
@@ -42,22 +44,22 @@ export default function MobileMenu({
           <ul className="space-y-0.5">
             <li>
               <Link
-                href="/"
+                href={h("/")}
                 onClick={onClose}
                 className={`flex items-center gap-3 py-3.5 text-[clamp(1.6rem,4vw,2.2rem)] font-heading font-bold transition-all duration-200 ${
-                  isActive("/") ? "text-white" : "text-white/38 hover:text-white/75"
+                  isActive(h("/")) ? "text-white" : "text-white/38 hover:text-white/75"
                 }`}
               >
-                {isActive("/") && <span className="w-1.5 h-1.5 rounded-full bg-[#B88A5A] shrink-0" />}
+                {isActive(h("/")) && <span className="w-1.5 h-1.5 rounded-full bg-[#B88A5A] shrink-0" />}
                 {t("nav.accueil")}
               </Link>
             </li>
 
             {[
-              { label: t("nav.aPropos"), href: "/about" },
-              { label: t("nav.produits"), href: "/produits" },
-              { label: t("nav.solutions"), href: "/solutions/entreprises" },
-              { label: "Spécialistes", href: "/specialistes" },
+              { label: t("nav.aPropos"), href: h("/about") },
+              { label: t("nav.produits"), href: h("/produits") },
+              { label: t("nav.solutions"), href: h("/solutions/entreprises") },
+              { label: t("nav.specialistes"), href: h("/specialistes") },
             ].map(({ label, href }) => (
               <li key={label}>
                 <Link
@@ -78,7 +80,7 @@ export default function MobileMenu({
         <div className="pt-8 border-t border-white/[0.06] space-y-3">
           <div className="grid grid-cols-2 gap-3">
             <Link
-              href="/login"
+              href={h("/login")}
               onClick={onClose}
               className="flex items-center justify-center h-12 rounded-xl border border-white/[0.09] bg-white/[0.04] text-white/65 text-sm font-medium transition-all hover:bg-white/[0.07]"
             >

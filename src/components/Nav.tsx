@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { useLocale } from "@/contexts/LanguageContext";
+import { useCart } from "@/contexts/CartContext";
 import LanguageSwitcher from "./LanguageSwitcher";
 import Logo from "./Logo";
 import MobileMenu from "./nav/MobileMenu";
@@ -20,6 +21,11 @@ import { useLenis } from "lenis/react";
 export default function Nav(): React.JSX.Element {
   const pathname = usePathname();
   const { t } = useLocale();
+  const { totalItems, hydrated } = useCart();
+  const en = pathname.startsWith("/en");
+  const hh = (p: string) => (en ? `/en${p}` : p);
+  const isProduitsRoute = pathname === "/produits" || pathname === "/en/produits";
+  const isPratiquesRoute = pathname === "/pratiques" || pathname === "/en/pratiques";
   const [scrolled, setScrolled] = useState(false); // Whether user has scrolled past 40px
   const [hidden, setHidden] = useState(false); // Whether nav is hidden (scrolling down)
   const lastScrollRef = useRef(0); // Previous scroll position for direction detection
@@ -95,7 +101,7 @@ export default function Nav(): React.JSX.Element {
 
   /** Detects when the filter bar scrolls past the nav — switches to compact filter bar mode */
   useEffect(() => {
-    if (pathname !== "/produits" && pathname !== "/pratiques") {
+    if (pathname !== "/produits" && pathname !== "/en/produits" && pathname !== "/pratiques" && pathname !== "/en/pratiques") {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setFiltersPast(false);
       return;
@@ -160,7 +166,7 @@ export default function Nav(): React.JSX.Element {
   const closeMobile = () => { setMobileOpen(false); };
 
   const isActive = (href: string): boolean => {
-    if (href === "/") return pathname === "/";
+    if (href === "/" || href === "/en") return pathname === href;
     return pathname.startsWith(href);
   };
 
@@ -183,13 +189,13 @@ export default function Nav(): React.JSX.Element {
 
   return (
     <>
-    <header className={`fixed left-0 right-0 z-[100] flex justify-center px-4 sm:px-8 transition-transform duration-300 ease-in-out will-change-transform ${hidden ? "-translate-y-[calc(100%+40px)]" : "translate-y-0"} ${pathname === "/" ? "top-[40px] pt-2 sm:pt-4" : "top-0 pt-2 sm:pt-4"}`}>
+    <header className={`fixed left-0 right-0 z-[100] flex justify-center px-4 sm:px-8 transition-transform duration-300 ease-in-out will-change-transform ${hidden ? "-translate-y-[calc(100%+40px)]" : "translate-y-0"} ${(pathname === "/" || pathname === "/en") ? "top-[40px] pt-2 sm:pt-4" : "top-0 pt-2 sm:pt-4"}`}>
       {/* ── Main bar ── */}
       <div
         className={`flex-1 max-w-7xl flex items-center justify-between h-[52px] sm:h-[64px] px-4 sm:px-5 rounded-full shadow-sm transition-all duration-500 ${barBg}`}
       >
         {/* ── Filter bar mode (appears when main filters scroll out of view) ── */}
-        {filtersPast && pathname === "/produits" ? (
+        {filtersPast && isProduitsRoute ? (
           <ProduitsFilterBar
             filterCount={filterCount}
             filterSearch={filterSearch}
@@ -203,7 +209,7 @@ export default function Nav(): React.JSX.Element {
             onToggleMobile={() => setMobileOpen(!mobileOpen)}
             t={t}
           />
-        ) : filtersPast && pathname === "/pratiques" ? (
+        ) : filtersPast && isPratiquesRoute ? (
           <PratiquesFilterBar
             pratiquesSearch={pratiquesSearch}
             pratiquesActiveFilter={pratiquesActiveFilter}
@@ -213,18 +219,18 @@ export default function Nav(): React.JSX.Element {
           />
         ) : (
           <>
-            <Link href="/" className="h-full overflow-hidden shrink-0 flex items-center">
+            <Link href={hh("/")} className="h-full overflow-hidden shrink-0 flex items-center">
               <Logo />
             </Link>
 
             <nav className="hidden lg:block" aria-label={t("nav.navPrincipale")}>
               <ul className="flex items-center gap-0">
                 {[
-                  { label: t("nav.accueil"), href: "/" },
-                  { label: t("nav.aPropos"), href: "/about" },
-                  { label: t("nav.solutions"), href: "/solutions/entreprises" },
-                  { label: t("nav.produits"), href: "/produits" },
-                  { label: t("nav.specialistes"), href: "/specialistes" },
+                  { label: t("nav.accueil"), href: hh("/") },
+                  { label: t("nav.aPropos"), href: hh("/about") },
+                  { label: t("nav.solutions"), href: hh("/solutions/entreprises") },
+                  { label: t("nav.produits"), href: hh("/produits") },
+                  { label: t("nav.specialistes"), href: hh("/specialistes") },
                 ].map((link) => (
                     <li key={link.label}>
                       <Link
@@ -254,7 +260,24 @@ export default function Nav(): React.JSX.Element {
               <div className={`hidden sm:block w-px h-5 ${sepStyle} mr-0.5`} />
 
               <Link
-                href="/login"
+                href={hh("/panier")}
+                className={`relative flex items-center justify-center w-9 h-9 rounded-xl transition-colors ${isDark ? "hover:bg-white/[0.06] text-white/65 hover:text-white" : "hover:bg-black/[0.06] text-[#0B1220]/65 hover:text-[#0B1220]"}`}
+                aria-label={t("panier.title")}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+                {hydrated && totalItems > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-[#B88A5A] text-[10px] font-bold text-white px-1 leading-none">
+                    {totalItems > 99 ? "99+" : totalItems}
+                  </span>
+                )}
+              </Link>
+
+              <Link
+                href={hh("/login")}
                 className={`hidden sm:inline-flex items-center justify-center px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${loginBtn}`}
               >
                 {t("nav.seConnecter")}
@@ -291,6 +314,7 @@ export default function Nav(): React.JSX.Element {
       open={mobileOpen}
       onClose={closeMobile}
       isActive={isActive}
+      h={hh}
       t={t}
     />
     </>

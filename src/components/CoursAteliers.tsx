@@ -9,6 +9,7 @@ import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
+import { h } from "@/lib/href";
 import type { CoursAteliersContent } from "@/lib/homepage-types";
 import HiggsField from "./HiggsField";
 
@@ -27,7 +28,7 @@ interface CoursAteliersProps {
 }
 
 export default function CoursAteliers({ content }: CoursAteliersProps): React.JSX.Element {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -206,7 +207,7 @@ export default function CoursAteliers({ content }: CoursAteliersProps): React.JS
         {/* Bottom link */}
         <div className="ca-head text-center mt-8">
           <a
-            href="/pratiques"
+            href={h(locale, "/pratiques")}
             className="inline-flex items-center gap-3 text-[#B88A5A] text-sm font-semibold transition-all duration-500 group rounded-xl border border-[#B88A5A]/20 px-5 py-2.5 hover:bg-[#B88A5A]/5 hover:border-[#B88A5A]/30 hover:gap-4"
           >
             <span className="w-6 h-px bg-[#B88A5A]/40 transition-all duration-500 group-hover:w-8" />

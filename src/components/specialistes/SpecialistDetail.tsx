@@ -9,6 +9,7 @@ import type { Specialist } from "@/lib/specialistes";
 import BookingPanel from "./BookingPanel";
 import MapView from "./MapView";
 import { useLocale } from "@/contexts/LanguageContext";
+import { h } from "@/lib/href";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,17 +27,9 @@ function Stars({ rating }: { rating: number }) {
 
 export default function SpecialistDetail({ specialist }: { specialist: Specialist }) {
   const ref = useRef<HTMLDivElement>(null);
-  const { t, tRaw } = useLocale();
-  const [selectedDay, setSelectedDay] = useState(0);
-  const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
-  const [selectedService, setSelectedService] = useState<string | null>(null);
-  const [reviewSort, setReviewSort] = useState<"recent" | "top">("recent");
+  const { t, tRaw, locale } = useLocale();
   const [bookingOpen, setBookingOpen] = useState(false);
   const [showMobileBar, setShowMobileBar] = useState(false);
-
-  const sortedReviews = [...specialist.reviews].sort((a, b) =>
-    reviewSort === "top" ? b.rating - a.rating : 0
-  );
 
   useEffect(() => {
     const onScroll = () => setShowMobileBar(window.scrollY > 400);
@@ -62,7 +55,7 @@ export default function SpecialistDetail({ specialist }: { specialist: Specialis
       {/* ── HEADER ── */}
       <section className="pt-28 sm:pt-36 pb-8 sm:pb-12">
         <div className="max-w-7xl mx-auto px-6 sm:px-10">
-          <Link href="/specialistes" className="inline-flex items-center text-[11px] font-mono text-[#2B2F36]/55 hover:text-[#2B2F36]/65 transition-colors mb-8">
+          <Link href={h(locale, "/specialistes")} className="inline-flex items-center text-[11px] font-mono text-[#2B2F36]/55 hover:text-[#2B2F36]/65 transition-colors mb-8">
             <span className="mr-2">←</span> {t("specialistes.detail.backLink")}
           </Link>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -110,79 +103,31 @@ export default function SpecialistDetail({ specialist }: { specialist: Specialis
         </div>
       </section>
 
-      {/* ── ABOUT + AVAILABILITY ── */}
+      {/* ── ABOUT ── */}
       <section className="py-12 sm:py-16 border-t border-[#0B1220]/[0.06]">
         <div className="max-w-7xl mx-auto px-6 sm:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-            <div className="lg:col-span-7">
-              <div className="sp-reveal mb-10">
-                <p className="text-[11px] font-mono text-[#B88A5A] uppercase tracking-[0.2em] mb-4">{t("specialistes.detail.about")}</p>
-                <p className="text-[#2B2F36]/75 leading-[1.9] text-[clamp(0.95rem,1.2vw,1.05rem)] mb-6">{specialist.bio}</p>
-                <p className="text-[#2B2F36]/55 leading-[1.9] italic">&ldquo;{specialist.approach}&rdquo;</p>
-              </div>
-              <div className="sp-reveal mb-10">
-                <p className="text-[11px] font-mono text-[#B88A5A] uppercase tracking-[0.2em] mb-3">{t("specialistes.detail.specialties")}</p>
-                <div className="flex flex-wrap gap-2">
-                  {specialist.specialtyTags.map((tag) => (
-                    <span key={tag} className="px-3 py-1.5 bg-[#0B1220]/[0.04] text-[#2B2F36]/65 text-[12px] rounded-full">{tag}</span>
-                  ))}
-                </div>
-              </div>
-              <div className="sp-reveal">
-                <p className="text-[11px] font-mono text-[#B88A5A] uppercase tracking-[0.2em] mb-3">{t("specialistes.detail.certifications")}</p>
-                <ul className="space-y-2">
-                  {specialist.certifications.map((cert, i) => (
-                    <li key={i} className="flex items-start gap-2.5 text-[13px] text-[#2B2F36]/60">
-                      <span className="w-1 h-1 rounded-full bg-[#B88A5A]/40 mt-1.5 shrink-0" />{cert}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+          <div className="sp-reveal mb-10">
+            <p className="text-[11px] font-mono text-[#B88A5A] uppercase tracking-[0.2em] mb-4">{t("specialistes.detail.about")}</p>
+            <p className="text-[#2B2F36]/75 leading-[1.9] text-[clamp(0.95rem,1.2vw,1.05rem)] mb-6">{specialist.bio}</p>
+            <p className="text-[#2B2F36]/55 leading-[1.9] italic">&ldquo;{specialist.approach}&rdquo;</p>
+          </div>
+          <div className="sp-reveal mb-10">
+            <p className="text-[11px] font-mono text-[#B88A5A] uppercase tracking-[0.2em] mb-3">{t("specialistes.detail.specialties")}</p>
+            <div className="flex flex-wrap gap-2">
+              {specialist.specialtyTags.map((tag) => (
+                <span key={tag} className="px-3 py-1.5 bg-[#0B1220]/[0.04] text-[#2B2F36]/65 text-[12px] rounded-full">{tag}</span>
+              ))}
             </div>
-
-            <div className="lg:col-span-5">
-              <div className="sp-reveal bg-white rounded-xl p-6 shadow-[0_2px_16px_rgba(0,0,0,0.04)] lg:sticky lg:top-28">
-                <p className="text-[11px] font-mono text-[#B88A5A] uppercase tracking-[0.2em] mb-4">{t("specialistes.detail.availability")}</p>
-                <div className="flex gap-2 mb-5 overflow-x-auto pb-1">
-                  {specialist.availability.map((day, i) => (
-                    <button key={i} onClick={() => { setSelectedDay(i); setSelectedSlot(null); }}
-                      className={`flex flex-col items-center min-w-[52px] py-2.5 px-2.5 rounded-lg text-center transition-all ${selectedDay === i ? "bg-[#0B1220] text-white" : "bg-[#0B1220]/[0.03] text-[#2B2F36]/55 hover:bg-[#0B1220]/[0.06]"}`}>
-                      <span className="text-[10px] font-medium uppercase">{day.day}</span>
-                      <span className="text-lg font-heading font-bold">{day.date}</span>
-                    </button>
-                  ))}
-                </div>
-                <div className="flex flex-wrap gap-2 mb-5">
-                  {specialist.availability[selectedDay]?.slots.map((slot) => (
-                    <button key={slot.time} disabled={!slot.available} onClick={() => setSelectedSlot(slot.time)}
-                      className={`px-3.5 py-2 rounded-lg text-[12px] font-medium transition-all ${!slot.available ? "bg-[#0B1220]/[0.03] text-[#2B2F36]/15 line-through cursor-not-allowed" : selectedSlot === slot.time ? "bg-[#B88A5A] text-white" : "bg-[#0B1220]/[0.04] text-[#0B1220]/60 hover:bg-[#B88A5A]/10 hover:text-[#B88A5A]"}`}>
-                      {slot.time}
-                    </button>
-                  ))}
-                </div>
-                <p className="text-[11px] text-[#2B2F36]/60 mb-2">{t("specialistes.detail.consultationType")}</p>
-                <div className="space-y-1.5 mb-5">
-                  {specialist.services.map((svc) => (
-                    <button key={svc.id} onClick={() => setSelectedService(svc.id)}
-                      className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-left transition-all ${selectedService === svc.id ? "bg-[#B88A5A]/10 border border-[#B88A5A]/30" : "bg-[#0B1220]/[0.03] hover:bg-[#0B1220]/[0.05]"}`}>
-                      <div>
-                        <span className="text-[13px] text-[#0B1220] font-medium">{svc.title}</span>
-                        <span className="text-[11px] text-[#2B2F36]/60 ml-2">{svc.duration}</span>
-                      </div>
-                      <div className="flex items-center justify-center sm:justify-start gap-2">
-                        {svc.type === "ligne" && <span className="text-[9px] px-1.5 py-0.5 rounded bg-[#0B1220]/[0.05] text-[#2B2F36]/65 uppercase">Online</span>}
-                        <span className="text-[13px] font-semibold text-[#B88A5A]">{svc.price}</span>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-                <button onClick={() => setBookingOpen(true)} disabled={!selectedSlot || !selectedService}
-                  className={`w-full py-3.5 rounded-full text-[13px] font-medium transition-all ${selectedSlot && selectedService ? "bg-[#0B1220] text-white hover:bg-[#B88A5A]" : "bg-[#0B1220]/[0.06] text-[#2B2F36]/20 cursor-not-allowed"}`}>
-                  {selectedSlot && selectedService ? tRaw<(time: string) => string>("specialistes.detail.bookTime")(selectedSlot) : t("specialistes.detail.chooseSlot")}
-                </button>
-                <p className="text-center text-[11px] text-[#2B2F36]/20 mt-3">{specialist.hours}</p>
-              </div>
-            </div>
+          </div>
+          <div className="sp-reveal">
+            <p className="text-[11px] font-mono text-[#B88A5A] uppercase tracking-[0.2em] mb-3">{t("specialistes.detail.certifications")}</p>
+            <ul className="space-y-2">
+              {specialist.certifications.map((cert, i) => (
+                <li key={i} className="flex items-start gap-2.5 text-[13px] text-[#2B2F36]/60">
+                  <span className="w-1 h-1 rounded-full bg-[#B88A5A]/40 mt-1.5 shrink-0" />{cert}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
@@ -214,7 +159,7 @@ export default function SpecialistDetail({ specialist }: { specialist: Specialis
             </div>
             <div className="lg:col-span-7">
               <div className="sp-reveal rounded-xl overflow-hidden h-[300px] sm:h-[350px]">
-                <MapView specialists={[{ slug: specialist.slug, name: specialist.name, role: specialist.role, specialty: specialist.specialty, image: specialist.image, location: specialist.location }]} activeSpecialistSlug={null} onPinClick={() => {}} />
+                <MapView specialists={[{ slug: specialist.slug, name: specialist.name, role: locale === "en" ? (specialist.roleEn ?? specialist.role) : specialist.role, specialty: specialist.specialty, image: specialist.image, location: specialist.location }]} activeSpecialistSlug={null} onPinClick={() => {}} />
               </div>
             </div>
           </div>
@@ -227,49 +172,6 @@ export default function SpecialistDetail({ specialist }: { specialist: Specialis
               ))}
             </div>
           )}
-        </div>
-      </section>
-
-      {/* ── REVIEWS ── */}
-      <section className="py-12 sm:py-16 border-t border-[#0B1220]/[0.06]">
-        <div className="max-w-7xl mx-auto px-6 sm:px-10">
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
-            <div className="sp-reveal">
-              <p className="text-[11px] font-mono text-[#B88A5A] uppercase tracking-[0.2em] mb-3">{t("specialistes.detail.patientReviews")}</p>
-              <div className="flex items-center gap-3">
-                <Stars rating={specialist.rating} />
-                <span className="font-heading font-bold text-xl text-[#0B1220]">{specialist.rating}</span>
-                <span className="text-[13px] text-[#2B2F36]/65">{tRaw<(n: number) => string>("specialistes.detail.reviews")(specialist.reviewCount)}</span>
-              </div>
-            </div>
-            <div className="sp-reveal flex gap-2">
-              {(["recent", "top"] as const).map((s) => (
-                <button key={s} onClick={() => setReviewSort(s)}
-                  className={`px-3.5 py-1.5 rounded-full text-[12px] font-medium transition-all ${reviewSort === s ? "bg-[#0B1220] text-white" : "bg-[#0B1220]/[0.04] text-[#2B2F36]/55 hover:bg-[#0B1220]/[0.08]"}`}>
-                  {s === "recent" ? t("specialistes.detail.reviewsRecent") : t("specialistes.detail.reviewsTop")}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="space-y-0">
-            {sortedReviews.map((review) => (
-              <div key={review.id} className="sp-reveal border-t border-[#0B1220]/[0.06] py-6">
-                <div className="flex items-start justify-between gap-4 mb-2">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="font-heading font-semibold text-sm text-[#0B1220]">{review.name}</span>
-                      {review.verified && (
-                        <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[#0B1220]/[0.04] text-[#2B2F36]/60 font-medium">{t("specialistes.detail.viaWenaya")}</span>
-                      )}
-                    </div>
-                    <Stars rating={review.rating} />
-                  </div>
-                  <span className="text-[11px] text-[#2B2F36]/55 shrink-0">{review.date}</span>
-                </div>
-                <p className="text-[13px] text-[#2B2F36]/65 leading-relaxed mt-2">{review.text}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -293,10 +195,10 @@ export default function SpecialistDetail({ specialist }: { specialist: Specialis
       <BookingPanel
         isOpen={bookingOpen}
         onClose={() => setBookingOpen(false)}
-        specialistName={specialist.name}
-        services={specialist.services}
-        availability={specialist.availability}
-        hours={specialist.hours}
+        specialist={specialist}
+        initialDayIso={null}
+        initialSlot={null}
+        initialService={null}
       />
     </div>
   );

@@ -15,6 +15,7 @@ export function MinimalDropdown({
   onChange,
   multi,
   dark,
+  labels,
 }: {
   label: string;
   options: string[];
@@ -22,6 +23,8 @@ export function MinimalDropdown({
   onChange: (val: string[]) => void;
   multi: boolean;
   dark?: boolean;
+  /** Maps raw option values to translated display labels */
+  labels?: Record<string, string>;
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -81,7 +84,7 @@ export function MinimalDropdown({
                     : "text-[#2B2F36]/50 hover:text-[#0B1220]"
                 }`}
               >
-                <span className="flex-1">{opt}</span>
+                <span className="flex-1">{labels?.[opt] ?? opt}</span>
                 {active && (
                   <svg className="w-3.5 h-3.5 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />

@@ -11,7 +11,7 @@ export default function SpecialistHero({
   onSearchChange: (val: string) => void;
   resultCount: number;
 }) {
-  const { t } = useLocale();
+  const { t, tRaw } = useLocale();
 
   return (
     <section className="pt-28 sm:pt-36 pb-8 sm:pb-10">
@@ -39,7 +39,7 @@ export default function SpecialistHero({
           />
           {searchQuery && (
             <p className="text-xs text-[#2B2F36]/30 mt-2">
-              {resultCount} {resultCount === 1 ? "result" : "results"}
+              {tRaw<(n: number) => string>("specialistes.list.resultCount")(resultCount)}
             </p>
           )}
         </div>

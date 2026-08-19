@@ -9,9 +9,10 @@ import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import Image from "next/image";
 import { useLocale } from "@/contexts/LanguageContext";
+import { h } from "@/lib/href";
 
 export default function FutureVision(): React.JSX.Element {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -65,7 +66,7 @@ export default function FutureVision(): React.JSX.Element {
             {t("futureVision.cta1")}
           </a>
           <a
-            href="/pratiques"
+            href={h(locale, "/pratiques")}
             className="inline-flex items-center justify-center px-8 h-[52px] bg-transparent text-white/70 border border-white/20 hover:border-white/40 hover:text-white rounded-full text-sm font-medium transition-all duration-300"
           >
             {t("futureVision.cta2")}

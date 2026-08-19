@@ -1,15 +1,20 @@
 /**
  * Products Grid — filterable, searchable product listing for /produits page.
- * Features: multi-select goal/category/topic filters, search, sort, grid/list toggle,
- * product cards with images and badges. Syncs state to nav filter bar via custom DOM events.
+ * Features: multi-select goal/category/topic filters, search, sort, active filter pills,
+ * product cards via ProductCard. Syncs state to nav filter bar via custom DOM events.
  */
 "use client";
 
 import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import { useLocale } from "@/contexts/LanguageContext";
-import Image from "next/image";
-import Link from "next/link";
 import { MinimalDropdown } from "./FilterDropdown";
+import ProductCard from "./ProductCard";
+import ActiveFilters from "./ActiveFilters";
+import type { ActiveFilter } from "./ActiveFilters";
+import EmptyState from "./EmptyState";
+import SkeletonCard from "./SkeletonCard";
+import type { Product } from "@/types/product";
+import { h } from "@/lib/href";
 
 type ProductItem = {
   slug: string;
@@ -36,30 +41,21 @@ const categoryOptions = ["supplements", "devices", "wearables", "skincare", "pro
 const topicOptions = ["magnesium", "omega-3", "glucose", "collagen", "peptides", "sleep-tracking", "heart-rate", "meditation", "breathwork"];
 const PAGE_LIMIT = 12;
 
-function DotRating({ rating }: { rating: number }) {
-  return (
-    <span className="inline-flex items-center gap-[2px]">
-      {[1, 2, 3, 4, 5].map((dot) => {
-        const remainder = rating - (dot - 1);
-        let fill: "full" | "half" | "empty" = "empty";
-        if (remainder >= 1) fill = "full";
-        else if (remainder > 0) fill = "half";
-        return (
-          <svg key={dot} className="w-2.5 h-2.5" viewBox="0 0 10 10">
-            {fill === "full" && <circle cx="5" cy="5" r="4" fill="#FEBB58" />}
-            {fill === "half" && (
-              <>
-                <circle cx="5" cy="5" r="4" fill="#D4C9B8" />
-                <clipPath id={`dr-${dot}-${rating}`}><rect x="0" y="0" width="5" height="10" /></clipPath>
-                <circle cx="5" cy="5" r="4" fill="#FEBB58" clipPath={`url(#dr-${dot}-${rating})`} />
-              </>
-            )}
-            {fill === "empty" && <circle cx="5" cy="5" r="4" fill="#D4C9B8" />}
-          </svg>
-        );
-      })}
-    </span>
-  );
+/** Convert legacy ProductItem to shared Product type for ProductCard */
+function toProduct(item: ProductItem): Product {
+  return {
+    id: item.slug,
+    slug: item.slug,
+    name: item.title,
+    description: item.desc,
+    category: item.category,
+    goals: item.goals,
+    topics: item.topics,
+    images: [{ src: item.image, alt: item.title }],
+    thumbnail: item.image,
+    rating: item.rating,
+    reviewCount: item.reviews,
+  };
 }
 
 export default function ProductsGrid({ initial }: { initial?: ApiResponse }): React.JSX.Element {
@@ -178,6 +174,62 @@ export default function ProductsGrid({ initial }: { initial?: ApiResponse }): Re
     );
   }, [search, total, selectedGoals, selectedCategory, selectedTopics, sort]);
 
+  // ── Active filter pills ──
+  const activeFilters = useMemo<ActiveFilter[]>(() => {
+    const filters: ActiveFilter[] = [];
+    if (search) filters.push({ type: "search", value: search, label: search });
+    if (selectedCategory) filters.push({ type: "category", value: selectedCategory, label: t(`produits.filters.${selectedCategory}`) });
+    selectedGoals.forEach((g) => filters.push({ type: "goal", value: g, label: t(`produits.filters.goalLabels.${g}`) }));
+    selectedTopics.forEach((tp) => filters.push({ type: "topic", value: tp, label: t(`produits.filters.topicLabels.${tp}`) }));
+    if (sort !== "bestRated") filters.push({ type: "sort", value: sort, label: t(`produits.sort.${sort}`) });
+    return filters;
+  }, [search, selectedCategory, selectedGoals, selectedTopics, sort, t]);
+
+  const removeFilter = useCallback((filter: ActiveFilter) => {
+    switch (filter.type) {
+      case "search": setSearch(""); break;
+      case "category": setSelectedCategory(null); break;
+      case "goal": setSelectedGoals((prev) => prev.filter((g) => g !== filter.value)); break;
+      case "topic": setSelectedTopics((prev) => prev.filter((tp) => tp !== filter.value)); break;
+      case "sort": setSort("bestRated"); break;
+    }
+  }, []);
+
+  const clearAllFilters = useCallback(() => {
+    setSearch("");
+    setSelectedCategory(null);
+    setSelectedGoals([]);
+    setSelectedTopics([]);
+    setSort("bestRated");
+  }, []);
+
+  const hasActiveFilters = activeFilters.length > 0;
+
+  // ── Translated labels for dropdown items ──
+  const goalLabels = useMemo(() => {
+    const map: Record<string, string> = {};
+    goalOptions.forEach((g) => { map[g] = t(`produits.filters.goalLabels.${g}`); });
+    return map;
+  }, [t]);
+
+  const categoryLabels = useMemo(() => {
+    const map: Record<string, string> = {};
+    categoryOptions.forEach((c) => { map[c] = t(`produits.filters.${c}`); });
+    return map;
+  }, [t]);
+
+  const topicLabels = useMemo(() => {
+    const map: Record<string, string> = {};
+    topicOptions.forEach((tp) => { map[tp] = t(`produits.filters.topicLabels.${tp}`); });
+    return map;
+  }, [t]);
+
+  const sortLabels = useMemo(() => {
+    const map: Record<string, string> = {};
+    (["bestRated", "mostPopular", "newest"] as const).forEach((s) => { map[s] = t(`produits.sort.${s}`); });
+    return map;
+  }, [t]);
+
   return (
     <section data-section-bg="light" className="bg-[#F2EFE9] pt-36 sm:pt-44 pb-20 sm:pb-28 px-6">
       <div className="max-w-7xl mx-auto">
@@ -201,35 +253,39 @@ export default function ProductsGrid({ initial }: { initial?: ApiResponse }): Re
         </div>
 
         {/* ── Filter bar ── */}
-        <div data-filter-bar className="mb-10">
+        <div data-filter-bar className="mb-6">
           <div className="flex items-center gap-3 sm:gap-5 overflow-x-auto pb-2 -mx-6 px-6 sm:mx-0 sm:px-0 sm:flex-wrap scrollbar-hide">
             <MinimalDropdown
-              label="Goals"
+              label={t("produits.filters.goals")}
               options={goalOptions}
               selected={selectedGoals}
               onChange={setSelectedGoals}
               multi
+              labels={goalLabels}
             />
             <MinimalDropdown
-              label={selectedCategory ? t(`produits.filters.${selectedCategory}`) : "Categories"}
+              label={selectedCategory ? t(`produits.filters.${selectedCategory}`) : t("produits.filters.categories")}
               options={categoryOptions}
               selected={selectedCategory ? [selectedCategory] : []}
               onChange={(v) => setSelectedCategory(v[0] || null)}
               multi={false}
+              labels={categoryLabels}
             />
             <MinimalDropdown
-              label="Topics"
+              label={t("produits.filters.topics")}
               options={topicOptions}
               selected={selectedTopics}
               onChange={setSelectedTopics}
               multi
+              labels={topicLabels}
             />
             <MinimalDropdown
-              label={sort === "bestRated" ? "Best rated" : sort === "mostPopular" ? "Most popular" : "Newest"}
+              label={t(`produits.sort.${sort}`)}
               options={["bestRated", "mostPopular", "newest"]}
               selected={[sort]}
               onChange={(v) => setSort(v[0] || "bestRated")}
               multi={false}
+              labels={sortLabels}
             />
             <input
               type="text"
@@ -239,61 +295,55 @@ export default function ProductsGrid({ initial }: { initial?: ApiResponse }): Re
               className="shrink-0 w-[140px] sm:w-[160px] py-1 bg-transparent border-b border-[#0B1220]/[0.08] text-xs text-[#0B1220] placeholder-[#2B2F36]/20 outline-none focus:border-[#0B1220]/30 transition-colors"
             />
           </div>
-          <span className="text-xs text-[#2B2F36]/25 whitespace-nowrap mt-2 block">
-            {total} {t("produits.count")}
-          </span>
         </div>
 
+        {/* ── Active filter pills ── */}
+        <ActiveFilters
+          filters={activeFilters}
+          onRemove={removeFilter}
+          onClearAll={hasActiveFilters ? clearAllFilters : undefined}
+          clearLabel={t("produits.filters.clearAll")}
+        />
+
+        {/* ── Result count ── */}
+        <p className="text-xs text-[#2B2F36]/25 whitespace-nowrap mt-4 mb-10" aria-live="polite">
+          {total} {t("produits.count")}
+        </p>
+
         {/* ── Product grid ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 xl:gap-x-5 gap-y-14 sm:gap-y-16">
-          {items.map((product) => (
-            <article key={product.slug} className="group relative">
-              <Link href={`/produits/${product.slug}`} className="block">
-                <div className="relative aspect-square rounded-xl overflow-hidden">
-                  <Image
-                    src={product.image}
-                    alt={product.title}
-                    fill
-                    className="object-cover transition-opacity duration-500 group-hover:opacity-90"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                  />
-                </div>
-                <h2 className="font-heading font-bold text-lg text-[#0B1220] mt-4 leading-snug">
-                  {product.title}
-                </h2>
-                <div className="flex items-center gap-0.5 mt-1 mb-4">
-                  <DotRating rating={product.rating} />
-                  <span className="text-xs text-[#2B2F36]/50 ml-1">
-                    <span className="font-medium">{product.rating}</span>
-                    <span className="mx-1">·</span>
-                    {product.reviews} {t("produits.reviews")}
-                  </span>
-                </div>
-                <p className="text-sm text-[#2B2F36]/60 leading-relaxed line-clamp-3">
-                  {product.desc}
-                </p>
-              </Link>
-            </article>
-          ))}
-        </div>
+        {items.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 xl:gap-x-5 gap-y-14 sm:gap-y-16">
+            {items.map((item) => (
+              <ProductCard
+                key={item.slug}
+                product={toProduct(item)}
+                locale={locale as "fr" | "en"}
+              />
+            ))}
+          </div>
+        ) : !loading ? (
+          <EmptyState message={t("produits.noProducts")} />
+        ) : null}
+
+        {/* ── Loading skeleton ── */}
+        {loading && items.length === 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 xl:gap-x-5 gap-y-14 sm:gap-y-16">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        )}
 
         {/* ── Sentinel for infinite scroll ── */}
         {hasMore && (
           <div ref={sentinelRef} className="h-10 w-full" />
         )}
 
-        {/* ── Loading indicator ── */}
-        {loading && (
+        {/* ── Loading indicator (page 2+) ── */}
+        {loading && items.length > 0 && (
           <div className="flex justify-center py-10">
             <div className="w-6 h-6 border-2 border-[#B88A5A] border-t-transparent rounded-full animate-spin" />
           </div>
-        )}
-
-        {/* ── Empty state ── */}
-        {!loading && items.length === 0 && (
-          <p className="text-center py-20 text-sm text-[#2B2F36]/25">
-            No products match your criteria.
-          </p>
         )}
       </div>
     </section>

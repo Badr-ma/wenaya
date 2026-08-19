@@ -29,12 +29,21 @@ interface LanguageContextValue {
 /** Language context — initialized as null, must be used within LanguageProvider */
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
-/** Provider component — manages locale state and provides t() to the component tree */
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("fr");
+/**
+ * Provider component — manages locale state and provides t() to the component tree.
+ * `initialLocale` is used by per-language root layouts (e.g. the English layout)
+ * to server-render content in that locale; when provided, client-side language
+ * detection is skipped so the SSR'd language is preserved.
+ */
+export function LanguageProvider({ children, initialLocale }: { children: ReactNode; initialLocale?: Locale }) {
+  const [locale, setLocaleState] = useState<Locale>(initialLocale ?? "fr");
 
-  /** On mount: detect language from localStorage → browser language → default to French */
+  /** On mount: keep the SSR'd locale, or detect language from localStorage → browser language → default to French */
   useEffect(() => {
+    if (initialLocale) {
+      document.documentElement.lang = initialLocale;
+      return;
+    }
     let detected: Locale = "fr";
     try {
       const stored = localStorage.getItem("wenaya-locale");
@@ -47,7 +56,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setLocaleState(detected);
     document.documentElement.lang = detected;
-  }, []);
+  }, [initialLocale]);
 
   /** Sets locale, persists to localStorage, and updates the <html lang> attribute */
   const setLocale = useCallback((l: Locale) => {

@@ -3,8 +3,7 @@
  * /produits page (for server-rendered initial data). Keeps SSR and client
  * fetch results consistent.
  */
-import fr from "@/i18n/fr";
-import en from "@/i18n/en";
+import { getLegacyProducts } from "@/lib/product-adapter";
 
 export type ProductItem = {
   slug: string;
@@ -37,8 +36,6 @@ export type ProduitsResult = {
   hasMore: boolean;
 };
 
-const locales: Record<string, { produits: { items: ProductItem[] } }> = { fr, en };
-
 export function getProduits(query: ProduitsQuery = {}): ProduitsResult {
   const {
     locale = "fr",
@@ -51,8 +48,7 @@ export function getProduits(query: ProduitsQuery = {}): ProduitsResult {
   const page = Math.max(1, query.page ?? 1);
   const limit = Math.min(50, Math.max(1, query.limit ?? 12));
 
-  const data = locales[locale] || fr;
-  let items = [...data.produits.items] as ProductItem[];
+  let items: ProductItem[] = getLegacyProducts(locale);
 
   if (category) {
     items = items.filter((item) => item.category === category);

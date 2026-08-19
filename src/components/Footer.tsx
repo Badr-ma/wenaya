@@ -10,6 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
+import { h } from "@/lib/href";
 import type { FooterContent } from "@/lib/homepage-types";
 
 const socialPaths: Record<string, string> = {
@@ -34,7 +35,8 @@ interface FooterProps {
 }
 
 export default function Footer({ content }: FooterProps): React.JSX.Element {
-  const { t, tRaw } = useLocale();
+  const { t, tRaw, locale } = useLocale();
+  const hh = (path: string) => h(locale, path);
 
   const navLinks = tRaw<string[]>("footer.navigation.links");
   const legalLinks = tRaw<string[]>("footer.infosLegales.links");
@@ -135,7 +137,7 @@ export default function Footer({ content }: FooterProps): React.JSX.Element {
                   <ul className="space-y-3">
                     {navLinks.map((label: string, i: number) => (
                       <li key={label}>
-                        <Link href={navUrls[i] || "#"} className="text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed">
+                        <Link href={hh(navUrls[i] || "#")} className="text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed">
                           {label}
                         </Link>
                       </li>
@@ -149,7 +151,7 @@ export default function Footer({ content }: FooterProps): React.JSX.Element {
                   <ul className="space-y-3">
                     {legalLinks.map((label: string, i: number) => (
                       <li key={label}>
-                        <Link href={legalUrls[i] || "#"} className="text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed">
+                        <Link href={hh(legalUrls[i] || "#")} className="text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed">
                           {label}
                         </Link>
                       </li>
@@ -167,7 +169,7 @@ export default function Footer({ content }: FooterProps): React.JSX.Element {
                       </a>
                     </li>
                     <li>
-                      <Link href="/contact" className="text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed">
+                      <Link href={hh("/contact")} className="text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed">
                         {contactRaw.contact}
                       </Link>
                     </li>

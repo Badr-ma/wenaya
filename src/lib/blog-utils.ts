@@ -7,9 +7,9 @@ import { Post, Author, Category } from "./blog";
 /** Convenience type — a Post with optional author/category references resolved */
 export type PostWithAuthor = Post & { author?: Author; category?: Category };
 
-/** Formats a date string to French locale (e.g., "15 juin 2026") */
-export function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString("fr-FR", {
+/** Formats a date string (e.g., French "15 juin 2026", English "June 15, 2026") */
+export function formatDate(dateStr: string, locale: "fr" | "en" = "fr"): string {
+  return new Date(dateStr).toLocaleDateString(locale === "en" ? "en-US" : "fr-FR", {
     day: "numeric",
     month: "long",
     year: "numeric",

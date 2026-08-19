@@ -10,6 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
+import { h } from "@/lib/href";
 
 const socialLinks = [
   {
@@ -27,7 +28,8 @@ const socialLinks = [
 ];
 
 export default function EntreprisesFooter(): React.JSX.Element {
-  const { t, tRaw } = useLocale();
+  const { t, tRaw, locale } = useLocale();
+  const hh = (path: string) => h(locale, path);
 
   const footerSolutions = tRaw<{title: string; links: string[]}>("entreprises.footer.solutions");
   const footerResources = tRaw<{title: string; links: string[]}>("entreprises.footer.resources");
@@ -147,11 +149,11 @@ export default function EntreprisesFooter(): React.JSX.Element {
                   const groupUrls = isContact
                     ? null
                     : group.title === footerSolutions.title
-                      ? ["/solutions/entreprises", "#", "#", "#"]
+                      ? [hh("/solutions/entreprises"), "#", "#", "#"]
                       : group.title === footerResources.title
-                        ? ["/faq", "#", "#"]
+                        ? [hh("/faq"), "#", "#"]
                         : group.title === footerAPropos.title
-                          ? ["/about", "/pratiques", "#", "#"]
+                          ? [hh("/about"), hh("/pratiques"), "#", "#"]
                           : null;
                   return (
                     <div key={group.title}>

@@ -12,6 +12,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
+import { h, type HrefLocale } from "@/lib/href";
 
 interface Program {
   badge: string; name: string; pitch: string; desc: string;
@@ -32,9 +33,9 @@ const SIDE_OPACITY = 0.4;
 const SPRING = { type: "spring" as const, stiffness: 500, damping: 35, mass: 0.5 };
 
 function CardContent({
-  program, image, isActive,
+  program, image, isActive, locale,
 }: {
-  program: Program; image: string; isActive: boolean;
+  program: Program; image: string; isActive: boolean; locale: HrefLocale;
 }) {
   if (!isActive) {
     return (
@@ -94,7 +95,7 @@ function CardContent({
             </div>
           </div>
           <Link
-            href={`/solutions/entreprises/programmes#${program.link.split("/").pop()}`}
+            href={h(locale, `/solutions/entreprises/programmes#${program.link.split("/").pop()}`)}
             className="px-2.5 sm:px-5 h-7 sm:h-9 rounded-full bg-[#0B1220] text-white text-[9px] sm:text-xs font-semibold tracking-wide hover:bg-[#B88A5A] transition-colors duration-300 shrink-0 inline-flex items-center whitespace-nowrap"
           >
             Discover
@@ -106,7 +107,7 @@ function CardContent({
 }
 
 export default function ProgrammesSection() {
-  const { t, tRaw } = useLocale();
+  const { t, tRaw, locale } = useLocale();
   const programmes = tRaw<Program[]>("entreprises.programmes.list");
 
   const [activeIdx, setActiveIdx] = useState(0);
@@ -233,6 +234,7 @@ export default function ProgrammesSection() {
                       program={program}
                       image={cardImages[idx % cardImages.length]}
                       isActive={isActive}
+                      locale={locale}
                     />
                   </motion.div>
                 );
