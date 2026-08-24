@@ -5,7 +5,6 @@
  */
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ProductDetail from "@/components/produits/ProductDetail";
 import Footer from "@/components/Footer";
@@ -115,25 +114,23 @@ export default async function EnglishProduitPage({ params }: Props) {
   }
 
   return (
-    <ErrorBoundary>
-      <div className="flex flex-col min-h-screen">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+    <div className="flex flex-col min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+      <main>
+        <Breadcrumbs labels={{ [slug]: product.name }} />
+        <ProductDetail
+          product={product}
+          relatedProducts={relatedProducts}
+          brandProducts={brandProducts}
+          locale={locale}
+          t={t}
+          tRaw={tRaw}
         />
-        <main>
-          <Breadcrumbs labels={{ [slug]: product.name }} />
-          <ProductDetail
-            product={product}
-            relatedProducts={relatedProducts}
-            brandProducts={brandProducts}
-            locale={locale}
-            t={t}
-            tRaw={tRaw}
-          />
-        </main>
-        <Footer />
-      </div>
-    </ErrorBoundary>
+      </main>
+      <Footer />
+    </div>
   );
 }

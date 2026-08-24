@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useEffect } from "react";
+import { useEffect } from "react";
 import { useLocale } from "@/contexts/LanguageContext";
 import { gsap } from "gsap";
+import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 import type { CtaContent } from "@/lib/homepage-types";
 
 interface CtaSectionProps {
@@ -12,9 +13,10 @@ interface CtaSectionProps {
 
 export default function CtaSection({ content }: CtaSectionProps): React.JSX.Element {
   const { t } = useLocale();
-  const sectionRef = useRef<HTMLElement>(null);
+  const { elRef: sectionRef, ready } = useIntersectionDeferred("200px 0px");
 
   useEffect(() => {
+    if (!ready) return;
     const el = sectionRef.current;
     if (!el) return;
 
@@ -38,7 +40,7 @@ export default function CtaSection({ content }: CtaSectionProps): React.JSX.Elem
     }, el);
 
     return () => ctx.revert();
-  }, []);
+  }, [ready]);
 
   return (
     <section

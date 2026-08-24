@@ -39,6 +39,11 @@ function normalizeProduct(
     rating: canonical.rating,
     reviewCount: canonical.reviews,
     featured: canonical.featured,
+    price: canonical.price,
+    currency: canonical.currency,
+    availability: canonical.availability,
+    purchaseUrl: canonical.purchaseUrl,
+    websiteUrl: canonical.websiteUrl,
   };
 }
 
@@ -64,6 +69,9 @@ function toListItem(
     rating: canonical.rating,
     reviewCount: canonical.reviews,
     featured: canonical.featured,
+    price: canonical.price,
+    currency: canonical.currency,
+    availability: canonical.availability,
   };
 }
 

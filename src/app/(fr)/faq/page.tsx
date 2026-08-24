@@ -30,14 +30,14 @@ export const metadata: Metadata = {
     ...OG_DEFAULTS,
     title: "FAQ — Questions Fréquentes sur Wenaya",
     description:
-      "Answers to the most common questions about Wenaya's integrated health platform and corporate wellness programs in Morocco.",
+      "Tout savoir sur Wenaya : kinésithérapie, psychologie, nutrition et bien-être corporate à Casablanca, Maroc.",
     url: `${SITE_URL}/faq`,
   },
   twitter: {
     ...TWITTER_DEFAULTS,
     title: "FAQ — Questions Fréquentes sur Wenaya",
     description:
-      "Answers to the most common questions about Wenaya's integrated health platform and corporate wellness programs in Morocco.",
+      "Tout savoir sur Wenaya : kinésithérapie, psychologie, nutrition et bien-être corporate à Casablanca, Maroc.",
   },
 };
 

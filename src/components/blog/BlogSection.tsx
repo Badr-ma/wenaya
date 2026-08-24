@@ -23,7 +23,13 @@ function BlogCard({ post }: { post: PostWithAuthor }): React.JSX.Element {
       className="group block bg-[#E8E2D9] rounded-2xl border border-[#0B1220]/[0.06] overflow-hidden transition-all duration-500 hover:shadow-[0_8px_32px_rgba(184,138,90,0.06)] hover:border-[#B88A5A]/25 hover:-translate-y-0.5"
     >
       <div className="relative overflow-hidden aspect-[16/10]">
-        <div className="absolute inset-0 bg-cover bg-center transition-all duration-500 group-hover:scale-105" style={{ backgroundImage: `url(${post.featuredImage})` }} />
+        <Image
+          src={post.featuredImage}
+          alt={post.title}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover transition-all duration-500 group-hover:scale-105"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
         <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full px-2.5 py-0.5 text-[10px] font-medium text-[#2B2F36]/60 shadow-sm">
           {post.readingTime} {t("blog.minLecture")}

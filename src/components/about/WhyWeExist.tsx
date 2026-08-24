@@ -9,12 +9,14 @@ import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import Image from "next/image";
 import { useLocale } from "@/contexts/LanguageContext";
+import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 
 export default function WhyWeExist(): React.JSX.Element {
   const { t } = useLocale();
-  const sectionRef = useRef<HTMLElement>(null);
+  const { elRef: sectionRef, ready } = useIntersectionDeferred();
 
   useEffect(() => {
+    if (!ready) return;
     const el = sectionRef.current;
     if (!el) return;
 
@@ -23,7 +25,7 @@ export default function WhyWeExist(): React.JSX.Element {
     }, el);
 
     return () => ctx.revert();
-  }, []);
+  }, [ready]);
 
   return (
     <section id="story" ref={sectionRef} className="bg-[#F2EFE9] py-20 sm:py-24 px-6">

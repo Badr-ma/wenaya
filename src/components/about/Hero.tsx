@@ -69,7 +69,7 @@ export default function AboutHero(): React.JSX.Element {
           <div id="ah-image" className="relative">
             <div className="relative aspect-[4/3] lg:aspect-[16/10] rounded-2xl overflow-hidden">
               <Image
-                src="/images/about/about-hero.png"
+                src="/images/about/about-hero.jpg"
                 alt="Wenaya centre de santé"
                 fill
                 className="object-cover"

@@ -83,12 +83,28 @@ export default function HiggsField({ className = "", parentRef, palette: customP
 
     let animId: number;
     let isVisible = true;
-    const observer = new IntersectionObserver(([entry]) => { isVisible = entry.isIntersecting; });
+    let isRunning = false;
+
+    const startLoop = () => {
+      if (isRunning) return;
+      isRunning = true;
+      draw();
+    };
+    const stopLoop = () => {
+      isRunning = false;
+      cancelAnimationFrame(animId);
+    };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible) startLoop();
+      else stopLoop();
+    });
     observer.observe(canvas);
 
     const draw = () => {
+      if (!isVisible) { isRunning = false; return; }
       ctx.clearRect(0, 0, w, h);
-      if (!isVisible) { animId = requestAnimationFrame(draw); return; }
 
       const mouse = mouseRef.current;
       if (mouse.active) {
@@ -185,7 +201,7 @@ export default function HiggsField({ className = "", parentRef, palette: customP
       animId = requestAnimationFrame(draw);
     };
 
-    draw();
+    startLoop();
 
     const resize = () => {
       const size = getSize();
@@ -198,7 +214,7 @@ export default function HiggsField({ className = "", parentRef, palette: customP
     window.addEventListener("resize", resize);
 
     return () => {
-      cancelAnimationFrame(animId);
+      stopLoop();
       observer.disconnect();
       eventTarget.removeEventListener("mousemove", onMouse);
       eventTarget.removeEventListener("mouseleave", onLeave);

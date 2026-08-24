@@ -8,6 +8,7 @@
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
+import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 
 
 const visualOffers = [
@@ -38,13 +39,14 @@ const visualOffers = [
 ];
 
 export default function ClinicsPrograms(): React.JSX.Element {
-  const sectionRef = useRef<HTMLElement>(null);
+  const { elRef: sectionRef, ready } = useIntersectionDeferred();
   const { t, tRaw } = useLocale();
 
   const rawOffers = tRaw<{ title: string; desc: string }[]>("clinics.programs.offers");
   const offers = rawOffers.map((o, i) => ({ ...o, ...visualOffers[i] }));
 
   useEffect(() => {
+    if (!ready) return;
     const el = sectionRef.current;
     if (!el) return;
 
@@ -59,7 +61,8 @@ export default function ClinicsPrograms(): React.JSX.Element {
     }, el);
 
     return () => ctx.revert();
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready]);
 
   return (
     <section ref={sectionRef} className="bg-[#F2EFE9] py-20 sm:py-28 px-6">

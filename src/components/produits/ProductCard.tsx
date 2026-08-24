@@ -15,10 +15,12 @@ type ProductCardProps = {
   product: Product;
   locale?: string;
   variant?: "default" | "compact";
+  priority?: boolean;
 };
 
-function formatPrice(price: number, currency?: string): string {
-  const formatted = new Intl.NumberFormat("fr-MA", {
+function formatPrice(price: number, currency?: string, locale?: string): string {
+  const localeFmt = locale === "en" ? "en-MA" : "fr-MA";
+  const formatted = new Intl.NumberFormat(localeFmt, {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   }).format(price);
@@ -29,6 +31,7 @@ export default function ProductCard({
   product,
   locale = "fr",
   variant = "default",
+  priority = false,
 }: ProductCardProps): React.JSX.Element {
   const imageSrc = product.images?.[0]?.src || product.thumbnail || "";
   const imageAlt = product.images?.[0]?.alt || product.name;
@@ -55,6 +58,7 @@ export default function ProductCard({
               src={imageSrc}
               alt={imageAlt}
               fill
+              priority={priority}
               className="object-cover transition-opacity duration-500 group-hover:opacity-90"
               sizes={
                 isCompact
@@ -142,7 +146,7 @@ export default function ProductCard({
           {/* ── Price ── */}
           {hasPrice && (
             <p className="text-sm font-semibold text-[#0B1220] mt-2">
-              {formatPrice(product.price!, product.currency)}
+              {formatPrice(product.price!, product.currency, locale)}
             </p>
           )}
         </div>

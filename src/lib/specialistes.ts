@@ -458,7 +458,7 @@ export const specialists: Specialist[] = [
     role: "Naturopathe",
     roleEn: "Naturopath",
     specialty: "Naturopathie",
-    image: "https://images.unsplash.com/photo-1594824476967-48c8b964ac31?w=400&q=80&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80&auto=format&fit=crop",
     rating: 4.6,
     reviewCount: 22,
     yearsExperience: 6,

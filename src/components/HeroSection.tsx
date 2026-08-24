@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useEffect } from "react";
+import Image from "next/image";
+import { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
 import type { HeroContent } from "@/lib/homepage-types";
@@ -15,25 +16,29 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
   const { t } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const trustRef = useRef<HTMLDivElement>(null);
+  const [videoSrc, setVideoSrc] = useState<string | null>(null);
 
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
 
     const ctx = gsap.context(() => {
-      gsap.set([".hero-eyebrow", ".hero-line", ".hero-sub", ".hero-cta", trustRef.current], {
-        opacity: 0,
-      });
-
       gsap.timeline({ defaults: { ease: "power3.out" } })
-        .to(".hero-eyebrow", { opacity: 1, y: 0, duration: 0.55 })
-        .fromTo(".hero-line", { y: 32 }, { opacity: 1, y: 0, duration: 0.75, stagger: 0.1 }, "-=0.25")
-        .to(".hero-sub", { opacity: 1, y: 0, duration: 0.5 }, "-=0.35")
-        .to(".hero-cta", { opacity: 1, y: 0, duration: 0.45 }, "-=0.25")
-        .to(trustRef.current, { opacity: 1, duration: 0.5 }, "-=0.25");
+        .fromTo(".hero-eyebrow", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.55 })
+        .fromTo(".hero-line", { opacity: 0, y: 32 }, { opacity: 1, y: 0, duration: 0.75, stagger: 0.1 }, "-=0.25")
+        .fromTo(".hero-sub", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5 }, "-=0.35")
+        .fromTo(".hero-cta", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.45 }, "-=0.25")
+        .fromTo(trustRef.current, { opacity: 0 }, { opacity: 1, duration: 0.5 }, "-=0.25");
     }, el);
 
-    return () => ctx.revert();
+    const scheduleIdle = typeof requestIdleCallback === "function"
+      ? requestIdleCallback(() => setVideoSrc("/videos/forest.mp4"), { timeout: 3000 })
+      : setTimeout(() => setVideoSrc("/videos/forest.mp4"), 200);
+
+    return () => {
+      ctx.revert();
+      if (typeof scheduleIdle === "number") clearTimeout(scheduleIdle);
+    };
   }, []);
 
   const stats = [
@@ -48,30 +53,40 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
       ref={sectionRef}
       className="relative min-h-[80vh] sm:min-h-screen flex items-center overflow-hidden"
     >
-      {/* ── Video background ── */}
+      {/* ── Poster image — standalone LCP element ── */}
+      <Image
+        src="/videos/forest-poster.webp"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ objectPosition: "center 30%" }}
+      />
+
+      {/* ── Video background — loads after idle, layers over poster ── */}
       <video
         autoPlay
         muted
         loop
         playsInline
-        preload="metadata"
-        poster="/videos/forest-poster.webp"
-        className="absolute inset-0 w-full h-full object-cover"
+        preload="none"
+        className="absolute inset-0 w-full h-full object-cover z-[1]"
         style={{ objectPosition: "center 30%" }}
       >
-        <source src="/videos/forest.mp4" type="video/mp4" />
+        {videoSrc && <source src={videoSrc} type="video/mp4" />}
       </video>
 
       {/* ── Directional overlay: dark-left for text, lighter-right for video depth ── */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none z-[2]"
         style={{
           background: "linear-gradient(108deg, rgba(6,10,22,0.94) 0%, rgba(6,10,22,0.88) 38%, rgba(6,10,22,0.65) 60%, rgba(6,10,22,0.50) 80%, rgba(6,10,22,0.58) 100%)",
         }}
       />
       {/* Top dark fade (hides video at nav level) */}
       <div
-        className="absolute top-0 left-0 right-0 h-40 pointer-events-none"
+        className="absolute top-0 left-0 right-0 h-40 pointer-events-none z-[2]"
         style={{ background: "linear-gradient(to bottom, rgba(6,10,22,0.7) 0%, transparent 100%)" }}
       />
 

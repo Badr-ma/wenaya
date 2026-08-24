@@ -54,9 +54,13 @@ export default function BlogHero({ latest }: { latest: PostWithAuthor | null }) 
             <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-transparent via-transparent to-transparent group-hover:from-[#B88A5A]/20 group-hover:via-[#159AA9]/10 group-hover:to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700 z-0 pointer-events-none" />
             <div className="sm:flex">
               <div className="sm:w-[45%] relative overflow-hidden aspect-[16/9] sm:aspect-auto sm:min-h-[320px]">
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition-all duration-700 group-hover:scale-105"
-                  style={{ backgroundImage: `url(${latest.featuredImage})` }}
+                <Image
+                  src={latest.featuredImage}
+                  alt={latest.title}
+                  fill
+                  priority
+                  sizes="(max-width: 640px) 100vw, 45vw"
+                  className="object-cover transition-all duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                 <div className="absolute bottom-4 left-4 sm:hidden">

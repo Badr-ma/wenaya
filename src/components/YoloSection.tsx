@@ -8,6 +8,7 @@
 
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
+import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 import type { YoloContent } from "@/lib/homepage-types";
 
 const signals = [
@@ -25,7 +26,7 @@ interface YoloSectionProps {
 }
 
 export default function YoloSection({ content }: YoloSectionProps): React.JSX.Element {
-  const sectionRef = useRef<HTMLElement>(null);
+  const { elRef: sectionRef, ready } = useIntersectionDeferred("200px 0px");
   const contentRef = useRef<HTMLDivElement>(null);
   const badgeRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -43,6 +44,7 @@ export default function YoloSection({ content }: YoloSectionProps): React.JSX.El
   const particleRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
+    if (!ready) return;
     const el = sectionRef.current;
     if (!el) return;
 
@@ -129,7 +131,7 @@ export default function YoloSection({ content }: YoloSectionProps): React.JSX.El
     }, el);
 
     return () => ctx.revert();
-  }, []);
+  }, [ready]);
 
   const setSignalRef = (i: number) => (el: HTMLDivElement | null) => { signalRefs.current[i] = el; };
   const setLineRef = (i: number) => (el: SVGLineElement | null) => { lineRefs.current[i] = el; };

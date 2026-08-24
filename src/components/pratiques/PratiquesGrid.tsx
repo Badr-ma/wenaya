@@ -6,7 +6,7 @@
  */
 "use client";
 
-import { useRef, useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -14,26 +14,16 @@ import { useLocale } from "@/contexts/LanguageContext";
 import { h } from "@/lib/href";
 import Link from "next/link";
 import HiggsField from "@/components/HiggsField";
+import { getAllPratiques } from "@/lib/pratiques";
+import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 
 
-const practiceImages: string[] = [
-  "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1545389336-cf090694435e?w=600&q=80&auto=format&fit=crop",
-];
-
-const categoryMap: Record<string, number[]> = {
+const categoryMap: Record<string, string[]> = {
   all: [],
-  manualTherapies: [0, 1],
-  mentalHealth: [2, 3],
-  nutrition: [4],
-  holisticWellness: [5, 6, 7, 8],
+  manualTherapies: ["manualTherapies"],
+  mentalHealth: ["mentalHealth"],
+  nutrition: ["nutrition"],
+  holisticWellness: ["holisticWellness"],
 };
 
 const bronzePalette: [number, number, number][] = [
@@ -43,28 +33,29 @@ const bronzePalette: [number, number, number][] = [
 ];
 
 export default function PratiquesGrid(): React.JSX.Element {
-  const { t, tRaw, locale } = useLocale();
-  const sectionRef = useRef<HTMLElement>(null);
-  const items = tRaw<{ title: string; desc: string }[]>("pratiques.items");
+  const { t, locale } = useLocale();
+  const { elRef: sectionElRef, ready } = useIntersectionDeferred();
+  const allPratiques = getAllPratiques(locale);
   const [activeFilter, setActiveFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
   const filterKeys = ["all", "manualTherapies", "mentalHealth", "nutrition", "holisticWellness"] as const;
 
   const displayedItems = useMemo(() => {
+    const allowedCategories = categoryMap[activeFilter] || [];
     const categoryFiltered = activeFilter === "all"
-      ? items
-      : (categoryMap[activeFilter] || []).map((i) => items[i]).filter(Boolean);
+      ? allPratiques
+      : allPratiques.filter((p) => allowedCategories.includes(p.category));
 
     if (!searchQuery.trim()) return categoryFiltered;
 
     const q = searchQuery.trim().toLowerCase();
     return categoryFiltered.filter(
-      (item) =>
-        item.title.toLowerCase().includes(q) ||
-        item.desc.toLowerCase().includes(q)
+      (p) =>
+        p.title.toLowerCase().includes(q) ||
+        p.description.toLowerCase().includes(q)
     );
-  }, [activeFilter, searchQuery, items]);
+  }, [activeFilter, searchQuery, allPratiques]);
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -86,7 +77,8 @@ export default function PratiquesGrid(): React.JSX.Element {
   }, [searchQuery, activeFilter]);
 
   useEffect(() => {
-    const el = sectionRef.current;
+    if (!ready) return;
+    const el = sectionElRef.current;
     if (!el) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(".pratique-card",
@@ -96,13 +88,13 @@ export default function PratiquesGrid(): React.JSX.Element {
         }
       );
     }, el);
-    ScrollTrigger.refresh();
     return () => ctx.revert();
-  }, [activeFilter, searchQuery]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready]);
 
   return (
-    <section ref={sectionRef} data-section-bg="light" className="relative bg-[#F2EFE9] py-16 sm:py-24 sm:py-28 px-6">
-      <HiggsField parentRef={sectionRef as React.RefObject<HTMLElement | null>} palette={bronzePalette} />
+    <section ref={sectionElRef as React.RefObject<HTMLElement | null>} data-section-bg="light" className="relative bg-[#F2EFE9] py-16 sm:py-24 sm:py-28 px-6">
+      <HiggsField parentRef={sectionElRef as React.RefObject<HTMLElement | null>} palette={bronzePalette} />
       <div className="relative z-[2] max-w-7xl mx-auto">
         {/* Hero */}
         <div className="text-center mb-10 sm:mb-16 max-w-2xl mx-auto">
@@ -159,22 +151,21 @@ export default function PratiquesGrid(): React.JSX.Element {
         {/* Count */}
         <p className="text-[#2B2F36]/35 text-[12.5px] text-center mb-8 sm:mb-10">
           {displayedItems.length} {t("pratiques.count")}
-          {items.length > 0 && (
-            <span className="text-[#2B2F36]/15"> / {items.length} total</span>
+          {allPratiques.length > 0 && (
+            <span className="text-[#2B2F36]/15"> / {allPratiques.length} total</span>
           )}
         </p>
 
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-          {displayedItems.map((item) => {
-            const originalIndex = items.indexOf(item);
-            const imgSrc = practiceImages[originalIndex] ?? practiceImages[0];
-            const categoryKey = filterKeys.find((fk) => (categoryMap[fk] || []).includes(originalIndex)) || "all";
+          {displayedItems.map((pratique) => {
+            const categoryKey = filterKeys.find((fk) => (categoryMap[fk] || []).includes(pratique.category)) || "all";
 
             return (
-              <div
-                key={item.title}
-                className="pratique-card group rounded-2xl overflow-hidden flex flex-col transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_-4px_rgba(184,138,90,0.12)]"
+              <Link
+                key={pratique.slug}
+                href={h(locale, `/pratiques/${pratique.slug}`)}
+                className="pratique-card group rounded-2xl overflow-hidden flex flex-col transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_-4px_rgba(184,138,90,0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B88A5A] focus-visible:ring-offset-2"
                 style={{
                   background: "#E8E2D9",
                   border: "1px solid rgba(11,18,32,0.08)",
@@ -186,8 +177,8 @@ export default function PratiquesGrid(): React.JSX.Element {
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/50 via-[#0B1220]/5 to-transparent z-[1]" />
 
                   <Image
-                    src={imgSrc}
-                    alt={item.title}
+                    src={pratique.image}
+                    alt={pratique.title}
                     fill
                     className="object-cover transition-all duration-700 group-hover:scale-[1.04]"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -201,7 +192,7 @@ export default function PratiquesGrid(): React.JSX.Element {
                       color: "rgba(255,255,255,0.08)",
                     }}
                   >
-                    {String(originalIndex + 1).padStart(2, "0")}
+                    {String(allPratiques.indexOf(pratique) + 1).padStart(2, "0")}
                   </span>
 
                   {/* Category badge */}
@@ -215,11 +206,11 @@ export default function PratiquesGrid(): React.JSX.Element {
                 {/* Content */}
                 <div className="flex flex-col gap-2.5 px-5 py-4 sm:px-6 sm:py-5 flex-1">
                   <h2 className="font-heading font-bold text-[17px] sm:text-[19px] text-[#0B1220] leading-snug">
-                    {item.title}
+                    {pratique.title}
                   </h2>
 
                   <p className="text-[#2B2F36]/50 text-[12.5px] sm:text-[13px] leading-relaxed line-clamp-3">
-                    {item.desc}
+                    {pratique.description}
                   </p>
                 </div>
 
@@ -231,7 +222,7 @@ export default function PratiquesGrid(): React.JSX.Element {
                     opacity: 0.4,
                   }}
                 />
-              </div>
+              </Link>
             );
           })}
         </div>

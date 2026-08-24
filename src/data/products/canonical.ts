@@ -14,6 +14,12 @@ export interface CanonicalProduct {
   brand?: string;
   brandSlug?: string;
   featured?: boolean;
+  /** TEMPORARY — dev-only demo commerce data, to be removed when backend provides this */
+  price?: number;
+  currency?: string;
+  availability?: "in_stock" | "out_of_stock" | "pre_order" | "limited";
+  purchaseUrl?: string;
+  websiteUrl?: string;
 }
 
 export const canonicalProducts: CanonicalProduct[] = [
@@ -21,12 +27,12 @@ export const canonicalProducts: CanonicalProduct[] = [
   { slug: "tecar-therapy-device", category: "devices", goals: ["recovery"], topics: ["recovery"], rating: 4.9, reviews: 18, image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80&auto=format&fit=crop" },
   { slug: "oura-ring-gen-4", category: "wearables", goals: ["sleep", "recovery", "energy"], topics: ["sleep-tracking", "heart-rate"], rating: 4.6, reviews: 42, image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600&q=80&auto=format&fit=crop" },
   { slug: "wenaya-skin-health-kit", category: "skincare", goals: ["skin"], topics: ["collagen", "peptides"], rating: 4.7, reviews: 31, image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&q=80&auto=format&fit=crop" },
-  { slug: "magnesium-glycinate-complex", category: "supplements", goals: ["sleep", "stress", "recovery"], topics: ["magnesium"], rating: 4.5, reviews: 87, image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&q=80&auto=format&fit=crop" },
+  { slug: "magnesium-glycinate-complex", category: "supplements", goals: ["sleep", "stress", "recovery"], topics: ["magnesium"], rating: 4.5, reviews: 87, image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&q=80&auto=format&fit=crop", price: 299, currency: "MAD", availability: "in_stock", purchaseUrl: "#", websiteUrl: "#" },
   { slug: "wenaya-stress-recovery-program", category: "programs", goals: ["stress", "recovery"], topics: ["meditation", "breathwork"], rating: 4.9, reviews: 15, image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=80&auto=format&fit=crop" },
   { slug: "continuous-glucose-monitor", category: "devices", goals: ["energy", "heart"], topics: ["glucose"], rating: 4.4, reviews: 53, image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=80&auto=format&fit=crop" },
   { slug: "omega-3-marine-complex", category: "supplements", goals: ["heart", "brain"], topics: ["omega-3"], rating: 4.6, reviews: 64, image: "https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600&q=80&auto=format&fit=crop" },
   { slug: "wenaya-sleep-optimization-kit", category: "skincare", goals: ["sleep"], topics: ["magnesium", "sleep-tracking"], rating: 4.3, reviews: 29, image: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&q=80&auto=format&fit=crop" },
-  { slug: "whoop-5-0-band", category: "wearables", goals: ["recovery", "sleep", "energy"], topics: ["heart-rate", "sleep-tracking"], rating: 4.7, reviews: 76, image: "https://images.unsplash.com/photo-1560343090-f0409e92791a?w=600&q=80&auto=format&fit=crop" },
+  { slug: "whoop-5-0-band", category: "wearables", goals: ["recovery", "sleep", "energy"], topics: ["heart-rate", "sleep-tracking"], rating: 4.7, reviews: 76, image: "https://images.unsplash.com/photo-1560343090-f0409e92791a?w=600&q=80&auto=format&fit=crop", price: 1499, currency: "MAD", availability: "out_of_stock" },
   { slug: "now-foods", category: "supplements", goals: ["longevity", "energy"], topics: ["vitamins", "supplements"], rating: 4.8, reviews: 37, image: "https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600&q=80&auto=format&fit=crop", brand: "NOW Foods", brandSlug: "now-foods" },
   { slug: "biogena", category: "supplements", goals: ["longevity", "energy", "recovery"], topics: ["supplements", "vitamins"], rating: 4.9, reviews: 114, image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&q=80&auto=format&fit=crop", brand: "Biogena", brandSlug: "biogena" },
   { slug: "thorne", category: "supplements", goals: ["longevity", "recovery", "brain"], topics: ["supplements", "vitamins"], rating: 4.8, reviews: 43, image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&q=80&auto=format&fit=crop", brand: "Thorne", brandSlug: "thorne" },
@@ -38,7 +44,7 @@ export const canonicalProducts: CanonicalProduct[] = [
   { slug: "edubily", category: "supplements", goals: ["longevity", "brain", "energy"], topics: ["supplements", "nutrition"], rating: 4.7, reviews: 44, image: "https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600&q=80&auto=format&fit=crop", brand: "edubily", brandSlug: "edubily" },
   { slug: "sunday-natural", category: "supplements", goals: ["longevity", "sleep", "stress"], topics: ["vitamins", "supplements", "antioxidants"], rating: 4.6, reviews: 314, image: "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=600&q=80&auto=format&fit=crop", brand: "Sunday Natural", brandSlug: "sunday-natural" },
   { slug: "moleqlar", category: "supplements", goals: ["longevity", "energy"], topics: ["supplements", "antioxidants"], rating: 4.7, reviews: 67, image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=80&auto=format&fit=crop", brand: "MOLEQLAR", brandSlug: "moleqlar" },
-  { slug: "apple-watch", category: "wearables", goals: ["heart", "sleep", "recovery"], topics: ["heart-rate", "sleep-tracking"], rating: 4.5, reviews: 74, image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600&q=80&auto=format&fit=crop", brand: "Apple", brandSlug: "apple" },
+  { slug: "apple-watch", category: "wearables", goals: ["heart", "sleep", "recovery"], topics: ["heart-rate", "sleep-tracking"], rating: 4.5, reviews: 74, image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600&q=80&auto=format&fit=crop", brand: "Apple", brandSlug: "apple", price: 2499, currency: "MAD", availability: "pre_order", websiteUrl: "#" },
   { slug: "garmin", category: "wearables", goals: ["heart", "recovery", "energy"], topics: ["heart-rate", "sleep-tracking", "fitness"], rating: 4.5, reviews: 70, image: "https://images.unsplash.com/photo-1560343090-f0409e92791a?w=600&q=80&auto=format&fit=crop", brand: "Garmin", brandSlug: "garmin" },
   { slug: "myprotein", category: "supplements", goals: ["recovery", "energy"], topics: ["protein", "fitness", "supplements"], rating: 4.6, reviews: 17, image: "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?w=600&q=80&auto=format&fit=crop", brand: "MyProtein", brandSlug: "myprotein" },
   { slug: "sportnahrung-wehle", category: "supplements", goals: ["recovery", "energy"], topics: ["protein", "collagen", "fitness"], rating: 4.6, reviews: 18, image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&q=80&auto=format&fit=crop", brand: "Sportnahrung Wehle", brandSlug: "sportnahrung-wehle" },

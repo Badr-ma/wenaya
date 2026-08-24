@@ -48,6 +48,7 @@ export default function CookieConsent() {
           </div>
           <button
             onClick={decline}
+            aria-label="Fermer"
             className="w-6 h-6 rounded-full flex items-center justify-center text-white/20 hover:text-white/50 hover:bg-white/[0.06] transition-all"
           >
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

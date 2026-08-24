@@ -10,6 +10,7 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
 import { h } from "@/lib/href";
+import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 import type { CoursAteliersContent } from "@/lib/homepage-types";
 import HiggsField from "./HiggsField";
 
@@ -29,7 +30,7 @@ interface CoursAteliersProps {
 
 export default function CoursAteliers({ content }: CoursAteliersProps): React.JSX.Element {
   const { t, locale } = useLocale();
-  const sectionRef = useRef<HTMLElement>(null);
+  const { elRef: sectionRef, ready } = useIntersectionDeferred("200px 0px");
   const scrollRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const tickingRef = useRef(false);
@@ -53,6 +54,7 @@ export default function CoursAteliers({ content }: CoursAteliersProps): React.JS
   };
 
   useEffect(() => {
+    if (!ready) return;
     const el = sectionRef.current;
     if (!el) return;
 
@@ -73,7 +75,7 @@ export default function CoursAteliers({ content }: CoursAteliersProps): React.JS
     }, el);
 
     return () => ctx.revert();
-  }, []);
+  }, [ready]);
 
   return (
     <section ref={sectionRef} className="relative overflow-hidden bg-[#0B1220] py-16 sm:py-20 px-6">

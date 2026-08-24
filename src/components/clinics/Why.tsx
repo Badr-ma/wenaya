@@ -10,6 +10,7 @@ import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
 import { h } from "@/lib/href";
+import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 
 
 const visualReasons = [
@@ -20,13 +21,14 @@ const visualReasons = [
 ];
 
 export default function ClinicsWhy(): React.JSX.Element {
-  const sectionRef = useRef<HTMLElement>(null);
+  const { elRef: sectionRef, ready } = useIntersectionDeferred();
   const { t, tRaw, locale } = useLocale();
 
   const rawReasons = tRaw<{ title: string; desc: string }[]>("clinics.why.reasons");
   const reasons = rawReasons.map((r, i) => ({ ...r, ...visualReasons[i] }));
 
   useEffect(() => {
+    if (!ready) return;
     const el = sectionRef.current;
     if (!el) return;
 
@@ -41,7 +43,8 @@ export default function ClinicsWhy(): React.JSX.Element {
     }, el);
 
     return () => ctx.revert();
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready]);
 
   return (
     <section ref={sectionRef} className="bg-[#F2EFE9] py-20 sm:py-28 px-6 relative overflow-hidden">

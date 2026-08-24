@@ -84,13 +84,13 @@ export const metadata: Metadata = {
     siteName: "Wenaya",
     title: "Wenaya — Plateforme de Santé Intégrée | Casablanca, Maroc",
     description:
-      "Morocco's first integrated health and wellbeing platform. Physiotherapy, clinical psychology, nutrition, and corporate wellness — from Casablanca.",
+      "Wenaya est la première plateforme de santé intégrée au Maroc. Kinésithérapie, psychologie clinique, nutrition et bien-être corporate — depuis Casablanca.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Wenaya — Plateforme de Santé Intégrée | Casablanca, Maroc",
     description:
-      "Morocco's first integrated health and wellbeing platform. Physiotherapy, psychology, nutrition, and corporate wellness — from Casablanca.",
+      "Wenaya est la première plateforme de santé intégrée au Maroc. Kinésithérapie, psychologie clinique, nutrition et bien-être corporate — depuis Casablanca.",
     images: ["/opengraph-image"],
   },
   robots: {

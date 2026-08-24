@@ -40,14 +40,14 @@ export const metadata: Metadata = {
     ...OG_DEFAULTS,
     title: "Cliniques — Wenaya, Première Plateforme de Santé Intégrée au Maroc",
     description:
-      "Wenaya is Morocco's first integrated health and wellbeing platform — combining physiotherapy, clinical psychology, nutrition, prevention, and corporate wellness under one coordinated ecosystem.",
+      "Découvrez Wenaya : la première plateforme de santé intégrée au Maroc, fondée à Casablanca. Kinésithérapie, psychologie clinique, nutrition et bien-être corporate — coordonnés sous un seul écosystème.",
     url: `${SITE_URL}/about`,
   },
   twitter: {
     ...TWITTER_DEFAULTS,
     title: "Cliniques — Wenaya, Première Plateforme de Santé Intégrée au Maroc",
     description:
-      "Wenaya is Morocco's first integrated health and wellbeing platform — combining physiotherapy, clinical psychology, nutrition, prevention, and corporate wellness under one coordinated ecosystem.",
+      "Découvrez Wenaya : la première plateforme de santé intégrée au Maroc, fondée à Casablanca. Kinésithérapie, psychologie clinique, nutrition et bien-être corporate — coordonnés sous un seul écosystème.",
   },
 };
 

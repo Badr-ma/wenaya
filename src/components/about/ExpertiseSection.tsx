@@ -7,6 +7,7 @@ import { useLocale } from "@/contexts/LanguageContext";
 import { h } from "@/lib/href";
 import { specialists } from "@/lib/specialistes";
 import type { ExpertiseContent } from "@/lib/homepage-types";
+import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 
 const featuredSpecialists = specialists.slice(0, 10);
 
@@ -16,7 +17,7 @@ interface ExpertiseSectionProps {
 
 export default function ExpertiseSection({ content }: ExpertiseSectionProps): React.JSX.Element {
   const { t, locale } = useLocale();
-  const sectionRef = useRef<HTMLElement>(null);
+  const { elRef: sectionRef, ready } = useIntersectionDeferred();
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = useCallback((dir: "left" | "right") => {
@@ -26,6 +27,7 @@ export default function ExpertiseSection({ content }: ExpertiseSectionProps): Re
   }, []);
 
   useEffect(() => {
+    if (!ready) return;
     const el = sectionRef.current;
     if (!el) return;
 
@@ -36,7 +38,7 @@ export default function ExpertiseSection({ content }: ExpertiseSectionProps): Re
     }, el);
 
     return () => ctx.revert();
-  }, []);
+  }, [ready]);
 
   return (
     <section ref={sectionRef} className="bg-[#F2EFE9] py-20 sm:py-24 px-6 relative">
@@ -83,10 +85,10 @@ export default function ExpertiseSection({ content }: ExpertiseSectionProps): Re
                 </Link>
               ))}
             </div>
-            <button onClick={() => scroll("left")} className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm shadow-md items-center justify-center hover:bg-white transition-colors z-20">
+            <button onClick={() => scroll("left")} aria-label="Précédent" className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm shadow-md items-center justify-center hover:bg-white transition-colors z-20">
               <svg className="w-4 h-4 text-[#0B1220]" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M10 4l-4 4 4 4" /></svg>
             </button>
-            <button onClick={() => scroll("right")} className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm shadow-md items-center justify-center hover:bg-white transition-colors z-20">
+            <button onClick={() => scroll("right")} aria-label="Suivant" className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm shadow-md items-center justify-center hover:bg-white transition-colors z-20">
               <svg className="w-4 h-4 text-[#0B1220]" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 4l4 4-4 4" /></svg>
             </button>
           </div>

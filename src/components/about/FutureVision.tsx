@@ -10,12 +10,14 @@ import { gsap } from "gsap";
 import Image from "next/image";
 import { useLocale } from "@/contexts/LanguageContext";
 import { h } from "@/lib/href";
+import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 
 export default function FutureVision(): React.JSX.Element {
   const { t, locale } = useLocale();
-  const sectionRef = useRef<HTMLElement>(null);
+  const { elRef: sectionRef, ready } = useIntersectionDeferred();
 
   useEffect(() => {
+    if (!ready) return;
     const el = sectionRef.current;
     if (!el) return;
 
@@ -24,7 +26,7 @@ export default function FutureVision(): React.JSX.Element {
     }, el);
 
     return () => ctx.revert();
-  }, []);
+  }, [ready]);
 
   return (
     <section ref={sectionRef} className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">

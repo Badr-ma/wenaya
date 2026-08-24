@@ -10,13 +10,15 @@ import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
 import { h } from "@/lib/href";
+import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 
 
 export default function ClinicsCta(): React.JSX.Element {
-  const sectionRef = useRef<HTMLElement>(null);
+  const { elRef: sectionRef, ready } = useIntersectionDeferred();
   const { t, locale } = useLocale();
 
   useEffect(() => {
+    if (!ready) return;
     const el = sectionRef.current;
     if (!el) return;
 
@@ -31,7 +33,8 @@ export default function ClinicsCta(): React.JSX.Element {
     }, el);
 
     return () => ctx.revert();
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready]);
 
   return (
     <section ref={sectionRef} className="relative overflow-hidden py-24 sm:py-32 px-6 bg-[#0B1220]">

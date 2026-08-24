@@ -313,11 +313,12 @@ export default function ProductsGrid({ initial }: { initial?: ApiResponse }): Re
         {/* ── Product grid ── */}
         {items.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 xl:gap-x-5 gap-y-14 sm:gap-y-16">
-            {items.map((item) => (
+            {items.map((item, i) => (
               <ProductCard
                 key={item.slug}
                 product={toProduct(item)}
                 locale={locale as "fr" | "en"}
+                priority={i === 0}
               />
             ))}
           </div>

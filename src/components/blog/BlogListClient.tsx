@@ -33,9 +33,12 @@ function BlogCard({ post, index }: { post: PostWithAuthor; index: number }) {
       >
         <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-transparent via-transparent to-transparent group-hover:from-[#B88A5A]/20 group-hover:via-[#159AA9]/10 group-hover:to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700 z-0 pointer-events-none" />
         <div className="relative overflow-hidden aspect-[16/9]">
-          <div
-            className="absolute inset-0 bg-cover bg-center transition-all duration-700 group-hover:scale-105"
-            style={{ backgroundImage: `url(${post.featuredImage})` }}
+          <Image
+            src={post.featuredImage}
+            alt={post.title}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-all duration-700 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
           {post.category && (

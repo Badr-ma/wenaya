@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import SpecialistDetail from "@/components/specialistes/SpecialistDetail";
 import { getSpecialistBySlugAsync, getAllSpecialistsAsync } from "@/lib/specialistes";
@@ -97,12 +96,12 @@ export default async function SpecialistPage({ params }: Props) {
   };
 
   return (
-    <ErrorBoundary>
+    <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <main>
         <Breadcrumbs labels={{ [slug]: specialist.name }} />
         <SpecialistDetail specialist={specialist} />
       </main>
-    </ErrorBoundary>
+    </>
   );
 }

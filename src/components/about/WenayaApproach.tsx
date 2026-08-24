@@ -8,10 +8,11 @@
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
+import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 
 export default function WenayaApproach(): React.JSX.Element {
   const { t } = useLocale();
-  const sectionRef = useRef<HTMLElement>(null);
+  const { elRef: sectionRef, ready } = useIntersectionDeferred();
 
   const steps = [
     { label: t("wenayaApproach.step1.label"), desc: t("wenayaApproach.step1.desc"), footer: t("wenayaApproach.step1.footer") },
@@ -21,6 +22,7 @@ export default function WenayaApproach(): React.JSX.Element {
   ];
 
   useEffect(() => {
+    if (!ready) return;
     const el = sectionRef.current;
     if (!el) return;
 
@@ -38,7 +40,7 @@ export default function WenayaApproach(): React.JSX.Element {
     }, el);
 
     return () => ctx.revert();
-  }, []);
+  }, [ready]);
 
   return (
     <section ref={sectionRef} className="relative bg-[#F2EFE9] py-20 sm:py-24 px-6 overflow-hidden">

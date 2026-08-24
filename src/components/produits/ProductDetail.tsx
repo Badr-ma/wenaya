@@ -48,6 +48,7 @@ export default function ProductDetail({
   const hasRelatedProducts = relatedProducts.length > 0;
   const hasBrandProducts = brandProducts.length > 0;
   const hasReviews = hasRating && (product.reviewCount ?? 0) > 0;
+  const hasCommerce = hasPrice || hasAvailability || hasPurchaseUrl || hasWebsiteUrl;
 
   // Build goal tags with translated labels
   const goalTags = hasGoals
@@ -112,7 +113,7 @@ export default function ProductDetail({
             </div>
           </div>
 
-          {/* ── RIGHT: Content ── */}
+          {/* ── RIGHT: Content + Commerce ── */}
           <div className="flex-1 min-w-0">
             {/* Category */}
             <p className="text-[11px] font-mono text-[#2B2F36]/30 uppercase tracking-[0.15em] mb-3">
@@ -153,18 +154,18 @@ export default function ProductDetail({
             )}
 
             {/* Description */}
-            <p className="text-sm sm:text-base text-[#2B2F36]/60 leading-[1.8] max-w-lg mb-8">
+            <p className="text-sm sm:text-base text-[#2B2F36]/60 leading-[1.8] max-w-lg mb-6">
               {product.description}
             </p>
 
             {/* ── Commerce Area ── */}
-            {(hasPrice || hasAvailability || hasPurchaseUrl || hasWebsiteUrl) && (
+            {hasCommerce ? (
               <CartActions
                 productSlug={product.slug}
                 productName={product.name}
                 image={imageSrc}
-                unitPrice={product.price ?? 0}
-                currency={product.currency || "MAD"}
+                unitPrice={product.price}
+                currency={product.currency}
                 availability={product.availability}
                 hasPrice={hasPrice}
                 hasPurchaseUrl={hasPurchaseUrl}
@@ -172,15 +173,11 @@ export default function ProductDetail({
                 hasWebsiteUrl={hasWebsiteUrl}
                 websiteUrl={product.websiteUrl}
               />
-            )}
-
-            {/* If no commerce data at all, show visit website link */}
-            {!hasPrice && !hasAvailability && !hasPurchaseUrl && !hasWebsiteUrl && (
-              <div className="border-t border-[#0B1220]/[0.06] pt-6 mb-8">
-                <p className="text-xs text-[#2B2F36]/25">
-                  {t("produits.noProducts")}
-                </p>
-              </div>
+            ) : (
+              /* No commerce data — muted info */
+              <p className="text-xs text-[#2B2F36]/25 pt-2">
+                {t("produits.detail.noCommerceInfo")}
+              </p>
             )}
           </div>
         </div>
@@ -275,7 +272,7 @@ export default function ProductDetail({
         )}
 
         {/* ══════════════════════════════════════════════
-            BRAND PRODUCTS
+            BRAND PRODUCTS (only if data exists)
             ══════════════════════════════════════════════ */}
         {hasBrandProducts && (
           <div className="mb-16 border-t border-[#0B1220]/[0.06] pt-10">
@@ -295,7 +292,7 @@ export default function ProductDetail({
         )}
 
         {/* ══════════════════════════════════════════════
-            RELATED PRODUCTS
+            RELATED PRODUCTS (only if data exists)
             ══════════════════════════════════════════════ */}
         {hasRelatedProducts && (
           <div className="border-t border-[#0B1220]/[0.06] pt-10">
