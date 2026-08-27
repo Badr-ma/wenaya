@@ -229,6 +229,7 @@ export default function Nav(): React.JSX.Element {
                   { label: t("nav.accueil"), href: hh("/") },
                   { label: t("nav.aPropos"), href: hh("/about") },
                   { label: t("nav.solutions"), href: hh("/solutions/entreprises") },
+                  { label: "Demo Corporate", href: hh("/corporate-demo") },
                   { label: t("nav.produits"), href: hh("/produits") },
                   { label: t("nav.specialistes"), href: hh("/specialistes") },
                 ].map((link) => (

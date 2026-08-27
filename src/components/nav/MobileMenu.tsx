@@ -59,6 +59,7 @@ export default function MobileMenu({
               { label: t("nav.aPropos"), href: h("/about") },
               { label: t("nav.produits"), href: h("/produits") },
               { label: t("nav.solutions"), href: h("/solutions/entreprises") },
+              { label: "Demo Corporate", href: h("/corporate-demo") },
               { label: t("nav.specialistes"), href: h("/specialistes") },
             ].map(({ label, href }) => (
               <li key={label}>

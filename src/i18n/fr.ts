@@ -304,7 +304,7 @@ const fr = {
     },
     copyright: "© {year} Wenaya. Tous droits réservés.",
     hours: "Du lundi au samedi de 9h à 19h",
-    socials: ["LinkedIn", "Instagram", "X", "YouTube"],
+    socials: ["LinkedIn", "Instagram", "Facebook", "TikTok"],
   },
   aboutHero: {
     badge: "Qui sommes nous",
@@ -410,6 +410,8 @@ const fr = {
       boardBadge: "Notre comité d'experts",
       boardHeading: "Des professionnels de la santé",
       boardDesc: "Une équipe pluridisciplinaire de thérapeutes certifiés pour couvrir l'ensemble des besoins de vos équipes.",
+      valuePropsBadge: "Pourquoi Wenaya",
+      valuePropsHeading: "La différence d'une approche <gradient>pluridisciplinaire</gradient>",
       experts: [
         { name: "Dr. Sarah Benali", role: "Médecine du travail" },
         { name: "Amine Laaroussi", role: "Kinésithérapie" },
@@ -437,6 +439,8 @@ const fr = {
       comparison: {
         heading: "Sans Wenaya / Avec Wenaya",
         sub: "La différence d'une approche structurée de la santé en entreprise.",
+        withoutLabel: "Sans Wenaya",
+        withLabel: "Avec Wenaya",
         without: [
           { label: "Absentéisme récurrent", desc: "Des arrêts maladie non anticipés qui désorganisent les équipes" },
           { label: "Risques psychosociaux ignorés", desc: "Un stress chronique et des risques de burnout sans accompagnement" },
@@ -487,6 +491,10 @@ const fr = {
     modularity: {
       title: "Une approche modulaire",
       subtitle: "Construisez le programme qui correspond à vos enjeux — module par module.",
+      ecosystemBadge: "Notre écosystème",
+      ecosystemHeading: "Une santé entreprise <gradient>pluridisciplinaire</gradient>",
+      ecosystemDesc: "Wenaya ne se limite pas à un domaine. Nous combinons expertise physique, mentale, nutritionnelle et managériale pour une prise en charge complète.",
+      ecosystemHubLabel: "Santé Entreprise",
       pillars: [
         { title: "Prévention & Bilans", desc: "Évaluations individuelles, bilans de santé anonymously global, biomarqueurs et dépistage précoce pour anticiper les risques." },
         { title: "Santé Mentale", desc: "Cellule d'écoute psychologique, ateliers de sophrologie, gestion du stress et prévention du burnout pour vos équipes." },
@@ -742,6 +750,7 @@ const fr = {
     expertises: {
       title: "Nos expertises",
       subtitle: "Un panel complet de compétences pour couvrir tous les besoins de vos équipes.",
+      heading: "Des solutions pour <gradient>chaque enjeu</gradient>",
       tabs: [
         {
           title: "Santé physique",
@@ -909,6 +918,43 @@ const fr = {
       aPropos: { title: "À propos", links: ["Qui sommes-nous", "Nos spécialités", "Carrières", "Presse"] },
       copyright: "© {year} Wenaya. Tous droits réservés.",
       hours: "Du lundi au samedi de 9h à 19h",
+    },
+    customCta: {
+      badge: "Chaque entreprise est unique",
+      heading1: "Un programme santé",
+      heading2: "conçu pour vous.",
+      desc: "Taille d'entreprise, enjeux spécifiques, contraintes terrain — nous construisons un programme qui s'adapte à votre réalité.",
+      cta: "Construire votre programme",
+    },
+    consultation: {
+      title: "Parlons de votre projet",
+      subtitle: "Demander une consultation entreprise",
+      desc: "30 minutes pour comprendre vos enjeux et identifier les pistes adaptées à vos équipes. Sans engagement.",
+      companyName: "Nom de l'entreprise",
+      companyNamePlaceholder: "Votre entreprise",
+      contactName: "Nom du contact",
+      contactNamePlaceholder: "Prénom et nom",
+      email: "Email professionnel",
+      emailPlaceholder: "prenom@entreprise.com",
+      phone: "Téléphone",
+      phonePlaceholder: "+212 6 00 00 00",
+      employeeCount: "Nombre de collaborateurs",
+      employeeCountOptions: ["1 – 10", "11 – 50", "51 – 200", "201 – 500", "500+"],
+      mainNeed: "Besoin principal",
+      mainNeedOptions: [
+        "Prévention et bilans santé",
+        "Santé mentale et gestion du stress",
+        "Nutrition et bien-être alimentaire",
+        "Prévention des TMS et ergonomie",
+        "Programme bien-être global",
+        "Accompagnement dirigeants",
+        "Autre",
+      ],
+      message: "Message",
+      messagePlaceholder: "Décrivez brièvement votre contexte et vos objectifs...",
+      submit: "Demander une consultation entreprise",
+      success: "Votre demande a été envoyée. Nous vous contacterons sous 24h ouvrées.",
+      error: "Une erreur est survenue. Veuillez réessayer.",
     },
   },
   clinics: {

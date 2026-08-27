@@ -304,7 +304,7 @@ const en: Translations = {
     },
     copyright: "© {year} Wenaya. All rights reserved.",
     hours: "Monday to Saturday from 9am to 7pm",
-    socials: ["LinkedIn", "Instagram", "X", "YouTube"],
+    socials: ["LinkedIn", "Instagram", "Facebook", "TikTok"],
   },
   aboutHero: {
     badge: "About us",
@@ -410,6 +410,8 @@ const en: Translations = {
       boardBadge: "Our expert committee",
       boardHeading: "Health professionals",
       boardDesc: "A multidisciplinary team of certified therapists to cover all your teams' needs.",
+      valuePropsBadge: "Why Wenaya",
+      valuePropsHeading: "The difference of a <gradient>multidisciplinary</gradient> approach",
       experts: [
         { name: "Dr. Sarah Benali", role: "Occupational Medicine" },
         { name: "Amine Laaroussi", role: "Physiotherapy" },
@@ -437,6 +439,8 @@ const en: Translations = {
       comparison: {
         heading: "Without Wenaya / With Wenaya",
         sub: "The difference a structured workplace health approach makes.",
+        withoutLabel: "Without Wenaya",
+        withLabel: "With Wenaya",
         without: [
           { label: "Recurrent absenteeism", desc: "Unexpected sick leave that disrupts teams" },
           { label: "Ignored psychosocial risks", desc: "Chronic stress and burnout risks without support" },
@@ -487,6 +491,10 @@ const en: Translations = {
     modularity: {
       title: "A modular approach",
       subtitle: "Build the program that matches your challenges — module by module.",
+      ecosystemBadge: "Our ecosystem",
+      ecosystemHeading: "Multidisciplinary corporate <gradient>health</gradient>",
+      ecosystemDesc: "Wenaya goes beyond a single domain. We combine physical, mental, nutritional and managerial expertise for comprehensive care.",
+      ecosystemHubLabel: "Corporate Health",
       pillars: [
         { title: "Prevention & Assessments", desc: "Individual evaluations, anonymous global health assessments, biomarkers and early screening to anticipate risks." },
         { title: "Mental Health", desc: "Psychological listening unit, sophrology workshops, stress management and burnout prevention for your teams." },
@@ -725,6 +733,7 @@ const en: Translations = {
     expertises: {
       title: "Our expertise",
       subtitle: "A complete panel of skills to cover all your teams' needs.",
+      heading: "Solutions for <gradient>every challenge</gradient>",
       tabs: [
         {
           title: "Physical Health",
@@ -872,6 +881,43 @@ const en: Translations = {
       aPropos: { title: "About", links: ["About us", "Our specialties", "Careers", "Press"] },
       copyright: "© {year} Wenaya. All rights reserved.",
       hours: "Monday to Saturday from 9am to 7pm",
+    },
+    customCta: {
+      badge: "Every company is unique",
+      heading1: "A health program",
+      heading2: "built for you.",
+      desc: "Company size, specific challenges, field constraints — we build a program that adapts to your reality.",
+      cta: "Build your program",
+    },
+    consultation: {
+      title: "Let's discuss your project",
+      subtitle: "Request a corporate consultation",
+      desc: "30 minutes to understand your challenges and identify pathways tailored to your teams. No commitment.",
+      companyName: "Company name",
+      companyNamePlaceholder: "Your company",
+      contactName: "Contact name",
+      contactNamePlaceholder: "First and last name",
+      email: "Professional email",
+      emailPlaceholder: "first@company.com",
+      phone: "Phone",
+      phonePlaceholder: "+212 6 00 00 00",
+      employeeCount: "Number of employees",
+      employeeCountOptions: ["1 – 10", "11 – 50", "51 – 200", "201 – 500", "500+"],
+      mainNeed: "Main need",
+      mainNeedOptions: [
+        "Prevention & health assessments",
+        "Mental health & stress management",
+        "Nutrition & dietary wellness",
+        "MSD prevention & ergonomics",
+        "Global wellness program",
+        "Executive support",
+        "Other",
+      ],
+      message: "Message",
+      messagePlaceholder: "Briefly describe your context and objectives...",
+      submit: "Request a corporate consultation",
+      success: "Your request has been sent. We will contact you within 24 business hours.",
+      error: "An error occurred. Please try again.",
     },
   },
   clinics: {
