@@ -32,10 +32,15 @@ const SIDE_SCALE = 0.82;
 const SIDE_OPACITY = 0.4;
 const SPRING = { type: "spring" as const, stiffness: 500, damping: 35, mass: 0.5 };
 
+const reducedMotion =
+  typeof window !== "undefined"
+    ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    : false;
+
 function CardContent({
-  program, image, isActive, locale,
+  program, image, isActive, locale, discoverLabel,
 }: {
-  program: Program; image: string; isActive: boolean; locale: HrefLocale;
+  program: Program; image: string; isActive: boolean; locale: HrefLocale; discoverLabel: string;
 }) {
   if (!isActive) {
     return (
@@ -98,7 +103,7 @@ function CardContent({
             href={h(locale, `/solutions/entreprises/programmes#${program.link.split("/").pop()}`)}
             className="px-2.5 sm:px-5 h-7 sm:h-9 rounded-full bg-[#0B1220] text-white text-[9px] sm:text-xs font-semibold tracking-wide hover:bg-[#B88A5A] transition-colors duration-300 shrink-0 inline-flex items-center whitespace-nowrap"
           >
-            Discover
+            {discoverLabel}
           </Link>
         </div>
       </div>
@@ -131,7 +136,7 @@ export default function ProgrammesSection() {
 
   useEffect(() => {
     const el = sectionRef.current;
-    if (!el) return;
+    if (!el || reducedMotion) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(".pg-head", { opacity: 0, y: 20 }, {
         opacity: 1, y: 0, duration: 0.6, ease: "power3.out",
@@ -173,14 +178,14 @@ export default function ProgrammesSection() {
   if (!total) return null;
 
   return (
-    <section ref={sectionRef} className="relative bg-[#F2EFE9] pt-24 sm:pt-36 pb-12 sm:pb-20 px-6 overflow-hidden">
+    <section ref={sectionRef} className="relative bg-[#F2EFE9] pt-4 sm:pt-8 pb-12 sm:pb-16 px-6 overflow-hidden">
       <div className="max-w-6xl mx-auto">
-        <div className="pg-head max-w-2xl mb-16 sm:mb-20">
-          <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase mb-5">
+        <div className="pg-head max-w-2xl mb-10 sm:mb-12">
+          <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase mb-4">
             <span className="w-8 h-px bg-[#B88A5A]/40" />
             {t("entreprises.programmes.title")}
           </span>
-          <h2 className="heading-serif text-[#0B1220] text-[clamp(2.2rem, 4vw, 3.8rem)] mt-5 leading-[1.06]">
+          <h2 className="heading-serif text-[#0B1220] mt-4 leading-[1.06]" style={{ fontSize: "clamp(1.75rem, 3.15vw, 3rem)" }}>
             {t("entreprises.programmes.subtitle")}
           </h2>
         </div>
@@ -188,7 +193,7 @@ export default function ProgrammesSection() {
         <div className="flex items-center justify-center gap-4 sm:gap-6">
           <button
             onClick={() => navigate(-1)}
-            aria-label="Previous program"
+            aria-label={t("entreprises.programmes.prevLabel")}
             className="flex w-11 h-11 sm:w-10 sm:h-10 rounded-full border border-[#0B1220]/[0.15] items-center justify-center text-[#0B1220]/30 hover:border-[#B88A5A]/50 hover:text-[#B88A5A] transition-colors duration-200 shrink-0 z-10"
           >
             <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -235,6 +240,7 @@ export default function ProgrammesSection() {
                       image={cardImages[idx % cardImages.length]}
                       isActive={isActive}
                       locale={locale}
+                      discoverLabel={t("entreprises.programmes.discoverLabel")}
                     />
                   </motion.div>
                 );
@@ -244,7 +250,7 @@ export default function ProgrammesSection() {
 
           <button
             onClick={() => navigate(1)}
-            aria-label="Next program"
+            aria-label={t("entreprises.programmes.nextLabel")}
             className="flex w-11 h-11 sm:w-10 sm:h-10 rounded-full border border-[#0B1220]/[0.15] items-center justify-center text-[#0B1220]/30 hover:border-[#B88A5A]/50 hover:text-[#B88A5A] transition-colors duration-200 shrink-0 z-10"
           >
             <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -258,7 +264,7 @@ export default function ProgrammesSection() {
             {activeIdx + 1} <span className="text-[#0B1220]/15">/ {total}</span>
           </span>
           <span className="text-[#0B1220]/15 text-[10px] font-semibold tracking-[0.15em] uppercase">
-            Swipe to explore
+            {t("entreprises.programmes.swipeLabel")}
           </span>
         </div>
       </div>

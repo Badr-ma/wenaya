@@ -10,9 +10,16 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
 
+const reducedMotion =
+  typeof window !== "undefined"
+    ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    : false;
+
 function scrollToContact() {
   const el = document.querySelector("[data-contact]");
-  if (el) el.scrollIntoView({ behavior: "smooth" });
+  if (!el) return;
+  if (reducedMotion) { el.scrollIntoView({ behavior: "auto" }); return; }
+  el.scrollIntoView({ behavior: "smooth" });
 }
 
 export default function EntreprisesCta(): React.JSX.Element {
@@ -21,12 +28,12 @@ export default function EntreprisesCta(): React.JSX.Element {
 
   useEffect(() => {
     const el = sectionRef.current;
-    if (!el) return;
+    if (!el || reducedMotion) return;
     const ctx = gsap.context(() => {
-      gsap.utils.toArray<HTMLElement>(".cta-line").forEach((el) => {
-        gsap.fromTo(el, { opacity: 0, y: 14 }, {
+      gsap.utils.toArray<HTMLElement>(".cta-line").forEach((line) => {
+        gsap.fromTo(line, { opacity: 0, y: 14 }, {
           opacity: 1, y: 0, duration: 0.45, stagger: 0.06, ease: "power3.out",
-          scrollTrigger: { trigger: el, start: "top 90%", toggleActions: "play none none none" },
+          scrollTrigger: { trigger: line, start: "top 90%", toggleActions: "play none none none" },
         });
       });
     }, el);
@@ -73,25 +80,23 @@ export default function EntreprisesCta(): React.JSX.Element {
             {t("entreprises.cta.finalSub")}
           </p>
 
-          <div className="cta-line flex flex-col sm:flex-row items-center justify-center gap-3 mt-10">
-              <a
-                href="https://calendar.app.google/YyAirdPSc2ugGbnh9"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 h-12 px-8 rounded-full text-white text-sm font-semibold transition-all duration-300 hover:-translate-y-px active:translate-y-0"
-                style={{
-                  background: "#B88A5A",
-                }}
-              >
+          <div className="cta-line flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-11">
+            <a
+              href="https://calendar.app.google/YyAirdPSc2ugGbnh9"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center justify-center gap-2.5 h-14 px-9 rounded-full text-white text-base font-semibold shadow-[0_12px_32px_-12px_rgba(184,138,90,0.8)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_44px_-14px_rgba(184,138,90,0.95)] active:translate-y-0"
+              style={{ background: "#B88A5A" }}
+            >
               {t("entreprises.cta.cta1")}
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </a>
             <a
               href="#contact"
               onClick={(e) => { e.preventDefault(); scrollToContact(); }}
-              className="inline-flex items-center justify-center gap-2 h-12 px-7 rounded-full text-white/35 text-sm font-medium border border-white/[0.08] transition-all duration-300 hover:text-white hover:border-white/[0.16]"
+              className="inline-flex items-center justify-center gap-2 h-14 px-7 rounded-full text-white/50 text-sm font-medium border border-white/[0.14] transition-all duration-300 hover:text-white hover:border-white/[0.28] hover:bg-white/5"
             >
               {t("entreprises.cta.cta2")}
             </a>

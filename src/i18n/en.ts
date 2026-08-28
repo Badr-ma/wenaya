@@ -410,8 +410,6 @@ const en: Translations = {
       boardBadge: "Our expert committee",
       boardHeading: "Health professionals",
       boardDesc: "A multidisciplinary team of certified therapists to cover all your teams' needs.",
-      valuePropsBadge: "Why Wenaya",
-      valuePropsHeading: "The difference of a <gradient>multidisciplinary</gradient> approach",
       experts: [
         { name: "Dr. Sarah Benali", role: "Occupational Medicine" },
         { name: "Amine Laaroussi", role: "Physiotherapy" },
@@ -439,8 +437,6 @@ const en: Translations = {
       comparison: {
         heading: "Without Wenaya / With Wenaya",
         sub: "The difference a structured workplace health approach makes.",
-        withoutLabel: "Without Wenaya",
-        withLabel: "With Wenaya",
         without: [
           { label: "Recurrent absenteeism", desc: "Unexpected sick leave that disrupts teams" },
           { label: "Ignored psychosocial risks", desc: "Chronic stress and burnout risks without support" },
@@ -491,10 +487,6 @@ const en: Translations = {
     modularity: {
       title: "A modular approach",
       subtitle: "Build the program that matches your challenges — module by module.",
-      ecosystemBadge: "Our ecosystem",
-      ecosystemHeading: "Multidisciplinary corporate <gradient>health</gradient>",
-      ecosystemDesc: "Wenaya goes beyond a single domain. We combine physical, mental, nutritional and managerial expertise for comprehensive care.",
-      ecosystemHubLabel: "Corporate Health",
       pillars: [
         { title: "Prevention & Assessments", desc: "Individual evaluations, anonymous global health assessments, biomarkers and early screening to anticipate risks." },
         { title: "Mental Health", desc: "Psychological listening unit, sophrology workshops, stress management and burnout prevention for your teams." },
@@ -562,6 +554,10 @@ const en: Translations = {
     programmes: {
       title: "Certified programs",
       subtitle: "Proven, recognized methods adapted to your company.",
+      discoverLabel: "Discover",
+      swipeLabel: "Swipe to explore",
+      prevLabel: "Previous program",
+      nextLabel: "Next program",
       list: [
         {
           badge: "NASA · 1978",
@@ -733,7 +729,6 @@ const en: Translations = {
     expertises: {
       title: "Our expertise",
       subtitle: "A complete panel of skills to cover all your teams' needs.",
-      heading: "Solutions for <gradient>every challenge</gradient>",
       tabs: [
         {
           title: "Physical Health",
@@ -760,6 +755,7 @@ const en: Translations = {
     thematiques: {
       title: "Key themes",
       subtitle: "The topics that really matter to your employees.",
+      selectLabel: "Theme",
       themes: [
         { title: "MSD Prevention", desc: "Awareness, practical workshops and individual consultations to prevent screen-related and repetitive posture musculoskeletal disorders." },
         { title: "Nutrition & Energy", desc: "Cooking workshops, conferences and nutritional follow-up to improve employees' daily health, energy and focus." },
@@ -826,7 +822,13 @@ const en: Translations = {
       title: "Satisfaction & Performance",
       desc: "Concrete results measured among our partner companies.",
       items: [
-        { value: "96%", label: "employee satisfaction rate", source: "Internal survey 2025 — 1,200 respondents" },
+        { value: "35+", label: "certified therapists", source: "" },
+        { value: "2 000+", label: "employees supported", source: "" },
+        { value: "96%", label: "employee satisfaction", source: "Internal survey 2025 — 1,200 respondents" },
+        { value: "7 years", label: "of experience", source: "" },
+      ],
+      impactTitle: "Measured impact",
+      impact: [
         { value: "−40%", label: "average absenteeism reduction", source: "Wenaya impact study 2024 — 15 companies" },
         { value: "+25%", label: "employee engagement increase", source: "Before/after program measurement — 24 months" },
       ],
@@ -835,6 +837,8 @@ const en: Translations = {
     testimonials: {
       title: "What they say about us",
       subtitle: "Hear from our corporate clients.",
+      prev: "Previous testimonial",
+      next: "Next testimonial",
       items: [
         { quote: "Wenaya transformed our approach to workplace health. Over 70% of our employees adopted the program in just 3 months. Feedback is unanimous: they feel better supported and more fulfilled at work.", author: "HR Director, OCP Group" },
         { quote: "The psychological listening unit was decisive for our teams after a difficult period. The professionalism and discretion of Wenaya therapists helped our employees regain their balance.", author: "CSR Manager, Attijariwafa Bank" },
@@ -873,6 +877,52 @@ const en: Translations = {
       success: "Message sent successfully. We'll respond within 24 business hours.",
       error: "An error occurred. Please try again.",
     },
+    retreat: {
+      badge: "Corporate Retreats",
+      heading1: "Step outside the routine.",
+      heading2: "Focus on what matters.",
+      lead: "Health and wellbeing experiences designed around your teams, their needs, and your objectives.",
+      chaptersIntro: "Three directions, freely composed from our existing expertise.",
+      prev: "Previous retreat",
+      next: "Next retreat",
+      counter: "Retreat",
+      chapters: [
+        {
+          number: "01",
+          title: "Reset & Recharge",
+          theme: "Mental health — Recovery — Balance",
+          desc: "A moment to take care of what matters most: bringing back calm, releasing mental load and giving your teams the space to recharge — through our workshops devoted to mental wellbeing.",
+          capabilities: ["Stress management", "Mental wellbeing", "Recovery & balance"],
+        },
+        {
+          number: "02",
+          title: "Team Health & Cohesion",
+          theme: "Connection — Leadership — Collective energy",
+          desc: "Reignite what binds your teams together. Communication, emotional intelligence and leadership, built on our collective performance and cohesion programs.",
+          capabilities: ["Communication & emotional intelligence", "Leadership & cohesion", "PCM workshops"],
+        },
+        {
+          number: "03",
+          title: "Active Wellness",
+          theme: "Movement — Prevention — Nutrition",
+          desc: "Get bodies moving, prevent rather than endure. Mobility, TMS prevention and nutrition, led by our physical health experts.",
+          capabilities: ["Physical health & mobility", "TMS prevention & ergonomics", "Nutrition & energy"],
+        },
+      ],
+      design: {
+        badge: "Build Your Retreat",
+        title: "No retreat should be one-size-fits-all.",
+        intro: "Wenaya starts with your objectives, brings in the right expertise, defines the right format, and shapes the experience.",
+        steps: [
+          { number: "01", label: "Objective", desc: "Understand your team's needs." },
+          { number: "02", label: "Expertise", desc: "Bring in the right Wenaya expertise." },
+          { number: "03", label: "Format", desc: "Build a coherent experience." },
+          { number: "04", label: "Experience", desc: "Create a retreat designed for your team." },
+        ],
+      },
+      preCta: "Let's build the right experience for your team.",
+      cta: "Design my Corporate Retreat",
+    },
     footer: {
       desc: "Multidisciplinary health center in Casablanca — physiotherapy, psychology, nutrition, prevention and wellness programs for companies.",
       solutions: { title: "Solutions", links: ["For companies", "For executives", "Health check-ups", "QWL Workshops"] },
@@ -881,43 +931,6 @@ const en: Translations = {
       aPropos: { title: "About", links: ["About us", "Our specialties", "Careers", "Press"] },
       copyright: "© {year} Wenaya. All rights reserved.",
       hours: "Monday to Saturday from 9am to 7pm",
-    },
-    customCta: {
-      badge: "Every company is unique",
-      heading1: "A health program",
-      heading2: "built for you.",
-      desc: "Company size, specific challenges, field constraints — we build a program that adapts to your reality.",
-      cta: "Build your program",
-    },
-    consultation: {
-      title: "Let's discuss your project",
-      subtitle: "Request a corporate consultation",
-      desc: "30 minutes to understand your challenges and identify pathways tailored to your teams. No commitment.",
-      companyName: "Company name",
-      companyNamePlaceholder: "Your company",
-      contactName: "Contact name",
-      contactNamePlaceholder: "First and last name",
-      email: "Professional email",
-      emailPlaceholder: "first@company.com",
-      phone: "Phone",
-      phonePlaceholder: "+212 6 00 00 00",
-      employeeCount: "Number of employees",
-      employeeCountOptions: ["1 – 10", "11 – 50", "51 – 200", "201 – 500", "500+"],
-      mainNeed: "Main need",
-      mainNeedOptions: [
-        "Prevention & health assessments",
-        "Mental health & stress management",
-        "Nutrition & dietary wellness",
-        "MSD prevention & ergonomics",
-        "Global wellness program",
-        "Executive support",
-        "Other",
-      ],
-      message: "Message",
-      messagePlaceholder: "Briefly describe your context and objectives...",
-      submit: "Request a corporate consultation",
-      success: "Your request has been sent. We will contact you within 24 business hours.",
-      error: "An error occurred. Please try again.",
     },
   },
   clinics: {

@@ -6,17 +6,16 @@ import EntreprisesHero from "@/components/entreprises/Hero";
 import HowItWorksSection from "@/components/entreprises/HowItWorksSection";
 import ModularitySection from "@/components/entreprises/ModularitySection";
 import ProgrammesSection from "@/components/entreprises/ProgrammesSection";
+import RetreatSection from "@/components/entreprises/RetreatSection";
 import ThematiquesSection from "@/components/entreprises/ThematiquesSection";
 import ImageBreak from "@/components/entreprises/ImageBreak";
 import StatsTestimonialsSection from "@/components/entreprises/StatsTestimonialsSection";
-import DownloadsSection from "@/components/entreprises/DownloadsSection";
-import FaqSection from "@/components/entreprises/FaqSection";
+import ResourcesFaqSection from "@/components/entreprises/ResourcesFaqSection";
 import ContactSection from "@/components/entreprises/ContactSection";
 import StickyCta from "@/components/entreprises/StickyCta";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
-const EntreprisesCta = dynamic(() => import("@/components/entreprises/Cta"), { ssr: true });
 const EntreprisesFooter = dynamic(() => import("@/components/entreprises/Footer"), { ssr: true });
 
 export const metadata: Metadata = {
@@ -63,13 +62,12 @@ export default function EntreprisesPage() {
           <StatsTestimonialsSection />
           <ModularitySection />
           <ProgrammesSection />
+          <RetreatSection />
           <HowItWorksSection />
           <ThematiquesSection />
           <ImageBreak />
-          <DownloadsSection />
-          <FaqSection />
+          <ResourcesFaqSection />
           <ContactSection />
-          <EntreprisesCta />
         </main>
         <div className="mt-auto">
           <EntreprisesFooter />

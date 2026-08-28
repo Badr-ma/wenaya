@@ -410,8 +410,6 @@ const fr = {
       boardBadge: "Notre comité d'experts",
       boardHeading: "Des professionnels de la santé",
       boardDesc: "Une équipe pluridisciplinaire de thérapeutes certifiés pour couvrir l'ensemble des besoins de vos équipes.",
-      valuePropsBadge: "Pourquoi Wenaya",
-      valuePropsHeading: "La différence d'une approche <gradient>pluridisciplinaire</gradient>",
       experts: [
         { name: "Dr. Sarah Benali", role: "Médecine du travail" },
         { name: "Amine Laaroussi", role: "Kinésithérapie" },
@@ -439,8 +437,6 @@ const fr = {
       comparison: {
         heading: "Sans Wenaya / Avec Wenaya",
         sub: "La différence d'une approche structurée de la santé en entreprise.",
-        withoutLabel: "Sans Wenaya",
-        withLabel: "Avec Wenaya",
         without: [
           { label: "Absentéisme récurrent", desc: "Des arrêts maladie non anticipés qui désorganisent les équipes" },
           { label: "Risques psychosociaux ignorés", desc: "Un stress chronique et des risques de burnout sans accompagnement" },
@@ -491,10 +487,6 @@ const fr = {
     modularity: {
       title: "Une approche modulaire",
       subtitle: "Construisez le programme qui correspond à vos enjeux — module par module.",
-      ecosystemBadge: "Notre écosystème",
-      ecosystemHeading: "Une santé entreprise <gradient>pluridisciplinaire</gradient>",
-      ecosystemDesc: "Wenaya ne se limite pas à un domaine. Nous combinons expertise physique, mentale, nutritionnelle et managériale pour une prise en charge complète.",
-      ecosystemHubLabel: "Santé Entreprise",
       pillars: [
         { title: "Prévention & Bilans", desc: "Évaluations individuelles, bilans de santé anonymously global, biomarqueurs et dépistage précoce pour anticiper les risques." },
         { title: "Santé Mentale", desc: "Cellule d'écoute psychologique, ateliers de sophrologie, gestion du stress et prévention du burnout pour vos équipes." },
@@ -579,6 +571,10 @@ const fr = {
     programmes: {
       title: "Programmes labellisés",
       subtitle: "Des méthodes éprouvées, reconnues et adaptées à votre entreprise.",
+      discoverLabel: "Découvrir",
+      swipeLabel: "Glissez pour explorer",
+      prevLabel: "Programme précédent",
+      nextLabel: "Programme suivant",
       list: [
         {
           badge: "NASA · 1978",
@@ -750,7 +746,6 @@ const fr = {
     expertises: {
       title: "Nos expertises",
       subtitle: "Un panel complet de compétences pour couvrir tous les besoins de vos équipes.",
-      heading: "Des solutions pour <gradient>chaque enjeu</gradient>",
       tabs: [
         {
           title: "Santé physique",
@@ -797,6 +792,7 @@ const fr = {
     thematiques: {
       title: "Thématiques phares",
       subtitle: "Les sujets qui comptent vraiment pour vos collaborateurs.",
+      selectLabel: "Thématique",
       themes: [
         { title: "Prévention des TMS", desc: "Sensibilisation, ateliers pratiques et consultations individuelles pour prévenir les troubles musculo-squelettiques liés au travail sur écran et aux postures répétitives." },
         { title: "Nutrition & Énergie", desc: "Ateliers cuisine, conférences et suivi nutritionnel pour améliorer la santé, l'énergie et la concentration des collaborateurs au quotidien." },
@@ -863,7 +859,13 @@ const fr = {
       title: "Satisfaction & Performance",
       desc: "Des résultats concrets, mesurés auprès de nos entreprises partenaires.",
       items: [
-        { value: "96%", label: "de satisfaction des collaborateurs", source: "Enquête interne 2025 — 1200 répondants" },
+        { value: "35+", label: "thérapeutes certifiés", source: "" },
+        { value: "2 000+", label: "employés accompagnés", source: "" },
+        { value: "96%", label: "de satisfaction des employés", source: "Enquête interne 2025 — 1 200 répondants" },
+        { value: "7 ans", label: "d'expérience", source: "" },
+      ],
+      impactTitle: "Impact mesuré",
+      impact: [
         { value: "−40%", label: "d'absentéisme en moyenne", source: "Étude d'impact Wenaya 2024 — 15 entreprises" },
         { value: "+25%", label: "d'engagement collaborateur", source: "Mesure avant/après programme — 24 mois" },
       ],
@@ -872,6 +874,8 @@ const fr = {
     testimonials: {
       title: "Ce qu'ils disent de nous",
       subtitle: "Découvrez les témoignages de nos clients entreprises.",
+      prev: "Témoignage précédent",
+      next: "Témoignage suivant",
       items: [
         { quote: "Wenaya a transformé notre approche de la santé en entreprise. Le programme a été adopté par plus de 70% de nos collaborateurs en seulement 3 mois. Les retours sont unanimes : ils se sentent mieux accompagnés et plus épanouis au travail.", author: "DRH, Groupe OCP" },
         { quote: "La cellule d'écoute psychologique a été décisive pour nos équipes après une période difficile. Le professionnalisme et la discrétion des thérapeutes Wenaya ont permis à nos collaborateurs de retrouver un équilibre.", author: "Responsable RSE, Attijariwafa Bank" },
@@ -910,6 +914,52 @@ const fr = {
       success: "Message envoyé avec succès. Nous vous répondrons sous 24h ouvrées.",
       error: "Une erreur est survenue. Veuillez réessayer.",
     },
+    retreat: {
+      badge: "Corporate Retreats",
+      heading1: "Sortez du cadre.",
+      heading2: "Prenez soin de l'essentiel.",
+      lead: "Des expériences de santé et de bien-être conçues autour de vos équipes, de leurs besoins et de vos objectifs.",
+      chaptersIntro: "Trois directions, composées librement à partir de nos expertises existantes.",
+      prev: "Retreat précédent",
+      next: "Retreat suivant",
+      counter: "Retreat",
+      chapters: [
+        {
+          number: "01",
+          title: "Reset & Recharge",
+          theme: "Santé mentale — Récupération — Équilibre",
+          desc: "Un moment pour prendre soin de l'essentiel : ramener du calme, libérer la charge mentale et redonner à vos équipes l'espace de se ressourcer — à travers nos ateliers dédiés au bien-être mental.",
+          capabilities: ["Gestion du stress", "Bien-être mental", "Récupération & équilibre"],
+        },
+        {
+          number: "02",
+          title: "Team Health & Cohesion",
+          theme: "Connexion — Leadership — Énergie collective",
+          desc: "Raviver ce qui relie vos équipes. Communication, intelligence émotionnelle et leadership, en s'appuyant sur nos programmes de performance collective et de cohésion.",
+          capabilities: ["Communication & intelligence émotionnelle", "Leadership & cohésion", "Ateliers PCM"],
+        },
+        {
+          number: "03",
+          title: "Active Wellness",
+          theme: "Mouvement — Prévention — Nutrition",
+          desc: "Faire bouger les corps, prévenir plutôt que subir. Mobilité, prévention des TMS et nutrition, animés par nos experts en santé physique.",
+          capabilities: ["Santé physique & mobilité", "Prévention des TMS & ergonomie", "Nutrition & énergie"],
+        },
+      ],
+      design: {
+        badge: "Build Your Retreat",
+        title: "Aucun retreat ne devrait être standard.",
+        intro: "Wenaya commence par vos objectifs, mobilise les expertises adaptées, définit le bon format et construit l'expérience.",
+        steps: [
+          { number: "01", label: "Objectif", desc: "Comprendre les besoins de votre équipe." },
+          { number: "02", label: "Expertises", desc: "Mobiliser les expertises Wenaya adaptées." },
+          { number: "03", label: "Format", desc: "Construire une expérience cohérente." },
+          { number: "04", label: "Expérience", desc: "Créer un retreat pensé pour votre équipe." },
+        ],
+      },
+      preCta: "Construisons l'expérience adaptée à votre équipe.",
+      cta: "Concevoir mon Corporate Retreat",
+    },
     footer: {
       desc: "Centre de santé pluridisciplinaire à Casablanca — kinésithérapie, psychologie, nutrition, prévention et programmes bien-être pour les entreprises.",
       solutions: { title: "Solutions", links: ["Pour les entreprises", "Pour les dirigeants", "Bilans de santé", "Ateliers QVT"] },
@@ -918,43 +968,6 @@ const fr = {
       aPropos: { title: "À propos", links: ["Qui sommes-nous", "Nos spécialités", "Carrières", "Presse"] },
       copyright: "© {year} Wenaya. Tous droits réservés.",
       hours: "Du lundi au samedi de 9h à 19h",
-    },
-    customCta: {
-      badge: "Chaque entreprise est unique",
-      heading1: "Un programme santé",
-      heading2: "conçu pour vous.",
-      desc: "Taille d'entreprise, enjeux spécifiques, contraintes terrain — nous construisons un programme qui s'adapte à votre réalité.",
-      cta: "Construire votre programme",
-    },
-    consultation: {
-      title: "Parlons de votre projet",
-      subtitle: "Demander une consultation entreprise",
-      desc: "30 minutes pour comprendre vos enjeux et identifier les pistes adaptées à vos équipes. Sans engagement.",
-      companyName: "Nom de l'entreprise",
-      companyNamePlaceholder: "Votre entreprise",
-      contactName: "Nom du contact",
-      contactNamePlaceholder: "Prénom et nom",
-      email: "Email professionnel",
-      emailPlaceholder: "prenom@entreprise.com",
-      phone: "Téléphone",
-      phonePlaceholder: "+212 6 00 00 00",
-      employeeCount: "Nombre de collaborateurs",
-      employeeCountOptions: ["1 – 10", "11 – 50", "51 – 200", "201 – 500", "500+"],
-      mainNeed: "Besoin principal",
-      mainNeedOptions: [
-        "Prévention et bilans santé",
-        "Santé mentale et gestion du stress",
-        "Nutrition et bien-être alimentaire",
-        "Prévention des TMS et ergonomie",
-        "Programme bien-être global",
-        "Accompagnement dirigeants",
-        "Autre",
-      ],
-      message: "Message",
-      messagePlaceholder: "Décrivez brièvement votre contexte et vos objectifs...",
-      submit: "Demander une consultation entreprise",
-      success: "Votre demande a été envoyée. Nous vous contacterons sous 24h ouvrées.",
-      error: "Une erreur est survenue. Veuillez réessayer.",
     },
   },
   clinics: {

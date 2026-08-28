@@ -8,9 +8,7 @@ import { usePathname } from "next/navigation";
 function isCorporateRoute(pathname: string): boolean {
   return (
     pathname.startsWith("/solutions/entreprises") ||
-    pathname.startsWith("/en/solutions/entreprises") ||
-    pathname.startsWith("/corporate-demo") ||
-    pathname.startsWith("/en/corporate-demo")
+    pathname.startsWith("/en/solutions/entreprises")
   );
 }
 
