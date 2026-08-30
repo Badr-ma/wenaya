@@ -5,7 +5,7 @@
  * Also injects the site-wide JSON-LD structured data and Content-Security-Policy.
  */
 import type { Metadata } from "next";
-import { Cormorant_Garamond, JetBrains_Mono, Nunito, Open_Sans } from "next/font/google";
+import { Cormorant_Garamond, JetBrains_Mono, Manrope, Inter, Nunito, Open_Sans } from "next/font/google";
 import Script from "next/script";
 import "../globals.css";
 import Nav from "@/components/Nav";
@@ -39,6 +39,21 @@ const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["400", "500"],
   variable: "--font-cormorant",
+  display: "swap",
+});
+
+/** Manrope — official Wenaya heading font (Corporate typography experiment) via --font-manrope */
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-manrope",
+  display: "swap",
+});
+
+/** Inter — official Wenaya body font (Corporate typography experiment) via --font-inter */
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -122,7 +137,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>): React.JSX.Element {
   return (
-    <html lang="fr" className={`${nunito.variable} ${openSans.variable} ${cormorant.variable} ${jetbrains.variable}`}>
+    <html lang="fr" className={`${nunito.variable} ${openSans.variable} ${cormorant.variable} ${jetbrains.variable} ${manrope.variable} ${inter.variable}`}>
       <head>
         <meta
           httpEquiv="Content-Security-Policy"
@@ -210,8 +225,10 @@ gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', { page_path: window.location.
             </Script>
           </>
         )}
-        {/* LanguageProvider — i18n context wrapping the entire app, enables useLocale() and t() */}
-        <LanguageProvider>
+        {/* LanguageProvider — i18n context wrapping the entire app, enables useLocale() and t().
+            Pinned to French so the FR route group server-renders French and does not re-detect
+            English from localStorage/browser on the client (mirrors the EN layout). */}
+        <LanguageProvider initialLocale="fr">
           <CartProvider>
             <GsapInit /> {/* Registers GSAP plugins globally (ScrollTrigger, etc.) */}
             <Nav /> {/* Global navigation bar — fixed position, outside Lenis so position:fixed works correctly */}

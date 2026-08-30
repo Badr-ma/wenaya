@@ -56,7 +56,7 @@ export default function EntreprisesPage() {
   return (
     <ErrorBoundary>
       <Breadcrumbs />
-      <div className="flex flex-col min-h-dvh">
+      <div className="corp-typeset flex flex-col min-h-dvh">
         <main>
           <EntreprisesHero />
           <StatsTestimonialsSection />

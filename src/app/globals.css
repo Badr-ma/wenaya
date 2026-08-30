@@ -100,6 +100,130 @@ body {
   letter-spacing: -0.01em;
 }
 
+/**
+ * Corporate typography scope (Corporate page only — /solutions/entreprises,
+ * /en/solutions/entreprises). Applies the official Wenaya experiment fonts
+ * WITHOUT touching the shared global tokens used by other pages:
+ *  headings + display numbers → Manrope
+ *  body / UI                 → Inter
+ * The logo (Nunito ExtraBold) is intentionally left untouched.
+ */
+.corp-typeset {
+  font-family: var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+.corp-typeset h1,
+.corp-typeset h2,
+.corp-typeset h3,
+.corp-typeset h4,
+.corp-typeset .heading-serif,
+.corp-typeset .font-heading,
+.corp-typeset .font-serif {
+  font-family: var(--font-manrope), "Manrope", ui-sans-serif, system-ui, sans-serif !important;
+}
+
+/* Neutralize leftover inline Cormorant references on the Corporate page so no
+   Cormorant remains in rendered Corporate typography. */
+.corp-typeset [style*="font-cormorant"],
+.corp-typeset [style*="Cormorant"] {
+  font-family: var(--font-manrope), "Manrope", ui-sans-serif, system-ui, sans-serif !important;
+}
+
+/**
+ * Corporate display typography SIZE refinement (Corporate page only).
+ * Reduces the large display type so the page reads less heavy, WITHOUT changing
+ * font families, layout, spacing, colors, or body/UI text (Inter stays as-is).
+ *   h1            → ~9%
+ *   h2 (major)    → ~11%
+ *   h3 (item)     → ~9%
+ *   decorative/stat numerals → ~12%
+ * Selectors match the exact inline clamp() values used by the Corporate components.
+ */
+
+/* h1 — hero */
+.corp-typeset [style*="clamp(2.8rem"] {
+  font-size: clamp(2.55rem, 5vw, 4.73rem) !important;
+}
+
+/* h2 — major section headings */
+.corp-typeset [style*="clamp(1.75rem, 3.15vw, 3rem"] {
+  font-size: clamp(1.56rem, 2.8vw, 2.67rem) !important;
+}
+.corp-typeset [style*="clamp(1.65rem, 3.15vw, 2.7rem"] {
+  font-size: clamp(1.47rem, 2.8vw, 2.4rem) !important;
+}
+.corp-typeset [style*="clamp(2.1rem, 4.8vw, 3.9rem"] {
+  font-size: clamp(1.87rem, 4.27vw, 3.47rem) !important;
+}
+.corp-typeset [style*="clamp(1.75rem, 3.5vw, 3rem"] {
+  font-size: clamp(1.56rem, 3.11vw, 2.67rem) !important;
+}
+.corp-typeset [style*="clamp(1.5rem, 2.6vw, 2.3rem"] {
+  font-size: clamp(1.34rem, 2.31vw, 2.05rem) !important;
+}
+.corp-typeset [style*="clamp(1.75rem, 3.5vw, 2.8rem"] {
+  font-size: clamp(1.56rem, 3.11vw, 2.49rem) !important;
+}
+
+/* h3 — item headings */
+.corp-typeset [style*="clamp(1.8rem, 3.2vw, 2.85rem"] {
+  font-size: clamp(1.64rem, 2.91vw, 2.59rem) !important;
+}
+.corp-typeset [style*="clamp(1.75rem, 3.5vw, 2.85rem"] {
+  font-size: clamp(1.59rem, 3.18vw, 2.55rem) !important;
+}
+.corp-typeset [style*="clamp(1.6rem, 2.85vw, 2.5rem"] {
+  font-size: clamp(1.46rem, 2.59vw, 2.27rem) !important;
+}
+.corp-typeset [style*="clamp(2rem, 3.5vw, 2.85rem"] {
+  font-size: clamp(1.82rem, 3.18vw, 2.59rem) !important;
+}
+.corp-typeset h3.text-2xl {
+  font-size: calc(1.5rem * 0.91) !important;
+}
+.corp-typeset h3.text-xl {
+  font-size: calc(1.25rem * 0.91) !important;
+}
+@media (min-width: 640px) {
+  .corp-typeset h3.text-xl.sm\:text-2xl {
+    font-size: calc(1.5rem * 0.91) !important;
+  }
+}
+
+/* Oversized decorative numbers + stat numerals */
+.corp-typeset [style*="clamp(4.9rem, 9.8vw, 8.2rem"] {
+  font-size: clamp(4.31rem, 8.62vw, 7.22rem) !important;
+}
+.corp-typeset [style*="clamp(4.1rem, 8.2vw, 6.55rem"] {
+  font-size: clamp(3.61rem, 7.22vw, 5.76rem) !important;
+}
+.corp-typeset [style*="clamp(2.45rem, 4.1vw, 3.9rem"] {
+  font-size: clamp(2.16rem, 3.61vw, 3.43rem) !important;
+}
+.corp-typeset [style*="clamp(1.6rem, 4.1vw, 2rem"] {
+  font-size: clamp(1.41rem, 3.61vw, 1.76rem) !important;
+}
+.corp-typeset [style*="clamp(1.85rem, 3.8vw, 3.05rem"] {
+  font-size: clamp(1.63rem, 3.34vw, 2.68rem) !important;
+}
+.corp-typeset [style*="clamp(1.4rem, 2.5vw, 1.9rem"] {
+  font-size: clamp(1.23rem, 2.2vw, 1.67rem) !important;
+}
+.corp-typeset .text-\[2\.5rem\] {
+  font-size: 2.2rem !important;
+}
+.corp-typeset .font-heading.text-3xl {
+  font-size: calc(1.875rem * 0.88) !important;
+}
+.corp-typeset .font-heading.text-2xl {
+  font-size: calc(1.5rem * 0.88) !important;
+}
+@media (min-width: 640px) {
+  .corp-typeset .font-heading.text-2xl.sm\:text-3xl {
+    font-size: calc(1.875rem * 0.88) !important;
+  }
+}
+
 /** Responsive section padding — clamps between 2.5rem and 4rem based on viewport width */
 .section-padding {
   padding-top: clamp(2.5rem, 5vw, 4rem);
