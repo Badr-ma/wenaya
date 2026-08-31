@@ -51,6 +51,17 @@ export default function EntreprisesHero(): React.JSX.Element {
           />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-[#0B1220]/45 via-[#0B1220]/20 to-transparent" />
+        {/* Localized readability overlay behind the left text column only —
+            brings the paragraph & benefits to readable contrast without
+            darkening the rest of the hero. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 left-0 w-full sm:w-[46rem]"
+          style={{
+            background:
+              "linear-gradient(90deg, rgba(6,18,32,0.9) 0%, rgba(6,18,32,0.9) 95%, rgba(6,18,32,0) 98%)",
+          }}
+        />
       </div>
 
       <div className="relative z-10 w-full px-6 pt-40 pb-20 lg:pt-48 lg:pb-28">
@@ -81,13 +92,13 @@ export default function EntreprisesHero(): React.JSX.Element {
               </span>
             </h1>
 
-            <p className="eh-fade text-white/60 text-base sm:text-lg leading-relaxed mt-6 max-w-md">
+            <p className="eh-fade text-white/85 text-base sm:text-lg leading-relaxed mt-6 max-w-md">
               {t("entreprises.hero.desc")}
             </p>
 
             <ul className="eh-fade mt-8 space-y-3">
               {bullets.map((b, i) => (
-                <li key={i} className="flex items-start gap-3 text-white/50 text-sm sm:text-base">
+                <li key={i} className="flex items-start gap-3 text-white/90 text-sm sm:text-base">
                   <svg className="w-4 h-4 mt-0.5 shrink-0 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
