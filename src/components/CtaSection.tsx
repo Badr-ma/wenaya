@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { useLocale } from "@/contexts/LanguageContext";
+import { h } from "@/lib/href";
 import { gsap } from "gsap";
 import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 import type { CtaContent } from "@/lib/homepage-types";
@@ -12,7 +13,7 @@ interface CtaSectionProps {
 }
 
 export default function CtaSection({ content }: CtaSectionProps): React.JSX.Element {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const { elRef: sectionRef, ready } = useIntersectionDeferred("200px 0px");
 
   useEffect(() => {
@@ -140,8 +141,7 @@ export default function CtaSection({ content }: CtaSectionProps): React.JSX.Elem
         {/* CTAs */}
         <div className="cta-actions flex flex-col sm:flex-row items-center justify-center gap-3 mt-6 sm:mt-10">
           <Link
-            href="#"
-            onClick={(e) => e.preventDefault()}
+            href={h(locale, "/specialistes")}
             className="inline-flex items-center justify-center gap-2 h-12 px-8 rounded-xl text-white text-sm font-semibold transition-all duration-300 hover:-translate-y-px active:translate-y-0"
             style={{
               background: "#B88A5A",

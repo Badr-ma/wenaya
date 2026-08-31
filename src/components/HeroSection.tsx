@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
+import { h } from "@/lib/href";
 import type { HeroContent } from "@/lib/homepage-types";
 
 /* ── Hero Section ──────────────────────────────────────────── */
@@ -13,7 +14,7 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ content }: HeroSectionProps): React.JSX.Element {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const trustRef = useRef<HTMLDivElement>(null);
   const [videoSrc, setVideoSrc] = useState<string | null>(null);
@@ -141,8 +142,7 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
             {/* CTAs */}
             <div className="hero-cta flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-10">
               <Link
-                href="#"
-                onClick={(e) => e.preventDefault()}
+                href={h(locale, "/specialistes")}
                 className="inline-flex items-center justify-center h-11 px-7 rounded-xl text-white text-[13.5px] font-semibold transition-all duration-300 hover:-translate-y-px active:translate-y-0"
                 style={{
                   background: "#B88A5A",

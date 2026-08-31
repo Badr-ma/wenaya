@@ -6,8 +6,10 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
+import Link from "next/link";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
+import { h } from "@/lib/href";
 import type { DiseaseMarqueeContent } from "@/lib/homepage-types";
 
 interface MarqueeData {
@@ -26,7 +28,7 @@ interface DiseaseMarqueeProps {
 }
 
 export default function DiseaseMarquee({ content }: DiseaseMarqueeProps): React.JSX.Element {
-  const { t, tRaw } = useLocale();
+  const { t, tRaw, locale } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
 
@@ -123,13 +125,12 @@ export default function DiseaseMarquee({ content }: DiseaseMarqueeProps): React.
       </div>
 
       <div className="text-center mt-6 sm:mt-10">
-        <a
-          href="#"
-          onClick={(e) => e.preventDefault()}
+        <Link
+          href={h(locale, "/pratiques")}
           className="inline-flex items-center justify-center px-8 h-[50px] bg-[#B88A5A] text-white rounded-full font-sans font-medium text-sm tracking-wide transition-all duration-300 hover:bg-[#A07848] hover:shadow-lg hover:shadow-[rgba(184,138,90,0.25)]"
         >
           {t("diseaseMarquee.voirPlus")}
-        </a>
+        </Link>
       </div>
     </section>
   );

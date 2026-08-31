@@ -6,8 +6,10 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import Link from "next/link";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
+import { h } from "@/lib/href";
 import type { PricingContent } from "@/lib/homepage-types";
 
 const planKeys = ["plan1", "plan2", "plan3"];
@@ -17,7 +19,7 @@ interface PricingProps {
 }
 
 export default function Pricing({ content }: PricingProps): React.JSX.Element {
-  const { t, tRaw } = useLocale();
+  const { t, tRaw, locale } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -125,9 +127,8 @@ export default function Pricing({ content }: PricingProps): React.JSX.Element {
                   </li>
                 ))}
               </ul>
-              <a
-                href="#"
-                onClick={(e) => e.preventDefault()}
+              <Link
+                href={h(locale, "/specialistes")}
                 className={`block text-center text-sm font-semibold py-3.5 rounded-full transition-all duration-300 ${
                   plan.popular
                     ? "bg-[#B88A5A] hover:bg-[#A07848] text-white hover:shadow-lg hover:shadow-[rgba(184,138,90,0.25)]"
@@ -135,7 +136,7 @@ export default function Pricing({ content }: PricingProps): React.JSX.Element {
                 }`}
               >
                 {plan.cta}
-              </a>
+              </Link>
             </div>
           ))}
         </div>

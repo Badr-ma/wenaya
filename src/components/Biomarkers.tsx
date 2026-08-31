@@ -165,8 +165,7 @@ export default function Biomarkers({ content }: BiomarkersProps): React.JSX.Elem
             {content?.bottom ?? t("biomarkers.bottom")}
           </p>
           <a
-            href="#"
-            onClick={(e) => e.preventDefault()}
+            href="#method"
             className="inline-flex items-center gap-2 text-[#B88A5A] text-sm font-semibold hover:gap-3 transition-all duration-300"
           >
             {content?.cta ?? t("biomarkers.cta")}

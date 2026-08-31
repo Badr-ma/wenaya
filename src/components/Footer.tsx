@@ -27,7 +27,7 @@ const socialUrls: Record<string, string> = {
   TikTok: "https://www.tiktok.com/@wenaya_maroc",
 };
 
-const navUrls = ["/about", "#", "/pratiques", "/solutions/entreprises", "/faq"];
+const navUrls = ["/about", "/specialistes", "/pratiques", "/solutions/entreprises", "/faq"];
 const legalUrls = ["/confidentialite", "/conditions"];
 
 interface FooterProps {

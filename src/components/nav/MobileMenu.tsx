@@ -80,15 +80,15 @@ export default function MobileMenu({
         <div className="pt-8 border-t border-white/[0.06] space-y-3">
           <div className="grid grid-cols-2 gap-3">
             <Link
-              href={h("/login")}
+              href="/login"
               onClick={onClose}
               className="flex items-center justify-center h-12 rounded-xl border border-white/[0.09] bg-white/[0.04] text-white/65 text-sm font-medium transition-all hover:bg-white/[0.07]"
             >
               {t("nav.seConnecter")}
             </Link>
             <Link
-              href="#"
-              onClick={(e) => { e.preventDefault(); onClose(); }}
+              href={h("/specialistes")}
+              onClick={onClose}
               className="flex items-center justify-center h-12 rounded-xl text-[#0B1220] text-sm font-semibold transition-all duration-300"
               style={{
                 background: "#B88A5A",
