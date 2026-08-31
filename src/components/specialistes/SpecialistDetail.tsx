@@ -7,7 +7,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Specialist } from "@/lib/specialistes";
 import BookingPanel from "./BookingPanel";
-import MapView from "./MapView";
 import { useLocale } from "@/contexts/LanguageContext";
 import { h } from "@/lib/href";
 
@@ -155,11 +154,6 @@ export default function SpecialistDetail({ specialist }: { specialist: Specialis
                     {specialist.location.access}
                   </div>
                 </div>
-              </div>
-            </div>
-            <div className="lg:col-span-7">
-              <div className="sp-reveal rounded-xl overflow-hidden h-[300px] sm:h-[350px]">
-                <MapView specialists={[{ slug: specialist.slug, name: specialist.name, role: locale === "en" ? (specialist.roleEn ?? specialist.role) : specialist.role, specialty: specialist.specialty, image: specialist.image, location: specialist.location }]} activeSpecialistSlug={null} onPinClick={() => {}} />
               </div>
             </div>
           </div>
