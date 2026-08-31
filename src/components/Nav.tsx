@@ -277,15 +277,14 @@ export default function Nav(): React.JSX.Element {
               </Link>
 
               <Link
-                href={hh("/login")}
+                href="/login"
                 className={`hidden sm:inline-flex items-center justify-center px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${loginBtn}`}
               >
                 {t("nav.seConnecter")}
               </Link>
 
               <Link
-                href="#"
-                onClick={(e) => e.preventDefault()}
+                href={hh("/specialistes")}
                 className="hidden sm:inline-flex items-center justify-center px-5 py-1.5 rounded-full text-sm font-semibold text-[#0B1220] transition-all duration-300 hover:-translate-y-px active:translate-y-0"
                 style={{
                   background: "#B88A5A",
