@@ -109,7 +109,7 @@ export default function TestimonialsSection({ content }: TestimonialsSectionProp
     <section ref={sectionRef} className="bg-[#F2EFE9] noise accent-top relative py-12 sm:py-24 px-6" id="avis-google">
       <div className="max-w-7xl mx-auto">
         <div ref={headingRef} className="flex flex-col items-center text-center mb-8 sm:mb-16 lg:mb-24">
-          <h2 className="heading-serif text-4xl sm:text-5xl text-[#0B1220]">
+          <h2 className="heading-serif text-3xl sm:text-4xl text-[#0B1220]">
             {content?.heading1 ?? t("testimonialsSection.heading1")}{" "}
 <span style={{
   background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",

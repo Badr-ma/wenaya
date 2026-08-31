@@ -161,7 +161,7 @@ export default function YoloSection({ content }: YoloSectionProps): React.JSX.El
 
             <h2
               ref={titleRef}
-              className="text-4xl sm:text-6xl lg:text-8xl font-serif font-bold leading-[0.95] tracking-tight"
+              className="text-4xl sm:text-6xl lg:text-6xl font-serif font-bold leading-[0.95] tracking-tight"
               style={{
                 background: "linear-gradient(135deg, #ffffff 40%, rgba(21,154,169,0.6))",
                 WebkitBackgroundClip: "text",

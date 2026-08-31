@@ -8,10 +8,14 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-/** Font families — mapped from CSS variables set by next/font/google in layout.tsx */
-  --font-sans: var(--font-open-sans), "Open Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-nunito), "Nunito", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-cormorant), "Cormorant Garamond", ui-serif, Georgia, serif;
+/** Font families — mapped from CSS variables set by next/font/google in layout.tsx.
+    Global Wenaya web typography system:
+      headings/display → Manrope (--font-heading + --font-serif are both Manrope)
+      body/UI          → Inter   (--font-sans)
+      monospace        → JetBrains Mono */
+  --font-sans: var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-manrope), "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-manrope), "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   /** Brand colors — deep navy, bronze, warm sand, ivory, graphite, and YOLO section colors */
@@ -38,7 +42,7 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-open-sans), "Open Sans", ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
   overflow-x: hidden;
 }
 
@@ -101,42 +105,15 @@ body {
 }
 
 /**
- * Corporate typography scope (Corporate page only — /solutions/entreprises,
- * /en/solutions/entreprises). Applies the official Wenaya experiment fonts
- * WITHOUT touching the shared global tokens used by other pages:
- *  headings + display numbers → Manrope
- *  body / UI                 → Inter
- * The logo (Nunito ExtraBold) is intentionally left untouched.
- */
-.corp-typeset {
-  font-family: var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
-}
-
-.corp-typeset h1,
-.corp-typeset h2,
-.corp-typeset h3,
-.corp-typeset h4,
-.corp-typeset .heading-serif,
-.corp-typeset .font-heading,
-.corp-typeset .font-serif {
-  font-family: var(--font-manrope), "Manrope", ui-sans-serif, system-ui, sans-serif !important;
-}
-
-/* Neutralize leftover inline Cormorant references on the Corporate page so no
-   Cormorant remains in rendered Corporate typography. */
-.corp-typeset [style*="font-cormorant"],
-.corp-typeset [style*="Cormorant"] {
-  font-family: var(--font-manrope), "Manrope", ui-sans-serif, system-ui, sans-serif !important;
-}
-
-/**
- * Corporate display typography SIZE refinement (Corporate page only).
- * Reduces the large display type so the page reads less heavy, WITHOUT changing
- * font families, layout, spacing, colors, or body/UI text (Inter stays as-is).
- *   h1            → ~9%
- *   h2 (major)    → ~11%
- *   h3 (item)     → ~9%
- *   decorative/stat numerals → ~12%
+ * Corporate display typography SIZE refinement (Corporate page scope).
+ * With the global typography system now applying Manrope/Inter site-wide, the
+ * earlier font-family overrides were redundant and removed. The Corporate page
+ * keeps its approved compact SIZE refinements so it stays close to its current
+ * approved state (it should NOT grow again during the global migration):
+ *   h1            → ~9% smaller
+ *   h2 (major)    → ~11% smaller
+ *   h3 (item)     → ~9% smaller
+ *   decorative/stat numerals → ~12% smaller
  * Selectors match the exact inline clamp() values used by the Corporate components.
  */
 
@@ -224,6 +201,74 @@ body {
   }
 }
 
+/* ================================================================
+   GLOBAL WENAYA TYPOGRAPHY — compact size refinement (public pages)
+   Headings/display -> Manrope, body/UI -> Inter (handled via --font-*
+   tokens). This block pulls oversized page heroes, major section H2s
+   and giant decorative numbers into the approved global scale while
+   preserving context hierarchy (homepage hero stays strongest).
+   Corporate pages keep their own scoped .corp-typeset rules above;
+   those are higher specificity so they win where present.
+   ================================================================ */
+
+/* HERO H1 — homepage (strongest), inline */
+[style*="clamp(3rem, 5.5vw, 5.2rem"] {
+  font-size: clamp(2.4rem, 4.75vw, 4rem) !important;
+}
+
+/* HERO H1 — standard page heroes (About / Blog / Clinics / Contact /
+   Legal / Products listing) */
+.text-\[clamp\(2\.5rem\,5vw\,4\.5rem\)\] {
+  font-size: clamp(2.4rem, 3.9vw, 3.9rem) !important;
+}
+
+/* HERO H1 — FAQ page (restrained) */
+.text-\[clamp\(2rem\,4\.5vw\,4\.5rem\)\] {
+  font-size: clamp(2.4rem, 3.7vw, 3.7rem) !important;
+}
+
+/* HERO H1 — Pratiques page (class-based) */
+.text-\[clamp\(2\.2rem\,4vw\,3\.8rem\)\] {
+  font-size: clamp(2.4rem, 3.9vw, 3.9rem) !important;
+}
+
+/* MAJOR H2 — standard section headings */
+.text-\[clamp\(2rem\,4vw\,3\.5rem\)\] {
+  font-size: clamp(1.75rem, 2.7vw, 2.75rem) !important;
+}
+.text-\[clamp\(2\.2rem\,4\.5vw\,4rem\)\] {
+  font-size: clamp(1.75rem, 2.8vw, 2.8rem) !important;
+}
+.text-\[clamp\(1\.6rem\,3\.5vw\,3rem\)\] {
+  font-size: clamp(1.75rem, 2.6vw, 2.6rem) !important;
+}
+
+/* MAJOR H2 — inline section headings */
+[style*="clamp(2.2rem, 4vw, 3.8rem"] {
+  font-size: clamp(1.75rem, 2.7vw, 2.75rem) !important;
+}
+[style*="clamp(2.8rem, 5vw, 4.5rem"] {
+  font-size: clamp(1.75rem, 2.7vw, 2.75rem) !important;
+}
+
+/* H3 — Biomarkers pillar category names (card headings) */
+[style*="clamp(2rem, 3vw, 2.8rem"] {
+  font-size: clamp(1.4rem, 1.75vw, 1.875rem) !important;
+}
+
+/* GIANT DECORATIVE NUMBERS / STATS — ~12% reduction */
+.text-\[clamp\(2\.5rem\,3vw\,3\.5rem\)\] {
+  font-size: clamp(2.2rem, 2.64vw, 3.08rem) !important;
+}
+.text-\[3rem\] {
+  font-size: 2.64rem !important;
+}
+@media (min-width: 640px) {
+  .sm\:text-\[4rem\] {
+    font-size: 3.52rem !important;
+  }
+}
+
 /** Responsive section padding — clamps between 2.5rem and 4rem based on viewport width */
 .section-padding {
   padding-top: clamp(2.5rem, 5vw, 4rem);
@@ -281,7 +326,7 @@ body {
 
 .leaflet-popup-content {
   margin: 12px !important;
-  font-family: var(--font-open-sans), "Open Sans", sans-serif !important;
+  font-family: var(--font-inter), "Inter", sans-serif !important;
 }
 
 

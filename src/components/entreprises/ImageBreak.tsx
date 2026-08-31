@@ -56,7 +56,7 @@ export default function ImageBreak(): React.JSX.Element {
           <span className="mx-auto block w-12 h-px bg-[#B88A5A]/70 mb-7" />
           <p
             className="text-white/95 text-2xl sm:text-3xl lg:text-[2.75rem] leading-snug italic"
-            style={{ fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif" }}
+            style={{ fontFamily: "var(--font-manrope), 'Manrope', ui-sans-serif, system-ui, sans-serif" }}
           >
             {t("entreprises.imageBreak.quote")}
           </p>

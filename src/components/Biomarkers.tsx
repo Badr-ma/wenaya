@@ -60,7 +60,7 @@ export default function Biomarkers({ content }: BiomarkersProps): React.JSX.Elem
           <h2
             className="text-[#0B1220] heading-serif"
             style={{
-              fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif",
+              fontFamily: "var(--font-manrope), 'Manrope', ui-sans-serif, system-ui, sans-serif",
               fontSize: "clamp(2.2rem, 4vw, 3.8rem)",
               fontWeight: 500,
               lineHeight: 1.08,
@@ -106,11 +106,11 @@ export default function Biomarkers({ content }: BiomarkersProps): React.JSX.Elem
                   {p.num}
                 </span>
 
-                {/* Category name — large Cormorant italic */}
+                {/* Category name — large Manrope heading */}
                 <h3
                   className="relative text-[#0B1220] leading-[1.05]"
                   style={{
-                    fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif",
+                    fontFamily: "var(--font-manrope), 'Manrope', ui-sans-serif, system-ui, sans-serif",
                     fontSize: "clamp(2rem, 3vw, 2.8rem)",
                     fontWeight: 500,
                     fontStyle: "italic",
@@ -126,7 +126,7 @@ export default function Biomarkers({ content }: BiomarkersProps): React.JSX.Elem
                   <span
                     className="text-[#B88A5A]"
                     style={{
-                      fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif",
+                      fontFamily: "var(--font-manrope), 'Manrope', ui-sans-serif, system-ui, sans-serif",
                       fontSize: "1rem",
                       fontWeight: 600,
                       letterSpacing: "0.18em",
@@ -144,7 +144,7 @@ export default function Biomarkers({ content }: BiomarkersProps): React.JSX.Elem
                       key={s}
                       className="flex items-start gap-2.5 text-[#2B2F36]/70 leading-snug"
                       style={{
-                        fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif",
+                        fontFamily: "var(--font-manrope), 'Manrope', ui-sans-serif, system-ui, sans-serif",
                         fontSize: "1.15rem",
                         fontWeight: 500,
                       }}

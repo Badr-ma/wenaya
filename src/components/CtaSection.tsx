@@ -106,7 +106,7 @@ export default function CtaSection({ content }: CtaSectionProps): React.JSX.Elem
         <h2
           className="cta-headline text-white"
           style={{
-            fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif",
+            fontFamily: "var(--font-manrope), 'Manrope', ui-sans-serif, system-ui, sans-serif",
             fontSize: "clamp(2.8rem, 5vw, 4.5rem)",
             fontWeight: 500,
             lineHeight: 1.06,

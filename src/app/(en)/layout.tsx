@@ -5,7 +5,7 @@
  * JSON-LD (WebSite.inLanguage = "en").
  */
 import type { Metadata } from "next";
-import { Cormorant_Garamond, JetBrains_Mono, Manrope, Inter, Nunito, Open_Sans } from "next/font/google";
+import { JetBrains_Mono, Manrope, Inter } from "next/font/google";
 import Script from "next/script";
 import "../globals.css";
 import Nav from "@/components/Nav";
@@ -21,38 +21,14 @@ import { languageAlternates } from "@/lib/hreflang";
 
 const ENGLISH_HOME_URL = `${SITE_URL}/en`;
 
-/** Nunito — used for headings and UI text via --font-heading CSS variable */
-const nunito = Nunito({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "900"],
-  variable: "--font-nunito",
-  display: "swap",
-});
-
-/** Open Sans — primary body font via --font-open-sans CSS variable */
-const openSans = Open_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-open-sans",
-  display: "swap",
-});
-
-/** Cormorant Garamond — serif font for hero headlines and decorative text */
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-cormorant",
-  display: "swap",
-});
-
-/** Manrope — official Wenaya heading font (Corporate typography experiment) via --font-manrope */
+/** Manrope — Wenaya heading/display font via --font-heading & --font-serif */
 const manrope = Manrope({
   subsets: ["latin"],
   variable: "--font-manrope",
   display: "swap",
 });
 
-/** Inter — official Wenaya body font (Corporate typography experiment) via --font-inter */
+/** Inter — Wenaya body/UI font via --font-sans */
 const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -138,7 +114,7 @@ export default function EnglishRootLayout({
   children: React.ReactNode;
 }>): React.JSX.Element {
   return (
-    <html lang="en" className={`${nunito.variable} ${openSans.variable} ${cormorant.variable} ${jetbrains.variable} ${manrope.variable} ${inter.variable}`}>
+    <html lang="en" className={`${manrope.variable} ${inter.variable} ${jetbrains.variable}`}>
       <head>
         <meta
           httpEquiv="Content-Security-Policy"

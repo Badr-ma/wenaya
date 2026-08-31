@@ -10,18 +10,17 @@
  */
 import Link from "next/link";
 import "./globals.css";
-import { Cormorant_Garamond, JetBrains_Mono, Nunito, Open_Sans } from "next/font/google";
+import { JetBrains_Mono, Manrope, Inter } from "next/font/google";
 
-const nunito = Nunito({ subsets: ["latin"], weight: ["400", "500", "600", "700", "900"], variable: "--font-nunito", display: "swap" });
-const openSans = Open_Sans({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-open-sans", display: "swap" });
-const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-cormorant", display: "swap" });
+const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
+const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-inter", display: "swap" });
 const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
 
 export default function GlobalNotFound(): React.JSX.Element {
   return (
     <html
       lang="fr"
-      className={`${nunito.variable} ${openSans.variable} ${cormorant.variable} ${jetbrains.variable}`}
+      className={`${manrope.variable} ${inter.variable} ${jetbrains.variable}`}
     >
       <head>
         <title>Page Introuvable — 404 | Wenaya</title>
