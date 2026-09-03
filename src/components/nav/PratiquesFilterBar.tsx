@@ -23,7 +23,7 @@ export default function PratiquesFilterBar({
   return (
     <div className="flex items-center flex-1 min-w-0 gap-2 sm:gap-0">
       <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto scrollbar-none">
-        {(["all", "manualTherapies", "mentalHealth", "nutrition", "holisticWellness"] as const).map((key) => (
+        {(["all", "manualTherapies", "mentalHealth", "nutrition", "holisticWellness", "soins"] as const).map((key) => (
           <button
             key={key}
             onClick={() => onFilterChange("activeFilter", key)}

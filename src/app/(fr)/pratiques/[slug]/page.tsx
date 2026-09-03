@@ -1,7 +1,8 @@
 /**
- * Pratique Detail Page — server component for individual practice pages (/pratiques/[slug]).
- * Server-resolves pratique via adapter, passes data to PratiqueDetail.
- * Returns 404 if slug does not exist.
+ * Pratique Detail Page FR — /pratiques/[slug]
+ * Static generation via generateStaticParams; dynamic SEO metadata, WebPage +
+ * MedicalTherapy structured data, breadcrumbs, and the editorial PratiqueDetail.
+ * Unknown slugs render a proper 404 via notFound().
  */
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -9,7 +10,9 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PratiqueDetail from "@/components/pratiques/PratiqueDetail";
 import Footer from "@/components/Footer";
-import { getPratiqueBySlug, getAllPratiqueSlugs } from "@/lib/pratiques";
+import { getPratiqueBySlug, getAllPratiqueSlugs, getRelatedPratiques } from "@/lib/pratiques";
+import { getSpecialistsForPractice } from "@/lib/pratique-specialists";
+import { useTranslations } from "@/i18n";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
@@ -25,22 +28,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const pratique = getPratiqueBySlug(slug, "fr");
   if (!pratique) return {};
+
+  const title = pratique.title;
+  const url = `${SITE_URL}/pratiques/${slug}`;
+  const imageUrl = `${SITE_URL}${pratique.image}`;
+
   return {
-    title: `${pratique.title} — Wenaya`,
+    title,
     description: pratique.description,
-    alternates: { canonical: `${SITE_URL}/pratiques/${slug}`, languages: languageAlternates(`/pratiques/${slug}`) },
+    alternates: { canonical: url, languages: languageAlternates(`/pratiques/${slug}`) },
     openGraph: {
       ...OG_DEFAULTS,
-      title: `${pratique.title} — Wenaya`,
+      title: `${title} | Wenaya`,
       description: pratique.description,
-      url: `${SITE_URL}/pratiques/${slug}`,
-      images: [{ url: pratique.image, alt: pratique.title }],
+      url,
+      images: [{ url: imageUrl, alt: pratique.title }],
     },
     twitter: {
       ...TWITTER_DEFAULTS,
-      title: `${pratique.title} — Wenaya`,
+      title: `${title} | Wenaya`,
       description: pratique.description,
-      images: [pratique.image],
+      images: [imageUrl],
     },
   };
 }
@@ -50,30 +58,68 @@ export default async function PratiquePage({ params }: Props) {
   const pratique = getPratiqueBySlug(slug, "fr");
   if (!pratique) notFound();
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "MedicalTherapy",
-    name: pratique.title,
-    description: pratique.description,
-    image: pratique.image,
-    url: `${SITE_URL}/pratiques/${slug}`,
+  const { t } = useTranslations("fr");
+  const related = getRelatedPratiques(slug, "fr", 6);
+  const specialists = getSpecialistsForPractice(slug);
+  const labels = {
+    eyebrow: t("pratiques.detail.eyebrow"),
+    back: t("pratiques.detail.back"),
+    specialistsOverline: t("pratiques.detail.specialistsOverline"),
+    specialistsTitle: t("pratiques.detail.specialistsTitle"),
+    bookingTitle: t("pratiques.detail.bookingTitle"),
+    bookingSub: t("pratiques.detail.bookingSub"),
+    bookingCta: t("pratiques.detail.bookingCta"),
+    bookingCtaBook: t("pratiques.detail.bookingCtaBook"),
+    bookingCtaChoose: t("pratiques.detail.bookingCtaChoose"),
+    relatedOverline: t("pratiques.detail.relatedOverline"),
+    relatedTitle: t("pratiques.detail.relatedTitle"),
+    crossToSeance: t("seanceDeGroupe.crossFromPratiques"),
   };
+
+  const pageUrl = `${SITE_URL}/pratiques/${slug}`;
+
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": pageUrl,
+      url: pageUrl,
+      name: pratique.title,
+      description: pratique.description,
+      inLanguage: "fr",
+      isPartOf: { "@id": `${SITE_URL}/#website` },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "MedicalTherapy",
+      name: pratique.title,
+      description: pratique.description,
+      image: pratique.image,
+      url: pageUrl,
+      provider: { "@id": `${SITE_URL}/#clinic` },
+      areaServed: { "@type": "City", name: "Casablanca" },
+    },
+  ];
 
   return (
     <ErrorBoundary>
       <div className="flex flex-col min-h-screen">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        {jsonLd.map((block, i) => (
+          <script
+            key={i}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(block) }}
+          />
+        ))}
         <main>
           <Breadcrumbs labels={{ [slug]: pratique.title }} />
           <PratiqueDetail
             pratique={pratique}
+            related={related}
+            specialists={specialists}
             locale="fr"
-            backHref="/pratiques"
-            backLabel="Retour aux pratiques"
-            ctaLabel="Prendre rendez-vous"
+            listingHref="/pratiques"
+            labels={labels}
           />
         </main>
         <Footer />

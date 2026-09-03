@@ -11,7 +11,7 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLocale } from "@/contexts/LanguageContext";
-import { h } from "@/lib/href";
+import { h, groupSessionsHref } from "@/lib/href";
 import Link from "next/link";
 import HiggsField from "@/components/HiggsField";
 import { getAllPratiques } from "@/lib/pratiques";
@@ -24,6 +24,7 @@ const categoryMap: Record<string, string[]> = {
   mentalHealth: ["mentalHealth"],
   nutrition: ["nutrition"],
   holisticWellness: ["holisticWellness"],
+  soins: ["soins"],
 };
 
 const bronzePalette: [number, number, number][] = [
@@ -39,7 +40,7 @@ export default function PratiquesGrid(): React.JSX.Element {
   const [activeFilter, setActiveFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filterKeys = ["all", "manualTherapies", "mentalHealth", "nutrition", "holisticWellness"] as const;
+  const filterKeys = ["all", "manualTherapies", "mentalHealth", "nutrition", "holisticWellness", "soins"] as const;
 
   const displayedItems = useMemo(() => {
     const allowedCategories = categoryMap[activeFilter] || [];
@@ -242,6 +243,14 @@ export default function PratiquesGrid(): React.JSX.Element {
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
           </Link>
+          <div className="mt-6">
+            <Link
+              href={groupSessionsHref(locale)}
+              className="inline-flex items-center gap-2 text-[13px] text-[#0B1220]/60 hover:text-[#B88A5A] transition-colors underline underline-offset-4"
+            >
+              {t("seanceDeGroupe.crossFromPratiques")}
+            </Link>
+          </div>
         </div>
       </div>
     </section>

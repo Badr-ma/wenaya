@@ -6,7 +6,9 @@ import Link from "next/link";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Specialist } from "@/lib/specialistes";
+import type { Pratique } from "@/lib/pratiques";
 import BookingPanel from "./BookingPanel";
+import SpecialistPractices from "./SpecialistPractices";
 import { useLocale } from "@/contexts/LanguageContext";
 import { h } from "@/lib/href";
 
@@ -24,7 +26,7 @@ function Stars({ rating }: { rating: number }) {
   );
 }
 
-export default function SpecialistDetail({ specialist }: { specialist: Specialist }) {
+export default function SpecialistDetail({ specialist, practices = [] }: { specialist: Specialist; practices?: Pratique[] }) {
   const ref = useRef<HTMLDivElement>(null);
   const { t, tRaw, locale } = useLocale();
   const [bookingOpen, setBookingOpen] = useState(false);
@@ -168,6 +170,13 @@ export default function SpecialistDetail({ specialist }: { specialist: Specialis
           )}
         </div>
       </section>
+
+      {/* ── PRACTICES OFFERED (reverse relation) ── */}
+      {practices.length > 0 && (
+        <section className="py-12 sm:py-16 border-t border-[#0B1220]/[0.06]">
+          <SpecialistPractices practices={practices} />
+        </section>
+      )}
 
       {/* ── MOBILE STICKY BAR ── */}
       <div className={`lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#0B1220]/[0.06] px-6 py-3 transition-all duration-300 ${showMobileBar ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`}>
