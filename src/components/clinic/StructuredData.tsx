@@ -24,6 +24,24 @@ export default function ClinicStructuredData({
   const langCode = lang === "en" ? "en-MA" : "fr-MA";
   const medicalClinicId = `${SITE_URL}/#medicalclinic-${lang === "en" ? "en" : "fr"}`;
 
+  const services = (lang === "en"
+    ? [
+        { "@type": "MedicalTherapy", name: "Physiotherapy" },
+        { "@type": "MedicalTherapy", name: "Osteopathy" },
+        { "@type": "MedicalTherapy", name: "Psychology" },
+        { "@type": "MedicalTherapy", name: "Nutrition" },
+        { "@type": "MedicalTherapy", name: "Speech Therapy" },
+        { "@type": "MedicalTherapy", name: "Sophrology" },
+      ]
+    : [
+        { "@type": "MedicalTherapy", name: "Kinésithérapie" },
+        { "@type": "MedicalTherapy", name: "Ostéopathie" },
+        { "@type": "MedicalTherapy", name: "Psychologie" },
+        { "@type": "MedicalTherapy", name: "Nutrition" },
+        { "@type": "MedicalTherapy", name: "Orthophonie" },
+        { "@type": "MedicalTherapy", name: "Sophrologie" },
+      ]) satisfies { "@type": string; name: string }[];
+
   const graph = [
     {
       "@type": "WebPage",
@@ -60,14 +78,7 @@ export default function ClinicStructuredData({
           "closes": "20:00",
         },
       ],
-      "availableService": [
-        { "@type": "MedicalTherapy", "name": "Kinésithérapie" },
-        { "@type": "MedicalTherapy", "name": "Ostéopathie" },
-        { "@type": "MedicalTherapy", "name": "Psychologie" },
-        { "@type": "MedicalTherapy", "name": "Nutrition" },
-        { "@type": "MedicalTherapy", "name": "Orthophonie" },
-        { "@type": "MedicalTherapy", "name": "Sophrologie" },
-      ],
+      "availableService": services,
     },
   ];
 

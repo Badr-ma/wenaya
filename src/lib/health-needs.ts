@@ -30,11 +30,11 @@ const healthNeedSources: HealthNeedSource[] = [
     relatedPracticeSlugs: ["kinesitherapie", "osteopathie"],
     fr: {
       title: "Douleurs du dos",
-      summary: "Lombalgies, cervicalgies, hernies discales — kinésithérapie et ostéopathie pour soulager et prévenir.",
+      summary: "Lombalgies, cervicalgies et douleurs persistantes.",
     },
     en: {
       title: "Back pain",
-      summary: "Lower back pain, neck pain, herniated discs — physiotherapy and osteopathy to relieve and prevent.",
+      summary: "Lower back, neck and persistent pain.",
     },
   },
   {
@@ -42,11 +42,11 @@ const healthNeedSources: HealthNeedSource[] = [
     relatedPracticeSlugs: ["psychologie", "sophrologie", "meditation"],
     fr: {
       title: "Stress & anxiété",
-      summary: "Gestion du stress, troubles anxieux et burn-out — accompagnement psychologique et thérapies douces.",
+      summary: "Stress, anxiété et épuisement.",
     },
     en: {
       title: "Stress & anxiety",
-      summary: "Stress management, anxiety disorders and burnout — psychological support and gentle therapies.",
+      summary: "Stress, anxiety and exhaustion.",
     },
   },
   {
@@ -54,11 +54,11 @@ const healthNeedSources: HealthNeedSource[] = [
     relatedPracticeSlugs: ["psychologie", "sophrologie", "meditation"],
     fr: {
       title: "Troubles du sommeil",
-      summary: "Insomnies, apnées du sommeil, hygiene du sommeil — évaluation et prise en charge multidisciplinaire.",
+      summary: "Insomnie et qualité du sommeil.",
     },
     en: {
       title: "Sleep disorders",
-      summary: "Insomnia, sleep apnoea, sleep hygiene — assessment and multidisciplinary care.",
+      summary: "Insomnia and sleep quality.",
     },
   },
   {
@@ -66,11 +66,11 @@ const healthNeedSources: HealthNeedSource[] = [
     relatedPracticeSlugs: ["kinesitherapie", "osteopathie", "coaching-sportif"],
     fr: {
       title: "Rééducation posturale",
-      summary: "Déséquilibres posturaux, scolioses, douleurs articulaires — rééducation et renforcement musculaire.",
+      summary: "Posture, mobilité et équilibre musculaire.",
     },
     en: {
       title: "Postural rehabilitation",
-      summary: "Postural imbalances, scoliosis, joint pain — rehabilitation and muscle strengthening.",
+      summary: "Posture, mobility and muscular balance.",
     },
   },
   {
@@ -78,11 +78,11 @@ const healthNeedSources: HealthNeedSource[] = [
     relatedPracticeSlugs: ["nutrition", "psychologie"],
     fr: {
       title: "Troubles alimentaires",
-      summary: "Relation difficile avec la nourriture, troubles du comportement alimentaire — soutien nutritionnel et psychologique.",
+      summary: "Nutrition et relation à l'alimentation.",
     },
     en: {
       title: "Eating disorders",
-      summary: "A difficult relationship with food, eating disorders — nutritional and psychological support.",
+      summary: "Nutrition and your relationship with food.",
     },
   },
   {
@@ -90,11 +90,11 @@ const healthNeedSources: HealthNeedSource[] = [
     relatedPracticeSlugs: ["naturopathie", "sophrologie", "meditation", "yoga"],
     fr: {
       title: "Recherche d'équilibre",
-      summary: "Bien-être général, prévention, harmonie corps-esprit — approche holistique et préventive.",
+      summary: "Bien-être, prévention et équilibre global.",
     },
     en: {
       title: "Seeking balance",
-      summary: "General well-being, prevention, mind-body harmony — a holistic and preventive approach.",
+      summary: "Well-being, prevention and overall balance.",
     },
   },
   {
@@ -102,11 +102,11 @@ const healthNeedSources: HealthNeedSource[] = [
     relatedPracticeSlugs: ["kinesitherapie", "osteopathie", "massotherapie"],
     fr: {
       title: "Douleurs articulaires",
-      summary: "Arthrose, tendinites, douleurs chroniques — kinésithérapie, ostéopathie et thérapies complémentaires.",
+      summary: "Arthrose, tendinites et douleurs chroniques.",
     },
     en: {
       title: "Joint pain",
-      summary: "Osteoarthritis, tendinitis, chronic pain — physiotherapy, osteopathy and complementary therapies.",
+      summary: "Osteoarthritis, tendinitis and chronic pain.",
     },
   },
   {
@@ -114,11 +114,11 @@ const healthNeedSources: HealthNeedSource[] = [
     relatedPracticeSlugs: ["psychologie", "psychomotricite", "neuropsychologie", "orthophonie"],
     fr: {
       title: "Santé mentale enfant",
-      summary: "Difficultés émotionnelles, troubles du comportement, troubles des apprentissages — accompagnement spécialisé.",
+      summary: "Émotions, comportement et apprentissage.",
     },
     en: {
       title: "Children's mental health",
-      summary: "Emotional difficulties, behavioural issues, learning difficulties — specialised support.",
+      summary: "Emotions, behaviour and learning.",
     },
   },
 ];

@@ -1,10 +1,15 @@
 /**
- * Group Session Detail — renders the core content for /seance-de-groupe/[slug] and
+ * Group Session Detail — editorial, image-led redesign for /seance-de-groupe/[slug] and
  * /en/group-sessions/[slug]. Server component; all copy arrives pre-resolved from the
  * pages via the group-sessions adapter (no client i18n).
  *
- * Structure: back link, hero (image + type + title + description + CTA), factual info
- * cards (only when the data is supported), booking area and related sessions.
+ * Structure (no cards, premium editorial rhythm):
+ *   hero (Ivory)          → back link, eyebrow/type, H1, description, booking CTA + dominant image
+ *   info band (Warm Sand) → FORMAT / PUBLIC / LIEU, horizontal columns + thin dividers
+ *   about (Ivory)         → H2 + existing description, editorial prose
+ *   visual band (Navy)    → full-width reuse of the session image (different composition)
+ *   related (Ivory)       → numbered editorial list rows, thin separators
+ *   booking CTA (Navy)    → final conversion band
  */
 import Image from "next/image";
 import Link from "next/link";
@@ -17,184 +22,250 @@ interface GroupSessionDetailProps {
   listingHref: string;
 }
 
+const BRONZE = "#B88A5A";
+const BRONZE_DARK = "#9A7242";
+
+const arrowIcon = (
+  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+  </svg>
+);
+
 export default function GroupSessionDetail({
   session,
   related,
   labels,
   listingHref,
 }: GroupSessionDetailProps): React.JSX.Element {
+  const infoItems = [];
+  if (session.format) {
+    infoItems.push({ label: labels.formatTitle, value: session.format.title, sub: session.format.desc });
+  }
+  if (session.audience) {
+    infoItems.push({ label: labels.audienceTitle, value: session.audience, sub: "" });
+  }
+  infoItems.push({ label: labels.locationTitle, value: session.location.title, sub: session.location.desc });
+
   return (
-    <section className="bg-[#F2EFE9] min-h-screen pt-8 sm:pt-10 pb-20 sm:pb-28 px-6">
-      <div className="mx-auto max-w-7xl">
-        {/* Back link */}
-        <Link
-          href={listingHref}
-          className="inline-flex items-center text-xs text-[#2B2F36]/30 hover:text-[#2B2F36]/60 transition-colors mb-8 sm:mb-12"
-        >
-          <span className="mr-1.5">←</span>
-          {labels.back}
-        </Link>
+    <>
+      {/* ── Hero · Ivory ─────────────────────────────────────────── */}
+      <section className="relative overflow-hidden bg-[#FAF8F4] px-6 sm:px-10">
+        <div className="max-w-7xl mx-auto pt-8 sm:pt-12 pb-14 sm:pb-20">
+          <Link
+            href={listingHref}
+            className="inline-flex items-center gap-2 text-xs text-[#2B2F36]/40 hover:text-[#2B2F36]/80 transition-colors"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
+            </svg>
+            {labels.back}
+          </Link>
 
-        {/* Hero */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-          <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-[#0B1220]/[0.06]">
-            <Image
-              src={session.image}
-              alt={session.title}
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
-            />
-          </div>
+          <div className="mt-10 lg:mt-14 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            {/* Text */}
+            <div>
+              <span className="inline-flex items-center gap-3 text-[#B88A5A] text-[11px] font-semibold tracking-[0.24em] uppercase">
+                <span className="w-6 h-px bg-[#B88A5A]/40" />
+                {session.typeLabel}
+              </span>
 
-          <div className="flex flex-col gap-5">
-            <span
-              className="inline-flex items-center gap-2 self-start text-[11px] font-semibold tracking-[0.18em] uppercase rounded-full px-3.5 py-1.5"
-              style={{
-                color: session.accent,
-                background: `${session.accent}14`,
-                border: `1px solid ${session.accent}30`,
-              }}
-            >
-              <span className="w-1 h-1 rounded-full" style={{ background: session.accent }} />
-              {session.typeLabel}
-            </span>
+              <h1 className="heading-serif text-[clamp(2.2rem,5vw,4rem)] text-[#0B1220] leading-[1.02] tracking-[-0.02em] mt-5">
+                {session.title}
+              </h1>
 
-            <h1 className="heading-serif text-[clamp(1.9rem,4vw,3.2rem)] text-[#0B1220] leading-[1.1] tracking-[-0.01em]">
-              {session.title}
-            </h1>
+              <p className="mt-6 max-w-lg text-[#2B2F36]/60 text-base sm:text-lg leading-relaxed">
+                {session.description}
+              </p>
 
-            <div className="border-l-2 border-[#377B89]/40 pl-5 py-1">
-              <p className="text-[#2B2F36]/60 text-base sm:text-lg leading-relaxed">{session.description}</p>
+              <div className="mt-9">
+                <Link
+                  href={session.bookingHref}
+                  className="inline-flex items-center gap-3 h-13 px-8 py-3.5 text-white text-sm font-semibold transition-all duration-300 hover:-translate-y-px"
+                  style={{
+                    background: `linear-gradient(135deg, ${BRONZE} 0%, ${BRONZE_DARK} 100%)`,
+                    boxShadow: "0 1px 0 rgba(255,255,255,0.14) inset, 0 6px 24px rgba(184,138,90,0.3)",
+                  }}
+                >
+                  {labels.bookCta}
+                  {arrowIcon}
+                </Link>
+              </div>
             </div>
 
-            <div className="pt-4">
-              <Link
-                href={session.bookingHref}
-                className="inline-flex items-center gap-3 h-11 px-7 rounded-xl text-[13px] font-semibold text-white transition-all duration-300 hover:-translate-y-px active:translate-y-0"
-                style={{
-                  background: `linear-gradient(135deg, ${session.accent} 0%, #9A7242 100%)`,
-                  boxShadow: `0 1px 0 rgba(255,255,255,0.16) inset, 0 6px 24px ${session.accent}40`,
-                }}
+            {/* Image — dominant editorial 4/5 */}
+            <div className="relative">
+              <div className="relative aspect-[4/5] sm:aspect-[3/4] lg:aspect-[4/5] rounded-[28px] overflow-hidden">
+                <Image
+                  src={session.image}
+                  alt={session.title}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 45vw"
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/15 via-transparent to-transparent" />
+              </div>
+              <div className="absolute -bottom-5 -left-5 w-28 h-28 rounded-full bg-[#B88A5A]/10 blur-2xl" aria-hidden="true" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Info band · Warm Sand ───────────────────────────────── */}
+      <section className="bg-[#F2EFE9] px-6 sm:px-10">
+        <div className="max-w-7xl mx-auto py-12 sm:py-16">
+          <div className="flex flex-col lg:flex-row lg:divide-x lg:divide-[#0B1220]/10">
+            {infoItems.map((it, i) => (
+              <div
+                key={it.label}
+                className={`lg:flex-1 py-6 lg:py-1 lg:px-10 ${i > 0 ? "border-t border-[#0B1220]/10 lg:border-t-0" : ""} ${i === 0 ? "lg:pl-0" : ""} lg:last:pr-0`}
               >
-                {labels.bookCta}
+                <span className="block text-[#B88A5A] text-[10px] font-semibold tracking-[0.22em] uppercase">
+                  {it.label}
+                </span>
+                <p className="mt-2.5 heading-serif text-[#0B1220] text-lg sm:text-xl leading-tight">{it.value}</p>
+                {it.sub && <p className="mt-1.5 text-[#2B2F36]/55 text-sm leading-relaxed">{it.sub}</p>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── About · Ivory ────────────────────────────────────────── */}
+      <section className="bg-[#FAF8F4] px-6 sm:px-10">
+        <div className="max-w-7xl mx-auto py-14 sm:py-20">
+          <div className="max-w-2xl">
+            <span className="inline-flex items-center gap-3 text-[#B88A5A] text-[11px] font-semibold tracking-[0.24em] uppercase">
+              <span className="w-6 h-px bg-[#B88A5A]/40" />
+              {session.typeLabel}
+            </span>
+            <h2 className="heading-serif text-[clamp(1.6rem,3vw,2.4rem)] text-[#0B1220] leading-tight mt-4">
+              {labels.whatTitle}
+            </h2>
+            <div className="h-px w-12 bg-[#B88A5A] mt-5" aria-hidden="true" />
+            <p className="mt-6 text-[#2B2F36]/65 text-base sm:text-lg leading-relaxed">{session.description}</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Visual band · Navy (full-width image, different crop) ── */}
+      <section className="relative overflow-hidden bg-[#0B1220]">
+        <div className="relative aspect-[16/10] sm:aspect-[21/9] lg:aspect-[2.4/1]">
+          <Image
+            src={session.image}
+            alt=""
+            aria-hidden="true"
+            fill
+            sizes="100vw"
+            className="object-cover opacity-90"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/85 via-[#0B1220]/30 to-[#0B1220]/10" />
+          <div className="absolute inset-0 flex items-end px-6 sm:px-10 pb-10 sm:pb-14">
+            <div className="max-w-7xl mx-auto w-full">
+              <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.24em] uppercase">
+                {session.typeLabel}
+              </span>
+              <p className="heading-serif text-white text-[clamp(1.4rem,3vw,2.2rem)] leading-snug max-w-2xl mt-3">
+                {session.description}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Related · Ivory ─────────────────────────────────────── */}
+      {related.length > 0 && (
+        <section className="bg-[#FAF8F4] px-6 sm:px-10">
+          <div className="max-w-7xl mx-auto py-14 sm:py-20">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+              <span className="inline-flex items-center gap-3 text-[#B88A5A] text-[11px] font-semibold tracking-[0.24em] uppercase">
+                <span className="w-6 h-px bg-[#B88A5A]/40" />
+                {session.typeLabel}
+              </span>
+              <Link
+                href={listingHref}
+                className="inline-flex items-center gap-2 text-xs font-semibold text-[#0B1220] hover:text-[#B88A5A] transition-colors"
+              >
+                {labels.viewAll}
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
               </Link>
             </div>
-          </div>
-        </div>
 
-        {/* Factual information cards */}
-        <div className="mt-14 sm:mt-20 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <InfoCard title={labels.whatTitle} accent={session.accent}>
-            <p>{session.description}</p>
-          </InfoCard>
+            <h2 className="heading-serif text-[clamp(1.6rem,3.4vw,2.6rem)] text-[#0B1220] leading-tight mt-2">
+              {labels.relatedTitle}
+            </h2>
+            {labels.relatedSub && <p className="text-[#2B2F36]/55 text-sm mt-3 max-w-xl">{labels.relatedSub}</p>}
 
-          {session.audience && (
-            <InfoCard title={labels.audienceTitle} accent={session.accent}>
-              <p>{session.audience}</p>
-            </InfoCard>
-          )}
-
-          {session.format && (
-            <InfoCard title={labels.formatTitle} accent={session.accent}>
-              <h3 className="text-[#0B1220] font-heading font-semibold text-[15px] mb-1">{session.format.title}</h3>
-              <p>{session.format.desc}</p>
-            </InfoCard>
-          )}
-
-          <InfoCard title={labels.locationTitle} accent={session.accent}>
-            <h3 className="text-[#0B1220] font-heading font-semibold text-[15px] mb-1">{session.location.title}</h3>
-            <p>{session.location.desc}</p>
-          </InfoCard>
-        </div>
-
-        {/* Booking area */}
-        <div className="mt-14 sm:mt-20 rounded-2xl border border-[#0B1220]/[0.06] bg-white/60 px-6 py-10 sm:py-14 text-center">
-          <h2 className="heading-serif text-[clamp(1.5rem,3vw,2.2rem)] text-[#0B1220]">{session.title}</h2>
-          {labels.bookingNote && <p className="text-[#2B2F36]/55 text-sm sm:text-[15px] max-w-xl mx-auto mt-3 leading-relaxed">{labels.bookingNote}</p>}
-          <div className="mt-7">
-            <Link
-              href={session.bookingHref}
-              className="inline-flex items-center gap-3 h-12 px-8 rounded-xl text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-px active:translate-y-0"
-              style={{
-                background: `linear-gradient(135deg, ${session.accent} 0%, #9A7242 100%)`,
-                boxShadow: `0 1px 0 rgba(255,255,255,0.16) inset, 0 6px 24px ${session.accent}40`,
-              }}
-            >
-              {labels.bookCta}
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </Link>
-          </div>
-        </div>
-
-        {/* Related sessions */}
-        {related.length > 0 && (
-          <div className="mt-14 sm:mt-20">
-            <div className="mb-8">
-              <span className="inline-flex items-center gap-2.5 mb-2">
-                <div className="w-1 h-1 rounded-full bg-[#B88A5A]" />
-                <span className="text-[#B88A5A]/60 text-[10px] font-semibold tracking-[0.24em] uppercase">{session.typeLabel}</span>
-              </span>
-              <h2 className="heading-serif text-[clamp(1.5rem,3vw,2.2rem)] text-[#0B1220]">{labels.relatedTitle}</h2>
-              {labels.relatedSub && <p className="text-[#2B2F36]/55 text-sm mt-2">{labels.relatedSub}</p>}
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-10 border-t border-[#0B1220]/10 divide-y divide-[#0B1220]/10">
               {related.map((r, i) => (
                 <Link
                   key={r.id}
                   href={r.path}
-                  className="group rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-0.5"
-                  style={{ background: "#0B1220", border: "1px solid rgba(11,18,32,0.08)" }}
+                  className="group flex items-center gap-4 sm:gap-8 py-6 sm:py-7"
                 >
-                  <div className="relative w-full aspect-[16/10] overflow-hidden">
+                  <span className="heading-serif text-[#B88A5A] text-lg sm:text-xl tabular-nums w-8 shrink-0">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+
+                  <div className="hidden sm:block w-20 h-20 rounded-xl overflow-hidden shrink-0">
                     <Image
                       src={r.image}
                       alt={r.title}
-                      fill
-                      sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
-                      className="object-cover transition-all duration-700 group-hover:scale-[1.05]"
+                      width={80}
+                      height={80}
+                      sizes="80px"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/80 via-[#0B1220]/10 to-transparent" />
-                    <div
-                      className="absolute left-3 top-3 w-7 h-7 rounded-full flex items-center justify-center"
-                      style={{ background: `${r.accent}18`, border: `1px solid ${r.accent}30` }}
-                    >
-                      <span className="font-heading font-bold text-[10px] tabular-nums" style={{ color: r.accent }}>
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                    </div>
                   </div>
-                  <div className="flex-1 px-5 py-4">
-                    <h3 className="font-heading font-semibold text-white text-[15px] leading-snug">{r.title}</h3>
-                    <p className="text-white/60 text-[12.5px] leading-relaxed mt-1.5">{r.description}</p>
+
+                  <div className="flex-1 min-w-0">
+                    <h3 className="heading-serif text-[#0B1220] text-lg sm:text-xl leading-tight group-hover:text-[#B88A5A] transition-colors">
+                      {r.title}
+                    </h3>
+                    <p className="text-[#2B2F36]/55 text-[13.5px] mt-1 max-w-xl line-clamp-2">{r.description}</p>
                   </div>
+
+                  <span className="text-[#0B1220] group-hover:text-[#B88A5A] group-hover:translate-x-1 transition-all shrink-0" aria-hidden="true">
+                    {arrowIcon}
+                  </span>
                 </Link>
               ))}
             </div>
           </div>
-        )}
-      </div>
-    </section>
-  );
-}
+        </section>
+      )}
 
-function InfoCard({ title, accent, children }: { title: string; accent: string; children: React.ReactNode }) {
-  return (
-    <div className="rounded-2xl border border-[#0B1220]/[0.06] bg-white/60 p-6">
-      <div className="flex items-center gap-2.5 mb-4">
-        <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ background: `${accent}14`, border: `1px solid ${accent}25` }}>
-          <span className="w-2 h-2 rounded-full" style={{ background: accent }} />
+      {/* ── Final booking CTA · Navy ────────────────────────────── */}
+      <section className="bg-[#0B1220] px-6 sm:px-10">
+        <div className="max-w-7xl mx-auto py-16 sm:py-24 text-center">
+          <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.24em] uppercase">
+            {labels.ctaEyebrow}
+          </span>
+          <h2 className="heading-serif text-white text-[clamp(1.8rem,3.5vw,2.8rem)] leading-tight mt-4">
+            {labels.ctaHeading}
+          </h2>
+          {labels.bookingNote && (
+            <p className="text-white/55 text-sm sm:text-[15px] max-w-xl mx-auto mt-4 leading-relaxed">
+              {labels.bookingNote}
+            </p>
+          )}
+          <div className="mt-9">
+            <Link
+              href={session.bookingHref}
+              className="inline-flex items-center gap-3 h-13 px-8 py-3.5 text-white text-sm font-semibold transition-all duration-300 hover:-translate-y-px"
+              style={{
+                background: `linear-gradient(135deg, ${BRONZE} 0%, ${BRONZE_DARK} 100%)`,
+                boxShadow: "0 1px 0 rgba(255,255,255,0.14) inset, 0 6px 24px rgba(184,138,90,0.3)",
+              }}
+            >
+              {labels.bookCta}
+              {arrowIcon}
+            </Link>
+          </div>
         </div>
-        <h2 className="font-heading font-semibold text-[15px] text-[#0B1220] tracking-wide">{title}</h2>
-      </div>
-      <div className="text-[#2B2F36]/60 text-sm leading-relaxed">{children}</div>
-    </div>
+      </section>
+    </>
   );
 }

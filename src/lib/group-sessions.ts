@@ -68,6 +68,12 @@ export interface GroupSessionDetailLabels {
   locationTitle: string;
   relatedTitle: string;
   relatedSub: string;
+  /** Eyebrow label shown above the final booking heading */
+  ctaEyebrow: string;
+  /** Final conversion heading */
+  ctaHeading: string;
+  /** "View all sessions" link label */
+  viewAll: string;
 }
 
 // ─── Canonical data (non-translatable) ─────────────────────────
@@ -241,6 +247,9 @@ export function getGroupSessionLabels(locale: GroupSessionLocale = "fr"): GroupS
     locationTitle: detail.locationTitle ?? "",
     relatedTitle: detail.relatedTitle ?? "",
     relatedSub: detail.relatedSub ?? "",
+    ctaEyebrow: detail.ctaEyebrow ?? "",
+    ctaHeading: detail.ctaHeading ?? "",
+    viewAll: detail.viewAll ?? "",
   };
 }
 

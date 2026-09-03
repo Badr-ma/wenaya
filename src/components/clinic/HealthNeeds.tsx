@@ -1,7 +1,9 @@
 /**
- * Clinic Health Needs (Maux-troubles) — discovery section for the Clinic/B2C page.
- * Editorial: describes "I know my condition, not who to see", then lists care needs.
- * No cards.
+ * Clinic Health Needs (Maux-troubles) — discovery section for the Clinic/B2C
+ * page. Editorial: large question on the left, numbered care-need rows on the
+ * right with thin separators. Rows are intentionally non-interactive (no
+ * destintination routes), so they are styled as editorial text, not clickable
+ * links. No cards.
  */
 "use client";
 
@@ -15,32 +17,44 @@ export default function ClinicHealthNeeds(): React.JSX.Element {
   const healthNeeds = getHealthNeeds(locale as "fr" | "en");
 
   return (
-    <section ref={sectionRef} className="relative bg-[#FAF8F4] px-6 sm:px-10">
-      <div className="max-w-7xl mx-auto py-24 lg:py-32">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
-          <div className="lg:col-span-4">
-            <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.24em] uppercase block mb-6">
+    <section ref={sectionRef} className="relative bg-[#F2EFE9] px-6 sm:px-10">
+      <div className="max-w-7xl mx-auto py-16 lg:py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+          <div className="lg:col-span-5">
+            <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.24em] uppercase block mb-5">
               {t("clinic.healthNeeds.badge")}
             </span>
-            <h2 className="heading-serif text-[#0B1220] leading-[1.05]" style={{ fontSize: "clamp(2.2rem, 3.6vw, 3.2rem)" }}>
+            <h2 className="heading-serif text-[#0B1220] leading-[1.05]" style={{ fontSize: "clamp(2rem, 3.6vw, 3rem)" }}>
               {t("clinic.healthNeeds.heading1")}
               <br />
               {t("clinic.healthNeeds.heading2")}
             </h2>
-            <p className="mt-6 text-[#0B1220]/55 text-base lg:text-lg leading-relaxed">
+            <p className="mt-5 text-[#B88A5A] text-lg lg:text-xl font-light leading-relaxed max-w-md">
+              &ldquo;{locale === "en" ? "What is your need?" : "Quel est votre besoin ?"}&rdquo;
+            </p>
+            <p className="mt-3 text-[#0B1220]/55 text-base lg:text-lg leading-relaxed max-w-md">
               {t("clinic.healthNeeds.sub")}
             </p>
           </div>
 
-          <div className="lg:col-span-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-8">
+          <div className="lg:col-span-7">
+            <div className="space-y-0 divide-y divide-[#0B1220]/[0.08]">
               {healthNeeds.map((n, i) => (
-                <div key={n.slug} className="border-t border-[#0B1220]/[0.08] pt-5">
-                  <div className="flex items-center gap-3">
-                    <span className="text-[#B88A5A] font-mono text-sm">{String(i + 1).padStart(2, "0")}</span>
-                    <h3 className="heading-serif text-[#0B1220] text-lg">{n.title}</h3>
+                <div key={n.slug} className="flex items-baseline gap-5 lg:gap-7 py-3.5 lg:py-4">
+                  <span className="text-[#B88A5A] font-mono text-sm shrink-0">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div className="flex-1">
+                    <h3 className="heading-serif text-[#0B1220] text-lg lg:text-xl leading-snug">
+                      {n.title}
+                    </h3>
+                    <p className="mt-0.5 text-[#0B1220]/50 text-sm leading-snug max-w-xl">
+                      {n.summary}
+                    </p>
                   </div>
-                  <p className="mt-2 text-[#0B1220]/55 text-sm leading-relaxed">{n.summary}</p>
+                  <span aria-hidden="true" className="text-[#B88A5A]/60 text-lg lg:text-xl shrink-0">
+                    →
+                  </span>
                 </div>
               ))}
             </div>

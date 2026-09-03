@@ -16,6 +16,8 @@ function ContactFormInner(): React.JSX.Element {
   const searchParams = useSearchParams();
   const service = searchParams.get("service");
   const type = searchParams.get("type");
+  const subject = searchParams.get("subject");
+  const isRecruitment = subject === "recrutement" || subject === "recruitment";
   const requestedSession = service ? getGroupSessionForBooking(service, locale) : undefined;
 
   const [firstName, setFirstName] = useState("");
@@ -23,7 +25,8 @@ function ContactFormInner(): React.JSX.Element {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState(
-    requestedSession ? `${t("contact.sessionPrefill")} ${requestedSession.title}.` : "",
+    requestedSession ? `${t("contact.sessionPrefill")} ${requestedSession.title}.`
+    : isRecruitment ? t("contact.recruitmentPrefill") : "",
   );
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -47,9 +50,10 @@ function ContactFormInner(): React.JSX.Element {
           email,
           phone,
           message,
-          source: "contact",
+          source: isRecruitment ? "recrutement" : "contact",
           service: service ?? undefined,
           type: type ?? undefined,
+          subject: subject ?? undefined,
         }),
       });
       if (!res.ok) throw new Error(t("contact.errorServer"));
@@ -89,6 +93,24 @@ function ContactFormInner(): React.JSX.Element {
               <p className="text-[#0B1220]/70 text-xs leading-relaxed">
                 <span className="font-semibold text-[#0B1220]">{t("contact.sessionNotice")} :</span>{" "}
                 {requestedSession.title}
+              </p>
+            </div>
+          )}
+
+          {isRecruitment && !requestedSession && (
+            <div
+              className="flex items-start gap-3 rounded-xl border px-4 py-3"
+              style={{ background: "#B88A5A0D", borderColor: "#B88A5A30" }}
+            >
+              <span
+                className="mt-0.5 w-1.5 h-1.5 shrink-0 rounded-full"
+                style={{ background: "linear-gradient(135deg, #B88A5A 0%, #9A7242 100%)" }}
+              />
+              <p className="text-[#0B1220]/70 text-xs leading-relaxed">
+                <span className="font-semibold text-[#0B1220]">
+                  {locale === "en" ? "Recruitment" : "Recrutement"}
+                </span>{" "}
+                — {locale === "en" ? "Join the Wenaya team" : "Rejoindre l'équipe Wenaya"}
               </p>
             </div>
           )}

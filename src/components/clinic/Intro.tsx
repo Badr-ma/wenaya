@@ -1,72 +1,83 @@
 /**
- * Clinic Intro — integrated-health ecosystem section for the Clinic/B2C page.
- * Editorial two-column: narrative + WHO statement + feature list. No cards.
+ * Clinic Intro — integrated-health ecosystem story for the Clinic/B2C page.
+ * Editorial image/text split: a large photograph opposite the narrative, the
+ * WHO statement pull quote, and numbered principles as simple rows. No cards.
  */
 "use client";
 
+import Image from "next/image";
 import { useLocale } from "@/contexts/LanguageContext";
 import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 import { clinicFeatures } from "@/lib/clinic-content";
 
 export default function ClinicIntro(): React.JSX.Element {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const { elRef: sectionRef } = useIntersectionDeferred();
-  const features = clinicFeatures;
+  const features = clinicFeatures(locale);
 
   return (
     <section ref={sectionRef} className="relative bg-[#F2EFE9] px-6 sm:px-10">
-      <div className="max-w-7xl mx-auto py-24 lg:py-32">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
-          {/* Left: narrative */}
-          <div className="lg:col-span-5">
-            <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.24em] uppercase block mb-6">
-              {t("clinic.intro.badge")}
-            </span>
-            <h2 className="heading-serif text-[#0B1220] leading-[1.05]" style={{ fontSize: "clamp(2.2rem, 4vw, 3.5rem)" }}>
+      <div className="max-w-7xl mx-auto py-16 lg:py-20">
+        <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.24em] uppercase block mb-6">
+          {t("clinic.intro.badge")}
+        </span>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-10">
+          {/* Image story */}
+          <div className="lg:col-span-6">
+            <div className="relative overflow-hidden rounded-t-[32px]">
+              <Image
+                src={locale === "en" ? "/images/diverse-team.jpg" : "/images/diverse-team.jpg"}
+                alt={locale === "en" ? "The multidisciplinary Wenaya team" : "L'équipe pluridisciplinaire Wenaya"}
+                fill={false}
+                width={900}
+                height={600}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="w-full h-auto object-cover"
+              />
+            </div>
+          </div>
+
+          {/* Editorial text */}
+          <div className="lg:col-span-6 lg:pl-4">
+            <h2 className="heading-serif text-[#0B1220] leading-[1.05]" style={{ fontSize: "clamp(2rem, 3.6vw, 3rem)" }}>
               {t("clinic.intro.heading1")}
               <br />
               {t("clinic.intro.heading2")}
             </h2>
-            <div className="mt-8 space-y-5 text-[#0B1220]/70 text-base lg:text-lg leading-relaxed">
-              <p>{t("clinic.intro.p1")}</p>
-              <p>{t("clinic.intro.p2")}</p>
-            </div>
+
+            <p className="mt-5 text-[#0B1220]/70 text-base lg:text-lg leading-relaxed max-w-lg">
+              {t("clinic.intro.p1")}
+            </p>
 
             {/* WHO statement */}
-            <div className="mt-10 lg:mt-14 border-l-2 border-[#B88A5A] pl-6">
-              <blockquote className="text-[#0B1220]/80 text-xl lg:text-2xl font-light italic leading-relaxed">
+            <div className="mt-7 lg:mt-8 border-l-2 border-[#B88A5A] pl-6 max-w-lg">
+              <blockquote className="text-[#0B1220]/80 text-lg lg:text-xl font-light italic leading-relaxed">
                 “{t("clinic.intro.whoQuote")}”
               </blockquote>
-              <p className="mt-3 text-[#B88A5A] text-sm font-semibold tracking-wide">
+              <p className="mt-2.5 text-[#B88A5A] text-sm font-semibold tracking-wide">
                 — {t("clinic.intro.whoSource")}
-              </p>
-              <p className="mt-4 text-[#0B1220]/55 text-base leading-relaxed">
-                {t("clinic.intro.whoCommitment")}
               </p>
             </div>
           </div>
+        </div>
 
-          {/* Right: features, numbered editorial rows */}
-          <div className="lg:col-span-7">
-            <div className="space-y-0 divide-y divide-[#0B1220]/[0.06]">
-              {features.map((f, i) => (
-                <div key={f.title} className={`py-8 lg:py-9 ${i === 0 ? "pt-0" : ""}`}>
-                  <div className="flex items-start gap-5 lg:gap-8">
-                    <span className="text-[#B88A5A] text-sm font-mono w-8 shrink-0 translate-y-1">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <div>
-                      <h3 className="heading-serif text-[#0B1220] text-xl lg:text-2xl">
-                        {f.title}
-                      </h3>
-                      <p className="mt-2 text-[#0B1220]/60 text-base leading-relaxed">
-                        {f.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+        {/* Numbered principles as rows */}
+        <div className="mt-9 lg:mt-10 max-w-5xl">
+          <div className="space-y-0 divide-y divide-[#0B1220]/[0.06]">
+            {features.map((f, i) => (
+              <div key={f.title} className="grid grid-cols-1 md:grid-cols-[64px_1fr_2fr] gap-2 md:gap-8 py-3.5 lg:py-4 items-baseline">
+                <span className="text-[#B88A5A] text-sm font-mono">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="heading-serif text-[#0B1220] text-lg lg:text-xl leading-snug">
+                  {f.title}
+                </h3>
+                <p className="text-[#0B1220]/60 text-base leading-relaxed md:text-right">
+                  {f.description}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </div>

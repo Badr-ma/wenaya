@@ -32,11 +32,11 @@ const pathologySources: PathologySource[] = [
     relatedPracticeSlugs: ["kinesitherapie", "osteopathie", "nutrition", "psychologie"],
     fr: {
       title: "Grossesse & Maternité",
-      summary: "Accompagnement complet pendant et après la grossesse : kinésithérapie périnéale, ostéopathie, nutrition prénatale et soutien psychologique pour les futures et jeunes mamans.",
+      summary: "Accompagnement complet avant et après la naissance.",
     },
     en: {
       title: "Pregnancy & Motherhood",
-      summary: "Comprehensive support during and after pregnancy: perineal physiotherapy, osteopathy, prenatal nutrition and psychological support for expectant and new mothers.",
+      summary: "Complete care before and after birth.",
     },
   },
   {
@@ -45,11 +45,11 @@ const pathologySources: PathologySource[] = [
     relatedPracticeSlugs: ["orthophonie", "psychomotricite", "neuropsychologie"],
     fr: {
       title: "Troubles de l'apprentissage",
-      summary: "Bilan et prise en charge des troubles dys, de l'attention et des apprentissages chez l'enfant et l'adolescent via orthophonie, psychomotricité et neuropsychologie.",
+      summary: "Bilan et prise en charge des troubles dys et de l'attention.",
     },
     en: {
       title: "Learning difficulties",
-      summary: "Assessment and care for dyslexia, attention and learning difficulties in children and adolescents through speech therapy, psychomotor therapy and neuropsychology.",
+      summary: "Assessment and care for learning difficulties.",
     },
   },
   {
@@ -58,11 +58,11 @@ const pathologySources: PathologySource[] = [
     relatedPracticeSlugs: ["kinesitherapie", "osteopathie"],
     fr: {
       title: "Vertiges",
-      summary: "Évaluation et rééducation des vertiges et des troubles de l'équilibre par des spécialistes en kinésithérapie vestibulaire et ostéopathie.",
+      summary: "Rééducation des vertiges et de l'équilibre.",
     },
     en: {
       title: "Vertigo",
-      summary: "Assessment and rehabilitation of vertigo and balance disorders by specialists in vestibular physiotherapy and osteopathy.",
+      summary: "Rehabilitation for vertigo and balance.",
     },
   },
   {
@@ -71,11 +71,11 @@ const pathologySources: PathologySource[] = [
     relatedPracticeSlugs: ["neuropsychologie", "psychologie", "psychomotricite"],
     fr: {
       title: "Maladie d'Alzheimer",
-      summary: "Accompagnement des patients atteints de la maladie d'Alzheimer et de leurs proches : stimulation cognitive, maintien de l'autonomie et soutien psychologique.",
+      summary: "Stimulation cognitive et soutien aux proches.",
     },
     en: {
       title: "Alzheimer's disease",
-      summary: "Support for patients with Alzheimer's disease and their loved ones: cognitive stimulation, maintaining independence and psychological support.",
+      summary: "Cognitive stimulation and support for loved ones.",
     },
   },
   {
@@ -84,11 +84,11 @@ const pathologySources: PathologySource[] = [
     relatedPracticeSlugs: ["naturopathie", "sophrologie", "meditation", "yoga"],
     fr: {
       title: "Santé holistique",
-      summary: "Approche globale de la santé combinant kinésithérapie, nutrition, sophrologie et thérapies complémentaires pour un bien-être physique, mental et émotionnel.",
+      summary: "Une approche globale pour votre bien-être.",
     },
     en: {
       title: "Holistic health",
-      summary: "A global approach to health combining physiotherapy, nutrition, sophrology and complementary therapies for physical, mental and emotional well-being.",
+      summary: "A global approach to your well-being.",
     },
   },
   {
@@ -97,11 +97,11 @@ const pathologySources: PathologySource[] = [
     relatedPracticeSlugs: ["kinesitherapie"],
     fr: {
       title: "TECAR Thérapie",
-      summary: "Thérapie par radiofréquence pour le traitement des douleurs chroniques, des inflammations et la accélération de la récupération musculaire et articulaire.",
+      summary: "Radiofréquence pour soulager douleurs et inflammations.",
     },
     en: {
       title: "TECAR therapy",
-      summary: "Radiofrequency therapy for treating chronic pain, inflammation and accelerating muscle and joint recovery.",
+      summary: "Radiofrequency to relieve pain and inflammation.",
     },
   },
   {
@@ -110,11 +110,11 @@ const pathologySources: PathologySource[] = [
     relatedPracticeSlugs: ["kinesitherapie", "neuropsychologie", "psychomotricite"],
     fr: {
       title: "Kinésithérapie & AVC",
-      summary: "Rééducation fonctionnelle post-AVC : récupération motrice, réapprentissage des mouvements et accompagnement dans la réadaptation à la vie quotidienne.",
+      summary: "Rééducation motrice après un AVC.",
     },
     en: {
       title: "Physiotherapy & stroke",
-      summary: "Post-stroke functional rehabilitation: motor recovery, relearning movement and support in readapting to daily life.",
+      summary: "Motor rehabilitation after a stroke.",
     },
   },
 ];
