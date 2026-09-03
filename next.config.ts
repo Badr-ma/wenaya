@@ -33,16 +33,20 @@ const nextConfig: NextConfig = {
       { source: "/soins",             destination: "/pratiques",   permanent: true },
       { source: "/maux-troubles",     destination: "/pratiques",   permanent: true },
       { source: "/articles",          destination: "/blog",        permanent: true },
-      { source: "/seance-de-groupe",  destination: "/",            permanent: false },
       { source: "/evenements",        destination: "/",            permanent: false },
       { source: "/search/all/all",    destination: "/produits",    permanent: false },
+      /* Old practice slugs — renamed/merged during 19-practice migration */
+      { source: "/pratiques/psychologie-clinique",    destination: "/pratiques/psychologie",    permanent: true },
+      { source: "/pratiques/therapies-complementaires", destination: "/pratiques",              permanent: true },
       /* EN equivalents */
       { source: "/en/soins",             destination: "/en/pratiques",   permanent: true },
       { source: "/en/maux-troubles",     destination: "/en/pratiques",   permanent: true },
       { source: "/en/articles",          destination: "/en/blog",        permanent: true },
-      { source: "/en/seance-de-groupe",  destination: "/en/",            permanent: false },
+      { source: "/en/seance-de-groupe",  destination: "/en/group-sessions", permanent: false },
       { source: "/en/evenements",        destination: "/en/",            permanent: false },
       { source: "/en/search/all/all",    destination: "/en/produits",    permanent: false },
+      { source: "/en/pratiques/psychologie-clinique",    destination: "/en/pratiques/psychologie",    permanent: true },
+      { source: "/en/pratiques/therapies-complementaires", destination: "/en/pratiques",              permanent: true },
 
       /* ── Category 3: Care pathways — no equivalent in new app (temporary) ── */
       { source: "/parcours-de-soins/:slug+", destination: "/",        permanent: false },

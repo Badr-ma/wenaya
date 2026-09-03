@@ -50,7 +50,7 @@ const homepageJsonLd = {
 };
 
 const HowItWorks = dynamic(() => import("@/components/HowItWorks"), { ssr: true });
-const DiseaseMarquee = dynamic(() => import("@/components/DiseaseMarquee"), { ssr: true });
+const PracticesSection = dynamic(() => import("@/components/PracticesSection"), { ssr: true });
 const Biomarkers = dynamic(() => import("@/components/Biomarkers"), { ssr: true });
 const TestimonialsSection = dynamic(() => import("@/components/TestimonialsSection"), { ssr: true });
 const ComparisonTable = dynamic(() => import("@/components/ComparisonTable"), { ssr: true });
@@ -109,7 +109,7 @@ export default async function Home() {
           <SectionBreak />
           <div data-section-bg="light"><HowItWorks /></div>
           <Spacer />
-          <div data-section-bg="light"><DiseaseMarquee /></div>
+          <div data-section-bg="dark"><PracticesSection /></div>
           <Spacer />
           <div data-section-bg="light"><Biomarkers /></div>
           <Spacer />

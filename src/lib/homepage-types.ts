@@ -54,15 +54,15 @@ export interface HowItWorksContent {
 }
 
 /**
- * Presentation overrides only. The specialty/service/therapy row data is
- * intentionally NOT duplicated here — it lives in the `admin:specialties`
- * Redis key and is served by /api/admin/specialties.
+ * Presentation overrides only. The 9 practice titles/descriptions come from the
+ * shared practices adapter (i18n-driven, locale-aware) and are NOT stored here.
  */
 export interface DiseaseMarqueeContent {
   badge?: string;
   heading1?: string;
   heading2?: string;
   sub?: string;
+  cta?: string;
 }
 
 export interface BiomarkersContent {
@@ -223,7 +223,7 @@ export const SECTION_META: Record<SectionType, { label: string; description: str
   banner: { label: "Banner", description: "Top promotional bar with bronze background", theme: "dark" },
   hero: { label: "Hero", theme: "dark", description: "Full-screen hero with video, headline, trust bar" },
   "how-it-works": { label: "How It Works", theme: "light", description: "4-step process (Assess, Align, Activate, Sustain)" },
-  "disease-marquee": { label: "Specialties Marquee", theme: "light", description: "Scrolling topics row (fetches from admin:specialties)" },
+  "disease-marquee": { label: "Practices & Specialties", theme: "dark", description: "9 individual care disciplines linking to /pratiques" },
   biomarkers: { label: "Biomarkers", theme: "light", description: "3-pillar biomarker visualization grid" },
   testimonials: { label: "Testimonials", theme: "light", description: "Stats + patient testimonials carousel" },
   expertise: { label: "Expertise", theme: "light", description: "Medical specialties linking to specialist profiles" },

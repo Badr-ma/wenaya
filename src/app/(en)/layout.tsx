@@ -82,7 +82,7 @@ export const metadata: Metadata = {
     title: "Wenaya — Integrated Health Platform | Casablanca, Morocco",
     description:
       "Morocco's first integrated health and wellbeing platform. Physiotherapy, psychology, nutrition, and corporate wellness — from Casablanca.",
-    images: ["/opengraph-image"],
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,

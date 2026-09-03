@@ -10,7 +10,7 @@ import type { PostWithAuthor } from "@/lib/blog-utils";
 const Banner = dynamic(() => import("@/components/Banner"), { ssr: true });
 const HeroSection = dynamic(() => import("@/components/HeroSection"), { ssr: true });
 const HowItWorks = dynamic(() => import("@/components/HowItWorks"), { ssr: true });
-const DiseaseMarquee = dynamic(() => import("@/components/DiseaseMarquee"), { ssr: true });
+const PracticesSection = dynamic(() => import("@/components/PracticesSection"), { ssr: true });
 const Biomarkers = dynamic(() => import("@/components/Biomarkers"), { ssr: true });
 const TestimonialsSection = dynamic(() => import("@/components/TestimonialsSection"), { ssr: true });
 const ComparisonTable = dynamic(() => import("@/components/ComparisonTable"), { ssr: true });
@@ -89,7 +89,7 @@ function SectionComponent({ section }: { section: HomepageSection }) {
     case "how-it-works":
       return <HowItWorks content={section.content} />;
     case "disease-marquee":
-      return <DiseaseMarquee content={section.content} />;
+      return <PracticesSection content={section.content} />;
     case "biomarkers":
       return <Biomarkers content={section.content} />;
     case "testimonials":

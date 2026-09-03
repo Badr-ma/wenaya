@@ -10,7 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
-import { h } from "@/lib/href";
+import { h, groupSessionsHref } from "@/lib/href";
 import type { FooterContent } from "@/lib/homepage-types";
 
 const socialPaths: Record<string, string> = {
@@ -27,7 +27,7 @@ const socialUrls: Record<string, string> = {
   TikTok: "https://www.tiktok.com/@wenaya_maroc",
 };
 
-const navUrls = ["/about", "/specialistes", "/pratiques", "/solutions/entreprises", "/faq"];
+const navUrls = ["/about", "/specialistes", "/seance-de-groupe", "/solutions/entreprises", "/faq"];
 const legalUrls = ["/confidentialite", "/conditions"];
 
 interface FooterProps {
@@ -137,7 +137,7 @@ export default function Footer({ content }: FooterProps): React.JSX.Element {
                   <ul className="space-y-3">
                     {navLinks.map((label: string, i: number) => (
                       <li key={label}>
-                        <Link href={hh(navUrls[i] || "#")} className="text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed">
+                        <Link href={navUrls[i] === "/seance-de-groupe" ? groupSessionsHref(locale) : hh(navUrls[i] || "#")} className="text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed">
                           {label}
                         </Link>
                       </li>

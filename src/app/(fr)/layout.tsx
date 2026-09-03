@@ -82,7 +82,7 @@ export const metadata: Metadata = {
     title: "Wenaya — Plateforme de Santé Intégrée | Casablanca, Maroc",
     description:
       "Wenaya est la première plateforme de santé intégrée au Maroc. Kinésithérapie, psychologie clinique, nutrition et bien-être corporate — depuis Casablanca.",
-    images: ["/opengraph-image"],
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,

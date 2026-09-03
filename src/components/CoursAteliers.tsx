@@ -9,20 +9,12 @@ import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
-import { h } from "@/lib/href";
+import { h, groupSessionsHref } from "@/lib/href";
+import { getAllGroupSessions } from "@/lib/group-sessions";
 import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 import type { CoursAteliersContent } from "@/lib/homepage-types";
 import HiggsField from "./HiggsField";
 
-
-const sessionsData = [
-  { key: "yoga", img: "/images/cours-ateliers/yoga.jpg", accent: "#B88A5A" },
-  { key: "sophrologie", img: "/images/cours-ateliers/nature.jpg", accent: "#C99B68" },
-  { key: "nutrition", img: "/images/cours-ateliers/nutrition.jpg", accent: "#D4A870" },
-  { key: "breathwork", img: "/images/cours-ateliers/wellness.jpg", accent: "#B88A5A" },
-  { key: "jjb", img: "/images/wellness-stretch.jpg", accent: "#C99B68" },
-  { key: "pilates", img: "/images/cours-ateliers/yoga.jpg", accent: "#D4A870" },
-] as const;
 
 interface CoursAteliersProps {
   content?: CoursAteliersContent;
@@ -34,6 +26,7 @@ export default function CoursAteliers({ content }: CoursAteliersProps): React.JS
   const scrollRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const tickingRef = useRef(false);
+  const sessionsData = getAllGroupSessions(locale);
 
   const scrollMore = () => {
     if (!scrollRef.current) return;
@@ -111,17 +104,17 @@ export default function CoursAteliers({ content }: CoursAteliersProps): React.JS
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
               {sessionsData.map((s, i) => {
-                const title = t(`coursAteliers.${s.key}.title`);
-                const desc = t(`coursAteliers.${s.key}.desc`);
+                const title = s.title;
+                const desc = s.description;
 
                 return (
-                  <div key={s.key} className="ca-card group w-[80vw] sm:w-[calc(50%-12px)] lg:w-[calc(25%-12px)] shrink-0 snap-start rounded-2xl overflow-hidden flex flex-col transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_8px_40px_-4px_rgba(184,138,90,0.15)]"
+                  <div key={s.id} className="ca-card group w-[80vw] sm:w-[calc(50%-12px)] lg:w-[calc(25%-12px)] shrink-0 snap-start rounded-2xl overflow-hidden flex flex-col transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_8px_40px_-4px_rgba(184,138,90,0.15)]"
                     style={{ background: "#0B1220", border: "1px solid rgba(255,255,255,0.06)" }}
                   >
                     {/* Image area */}
                     <div className="relative w-full aspect-[4/3] overflow-hidden">
                       <Image
-                        src={s.img}
+                        src={s.image}
                         alt={title}
                         fill
                         className="object-cover transition-all duration-700 group-hover:scale-[1.05]"
@@ -209,7 +202,7 @@ export default function CoursAteliers({ content }: CoursAteliersProps): React.JS
         {/* Bottom link */}
         <div className="ca-head text-center mt-8">
           <a
-            href={h(locale, "/pratiques")}
+            href={groupSessionsHref(locale)}
             className="inline-flex items-center gap-3 text-[#B88A5A] text-sm font-semibold transition-all duration-500 group rounded-xl border border-[#B88A5A]/20 px-5 py-2.5 hover:bg-[#B88A5A]/5 hover:border-[#B88A5A]/30 hover:gap-4"
           >
             <span className="w-6 h-px bg-[#B88A5A]/40 transition-all duration-500 group-hover:w-8" />

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import SpecialistDetail from "@/components/specialistes/SpecialistDetail";
 import { getSpecialistBySlugAsync, getAllSpecialists } from "@/lib/specialistes";
+import { getPracticesForSpecialist } from "@/lib/pratique-specialists";
 import { SITE_URL, OG_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
@@ -49,6 +50,8 @@ export default async function EnglishSpecialistPage({ params }: Props) {
   const { slug } = await params;
   const specialist = await getSpecialistBySlugAsync(slug);
   if (!specialist) notFound();
+
+  const practices = getPracticesForSpecialist(slug, "en");
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -101,7 +104,7 @@ export default async function EnglishSpecialistPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <main>
         <Breadcrumbs labels={{ [slug]: specialist.name }} />
-        <SpecialistDetail specialist={specialist} />
+        <SpecialistDetail specialist={specialist} practices={practices} />
       </main>
     </>
   );

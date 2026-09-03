@@ -15,11 +15,11 @@ export const OG_DEFAULTS: NonNullable<Metadata["openGraph"]> = {
   siteName: SITE_NAME,
   locale: "fr_MA",
   type: "website",
-  images: ["/opengraph-image"],
+  images: ["/og-image.png"],
 };
 
 /** Base Twitter card fields shared by every page — spread first, then override per page. */
 export const TWITTER_DEFAULTS: NonNullable<Metadata["twitter"]> = {
   card: "summary_large_image",
-  images: ["/opengraph-image"],
+  images: ["/og-image.png"],
 };

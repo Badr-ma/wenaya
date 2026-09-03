@@ -438,12 +438,12 @@ function SectionEditor({
   );
 
   const renderEditor = () => {
-    /* Specialized editor — marquee content lives in the Specialties tab. */
+    /* Specialized note — the Practices section renders the first 3 practices automatically. */
     if (section.type === "disease-marquee") {
       return (
         <div className="space-y-2">
           <p className="text-[11px] text-[#2B2F36]/30 italic">
-            Manage marquee content in the <strong>Specialties</strong> tab.
+            This section shows the first 3 practices automatically (cards, linked to /pratiques). Use the text fields above to override the copy only.
           </p>
         </div>
       );

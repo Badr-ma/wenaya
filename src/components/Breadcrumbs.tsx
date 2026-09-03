@@ -29,6 +29,7 @@ const routeLabels: Record<string, Record<string, string>> = {
     solutions: "Solutions",
     entreprises: "Entreprises",
     programmes: "Programmes",
+    "seance-de-groupe": "Séances de groupe",
   },
   en: {
     about: "Clinics",
@@ -44,6 +45,7 @@ const routeLabels: Record<string, Record<string, string>> = {
     solutions: "Solutions",
     entreprises: "Enterprise",
     programmes: "Programs",
+    "group-sessions": "Group Sessions",
   },
 };
 

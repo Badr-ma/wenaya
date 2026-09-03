@@ -329,4 +329,59 @@ body {
   font-family: var(--font-inter), "Inter", sans-serif !important;
 }
 
+/**
+ * Editorial article — long-form practice content (backend `details`).
+ * Constrained, calm typographic rhythm for the practice detail pages.
+ * Applies whenever rich content is provided; absent in current local data.
+ */
+.pratique-article {
+  font-family: var(--font-inter), "Inter", sans-serif;
+  color: rgba(43, 47, 54, 0.7);
+  font-size: clamp(0.97rem, 1.2vw, 1.06rem);
+  line-height: 1.9;
+}
+
+.pratique-article h2 {
+  font-family: var(--font-heading), "Manrope", sans-serif;
+  font-weight: 600;
+  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: #0b1220;
+  margin: 2.75em 0 0.9em;
+}
+
+.pratique-article h3 {
+  font-family: var(--font-heading), "Manrope", sans-serif;
+  font-weight: 600;
+  font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+  line-height: 1.3;
+  color: #0b1220;
+  margin: 2.25em 0 0.75em;
+}
+
+.pratique-article p { margin: 0 0 1.4em; }
+
+.pratique-article ul,
+.pratique-article ol {
+  margin: 0 0 1.6em;
+  padding-left: 1.25em;
+}
+
+.pratique-article ul { list-style: disc; }
+.pratique-article ol { list-style: decimal; }
+
+.pratique-article li { margin: 0.35em 0; }
+
+.pratique-article strong { color: #0b1220; font-weight: 600; }
+
+.pratique-article a {
+  color: #159aa9;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+
+.pratique-article a:hover { color: #1ab0c0; }
+
 

@@ -21,14 +21,14 @@ export const metadata: Metadata = {
     url: ENGLISH_HOME_URL,
     siteName: "Wenaya",
     type: "website",
-    images: ["/opengraph-image"],
+    images: ["/og-image.png"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Wenaya — Integrated Health & Wellbeing | Casablanca, Morocco",
     description:
       "Morocco's first integrated health and wellbeing platform. Physiotherapy, clinical psychology, nutrition, and corporate wellness — from Casablanca.",
-    images: ["/opengraph-image"],
+    images: ["/og-image.png"],
   },
 };
 
@@ -56,7 +56,7 @@ const homepageJsonLd = {
 };
 
 const HowItWorks = dynamic(() => import("@/components/HowItWorks"), { ssr: true });
-const DiseaseMarquee = dynamic(() => import("@/components/DiseaseMarquee"), { ssr: true });
+const PracticesSection = dynamic(() => import("@/components/PracticesSection"), { ssr: true });
 const Biomarkers = dynamic(() => import("@/components/Biomarkers"), { ssr: true });
 const TestimonialsSection = dynamic(() => import("@/components/TestimonialsSection"), { ssr: true });
 const ComparisonTable = dynamic(() => import("@/components/ComparisonTable"), { ssr: true });
@@ -115,7 +115,7 @@ export default async function EnglishHome() {
           <SectionBreak />
           <div data-section-bg="light"><HowItWorks /></div>
           <Spacer />
-          <div data-section-bg="light"><DiseaseMarquee /></div>
+          <div data-section-bg="dark"><PracticesSection /></div>
           <Spacer />
           <div data-section-bg="light"><Biomarkers /></div>
           <Spacer />

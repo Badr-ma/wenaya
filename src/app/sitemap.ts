@@ -10,6 +10,8 @@
 import type { MetadataRoute } from "next";
 import { getPublishedPosts } from "@/lib/blog";
 import { getAllSpecialistsAsync } from "@/lib/specialistes";
+import { getAllPratiqueSlugs } from "@/lib/pratiques";
+import { getAllGroupSessionSlugs } from "@/lib/group-sessions";
 import { SITE_URL } from "@/lib/site-config";
 
 /** Regenerate the sitemap on every request so CMS/Redis additions appear immediately */
@@ -43,13 +45,37 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
    * Static pages — core site pages with priority weights for SEO.
    * No lastModified: the data layer exposes no reliable content modification date.
    */
-  const staticPages = [
+  const staticPages: SitemapEntry[] = [
     ...dual("/", { changeFrequency: "weekly", priority: 1.0 }),
     ...dual("/about", { changeFrequency: "monthly", priority: 0.9 }),
     ...dual("/solutions/entreprises", { changeFrequency: "monthly", priority: 0.9 }),
     ...dual("/solutions/entreprises/programmes", { changeFrequency: "monthly", priority: 0.8 }),
     ...dual("/produits", { changeFrequency: "weekly", priority: 0.9 }),
     ...dual("/pratiques", { changeFrequency: "monthly", priority: 0.8 }),
+    {
+      url: `${SITE_URL}/seance-de-groupe`,
+      alternates: {
+        languages: {
+          "x-default": `${SITE_URL}/seance-de-groupe`,
+          "fr-MA": `${SITE_URL}/seance-de-groupe`,
+          "en-MA": `${SITE_URL}/en/group-sessions`,
+        },
+      },
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/en/group-sessions`,
+      alternates: {
+        languages: {
+          "x-default": `${SITE_URL}/seance-de-groupe`,
+          "fr-MA": `${SITE_URL}/seance-de-groupe`,
+          "en-MA": `${SITE_URL}/en/group-sessions`,
+        },
+      },
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
     ...dual("/specialistes", { changeFrequency: "weekly", priority: 0.9 }),
     ...dual("/blog", { changeFrequency: "weekly", priority: 0.9 }),
     ...dual("/faq", { changeFrequency: "monthly", priority: 0.7 }),
@@ -73,5 +99,36 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     dual(`/specialistes/${s.slug}`, { changeFrequency: "monthly", priority: 0.8 })
   );
 
-  return [...staticPages, ...blogEntries, ...productEntries, ...specialistEntries];
+  /** Practice detail page URLs — 19 FR + 19 EN */
+  const practiceSlugs = getAllPratiqueSlugs();
+  const practiceEntries = practiceSlugs.flatMap((slug) =>
+    dual(`/pratiques/${slug}`, { changeFrequency: "monthly", priority: 0.7 })
+  );
+
+  /** Group-session detail page URLs — 6 FR + 6 EN (FR/EN slugs differ per session) */
+  const groupSessionSlugsFr = getAllGroupSessionSlugs("fr");
+  const groupSessionSlugsEn = getAllGroupSessionSlugs("en");
+  const groupSessionEntries: SitemapEntry[] = [];
+  groupSessionSlugsFr.forEach((slugFr, i) => {
+    const slugEn = groupSessionSlugsEn[i] ?? slugFr;
+    const alt = {
+      "x-default": `${SITE_URL}/seance-de-groupe/${slugFr}`,
+      "fr-MA": `${SITE_URL}/seance-de-groupe/${slugFr}`,
+      "en-MA": `${SITE_URL}/en/group-sessions/${slugEn}`,
+    };
+    groupSessionEntries.push({
+      url: `${SITE_URL}/seance-de-groupe/${slugFr}`,
+      alternates: { languages: alt },
+      changeFrequency: "monthly",
+      priority: 0.7,
+    });
+    groupSessionEntries.push({
+      url: `${SITE_URL}/en/group-sessions/${slugEn}`,
+      alternates: { languages: alt },
+      changeFrequency: "monthly",
+      priority: 0.7,
+    });
+  });
+
+  return [...staticPages, ...blogEntries, ...productEntries, ...specialistEntries, ...practiceEntries, ...groupSessionEntries];
 }

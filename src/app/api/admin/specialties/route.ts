@@ -1,7 +1,9 @@
 /**
- * Admin Specialties API — CRUD for DiseaseMarquee data.
+ * Admin Specialties API — CRUD for the legacy homepage specialties/marquee data.
  * GET falls back to i18n defaults when Redis is empty or unavailable.
  * PUT requires a valid admin token.
+ * Note: the homepage Practices & Specialties section is now data-driven from the
+ * shared practices adapter (i18n); this endpoint powers the legacy admin tab only.
  */
 import { NextRequest, NextResponse } from "next/server";
 import { getRedis } from "@/lib/redis";
