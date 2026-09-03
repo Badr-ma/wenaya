@@ -1,36 +1,40 @@
 /**
- * About Page — server component assembling all about page sections.
- * Sections: Hero, Why We Exist, Wenaya Approach, Expertise, Future Vision,
- * Clinics overview (Hero + Programs), and Footer.
- * Includes MedicalBusiness/Service structured data for SEO.
+ * About Page — server component assembling all Clinic/B2C page sections.
+ * Rebuilt to an editorial, no-card design using live wenaya.com content.
+ * Sections: Hero, Trust, Intro, Practices, Courses, Pathologies, Team,
+ * HealthNeeds, Recruitment, Practical, News, and Footer.
+ * Includes MedicalClinic structured data for SEO.
  */
 import type { Metadata } from "next";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import AboutHero from "@/components/about/Hero";
-import WhyWeExist from "@/components/about/WhyWeExist";
-import WenayaApproach from "@/components/about/WenayaApproach";
-import ExpertiseSection from "@/components/about/ExpertiseSection";
-import FutureVision from "@/components/about/FutureVision";
-import ClinicsHero from "@/components/clinics/Hero";
-import ClinicsPrograms from "@/components/clinics/Programs";
-import ClinicsWhy from "@/components/clinics/Why";
-import ClinicsCta from "@/components/clinics/Cta";
+import ClinicHero from "@/components/clinic/Hero";
+import ClinicTrust from "@/components/clinic/Trust";
+import ClinicIntro from "@/components/clinic/Intro";
+import ClinicPractices from "@/components/clinic/Practices";
+import ClinicCourses from "@/components/clinic/Courses";
+import ClinicPathologies from "@/components/clinic/Pathologies";
+import ClinicTeam from "@/components/clinic/Team";
+import ClinicHealthNeeds from "@/components/clinic/HealthNeeds";
+import ClinicRecruitment from "@/components/clinic/Recruitment";
+import ClinicPractical from "@/components/clinic/Practical";
+import ClinicNews from "@/components/clinic/News";
+import ClinicStructuredData from "@/components/clinic/StructuredData";
 import Footer from "@/components/Footer";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
 export const metadata: Metadata = {
-    title: "Cliniques — Wenaya, Première Plateforme de Santé Intégrée au Maroc",
+  title: "Wenaya Clinic — Centre de Santé Intégrée à Casablanca",
   description:
-    "Découvrez Wenaya : la première plateforme de santé intégrée au Maroc, fondée à Casablanca. Kinésithérapie, psychologie clinique, nutrition et bien-être corporate — coordonnés sous un seul écosystème.",
+    "Wenaya Clinic, un écosystème de santé intégrée à Casablanca : kinésithérapie, ostéopathie, psychologie, neuropsychologie, nutrition, orthophonie et thérapies complémentaires — pour un accompagnement global et personnalisé.",
   keywords: [
-    "Wenaya Casablanca",
-    "plateforme santé Maroc",
-    "clinique multidisciplinaire Casablanca",
+    "Wenaya Clinic Casablanca",
+    "centre santé intégrée Casablanca",
+    "clinique pluridisciplinaire Casablanca",
+    "kinésithérapie Casablanca",
+    "ostéopathie Casablanca",
     "santé intégrée Maroc",
-    "équipe médicale Casablanca",
-    "prévention santé Maroc",
   ],
   alternates: {
     canonical: `${SITE_URL}/about`,
@@ -38,38 +42,43 @@ export const metadata: Metadata = {
   },
   openGraph: {
     ...OG_DEFAULTS,
-    title: "Cliniques — Wenaya, Première Plateforme de Santé Intégrée au Maroc",
+    title: "Wenaya Clinic — Centre de Santé Intégrée à Casablanca",
     description:
-      "Découvrez Wenaya : la première plateforme de santé intégrée au Maroc, fondée à Casablanca. Kinésithérapie, psychologie clinique, nutrition et bien-être corporate — coordonnés sous un seul écosystème.",
+      "Un écosystème de santé intégrée réunissant des spécialistes pluridisciplinaires à Casablanca pour un accompagnement global et personnalisé.",
     url: `${SITE_URL}/about`,
   },
   twitter: {
     ...TWITTER_DEFAULTS,
-    title: "Cliniques — Wenaya, Première Plateforme de Santé Intégrée au Maroc",
+    title: "Wenaya Clinic — Centre de Santé Intégrée à Casablanca",
     description:
-      "Découvrez Wenaya : la première plateforme de santé intégrée au Maroc, fondée à Casablanca. Kinésithérapie, psychologie clinique, nutrition et bien-être corporate — coordonnés sous un seul écosystème.",
+      "Un écosystème de santé intégrée réunissant des spécialistes pluridisciplinaires à Casablanca pour un accompagnement global et personnalisé.",
   },
 };
 
 export default function AboutPage() {
+  const lang = "fr";
+  const locale = lang;
   return (
     <>
       <ErrorBoundary>
         <main>
-        <Breadcrumbs />
-        <div className="flex flex-col">
-        <AboutHero />
-        <WhyWeExist />
-        <WenayaApproach />
-        <ExpertiseSection />
-        <FutureVision />
-        <div data-section-bg="dark"><ClinicsHero /></div>
-        <div data-section-bg="light"><ClinicsPrograms /></div>
-        <div data-section-bg="light"><ClinicsWhy /></div>
-        <div data-section-bg="dark"><ClinicsCta /></div>
-      </div>
-      </main>
-      <Footer />
+          <ClinicStructuredData lang="fr" canonicalPath="/about" />
+          <Breadcrumbs />
+          <div className="flex flex-col">
+            <ClinicHero />
+            <ClinicTrust />
+            <ClinicIntro />
+            <ClinicPractices locale={locale} lang={lang} />
+            <ClinicCourses locale={locale} lang={lang} />
+            <ClinicPathologies />
+            <ClinicTeam />
+            <ClinicHealthNeeds />
+            <ClinicRecruitment />
+            <ClinicPractical />
+            <ClinicNews locale={locale} lang={lang} />
+          </div>
+        </main>
+        <Footer />
       </ErrorBoundary>
     </>
   );
