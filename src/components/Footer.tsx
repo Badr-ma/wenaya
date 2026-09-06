@@ -36,7 +36,6 @@ interface FooterProps {
 
 export default function Footer({ content }: FooterProps): React.JSX.Element {
   const { t, tRaw, locale } = useLocale();
-  const hh = (path: string) => h(locale, path);
 
   const navLinks = tRaw<string[]>("footer.navigation.links");
   const legalLinks = tRaw<string[]>("footer.infosLegales.links");
@@ -137,7 +136,7 @@ export default function Footer({ content }: FooterProps): React.JSX.Element {
                   <ul className="space-y-3">
                     {navLinks.map((label: string, i: number) => (
                       <li key={label}>
-                        <Link href={navUrls[i] === "/seance-de-groupe" ? groupSessionsHref(locale) : hh(navUrls[i] || "#")} className="text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed">
+                        <Link href={navUrls[i] === "/seance-de-groupe" ? groupSessionsHref(locale) : h(locale, navUrls[i] || "#")} className="text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed">
                           {label}
                         </Link>
                       </li>
@@ -151,7 +150,7 @@ export default function Footer({ content }: FooterProps): React.JSX.Element {
                   <ul className="space-y-3">
                     {legalLinks.map((label: string, i: number) => (
                       <li key={label}>
-                        <Link href={hh(legalUrls[i] || "#")} className="text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed">
+                        <Link href={h(locale, legalUrls[i] || "#")} className="text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed">
                           {label}
                         </Link>
                       </li>
@@ -169,7 +168,7 @@ export default function Footer({ content }: FooterProps): React.JSX.Element {
                       </a>
                     </li>
                     <li>
-                      <Link href={hh("/contact")} className="text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed">
+                      <Link href={h(locale, "/contact")} className="text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed">
                         {contactRaw.contact}
                       </Link>
                     </li>

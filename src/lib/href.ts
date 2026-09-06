@@ -9,6 +9,7 @@ export type HrefLocale = "fr" | "en";
 export function h(locale: HrefLocale, path: string): string {
   if (/^(https?:|mailto:|tel:|#)/.test(path)) return path;
   if (locale !== "en") return path;
+  if (path === "/") return "/en";
   if (path === "/en" || path.startsWith("/en/")) return path;
   return `/en${path}`;
 }

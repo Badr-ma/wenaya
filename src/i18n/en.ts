@@ -608,8 +608,6 @@ courses: {
       imageBadge: "Executive program",
       quote: "« We deploy an annual Wenaya program for over 900 employees. The team's ability to adapt formats to our field constraints — multi-site, overloaded schedules, variable time slots — makes all the difference. Adoption exceeds our expectations. »",
       quoteAttr: "HR Director, multinational consulting firm · +900 employees",
-      finalHeading: "Let's discuss your wellness project.",
-      finalSub: "30 minutes to understand your challenges and identify suitable avenues for your teams. No obligation.",
       cta1: "Book a free audit",
       cta2: "Request a custom quote",
       contact: "88 Rue De Jabal Azourki · Casablanca · Mon–Sat 8am–8pm · +212 6 66 12 40 35",

@@ -29,7 +29,6 @@ const socialLinks = [
 
 export default function EntreprisesFooter(): React.JSX.Element {
   const { t, tRaw, locale } = useLocale();
-  const hh = (path: string) => h(locale, path);
 
   const footerSolutions = tRaw<{title: string; links: string[]}>("entreprises.footer.solutions");
   const footerResources = tRaw<{title: string; links: string[]}>("entreprises.footer.resources");
@@ -149,11 +148,11 @@ export default function EntreprisesFooter(): React.JSX.Element {
                   const groupUrls = isContact
                     ? null
 : group.title === footerSolutions.title
-                        ? [hh("/corporate"), "#", "#", "#"]
+                        ? [h(locale, "/corporate"), "#", "#", "#"]
                       : group.title === footerResources.title
-                        ? [hh("/faq"), "#", "#"]
+                        ? [h(locale, "/faq"), "#", "#"]
                         : group.title === footerAPropos.title
-                          ? [hh("/about"), hh("/pratiques"), "#", "#"]
+                          ? [h(locale, "/about"), h(locale, "/pratiques"), "#", "#"]
                           : null;
                   return (
                     <div key={group.title}>

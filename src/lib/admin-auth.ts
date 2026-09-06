@@ -10,6 +10,16 @@ import type { NextRequest } from "next/server";
 const TOKEN_TTL_MS = 60 * 60 * 1000; // 1 hour
 const BCRYPT_ROUNDS = 10;
 
+function getAdminSecret(): string {
+  const secret = process.env.ADMIN_SECRET;
+  if (!secret) {
+    throw new Error(
+      "ADMIN_SECRET is not set. Configure it (e.g. in .env.local / the production environment) before using admin auth."
+    );
+  }
+  return secret;
+}
+
 export interface AdminUser {
   username: string;
   password: string; // bcrypt hash
@@ -61,7 +71,7 @@ export async function createUser(username: string, password: string, name: strin
 /* ── Token signing / verification ── */
 
 export function signToken(username: string): string {
-  const secret = process.env.ADMIN_SECRET || "wenaya-admin-fallback";
+  const secret = getAdminSecret();
   const payload = `${username.toLowerCase()}:${Date.now()}`;
   const sig = crypto.createHmac("sha256", secret).update(payload).digest("hex");
   return Buffer.from(`${payload}:${sig}`).toString("base64url");
@@ -69,7 +79,7 @@ export function signToken(username: string): string {
 
 export function verifyToken(token: string): { valid: boolean; username?: string } {
   try {
-    const secret = process.env.ADMIN_SECRET || "wenaya-admin-fallback";
+    const secret = getAdminSecret();
     const decoded = Buffer.from(token, "base64url").toString();
 
     // Format: "username:timestamp:hexsignature" — sig is always last

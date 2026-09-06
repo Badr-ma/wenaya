@@ -10,6 +10,7 @@ import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/contexts/CartContext";
 import { useLocale } from "@/contexts/LanguageContext";
+import { h } from "@/lib/href";
 
 type Availability = "in_stock" | "out_of_stock" | "pre_order" | "limited";
 
@@ -71,7 +72,7 @@ export default function CartActions({
   const handleBuyNow = useCallback(() => {
     if (!canAddToCart || unitPrice == null) return;
     addItem({ productSlug, productName, image, unitPrice, currency }, quantity);
-    router.push(locale === "fr" ? "/checkout" : "/en/checkout");
+    router.push(h(locale, "/checkout"));
   }, [canAddToCart, unitPrice, addItem, productSlug, productName, image, quantity, currency, router, locale]);
 
   const decrementQty = useCallback(() => setQuantity((q) => Math.max(1, q - 1)), []);

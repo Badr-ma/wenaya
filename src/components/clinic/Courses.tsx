@@ -11,7 +11,7 @@
 import Link from "next/link";
 import { getAllGroupSessions, type GroupSessionLocale } from "@/lib/group-sessions";
 import { groupSessionsHref, type HrefLocale } from "@/lib/href";
-import { useTranslations } from "@/i18n";
+import { getTranslations } from "@/i18n";
 import SessionsExplorer, { type SessionItem } from "./SessionsExplorer";
 
 /** Collapse a session description to a single concise sentence. */
@@ -31,7 +31,7 @@ export default function ClinicCourses({
   locale: HrefLocale;
   lang: string;
 }): React.JSX.Element {
-  const { t } = useTranslations(lang);
+  const { t } = getTranslations(lang);
   const all = getAllGroupSessions(locale as GroupSessionLocale);
 
   const items: SessionItem[] = all.map((s, i) => ({

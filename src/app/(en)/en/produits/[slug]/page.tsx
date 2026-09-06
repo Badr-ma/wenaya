@@ -9,7 +9,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import ProductDetail from "@/components/produits/ProductDetail";
 import Footer from "@/components/Footer";
 import { getProductBySlug, getProducts, getAllProductSlugs } from "@/lib/product-adapter";
-import { useTranslations } from "@/i18n";
+import { getTranslations } from "@/i18n";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
@@ -49,7 +49,7 @@ export default async function EnglishProduitPage({ params }: Props) {
   const product = getProductBySlug(slug, "en");
   if (!product) notFound();
 
-  const { t, tRaw, locale } = useTranslations("en");
+  const { t, tRaw, locale } = getTranslations("en");
 
   // Full Product objects for related and brand products
   const allProducts = getProducts("en");

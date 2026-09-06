@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Wenaya
 
-## Getting Started
+French-first (FR/EN) wellness clinic website — Next.js App Router, TypeScript, Tailwind CSS.
 
-First, run the development server:
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev       # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `npm run dev` — start the development server
+- `npm run build` — production build (static pre-render where possible)
+- `npm run start` — serve the production build (`next start`)
+- `npm run lint` — ESLint (`eslint`)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Routing
 
-## Learn More
+- `/` — homepage (French), `/en` — English mirror
+- `/pratiques[/slug]` — practices catalogue + detail pages
+- `/seance-de-groupe[/slug]` — group sessions + detail pages
+- `/professional[/slug]` — specialists + detail pages
+- `/produits[/slug]`, `/panier`, `/checkout` — product (shop) pages
+- `/about`, `/corporate`, `/blog`, `/articles` + their `/en` mirrors
+- `/admin` — internal content management interface
 
-To learn more about Next.js, take a look at the following resources:
+## Environment variables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Names only — see `src/app/api`, `src/lib/*` and `.env.example` expectations for usage.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Required for production:
 
-## Deploy on Vercel
+- `ADMIN_SECRET` — HMAC secret used to sign/verify the admin auth token. **Required**; admin auth fails loudly when missing (no fallback value).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Required for CMS/admin data persistence (`getRedis`):
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `UPSTASH_REDIS_REST_URL`
+- `UPSTASH_REDIS_REST_TOKEN`
+
+Optional:
+
+- `NEXT_PUBLIC_SITE_URL` — canonical site URL (defaults to `https://www.wenaya.com`)
+- `PRACTICES_API_URL` — backend overrides the default practices API host
+- `NEXT_PUBLIC_GA_ID`, `NEXT_PUBLIC_GSC_VERIFICATION`, `NEXT_PUBLIC_BING_VERIFICATION` — analytics/search-console hooks
+- `ADMIN_SEED_USERNAME`, `ADMIN_SEED_PASSWORD`, `ADMIN_SEED_NAME` — used by the `src/scripts/seed-admin.ts` user-seeding script
+
+## Data sources
+
+- **Practices** — sourced from the live Wenaya backend API (`GET /api/v1/getAllPublicSpecialitiesWithPaginate`), with a local fallback dataset when the API is unreachable. Detail slugs remain canonical ASCII.
+- **Blog** — filesystem-backed MDX content (`src/lib/blog`).
+- **Specialists** — local/demo dataset (`src/lib/specialistes.ts`); booking is frontdoor-only for now.
+- **Contact forms** — stub endpoint (`/api/contact`) with no backend transport yet.
+- **Patient sign-in** (`/login`) — presentation-only; submit is disabled by design until a real patient-auth backend exists.
+
+## Product status
+
+- **Content management (CMS)** — FUTURE product workstream. The homepage currently renders through the active CMS pipeline (`getHomepagePublished` → `HomepageRenderer`); `/admin` exposes an internal editor. Re-architecting/removing this wiring is tracked separately.
+- **Shop (`/produits`, `/panier`, `/checkout`)** — FUTURE product workstream. Product data is a local adapter; checkout is a placement page awaiting real payment integration. Presentation can be refined, but shop architecture changes are tracked separately.

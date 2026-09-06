@@ -7,7 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getPublishedPosts } from "@/lib/blog";
 import { h, type HrefLocale } from "@/lib/href";
-import { useTranslations as getTranslations } from "@/i18n";
+import { getTranslations } from "@/i18n";
 
 function formatDate(iso: string, locale: string) {
   const d = new Date(iso);

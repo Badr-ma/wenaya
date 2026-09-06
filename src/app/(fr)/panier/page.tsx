@@ -8,12 +8,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { useLocale } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
+import { h } from "@/lib/href";
 
 export default function PanierPage() {
   const { t, locale } = useLocale();
   const { items, totalItems, subtotal, updateQuantity, removeItem, clearCart, isEmpty, hydrated } = useCart();
 
-  const hh = (p: string) => (locale === "en" ? `/en${p}` : p);
   const fmt = (n: number) =>
     new Intl.NumberFormat(locale === "fr" ? "fr-MA" : "en-MA", {
       minimumFractionDigits: 0,
@@ -47,7 +47,7 @@ export default function PanierPage() {
             <p className="text-[#2B2F36]/40 text-lg mb-2">{t("panier.empty")}</p>
             <p className="text-[#2B2F36]/25 text-sm mb-6">{t("panier.emptyDesc")}</p>
             <Link
-              href={hh("/produits")}
+              href={h(locale, "/produits")}
               className="inline-flex items-center justify-center px-6 py-3 rounded-full text-sm font-medium bg-[#B88A5A] text-white hover:bg-[#a07a4e] transition-colors"
             >
               {t("panier.continueShopping")}
@@ -76,7 +76,7 @@ export default function PanierPage() {
                   {/* Info */}
                   <div className="flex-1 min-w-0">
                     <Link
-                      href={hh(`/produits/${item.productSlug}`)}
+                      href={h(locale, `/produits/${item.productSlug}`)}
                       className="text-sm font-medium text-[#0B1220] hover:underline truncate block"
                     >
                       {item.productName}
@@ -144,7 +144,7 @@ export default function PanierPage() {
 
               <div className="flex flex-wrap gap-3">
                 <Link
-                  href={hh("/checkout")}
+                  href={h(locale, "/checkout")}
                   className="inline-flex items-center justify-center px-6 py-3 rounded-full text-sm font-medium bg-[#B88A5A] text-white hover:bg-[#a07a4e] transition-colors"
                 >
                   {t("panier.checkout")}
@@ -157,7 +157,7 @@ export default function PanierPage() {
                   {t("panier.clearCart")}
                 </button>
                 <Link
-                  href={hh("/produits")}
+                  href={h(locale, "/produits")}
                   className="inline-flex items-center justify-center px-5 py-3 rounded-full text-sm font-medium text-[#2B2F36]/40 hover:text-[#0B1220] transition-colors"
                 >
                   {t("panier.continueShopping")}

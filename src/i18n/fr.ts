@@ -608,8 +608,6 @@ const fr = {
       imageBadge: "Programme dirigeant",
       quote: "« Nous déployons un programme annuel Wenaya pour plus de 900 collaborateurs. La capacité de l'équipe à adapter les formats à nos contraintes terrain — multi-sites, agendas surchargés, créneaux variables — fait toute la différence. L'adhésion dépasse nos attentes. »",
       quoteAttr: "DRH, multinationale du conseil · +900 collaborateurs",
-      finalHeading: "Discutons de votre projet bien-être.",
-      finalSub: "30 minutes pour comprendre vos enjeux et identifier les pistes adaptées à vos équipes. Sans engagement.",
       cta1: "Réserver un audit gratuit",
       cta2: "Demander un devis personnalisé",
       contact: "88 Rue De Jabal Azourki · Casablanca · Lun–Sam 8h–20h · +212 6 66 12 40 35",

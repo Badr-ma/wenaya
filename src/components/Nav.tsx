@@ -11,6 +11,7 @@ import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { useLocale } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
+import { h } from "@/lib/href";
 import LanguageSwitcher from "./LanguageSwitcher";
 import Logo from "./Logo";
 import MobileMenu from "./nav/MobileMenu";
@@ -20,10 +21,8 @@ import { useLenis } from "lenis/react";
 
 export default function Nav(): React.JSX.Element {
   const pathname = usePathname();
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const { totalItems, hydrated } = useCart();
-  const en = pathname.startsWith("/en");
-  const hh = (p: string) => (en ? `/en${p}` : p);
   const isProduitsRoute = pathname === "/produits" || pathname === "/en/produits";
   const isPratiquesRoute = pathname === "/pratiques" || pathname === "/en/pratiques";
   const [scrolled, setScrolled] = useState(false); // Whether user has scrolled past 40px
@@ -219,18 +218,18 @@ export default function Nav(): React.JSX.Element {
           />
         ) : (
           <>
-            <Link href={hh("/")} className="h-full overflow-hidden shrink-0 flex items-center">
+            <Link href={h(locale, "/")} className="h-full overflow-hidden shrink-0 flex items-center">
               <Logo />
             </Link>
 
             <nav className="hidden lg:block" aria-label={t("nav.navPrincipale")}>
               <ul className="flex items-center gap-0">
                 {[
-                  { label: t("nav.accueil"), href: hh("/") },
-                  { label: t("nav.aPropos"), href: hh("/about") },
-                  { label: t("nav.solutions"), href: hh("/corporate") },
-                  { label: t("nav.produits"), href: hh("/produits") },
-                  { label: t("nav.specialistes"), href: hh("/professional") },
+                  { label: t("nav.accueil"), href: h(locale, "/") },
+                  { label: t("nav.aPropos"), href: h(locale, "/about") },
+                  { label: t("nav.solutions"), href: h(locale, "/corporate") },
+                  { label: t("nav.produits"), href: h(locale, "/produits") },
+                  { label: t("nav.specialistes"), href: h(locale, "/professional") },
                 ].map((link) => (
                     <li key={link.label}>
                       <Link
@@ -260,7 +259,7 @@ export default function Nav(): React.JSX.Element {
               <div className={`hidden sm:block w-px h-5 ${sepStyle} mr-0.5`} />
 
               <Link
-                href={hh("/panier")}
+                href={h(locale, "/panier")}
                 className={`relative flex items-center justify-center w-9 h-9 rounded-xl transition-colors ${isDark ? "hover:bg-white/[0.06] text-white/65 hover:text-white" : "hover:bg-black/[0.06] text-[#0B1220]/65 hover:text-[#0B1220]"}`}
                 aria-label={t("panier.title")}
               >
@@ -277,14 +276,14 @@ export default function Nav(): React.JSX.Element {
               </Link>
 
               <Link
-                href={hh("/login")}
+                href={h(locale, "/login")}
                 className={`hidden sm:inline-flex items-center justify-center px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${loginBtn}`}
               >
                 {t("nav.seConnecter")}
               </Link>
 
               <Link
-                href={hh("/professional")}
+                href={h(locale, "/professional")}
                 className="hidden sm:inline-flex items-center justify-center px-5 py-1.5 rounded-full text-sm font-semibold text-[#0B1220] transition-all duration-300 hover:-translate-y-px active:translate-y-0"
                 style={{
                   background: "#B88A5A",
@@ -313,7 +312,7 @@ export default function Nav(): React.JSX.Element {
       open={mobileOpen}
       onClose={closeMobile}
       isActive={isActive}
-      h={hh}
+      h={(p) => h(locale, p)}
       t={t}
     />
     </>

@@ -12,7 +12,7 @@ import PratiqueDetail from "@/components/pratiques/PratiqueDetail";
 import Footer from "@/components/Footer";
 import { getPratiqueBySlug, getAllPratiqueSlugs, getRelatedPratiques } from "@/lib/pratiques";
 import { getSpecialistsForPractice } from "@/lib/pratique-specialists";
-import { useTranslations } from "@/i18n";
+import { getTranslations } from "@/i18n";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
@@ -59,7 +59,7 @@ export default async function EnglishPratiquePage({ params }: Props) {
   const pratique = getPratiqueBySlug(slug, "en");
   if (!pratique) notFound();
 
-  const { t } = useTranslations("en");
+  const { t } = getTranslations("en");
   const related = getRelatedPratiques(slug, "en", 6);
   const specialists = getSpecialistsForPractice(slug);
   const labels = {

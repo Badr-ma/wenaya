@@ -17,7 +17,7 @@
 import Link from "next/link";
 import { getAllPratiques } from "@/lib/pratiques";
 import { h, type HrefLocale } from "@/lib/href";
-import { useTranslations } from "@/i18n";
+import { getTranslations } from "@/i18n";
 import PratiquesExplorer, { type ExplorerItem } from "./PratiquesExplorer";
 
 /** Curated cross-section of Wenaya disciplines — all must already exist in the
@@ -56,7 +56,7 @@ export default function ClinicPractices({
   locale: HrefLocale;
   lang: string;
 }): React.JSX.Element {
-  const { t } = useTranslations(lang);
+  const { t } = getTranslations(lang);
   const all = getAllPratiques(locale);
 
   const items: ExplorerItem[] = EXPLORER_SLUGS.map((slug, i) => {

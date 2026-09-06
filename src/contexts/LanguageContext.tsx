@@ -12,7 +12,7 @@ import {
   useEffect,
   type ReactNode,
 } from "react";
-import { useTranslations } from "@/i18n";
+import { getTranslations } from "@/i18n";
 
 /** Supported locales — French (default) and English */
 type Locale = "fr" | "en";
@@ -69,7 +69,7 @@ export function LanguageProvider({ children, initialLocale }: { children: ReactN
     setLocale(locale === "fr" ? "en" : "fr");
   }, [locale, setLocale]);
 
-  const { t, tRaw } = useTranslations(locale);
+  const { t, tRaw } = getTranslations(locale);
 
   return (
     <LanguageContext.Provider value={{ locale, setLocale, toggleLocale, t, tRaw }}>

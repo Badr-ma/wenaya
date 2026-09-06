@@ -8,11 +8,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useLocale } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
+import { h } from "@/lib/href";
 
 export default function CheckoutPage() {
   const { t, locale } = useLocale();
   const { items, totalItems, subtotal, isEmpty, hydrated } = useCart();
-  const hh = (p: string) => (locale === "en" ? `/en${p}` : p);
   const fmt = (n: number) =>
     new Intl.NumberFormat(locale === "fr" ? "fr-MA" : "en-MA", {
       minimumFractionDigits: 0,
@@ -35,7 +35,7 @@ export default function CheckoutPage() {
         <div className="max-w-5xl mx-auto text-center py-20">
           <p className="text-[#2B2F36]/40 text-lg mb-2">{t("panier.empty")}</p>
           <Link
-            href={hh("/produits")}
+            href={h(locale, "/produits")}
             className="inline-flex items-center justify-center px-6 py-3 rounded-full text-sm font-medium bg-[#B88A5A] text-white hover:bg-[#a07a4e] transition-colors mt-4"
           >
             {t("panier.continueShopping")}
@@ -49,7 +49,7 @@ export default function CheckoutPage() {
     <section className="min-h-screen bg-[#F2EFE9] pt-28 pb-20 px-4 sm:px-8">
       <div className="max-w-5xl mx-auto">
         <Link
-          href={hh("/panier")}
+          href={h(locale, "/panier")}
           className="inline-flex items-center gap-1.5 text-sm text-[#2B2F36]/40 hover:text-[#0B1220] transition-colors mb-6"
         >
           ← {t("checkout.back")}
