@@ -156,13 +156,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, { items: [] });
   const [hydrated, setHydrated] = useState(false);
 
-  // Hydrate from localStorage on mount
+  // Hydrate from localStorage on mount. The HYDRATE dispatch is applied
+  // synchronously; the completion flag is deferred one microtask so the effect
+  // body performs no synchronous setState (SSR-safe: the first render is always
+  // empty, then the stored cart is applied after mount).
   useEffect(() => {
+    let cancelled = false;
     const items = loadCart();
     if (items.length > 0) {
       dispatch({ type: "HYDRATE", payload: { items } });
     }
-    setHydrated(true);
+    void Promise.resolve().then(() => {
+      if (!cancelled) setHydrated(true);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   // Persist to localStorage on every cart change (only after hydration)

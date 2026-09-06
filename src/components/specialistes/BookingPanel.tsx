@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useLocale } from "@/contexts/LanguageContext";
 import { h } from "@/lib/href";
-import type { Specialist } from "@/lib/specialistes";
+import type { Specialist, SpecialistService } from "@/lib/specialistes";
 import {
   buildMonthAvailability,
   leadingBlanks,
@@ -15,6 +15,18 @@ import {
   weekdayShortLabels,
 } from "@/lib/availability";
 
+type BookingConfirmationData = {
+  specialistName: string;
+  day?: string;
+  date?: string;
+  month?: string;
+  iso?: string;
+  time: string | null;
+  service?: SpecialistService;
+  hours: string;
+  formData: { name: string; email: string; phone: string; message: string };
+};
+
 type BookingPanelProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -22,7 +34,7 @@ type BookingPanelProps = {
   initialDayIso: string | null;
   initialSlot: string | null;
   initialService: string | null;
-  onBookingConfirmed?: (data: any) => void;
+  onBookingConfirmed?: (data: BookingConfirmationData) => void;
 };
 
 export default function BookingPanel({
@@ -60,24 +72,34 @@ export default function BookingPanel({
   const canConfirm = Boolean(selectedSlot && selectedService);
   const weekdayLabels = useMemo(() => weekdayShortLabels(locale), [locale]);
 
-  useEffect(() => {
-    if (!isOpen) return;
-    if (initialDayIso && initialSlot && initialService) {
-      setSelectedDateIso(initialDayIso);
-      setSelectedSlot(initialSlot);
-      setSelectedService(initialService);
-      setStep(2);
-    } else {
-      setSelectedDateIso(initialDayIso);
-      setSelectedSlot(null);
-      setSelectedService(null);
-      setStep(1);
+  // Seed the panel from the initial (URL/query) values whenever it opens or
+  // those values change while open. This uses React's documented "adjust state
+  // during render" pattern (track the previous seed, re-seed when it changes)
+  // instead of an effect, so no synchronous setState runs from an effect body.
+  const seedKey = isOpen
+    ? `${initialDayIso ?? ""}|${initialSlot ?? ""}|${initialService ?? ""}`
+    : "closed";
+  const [prevSeedKey, setPrevSeedKey] = useState(seedKey);
+  if (prevSeedKey !== seedKey) {
+    setPrevSeedKey(seedKey);
+    if (isOpen) {
+      if (initialDayIso && initialSlot && initialService) {
+        setSelectedDateIso(initialDayIso);
+        setSelectedSlot(initialSlot);
+        setSelectedService(initialService);
+        setStep(2);
+      } else {
+        setSelectedDateIso(initialDayIso);
+        setSelectedSlot(null);
+        setSelectedService(null);
+        setStep(1);
+      }
+      if (initialDayIso) {
+        const [y, m] = initialDayIso.split("-").map(Number);
+        setViewMonth({ year: y, month: m - 1 });
+      }
     }
-    if (initialDayIso) {
-      const [y, m] = initialDayIso.split("-").map(Number);
-      setViewMonth({ year: y, month: m - 1 });
-    }
-  }, [isOpen, initialDayIso, initialSlot, initialService]);
+  }
 
   const changeMonth = (delta: number) => {
     setSelectedDateIso(null);
@@ -90,7 +112,7 @@ export default function BookingPanel({
 
   const handleConfirm = () => {
     if (!canConfirm) return;
-    const bookingData = {
+    const bookingData: BookingConfirmationData = {
       specialistName: specialist.name,
       day: selectedDay?.day,
       date: selectedDay?.date,

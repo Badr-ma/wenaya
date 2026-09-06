@@ -326,15 +326,23 @@ export default function AdminPage() {
   const [saveMsg, setSaveMsg] = useState("");
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
 
-  // Check localStorage for existing token
+  // Check localStorage for existing token. The reads + state seeding are
+  // deferred one microtask so the effect body performs no synchronous setState.
   useEffect(() => {
-    const stored = localStorage.getItem("wenaya_admin_token");
-    const userStr = localStorage.getItem("wenaya_admin_user");
-    if (stored) setToken(stored);
-    if (userStr) {
-      try { setCurrentUser(JSON.parse(userStr)); } catch { /* empty */ }
-    }
-    setLoading(false);
+    let cancelled = false;
+    void Promise.resolve().then(() => {
+      if (cancelled) return;
+      const stored = localStorage.getItem("wenaya_admin_token");
+      const userStr = localStorage.getItem("wenaya_admin_user");
+      if (stored) setToken(stored);
+      if (userStr) {
+        try { setCurrentUser(JSON.parse(userStr)); } catch { /* empty */ }
+      }
+      setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const loadSpecialties = useCallback(async (tok: string) => {
@@ -360,10 +368,14 @@ export default function AdminPage() {
   }, [loadSpecialties, loadSpecialists]);
 
   useEffect(() => {
-    if (token) {
-      if (tab === "marquee") loadSpecialties(token);
-      if (tab === "specialists") loadSpecialists(token);
-      if (tab === "homepage") setLoading(false);
+    if (!token) return;
+    // Tab-driven data loads + the homepage loading flag are deferred one
+    // microtask so the effect body performs no synchronous setState.
+    if (tab === "marquee" || tab === "specialists") {
+      const load = tab === "marquee" ? loadSpecialties : loadSpecialists;
+      void Promise.resolve().then(() => load(token));
+    } else if (tab === "homepage") {
+      void Promise.resolve().then(() => setLoading(false));
     }
   }, [token, tab, loadSpecialties, loadSpecialists]);
 

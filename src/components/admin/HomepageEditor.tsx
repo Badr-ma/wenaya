@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import type { HomepageConfig, HomepageSection, SectionType } from "@/lib/homepage-types";
 import { SECTION_META } from "@/lib/homepage-types";
 import type { HomepageFieldDef } from "@/lib/homepage-editor-fields";
@@ -35,21 +35,28 @@ export default function HomepageEditor({ token }: Props) {
   const [showPreview, setShowPreview] = useState(false);
   const [dragIdx, setDragIdx] = useState<number | null>(null);
 
-  const load = useCallback(async () => {
-    try {
-      const [draftRes, pubRes] = await Promise.all([
-        apiFetch("/api/admin/homepage", token),
-        fetch("/api/homepage"),
-      ]);
-      const draftJson = await draftRes.json();
-      const pubJson = await pubRes.json();
-      if (draftJson.data) setConfig(draftJson.data);
-      if (pubJson.data) setPublished(pubJson.data);
-    } catch { /* empty */ }
-    setLoading(false);
+  // Load draft + published configs on mount. All state updates happen after the
+  // awaited fetches so the effect body itself performs no synchronous setState.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const [draftRes, pubRes] = await Promise.all([
+          apiFetch("/api/admin/homepage", token),
+          fetch("/api/homepage"),
+        ]);
+        const draftJson = await draftRes.json();
+        const pubJson = await pubRes.json();
+        if (cancelled) return;
+        if (draftJson.data) setConfig(draftJson.data);
+        if (pubJson.data) setPublished(pubJson.data);
+      } catch { /* empty */ }
+      if (!cancelled) setLoading(false);
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [token]);
-
-  useEffect(() => { load(); }, [load]);
 
   const saveDraft = async (cfg?: HomepageConfig) => {
     const c = cfg || config;

@@ -42,40 +42,51 @@ export default function HomepageRenderer({ config }: { config: HomepageConfig })
   const contentSections = useMemo(() => sections.filter((s) => s.type !== "footer"), [sections]);
   const footerSections = useMemo(() => sections.filter((s) => s.type === "footer"), [sections]);
 
-  let lastTheme: string | null = null;
+  // Rendered order: content sections then footer sections (matches prior
+  // behavior so theme break continuity runs across the two groups).
+  const orderedSections = useMemo(
+    () => [...contentSections, ...footerSections],
+    [contentSections, footerSections]
+  );
 
-  const renderSection = (section: HomepageSection, i: number) => {
-    const meta = SECTION_META[section.type];
-    const needsBreak = meta?.hasSectionBreak;
-    const needsSpacer = meta?.hasSpacerBefore;
-    const currentTheme = meta?.theme ?? "light";
+  // Precompute separators up front so no render-phase variable mutation is
+  // needed. Same rules as before: theme-change break, hasSectionBreak, spacer.
+  const separators = useMemo(() => {
+    let lastTheme: string | null = null;
+    return orderedSections.map((section, i) => {
+      const meta = SECTION_META[section.type];
+      const needsBreak = meta?.hasSectionBreak;
+      const needsSpacer = meta?.hasSpacerBefore;
+      const currentTheme = meta?.theme ?? "light";
 
-    let separator = null;
-    if (i > 0 && lastTheme && lastTheme !== currentTheme) {
-      separator = <SectionBreak />;
-    } else if (i > 0 && needsBreak) {
-      separator = <SectionBreak />;
-    } else if (needsSpacer) {
-      separator = <Spacer />;
-    }
-    lastTheme = currentTheme;
+      let separator = null;
+      if (i > 0 && lastTheme && lastTheme !== currentTheme) {
+        separator = <SectionBreak />;
+      } else if (i > 0 && needsBreak) {
+        separator = <SectionBreak />;
+      } else if (needsSpacer) {
+        separator = <Spacer />;
+      }
+      lastTheme = currentTheme;
+      return separator;
+    });
+  }, [orderedSections]);
 
-    return (
-      <span key={section.id}>
-        {separator}
-        <SectionWrapper section={section}>
-          <SectionComponent section={section} />
-        </SectionWrapper>
-      </span>
-    );
-  };
+  const renderSection = (section: HomepageSection, separator: React.ReactNode) => (
+    <span key={section.id}>
+      {separator}
+      <SectionWrapper section={section}>
+        <SectionComponent section={section} />
+      </SectionWrapper>
+    </span>
+  );
 
   return (
     <div className="flex flex-col min-h-screen">
       <main>
-        {contentSections.map((section, i) => renderSection(section, i))}
+        {contentSections.map((section, i) => renderSection(section, separators[i]))}
       </main>
-      {footerSections.map((section, i) => renderSection(section, contentSections.length + i))}
+      {footerSections.map((section, i) => renderSection(section, separators[contentSections.length + i]))}
     </div>
   );
 }

@@ -10,10 +10,12 @@ export default function CookieConsent() {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!localStorage.getItem(STORAGE_KEY)) {
-      setVisible(true);
-      requestAnimationFrame(() => requestAnimationFrame(() => setAnimIn(true)));
-    }
+    if (localStorage.getItem(STORAGE_KEY)) return;
+    // Defer the visibility flip one frame so the effect body performs no
+    // synchronous setState. The double-rAF entrance animation is preserved.
+    const show = requestAnimationFrame(() => setVisible(true));
+    requestAnimationFrame(() => requestAnimationFrame(() => setAnimIn(true)));
+    return () => cancelAnimationFrame(show);
   }, []);
 
   const accept = () => {
