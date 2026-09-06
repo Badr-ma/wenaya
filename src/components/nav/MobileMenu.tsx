@@ -58,8 +58,8 @@ export default function MobileMenu({
             {[
               { label: t("nav.aPropos"), href: h("/about") },
               { label: t("nav.produits"), href: h("/produits") },
-              { label: t("nav.solutions"), href: h("/solutions/entreprises") },
-              { label: t("nav.specialistes"), href: h("/specialistes") },
+              { label: t("nav.solutions"), href: h("/corporate") },
+              { label: t("nav.specialistes"), href: h("/professional") },
             ].map(({ label, href }) => (
               <li key={label}>
                 <Link
@@ -80,14 +80,14 @@ export default function MobileMenu({
         <div className="pt-8 border-t border-white/[0.06] space-y-3">
           <div className="grid grid-cols-2 gap-3">
             <Link
-              href="/login"
+              href={h("/login")}
               onClick={onClose}
               className="flex items-center justify-center h-12 rounded-xl border border-white/[0.09] bg-white/[0.04] text-white/65 text-sm font-medium transition-all hover:bg-white/[0.07]"
             >
               {t("nav.seConnecter")}
             </Link>
             <Link
-              href={h("/specialistes")}
+              href={h("/professional")}
               onClick={onClose}
               className="flex items-center justify-center h-12 rounded-xl text-[#0B1220] text-sm font-semibold transition-all duration-300"
               style={{

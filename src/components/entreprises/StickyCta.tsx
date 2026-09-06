@@ -1,6 +1,6 @@
 /**
  * Sticky CTA — fixed bottom bar on the entreprises page that appears after scrolling.
- * Shows a "Book a Free Consultation" CTA button. Only visible on /solutions/entreprises.
+ * Shows a "Book a Free Consultation" CTA button. Only visible on /corporate.
  * Auto-hides after 15 seconds or when user clicks the CTA.
  */
 "use client";

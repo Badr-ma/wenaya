@@ -48,8 +48,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: SitemapEntry[] = [
     ...dual("/", { changeFrequency: "weekly", priority: 1.0 }),
     ...dual("/about", { changeFrequency: "monthly", priority: 0.9 }),
-    ...dual("/solutions/entreprises", { changeFrequency: "monthly", priority: 0.9 }),
-    ...dual("/solutions/entreprises/programmes", { changeFrequency: "monthly", priority: 0.8 }),
+    ...dual("/corporate", { changeFrequency: "monthly", priority: 0.9 }),
+    ...dual("/corporate/programmes", { changeFrequency: "monthly", priority: 0.8 }),
     ...dual("/produits", { changeFrequency: "weekly", priority: 0.9 }),
     ...dual("/pratiques", { changeFrequency: "monthly", priority: 0.8 }),
     {
@@ -58,26 +58,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         languages: {
           "x-default": `${SITE_URL}/seance-de-groupe`,
           "fr-MA": `${SITE_URL}/seance-de-groupe`,
-          "en-MA": `${SITE_URL}/en/group-sessions`,
+          "en-MA": `${SITE_URL}/en/seance-de-groupe`,
         },
       },
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
-      url: `${SITE_URL}/en/group-sessions`,
+      url: `${SITE_URL}/en/seance-de-groupe`,
       alternates: {
         languages: {
           "x-default": `${SITE_URL}/seance-de-groupe`,
           "fr-MA": `${SITE_URL}/seance-de-groupe`,
-          "en-MA": `${SITE_URL}/en/group-sessions`,
+          "en-MA": `${SITE_URL}/en/seance-de-groupe`,
         },
       },
       changeFrequency: "monthly",
       priority: 0.8,
     },
-    ...dual("/specialistes", { changeFrequency: "weekly", priority: 0.9 }),
-    ...dual("/blog", { changeFrequency: "weekly", priority: 0.9 }),
+    ...dual("/professional", { changeFrequency: "weekly", priority: 0.9 }),
+    ...dual("/articles", { changeFrequency: "weekly", priority: 0.9 }),
     ...dual("/faq", { changeFrequency: "monthly", priority: 0.7 }),
     ...dual("/contact", { changeFrequency: "monthly", priority: 0.8 }),
     ...dual("/confidentialite", { changeFrequency: "yearly", priority: 0.2 }),
@@ -86,7 +86,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   /** Blog post URLs — shared slug set, both locales have the same posts */
   const blogEntries = posts.flatMap((post) =>
-    dual(`/blog/${post.slug}`, { lastModified: new Date(post.publishedAt), changeFrequency: "monthly", priority: 0.8 })
+    dual(`/articles/${post.slug}`, { lastModified: new Date(post.publishedAt), changeFrequency: "monthly", priority: 0.8 })
   );
 
   /** Product detail page URLs — shared slug set */
@@ -96,7 +96,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   /** Specialist profile page URLs — Redis-backed, shared slug set */
   const specialistEntries = specialists.flatMap((s) =>
-    dual(`/specialistes/${s.slug}`, { changeFrequency: "monthly", priority: 0.8 })
+    dual(`/professional/${s.slug}`, { changeFrequency: "monthly", priority: 0.8 })
   );
 
   /** Practice detail page URLs — 19 FR + 19 EN */
@@ -105,16 +105,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     dual(`/pratiques/${slug}`, { changeFrequency: "monthly", priority: 0.7 })
   );
 
-  /** Group-session detail page URLs — 6 FR + 6 EN (FR/EN slugs differ per session) */
-  const groupSessionSlugsFr = getAllGroupSessionSlugs("fr");
-  const groupSessionSlugsEn = getAllGroupSessionSlugs("en");
+  /** Group-session detail page URLs — EN shares the FR slug under /en/seance-de-groupe */
+  const groupSessionSlugs = getAllGroupSessionSlugs();
   const groupSessionEntries: SitemapEntry[] = [];
-  groupSessionSlugsFr.forEach((slugFr, i) => {
-    const slugEn = groupSessionSlugsEn[i] ?? slugFr;
+  groupSessionSlugs.forEach((slugFr) => {
     const alt = {
       "x-default": `${SITE_URL}/seance-de-groupe/${slugFr}`,
       "fr-MA": `${SITE_URL}/seance-de-groupe/${slugFr}`,
-      "en-MA": `${SITE_URL}/en/group-sessions/${slugEn}`,
+      "en-MA": `${SITE_URL}/en/seance-de-groupe/${slugFr}`,
     };
     groupSessionEntries.push({
       url: `${SITE_URL}/seance-de-groupe/${slugFr}`,
@@ -123,7 +121,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     });
     groupSessionEntries.push({
-      url: `${SITE_URL}/en/group-sessions/${slugEn}`,
+      url: `${SITE_URL}/en/seance-de-groupe/${slugFr}`,
       alternates: { languages: alt },
       changeFrequency: "monthly",
       priority: 0.7,

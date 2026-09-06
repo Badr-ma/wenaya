@@ -1,6 +1,6 @@
 /**
  * Group Session Detail — editorial, image-led redesign for /seance-de-groupe/[slug] and
- * /en/group-sessions/[slug]. Server component; all copy arrives pre-resolved from the
+ * /en/seance-de-groupe/[slug]. Server component; all copy arrives pre-resolved from the
  * pages via the group-sessions adapter (no client i18n).
  *
  * Structure (no cards, premium editorial rhythm):

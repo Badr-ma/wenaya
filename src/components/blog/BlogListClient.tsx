@@ -1,5 +1,5 @@
 /**
- * Blog List Client — filterable/sortable blog post grid for /blog page.
+ * Blog List Client — filterable/sortable blog post grid for /articles page.
  * Features: category filter tabs, search input, sort dropdown,
  * and a responsive card grid with Framer Motion animations.
  * Displays post cards with image, category badge, title, excerpt, and author.
@@ -28,7 +28,7 @@ function BlogCard({ post, index }: { post: PostWithAuthor; index: number }) {
       transition={{ duration: 0.6, delay: index * 0.08, ease: [0.25, 0.1, 0.25, 1] }}
     >
       <Link
-        href={h(locale, `/blog/${post.slug}`)}
+        href={h(locale, `/articles/${post.slug}`)}
         className="group block relative bg-white rounded-2xl border border-gray-100 overflow-hidden transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] hover:-translate-y-1"
       >
         <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-transparent via-transparent to-transparent group-hover:from-[#B88A5A]/20 group-hover:via-[#159AA9]/10 group-hover:to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700 z-0 pointer-events-none" />

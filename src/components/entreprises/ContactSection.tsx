@@ -1,7 +1,10 @@
 /**
- * Contact — final conversion section combining the corporate inquiry form
- * (email + message, posts to /api/contact) with the closing quote and the
- * primary call-to-action (Google Calendar booking). Dark closing band.
+ * Contact — final conversion section for the corporate pages.
+ * Two-column on desktop: LEFT = heading + contact details + external Google
+ * Calendar booking CTA; RIGHT = quote-request form (team size + programme
+ * level selectors) posting to /api/contact. The form carries the backend-
+ * required identity fields (firstName, lastName, email) plus the stable
+ * field names teamSize, programmeLevel and source="corporate-quote".
  * Keeps id="contact" and data-contact for anchor/scroll targets.
  */
 "use client";
@@ -10,12 +13,22 @@ import { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
 
+type FormStatus = "idle" | "sending" | "success" | "error";
+
+type SelectOption = { value: string; label: string };
+
 export default function ContactSection() {
-  const { t } = useLocale();
+  const { t, tRaw } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [status, setStatus] = useState<FormStatus>("idle");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [msg, setMsg] = useState("");
+  const [teamSize, setTeamSize] = useState("");
+  const [programmeLevel, setProgrammeLevel] = useState("");
+
+  const teamSizeOptions: SelectOption[] = tRaw<SelectOption[]>("entreprises.contactSection.teamSizeOptions") ?? [];
+  const programmeLevelOptions: SelectOption[] = tRaw<SelectOption[]>("entreprises.contactSection.programmeLevelOptions") ?? [];
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -29,33 +42,87 @@ export default function ContactSection() {
         opacity: 1, y: 0, duration: 0.6, delay: 0.15, ease: "power3.out",
         scrollTrigger: { trigger: el, start: "top 82%", toggleActions: "play none none none" },
       });
-      gsap.fromTo(".ct-cta", { opacity: 0, y: 20 }, {
-        opacity: 1, y: 0, duration: 0.6, delay: 0.2, ease: "power3.out",
-        scrollTrigger: { trigger: el, start: "top 82%", toggleActions: "play none none none" },
-      });
     }, el);
     return () => ctx.revert();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus("idle");
+    setStatus("sending");
     const res = await fetch("/api/contact", {
       method: "POST",
-      body: JSON.stringify({ email, message: msg }),
+      body: JSON.stringify({
+        firstName,
+        lastName,
+        email,
+        teamSize,
+        programmeLevel,
+        source: "corporate-quote",
+      }),
       headers: { "Content-Type": "application/json" },
     });
     if (res.ok) {
       setStatus("success");
+      setFirstName("");
+      setLastName("");
       setEmail("");
-      setMsg("");
+      setTeamSize("");
+      setProgrammeLevel("");
     } else {
       setStatus("error");
     }
   };
 
+  const renderSelect = (
+    id: string,
+    name: string,
+    label: string,
+    placeholder: string,
+    value: string,
+    options: SelectOption[],
+    onChange: (v: string) => void,
+  ) => (
+    <div>
+      <label htmlFor={id} className={fieldLabelClass}>
+        {label}
+      </label>
+      <div className="relative">
+        <select
+          id={id}
+          name={name}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className={`w-full appearance-none bg-[#F2EFE9]/60 border border-[#0B1220]/[0.08] rounded-xl px-4 py-3 pr-10 text-sm outline-none transition-all duration-200 focus:border-[#B88A5A]/40 focus:bg-white focus-visible:ring-2 focus-visible:ring-[#B88A5A]/25 ${value === "" ? "text-[#2B2F36]/50" : "text-[#0B1220]"}`}
+        >
+          <option value="" disabled>
+            {placeholder}
+          </option>
+          {options.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
+        <svg
+          className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#0B1220]/40"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+        </svg>
+      </div>
+    </div>
+  );
+
+  const inputClass =
+    "w-full bg-[#F2EFE9]/60 border border-[#0B1220]/[0.08] rounded-xl px-4 py-3 text-[#0B1220] text-sm placeholder:text-[#2B2F36]/[0.3] outline-none focus:border-[#B88A5A]/40 focus:bg-white transition-all duration-200";
+  const fieldLabelClass =
+    "block text-[#0B1220] text-xs font-semibold tracking-[0.05em] uppercase mb-2";
+
   return (
-    <section id="contact" data-contact ref={sectionRef} className="relative bg-[#0B1220] py-20 sm:py-28 px-6 overflow-hidden scroll-mt-20">
+    <section id="contact" data-contact ref={sectionRef} className="relative bg-[#0B1220] py-20 sm:py-28 px-4 sm:px-6 overflow-hidden scroll-mt-20">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 right-0 w-[720px] h-[720px] rounded-full bg-[#B88A5A]/[0.06] blur-3xl translate-x-1/4 -translate-y-1/4" />
         <div className="absolute bottom-0 left-0 w-[520px] h-[520px] rounded-full bg-[#B88A5A]/[0.04] blur-3xl -translate-x-1/4 translate-y-1/4" />
@@ -63,143 +130,178 @@ export default function ContactSection() {
 
       <div className="max-w-6xl mx-auto relative">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-          {/* Left: heading + info + form */}
-          <div>
-            <div className="ct-head">
-              <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase mb-5">
-                <span className="w-8 h-px bg-[#B88A5A]/40" />
-                {t("entreprises.contactSection.title")}
-              </span>
-              <h2 className="heading-serif text-white mt-5 leading-[1.06]" style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.8rem)" }}>
-                {t("entreprises.contactSection.subtitle")}
-              </h2>
-              <p className="text-white/55 text-base leading-relaxed mt-4 max-w-md">
-                {t("entreprises.contactSection.desc")}
-              </p>
-            </div>
-
-            <div className="ct-form mt-8 sm:mt-10">
-              <div className="bg-white rounded-2xl p-6 sm:p-8" style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.3)" }}>
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div>
-                    <label htmlFor="ct-email" className="block text-[#0B1220] text-xs font-semibold tracking-[0.05em] uppercase mb-2">
-                      {t("entreprises.contactSection.emailLabel")}
-                    </label>
-                    <input
-                      id="ct-email"
-                      type="email"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full bg-[#F2EFE9]/60 border border-[#0B1220]/[0.08] rounded-xl px-4 py-3 text-[#0B1220] text-sm placeholder:text-[#2B2F36]/[0.3] outline-none focus:border-[#B88A5A]/40 focus:bg-white transition-all duration-200"
-                      placeholder={t("entreprises.contactSection.emailPlaceholder")}
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="ct-msg" className="block text-[#0B1220] text-xs font-semibold tracking-[0.05em] uppercase mb-2">
-                      {t("entreprises.contactSection.msgLabel")}
-                    </label>
-                    <textarea
-                      id="ct-msg"
-                      required
-                      rows={4}
-                      value={msg}
-                      onChange={(e) => setMsg(e.target.value)}
-                      className="w-full bg-[#F2EFE9]/60 border border-[#0B1220]/[0.08] rounded-xl px-4 py-3 text-[#0B1220] text-sm placeholder:text-[#2B2F36]/[0.3] outline-none focus:border-[#B88A5A]/40 focus:bg-white transition-all duration-200 resize-none"
-                      placeholder={t("entreprises.contactSection.msgPlaceholder")}
-                    />
-                  </div>
-
-                  <div className="pt-2">
-                    <button
-                      type="submit"
-                      className="group inline-flex items-center gap-3 text-white px-8 py-3.5 rounded-full text-sm font-semibold tracking-wide transition-all duration-300 w-full sm:w-auto justify-center hover:bg-[#A07848]"
-                      style={{ background: "#B88A5A" }}
-                    >
-                      {t("entreprises.contactSection.submit")}
-                      <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                      </svg>
-                    </button>
-                  </div>
-
-                  {status === "success" && (
-                    <p className="text-green-700 text-sm">{t("entreprises.contactSection.success")}</p>
-                  )}
-                  {status === "error" && (
-                    <p className="text-red-600 text-sm">{t("entreprises.contactSection.error")}</p>
-                  )}
-                </form>
-              </div>
-
-              <div className="mt-7 flex flex-wrap gap-6">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-white/[0.06] flex items-center justify-center shrink-0">
-                    <svg className="w-4 h-4 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-white/40 text-[10px] font-semibold tracking-[0.1em] uppercase">Email</p>
-                    <p className="text-white text-sm font-medium">hello@wenaya.com</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-white/[0.06] flex items-center justify-center shrink-0">
-                    <svg className="w-4 h-4 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-white/40 text-[10px] font-semibold tracking-[0.1em] uppercase">Response time</p>
-                    <p className="text-white text-sm font-medium">Under 24h</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right: closing quote + conversion CTA */}
-          <div className="ct-cta lg:pt-8 lg:sticky lg:top-24">
-            <svg className="w-8 h-8 mb-6" viewBox="0 0 32 32" fill="none" style={{ color: "rgba(184,138,90,0.35)" }}>
-              <path d="M9.333 20c0-2.667 1.334-5.333 4-8L16 8l1.333 1.333C15.111 11.556 14 13.778 14 16v4H9.333zM20 20c0-2.667 1.333-5.333 4-8L26.667 8 28 9.333c-2.222 2.223-3.333 4.445-3.333 6.667V20H20z" fill="currentColor" />
-            </svg>
-            <blockquote className="text-white/60 italic text-lg sm:text-xl leading-relaxed max-w-md">
-              {t("entreprises.cta.quote")}
-            </blockquote>
-            <div className="flex items-center gap-3 mt-5">
-              <span className="w-6 h-px bg-[#B88A5A]/30" />
-              <span className="text-white/40 text-xs font-medium tracking-[0.15em] uppercase">{t("entreprises.cta.quoteAttr")}</span>
-            </div>
-
-            <h3 className="mt-10 text-white font-serif font-medium leading-[1.06] tracking-[-0.02em]"
-              style={{ fontSize: "clamp(2rem, 3.5vw, 2.85rem)" }}
-            >
-              {t("entreprises.cta.finalHeading")}
-            </h3>
-            <p className="text-white/50 text-base leading-relaxed mt-4 max-w-md">
-              {t("entreprises.cta.finalSub")}
+          {/* Left: heading + contact details + booking CTA */}
+          <div className="ct-head">
+            <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase mb-5">
+              <span className="w-8 h-px bg-[#B88A5A]/40" />
+              {t("entreprises.contactSection.eyebrow")}
+            </span>
+            <h2 className="heading-serif text-white mt-5 leading-[1.06]" style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.8rem)" }}>
+              {t("entreprises.contactSection.heading")}
+            </h2>
+            <p className="text-white/55 text-base leading-relaxed mt-4 max-w-md">
+              {t("entreprises.contactSection.sub")}
             </p>
 
-            <div className="mt-9 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+            <ul className="mt-9 space-y-5">
+              <li className="flex items-center gap-4">
+                <span className="w-11 h-11 rounded-xl bg-white/[0.06] flex items-center justify-center shrink-0">
+                  <svg className="w-4 h-4 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="text-white/40 text-[11px] font-semibold uppercase tracking-[0.12em]">{t("entreprises.contactSection.emailLabel")}</p>
+                  <a href="mailto:corporate@wenaya.com" className="text-white text-sm font-medium transition-colors hover:text-[#B88A5A]">
+                    {t("entreprises.contactSection.email")}
+                  </a>
+                </div>
+              </li>
+              <li className="flex items-center gap-4">
+                <span className="w-11 h-11 rounded-xl bg-white/[0.06] flex items-center justify-center shrink-0">
+                  <svg className="w-4 h-4 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="text-white/40 text-[11px] font-semibold uppercase tracking-[0.12em]">{t("entreprises.contactSection.phoneLabel")}</p>
+                  <a href="tel:+212666124035" className="text-white text-sm font-medium transition-colors hover:text-[#B88A5A]">
+                    {t("entreprises.contactSection.phone")}
+                  </a>
+                </div>
+              </li>
+              <li className="flex items-center gap-4">
+                <span className="w-11 h-11 rounded-xl bg-white/[0.06] flex items-center justify-center shrink-0">
+                  <svg className="w-4 h-4 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="text-white/40 text-[11px] font-semibold uppercase tracking-[0.12em]">{t("entreprises.contactSection.addressLabel")}</p>
+                  <p className="text-white text-sm font-medium">{t("entreprises.contactSection.address")}</p>
+                </div>
+              </li>
+            </ul>
+
+            <div className="mt-10">
               <a
                 href="https://calendar.app.google/YyAirdPSc2ugGbnh9"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center justify-center gap-2.5 h-14 px-8 rounded-full text-white text-base font-semibold shadow-[0_12px_32px_-12px_rgba(184,138,90,0.8)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_44px_-14px_rgba(184,138,90,0.95)] active:translate-y-0 w-full sm:w-auto"
+                aria-label={t("entreprises.contactSection.bookingAria")}
+                className="group inline-flex items-center justify-center gap-2.5 h-14 px-8 rounded-full text-white text-base font-semibold shadow-[0_12px_32px_-12px_rgba(184,138,90,0.8)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_44px_-14px_rgba(184,138,90,0.95)] active:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B88A5A]"
                 style={{ background: "#B88A5A" }}
               >
-                {t("entreprises.cta.cta1")}
+                {t("entreprises.contactSection.bookingCta")}
                 <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
                 </svg>
               </a>
+              <p className="text-white/30 text-xs mt-5 tracking-[0.05em]">
+                {t("entreprises.cta.contact")}
+              </p>
             </div>
+          </div>
 
-            <p className="text-white/30 text-xs mt-10 tracking-[0.05em]">
-              {t("entreprises.cta.contact")}
-            </p>
+          {/* Right: quote request form */}
+          <div className="ct-form lg:sticky lg:top-24">
+            <div className="bg-[#FAF8F4] rounded-2xl p-6 sm:p-8" style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.3)" }}>
+              <h3 className="text-[#0B1220] font-semibold text-xl sm:text-2xl leading-snug tracking-[-0.01em]">
+                {t("entreprises.contactSection.quoteHeading")}
+              </h3>
+              <p className="text-[#0B1220]/60 text-sm leading-relaxed mt-2">
+                {t("entreprises.contactSection.quoteSub")}
+              </p>
+
+              <form onSubmit={handleSubmit} className="space-y-6 mt-7">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="ct-firstname" className={fieldLabelClass}>
+                      {t("entreprises.contactSection.firstNameLabel")}
+                    </label>
+                    <input
+                      id="ct-firstname"
+                      type="text"
+                      required
+                      autoComplete="given-name"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      className={inputClass}
+                      placeholder={t("entreprises.contactSection.firstNamePlaceholder")}
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="ct-lastname" className={fieldLabelClass}>
+                      {t("entreprises.contactSection.lastNameLabel")}
+                    </label>
+                    <input
+                      id="ct-lastname"
+                      type="text"
+                      required
+                      autoComplete="family-name"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      className={inputClass}
+                      placeholder={t("entreprises.contactSection.lastNamePlaceholder")}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="ct-request-email" className={fieldLabelClass}>
+                    {t("entreprises.contactSection.emailFieldLabel")}
+                  </label>
+                  <input
+                    id="ct-request-email"
+                    type="email"
+                    required
+                    autoComplete="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className={inputClass}
+                    placeholder={t("entreprises.contactSection.emailFieldPlaceholder")}
+                  />
+                </div>
+
+                {renderSelect(
+                  "ct-team-size",
+                  "teamSize",
+                  t("entreprises.contactSection.teamSizeLabel"),
+                  t("entreprises.contactSection.teamSizePlaceholder"),
+                  teamSize,
+                  teamSizeOptions,
+                  setTeamSize,
+                )}
+
+                {renderSelect(
+                  "ct-programme-level",
+                  "programmeLevel",
+                  t("entreprises.contactSection.programmeLevelLabel"),
+                  t("entreprises.contactSection.programmeLevelPlaceholder"),
+                  programmeLevel,
+                  programmeLevelOptions,
+                  setProgrammeLevel,
+                )}
+
+                <div className="pt-1">
+                  <button
+                    type="submit"
+                    disabled={status === "sending"}
+                    className="inline-flex items-center justify-center gap-2.5 w-full h-13 px-8 rounded-xl text-white text-sm font-semibold tracking-wide bg-[#0B1220] transition-all duration-300 hover:bg-[#1B2233] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B88A5A] disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    {status === "sending" ? t("entreprises.contactSection.fetching") : t("entreprises.contactSection.submit")}
+                  </button>
+                </div>
+
+                {status === "success" && (
+                  <p role="status" className="text-green-700 text-sm">{t("entreprises.contactSection.success")}</p>
+                )}
+                {status === "error" && (
+                  <p role="alert" className="text-red-600 text-sm">{t("entreprises.contactSection.error")}</p>
+                )}
+              </form>
+            </div>
           </div>
         </div>
       </div>

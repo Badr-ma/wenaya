@@ -447,7 +447,7 @@ export default function AdminPage() {
   const logout = () => {
     localStorage.removeItem("wenaya_admin_token");
     localStorage.removeItem("wenaya_admin_user");
-    window.location.href = "/login";
+    window.location.href = "/admin";
   };
 
   /* ── Login screen ── */

@@ -7,7 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getPublishedPosts } from "@/lib/blog";
 import { h, type HrefLocale } from "@/lib/href";
-import { useTranslations } from "@/i18n";
+import { useTranslations as getTranslations } from "@/i18n";
 
 function formatDate(iso: string, locale: string) {
   const d = new Date(iso);
@@ -19,7 +19,7 @@ function formatDate(iso: string, locale: string) {
 }
 
 export default async function ClinicNews({ locale, lang }: { locale: HrefLocale; lang: string }): Promise<React.JSX.Element> {
-  const { t } = useTranslations(lang);
+  const { t } = getTranslations(lang);
   const posts = getPublishedPosts().slice(0, 4);
 
   return (
@@ -37,7 +37,7 @@ export default async function ClinicNews({ locale, lang }: { locale: HrefLocale;
             </h2>
           </div>
           <Link
-            href={h(locale, "/blog")}
+            href={h(locale, "/articles")}
             className="inline-flex items-center gap-2 text-sm font-semibold text-white group whitespace-nowrap"
           >
             <span className="underline underline-offset-8 decoration-[#B88A5A]/40 group-hover:decoration-[#B88A5A] transition-colors">
@@ -52,8 +52,8 @@ export default async function ClinicNews({ locale, lang }: { locale: HrefLocale;
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
           {/* Featured first post */}
           {posts[0] ? (
-            <Link href={h(locale, `/blog/${posts[0].slug}`)} className="group lg:col-span-7 block">
-              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-t-[28px] bg-white/[0.04]">
+            <Link href={h(locale, `/articles/${posts[0].slug}`)} className="group lg:col-span-7 block">
+              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-t-[24px] bg-white/[0.04]">
                 <Image
                   src={posts[0].featuredImage}
                   alt={posts[0].title}
@@ -80,7 +80,7 @@ export default async function ClinicNews({ locale, lang }: { locale: HrefLocale;
           <div className="lg:col-span-5 flex flex-col justify-center">
             <div className="space-y-0 divide-y divide-white/[0.1]">
               {posts.slice(1, 4).map((p) => (
-                <Link key={p.slug} href={h(locale, `/blog/${p.slug}`)} className="group block py-5 first:pt-0">
+                <Link key={p.slug} href={h(locale, `/articles/${p.slug}`)} className="group block py-5 first:pt-0">
                   <p className="text-[#B88A5A] text-sm font-medium">{formatDate(p.publishedAt, lang)}</p>
                   <h3 className="heading-serif text-white text-lg lg:text-xl mt-1.5 leading-snug group-hover:text-[#B88A5A] transition-colors">
                     {p.title}

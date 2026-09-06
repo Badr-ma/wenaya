@@ -20,7 +20,7 @@ const cardKeys = [
       <path d="M16 14V10a2 2 0 012-2h12a2 2 0 012 2v4" stroke="currentColor" strokeWidth="1" />
     </svg>
   )},
-  { key: "corporate", featured: false, href: "/solutions/entreprises", icon: (
+  { key: "corporate", featured: false, href: "/corporate", icon: (
     <svg viewBox="0 0 48 48" className="w-10 h-10" fill="none">
       <rect x="8" y="22" width="32" height="20" rx="2" stroke="currentColor" strokeWidth="1" />
       <rect x="16" y="10" width="16" height="12" rx="1" stroke="currentColor" strokeWidth="1" />

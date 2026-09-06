@@ -25,7 +25,7 @@ interface Props {
 }
 
 export function generateStaticParams() {
-  return getAllGroupSessionSlugs("fr").map((slug) => ({ slug }));
+  return getAllGroupSessionSlugs().map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

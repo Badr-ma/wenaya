@@ -1,31 +1,35 @@
 /**
  * Pratiques Grid — filterable listing of all wellness practices (kinésithérapie,
  * ostéopathie, psychologie, nutrition, etc.) for the /pratiques page.
- * Features: search, category filter tabs, animated card grid with GSAP,
- * and HiggsField particle background effect.
+ *
+ * Infinite scroll: the page SSR's the first batch (props) for SEO, then the grid
+ * appends batches via `getPracticesPageAsync` as the sentinel approaches the
+ * viewport. Filtering/search always run against the FULL dataset (in the
+ * data-access layer) BEFORE pagination — never on the visible batch.
+ *
+ * Features: search, category filter tabs, IntersectionObserver sentinel
+ * (rootMargin 400px), skeleton/spinner loading, "Load more" fallback button,
+ * retry on failure, end-of-list state, and the existing GSAP entrance for the
+ * initial batch (appended batches use a lightweight CSS fade-in).
  */
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLocale } from "@/contexts/LanguageContext";
 import { h, groupSessionsHref } from "@/lib/href";
 import Link from "next/link";
 import HiggsField from "@/components/HiggsField";
-import { getAllPratiques } from "@/lib/pratiques";
+import {
+  PRACTICE_FILTER_KEYS,
+  PRACTICE_CATEGORY_MAP,
+  PRATIQUES_PAGE_SIZE,
+  getAllPratiqueSlugs,
+  type Pratique,
+  type PaginatedPratiques,
+} from "@/lib/pratiques";
 import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
-
-
-const categoryMap: Record<string, string[]> = {
-  all: [],
-  manualTherapies: ["manualTherapies"],
-  mentalHealth: ["mentalHealth"],
-  nutrition: ["nutrition"],
-  holisticWellness: ["holisticWellness"],
-  soins: ["soins"],
-};
 
 const bronzePalette: [number, number, number][] = [
   [184, 138, 90],
@@ -33,31 +37,165 @@ const bronzePalette: [number, number, number][] = [
   [212, 168, 112],
 ];
 
-export default function PratiquesGrid(): React.JSX.Element {
+interface ProxyQuery {
+  locale: string;
+  page: number;
+  pageSize: number;
+  category: string | null;
+  search: string;
+}
+
+/**
+ * Load a practices batch through the `/api/pratiques` proxy (the browser never
+ * calls the Wenaya backend directly). The proxy answers with the same paginated
+ * contract the SSR seam produces — including the `X-Data-Source` header which
+ * tells QA whether the batch came from the live API or the local fallback.
+ */
+async function fetchPracticesProxy(query: ProxyQuery): Promise<PaginatedPratiques> {
+  const params = new URLSearchParams();
+  params.set("locale", query.locale);
+  params.set("page", String(query.page));
+  params.set("pageSize", String(query.pageSize));
+  if (query.category) params.set("category", query.category);
+  if (query.search.trim()) params.set("search", query.search.trim());
+
+  const res = await fetch(`/api/pratiques?${params.toString()}`);
+  if (!res.ok) throw new Error(`pratiques proxy HTTP ${res.status}`);
+  return (await res.json()) as PaginatedPratiques;
+}
+
+interface PratiquesGridProps {
+  /** SSR'd first batch — keeps the initial HTML crawlable (SEO). */
+  initialItems?: Pratique[];
+  /** Total matching practices (full filtered dataset), from the same SSR query. */
+  initialTotal?: number;
+  /** Whether more pages exist beyond the SSR batch. */
+  initialHasMore?: boolean;
+  /** Size of the unfiltered dataset (used by the count line). */
+  totalAll?: number;
+}
+
+export default function PratiquesGrid({
+  initialItems = [],
+  initialTotal,
+  initialHasMore,
+  totalAll,
+}: PratiquesGridProps): React.JSX.Element {
   const { t, locale } = useLocale();
   const { elRef: sectionElRef, ready } = useIntersectionDeferred();
-  const allPratiques = getAllPratiques(locale);
+
+  // ─── Pagination state ────────────────────────────────────────
+  const [items, setItems] = useState<Pratique[]>(initialItems);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(initialHasMore ?? initialItems.length > 0);
+  const [total, setTotal] = useState(initialTotal ?? initialItems.length);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [loadError, setLoadError] = useState(false);
+
   const [activeFilter, setActiveFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filterKeys = ["all", "manualTherapies", "mentalHealth", "nutrition", "holisticWellness", "soins"] as const;
+  // Guards against stale responses after a filter change (increments invalidate
+  // any in-flight page fetch). With the future API this doubles as the request id.
+  const requestSeqRef = useRef(0);
+  const firstRunRef = useRef(true);
 
-  const displayedItems = useMemo(() => {
-    const allowedCategories = categoryMap[activeFilter] || [];
-    const categoryFiltered = activeFilter === "all"
-      ? allPratiques
-      : allPratiques.filter((p) => allowedCategories.includes(p.category));
+  // Ghost numbers come from the canonical crawlable order, stable across batches.
+  const orderIndex = useMemo(() => {
+    const m = new Map<string, number>();
+    getAllPratiqueSlugs().forEach((slug, i) => m.set(slug, i));
+    return m;
+  }, []);
 
-    if (!searchQuery.trim()) return categoryFiltered;
+  const resolvedTotalAll = totalAll ?? getAllPratiqueSlugs().length;
 
-    const q = searchQuery.trim().toLowerCase();
-    return categoryFiltered.filter(
-      (p) =>
-        p.title.toLowerCase().includes(q) ||
-        p.description.toLowerCase().includes(q)
-    );
-  }, [activeFilter, searchQuery, allPratiques]);
+  // Batch #1 of a freshly loaded set starts animating from index 0. Appended
+  // batches start at the previous list length. Reset with each new dataset.
+  const [batchStart, setBatchStart] = useState(initialItems.length);
 
+  const filterKeys = PRACTICE_FILTER_KEYS;
+
+  // ─── Filtering / counting ────────────────────────────────────
+  // The count line reflects the FULL matching dataset (before pagination), so it
+  // stays stable as the user scrolls — the visible window is a slice of `total`.
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("pratiques-update", {
+      detail: {
+        searchQuery,
+        activeFilter,
+      },
+    }));
+  }, [searchQuery, activeFilter]);
+
+  // ─── Load next page ──────────────────────────────────────────
+  const loadNextPage = useCallback(async () => {
+    if (isLoadingMore || !hasMore) return;
+    const seq = ++requestSeqRef.current;
+    setIsLoadingMore(true);
+    setLoadError(false);
+    try {
+      const res = await fetchPracticesProxy({
+        locale,
+        page: page + 1,
+        pageSize: PRATIQUES_PAGE_SIZE,
+        category: activeFilter === "all" ? null : activeFilter,
+        search: searchQuery,
+      });
+      if (seq !== requestSeqRef.current) return; // superseded (filter changed)
+      setItems((prev) => {
+        const seen = new Set(prev.map((p) => p.slug));
+        const fresh = res.items.filter((p) => !seen.has(p.slug));
+        return fresh.length > 0 ? [...prev, ...fresh] : prev;
+      });
+      setPage(res.page);
+      setHasMore(res.hasMore);
+      setTotal(res.total);
+    } catch {
+      if (seq === requestSeqRef.current) setLoadError(true);
+    } finally {
+      if (seq === requestSeqRef.current) setIsLoadingMore(false);
+    }
+  }, [isLoadingMore, hasMore, page, locale, activeFilter, searchQuery]);
+
+  /** Reset pagination and load the first batch of the current filter/search. */
+  const resetAndLoadFirst = useCallback(async () => {
+    requestSeqRef.current += 1; // invalidate any in-flight page
+    const seq = requestSeqRef.current;
+    setBatchStart(0);
+    setItems([]);
+    setPage(1);
+    setTotal(0);
+    setIsLoadingMore(true);
+    setLoadError(false);
+    try {
+      const res = await fetchPracticesProxy({
+        locale,
+        page: 1,
+        pageSize: PRATIQUES_PAGE_SIZE,
+        category: activeFilter === "all" ? null : activeFilter,
+        search: searchQuery,
+      });
+      if (seq !== requestSeqRef.current) return;
+      setItems(res.items);
+      setHasMore(res.hasMore);
+      setTotal(res.total);
+    } catch {
+      if (seq === requestSeqRef.current) setLoadError(true);
+    } finally {
+      if (seq === requestSeqRef.current) setIsLoadingMore(false);
+    }
+  }, [locale, activeFilter, searchQuery]);
+
+  // Reset on every filter/search change (not on mount — SSR state already valid).
+  useEffect(() => {
+    if (firstRunRef.current) {
+      firstRunRef.current = false;
+      return;
+    }
+    resetAndLoadFirst();
+  }, [activeFilter, searchQuery, resetAndLoadFirst]);
+
+  // External filter bar (Nav) → keeps this grid in sync.
   useEffect(() => {
     const handler = (e: Event) => {
       const { key, value } = (e as CustomEvent).detail;
@@ -68,15 +206,25 @@ export default function PratiquesGrid(): React.JSX.Element {
     return () => window.removeEventListener("pratiques-filter-request", handler);
   }, []);
 
-  useEffect(() => {
-    window.dispatchEvent(new CustomEvent("pratiques-update", {
-      detail: {
-        searchQuery,
-        activeFilter,
-      },
-    }));
-  }, [searchQuery, activeFilter]);
+  // ─── Infinite scroll sentinel ────────────────────────────────
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
 
+  useEffect(() => {
+    if (!hasMore) return;
+    const el = sentinelRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) loadNextPage();
+      },
+      // Pre-fetch well before the user actually reaches the bottom.
+      { rootMargin: "400px 0px", threshold: 0 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [hasMore, loadNextPage]);
+
+  // ─── Initial-batch GSAP entrance (existing behavior) ─────────
   useEffect(() => {
     if (!ready) return;
     const el = sectionElRef.current;
@@ -149,24 +297,26 @@ export default function PratiquesGrid(): React.JSX.Element {
           </div>
         </div>
 
-        {/* Count */}
+        {/* Count — full matching dataset, stable while scrolling */}
         <p className="text-[#2B2F36]/35 text-[12.5px] text-center mb-8 sm:mb-10">
-          {displayedItems.length} {t("pratiques.count")}
-          {allPratiques.length > 0 && (
-            <span className="text-[#2B2F36]/15"> / {allPratiques.length} total</span>
+          {total} {t("pratiques.count")}
+          {resolvedTotalAll > 0 && (
+            <span className="text-[#2B2F36]/15"> / {resolvedTotalAll} total</span>
           )}
         </p>
 
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-          {displayedItems.map((pratique) => {
-            const categoryKey = filterKeys.find((fk) => (categoryMap[fk] || []).includes(pratique.category)) || "all";
+          {items.map((pratique, idx) => {
+            const categoryKey = filterKeys.find((fk) => (PRACTICE_CATEGORY_MAP[fk] || []).includes(pratique.category)) || "all";
 
             return (
               <Link
                 key={pratique.slug}
                 href={h(locale, `/pratiques/${pratique.slug}`)}
-                className="pratique-card group rounded-2xl overflow-hidden flex flex-col transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_-4px_rgba(184,138,90,0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B88A5A] focus-visible:ring-offset-2"
+                className={`pratique-card group rounded-2xl overflow-hidden flex flex-col transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_-4px_rgba(184,138,90,0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B88A5A] focus-visible:ring-offset-2${
+                  idx >= batchStart ? " pratique-card--entering" : ""
+                }`}
                 style={{
                   background: "#E8E2D9",
                   border: "1px solid rgba(11,18,32,0.08)",
@@ -193,7 +343,7 @@ export default function PratiquesGrid(): React.JSX.Element {
                       color: "rgba(255,255,255,0.08)",
                     }}
                   >
-                    {String(allPratiques.indexOf(pratique) + 1).padStart(2, "0")}
+                    {String((orderIndex.get(pratique.slug) ?? 0) + 1).padStart(2, "0")}
                   </span>
 
                   {/* Category badge */}
@@ -226,6 +376,46 @@ export default function PratiquesGrid(): React.JSX.Element {
               </Link>
             );
           })}
+        </div>
+
+        {/* Infinite-scroll sentinel + status area */}
+        <div ref={sentinelRef} aria-hidden="true" className="h-px" />
+
+        <div className="flex flex-col items-center justify-center gap-4 mt-10 min-h-[56px]">
+          {/* Lightweight loading state — does not shift the already-loaded grid */}
+          {isLoadingMore && (
+            <span role="status" className="inline-flex items-center gap-2.5 text-[12.5px] text-[#2B2F36]/45">
+              <span className="inline-block w-4 h-4 rounded-full border-2 border-[#B88A5A]/25 border-t-[#B88A5A] animate-spin" />
+              {t("pratiques.pagination.loading")}
+            </span>
+          )}
+
+          {/* Error state — keep loaded practices, offer retry */}
+          {loadError && !isLoadingMore && (
+            <button
+              onClick={() => (items.length === 0 ? resetAndLoadFirst() : loadNextPage())}
+              className="inline-flex items-center gap-2 h-11 px-5 rounded-full text-[12.5px] font-medium border border-[#B88A5A]/30 text-[#B88A5A] hover:bg-[#B88A5A]/10 transition-colors"
+            >
+              {t("pratiques.pagination.retry")}
+            </button>
+          )}
+
+          {/* Accessibility fallback — same loadNextPage as the observer */}
+          {hasMore && !isLoadingMore && !loadError && (
+            <button
+              onClick={() => loadNextPage()}
+              className="inline-flex items-center gap-2 h-11 px-6 rounded-full text-[12.5px] font-medium text-[#2B2F36]/55 border border-[#2B2F36]/15 hover:border-[#B88A5A]/30 hover:text-[#B88A5A] transition-colors"
+            >
+              {t("pratiques.pagination.loadMore")}
+            </button>
+          )}
+
+          {/* End state */}
+          {!hasMore && !isLoadingMore && items.length > 0 && total > 0 && (
+            <p className="text-[12.5px] text-[#2B2F36]/35">
+              {t("pratiques.pagination.end")}
+            </p>
+          )}
         </div>
 
         {/* CTA */}

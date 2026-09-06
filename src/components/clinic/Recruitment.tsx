@@ -1,20 +1,20 @@
 /**
  * Clinic Recruitment — practitioner recruitment CTA ("Join the team").
  * Full-width image with a controlled dark overlay and editorial split text.
- * CTA → /contact?subject=recrutement (FR) / /en/contact?subject=recruitment (EN).
+ * CTA opens the {@link RecruitmentModal} (instead of routing to /contact).
  */
 "use client";
 
-import Link from "next/link";
+import { useState } from "react";
 import Image from "next/image";
 import { useLocale } from "@/contexts/LanguageContext";
 import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
+import RecruitmentModal from "./RecruitmentModal";
 
 export default function ClinicRecruitment(): React.JSX.Element {
-  const { t, locale } = useLocale();
+  const { t } = useLocale();
   const { elRef: sectionRef } = useIntersectionDeferred();
-  const isEn = locale === "en";
-  const href = isEn ? "/en/contact?subject=recruitment" : "/contact?subject=recrutement";
+  const [open, setOpen] = useState(false);
 
   return (
     <section ref={sectionRef} className="relative bg-[#0B1220] px-6 sm:px-10 overflow-hidden">
@@ -30,7 +30,7 @@ export default function ClinicRecruitment(): React.JSX.Element {
         <div className="absolute inset-0" style={{ background: "linear-gradient(100deg, rgba(11,18,32,0.92) 0%, rgba(11,18,32,0.6) 45%, rgba(11,18,32,0.35) 100%)" }} />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto py-24 lg:py-32">
+      <div className="relative z-10 max-w-7xl mx-auto py-20 lg:py-28">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           <div className="lg:col-span-8">
             <span className="inline-flex items-center gap-2 mb-7">
@@ -49,9 +49,10 @@ export default function ClinicRecruitment(): React.JSX.Element {
 
           <div className="lg:col-span-4 flex items-end">
             <div className="w-full">
-              <Link
-                href={href}
-                className="inline-flex items-center justify-center gap-2.5 w-full sm:w-auto h-13 px-8 py-4 text-white text-sm font-semibold transition-all duration-300 hover:-translate-y-px"
+              <button
+                type="button"
+                onClick={() => setOpen(true)}
+                className="inline-flex items-center justify-center gap-2.5 w-full sm:w-auto h-13 px-8 py-4 text-white text-sm font-semibold transition-all duration-300 hover:-translate-y-px cursor-pointer"
                 style={{
                   background: "linear-gradient(135deg, #B88A5A 0%, #9A7242 100%)",
                   boxShadow: "0 1px 0 rgba(255,255,255,0.14) inset, 0 6px 24px rgba(184,138,90,0.3)",
@@ -61,11 +62,13 @@ export default function ClinicRecruitment(): React.JSX.Element {
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
-              </Link>
+              </button>
             </div>
           </div>
         </div>
       </div>
+
+      <RecruitmentModal open={open} onClose={() => setOpen(false)} />
     </section>
   );
 }

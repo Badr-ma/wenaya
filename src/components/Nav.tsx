@@ -228,9 +228,9 @@ export default function Nav(): React.JSX.Element {
                 {[
                   { label: t("nav.accueil"), href: hh("/") },
                   { label: t("nav.aPropos"), href: hh("/about") },
-                  { label: t("nav.solutions"), href: hh("/solutions/entreprises") },
+                  { label: t("nav.solutions"), href: hh("/corporate") },
                   { label: t("nav.produits"), href: hh("/produits") },
-                  { label: t("nav.specialistes"), href: hh("/specialistes") },
+                  { label: t("nav.specialistes"), href: hh("/professional") },
                 ].map((link) => (
                     <li key={link.label}>
                       <Link
@@ -277,14 +277,14 @@ export default function Nav(): React.JSX.Element {
               </Link>
 
               <Link
-                href="/login"
+                href={hh("/login")}
                 className={`hidden sm:inline-flex items-center justify-center px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${loginBtn}`}
               >
                 {t("nav.seConnecter")}
               </Link>
 
               <Link
-                href={hh("/specialistes")}
+                href={hh("/professional")}
                 className="hidden sm:inline-flex items-center justify-center px-5 py-1.5 rounded-full text-sm font-semibold text-[#0B1220] transition-all duration-300 hover:-translate-y-px active:translate-y-0"
                 style={{
                   background: "#B88A5A",

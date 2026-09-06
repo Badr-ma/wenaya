@@ -223,7 +223,7 @@ export const SECTION_META: Record<SectionType, { label: string; description: str
   banner: { label: "Banner", description: "Top promotional bar with bronze background", theme: "dark" },
   hero: { label: "Hero", theme: "dark", description: "Full-screen hero with video, headline, trust bar" },
   "how-it-works": { label: "How It Works", theme: "light", description: "4-step process (Assess, Align, Activate, Sustain)" },
-  "disease-marquee": { label: "Practices & Specialties", theme: "dark", description: "9 individual care disciplines linking to /pratiques" },
+  "disease-marquee": { label: "Practices & Specialties", theme: "light", description: "5 editorial practice disciplines linking to /pratiques" },
   biomarkers: { label: "Biomarkers", theme: "light", description: "3-pillar biomarker visualization grid" },
   testimonials: { label: "Testimonials", theme: "light", description: "Stats + patient testimonials carousel" },
   expertise: { label: "Expertise", theme: "light", description: "Medical specialties linking to specialist profiles" },

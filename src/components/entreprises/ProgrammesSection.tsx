@@ -100,7 +100,7 @@ function CardContent({
             </div>
           </div>
           <Link
-            href={h(locale, `/solutions/entreprises/programmes#${program.link.split("/").pop()}`)}
+            href={h(locale, `/corporate/programmes#${program.link.split("/").pop()}`)}
             className="px-2.5 sm:px-5 h-7 sm:h-9 rounded-full bg-[#0B1220] text-white text-[9px] sm:text-xs font-semibold tracking-wide hover:bg-[#B88A5A] transition-colors duration-300 shrink-0 inline-flex items-center whitespace-nowrap"
           >
             {discoverLabel}

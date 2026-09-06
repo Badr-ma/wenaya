@@ -26,7 +26,7 @@ export default function FeaturedSpecialists({ specialists }: { specialists: Spec
         <div className="flex flex-col md:flex-row gap-4 sm:gap-6">
           {first && (
             <Link
-              href={h(locale, `/specialistes/${first.slug}`)}
+              href={h(locale, `/professional/${first.slug}`)}
               className="group relative w-full md:w-[58%] aspect-[4/5] md:aspect-auto md:h-[520px] overflow-hidden rounded-xl bg-[#E8E2D9]"
             >
               <Image
@@ -52,7 +52,7 @@ export default function FeaturedSpecialists({ specialists }: { specialists: Spec
           <div className="flex flex-row md:flex-col w-full md:w-[42%] gap-4 sm:gap-6">
             {second && (
               <Link
-                href={h(locale, `/specialistes/${second.slug}`)}
+                href={h(locale, `/professional/${second.slug}`)}
                 className="group relative flex-1 aspect-[4/3] md:aspect-auto md:min-h-[200px] overflow-hidden rounded-xl bg-[#E8E2D9]"
               >
                 <Image
@@ -76,7 +76,7 @@ export default function FeaturedSpecialists({ specialists }: { specialists: Spec
             )}
             {third && (
               <Link
-                href={h(locale, `/specialistes/${third.slug}`)}
+                href={h(locale, `/professional/${third.slug}`)}
                 className="group relative flex-1 aspect-[4/3] md:aspect-auto md:min-h-[200px] overflow-hidden rounded-xl bg-[#E8E2D9]"
               >
                 <Image

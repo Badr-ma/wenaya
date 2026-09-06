@@ -142,7 +142,7 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
             {/* CTAs */}
             <div className="hero-cta flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-10">
               <Link
-                href={h(locale, "/specialistes")}
+                href={h(locale, "/professional")}
                 className="inline-flex items-center justify-center h-11 px-7 rounded-xl text-white text-[13.5px] font-semibold transition-all duration-300 hover:-translate-y-px active:translate-y-0"
                 style={{
                   background: "#B88A5A",

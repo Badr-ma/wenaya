@@ -1,7 +1,7 @@
 /**
  * Clinic Team — multidisciplinary specialists for the Clinic/B2C page.
  * Editorial, photo-led: one large featured portrait opposite two specialist
- * rows. No specialist cards. CTA → /specialistes.
+ * rows. No specialist cards. CTA → /professional.
  */
 "use client";
 
@@ -26,7 +26,7 @@ export default function ClinicTeam(): React.JSX.Element {
 
   return (
     <section ref={sectionRef} className="relative bg-[#FAF8F4] px-6 sm:px-10">
-      <div className="max-w-7xl mx-auto py-16 lg:py-20">
+      <div className="max-w-7xl mx-auto py-14 lg:py-20">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10 lg:mb-12">
           <div>
             <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.24em] uppercase block mb-6">
@@ -47,8 +47,8 @@ export default function ClinicTeam(): React.JSX.Element {
           {/* Featured portrait */}
           {featured ? (
             <div className="lg:col-span-7">
-              <Link href={h(locale, "/specialistes")} className="group block">
-                <div className="relative aspect-[4/5] sm:aspect-[7/6] w-full overflow-hidden rounded-t-[28px] bg-[#0B1220]/5">
+              <Link href={h(locale, "/professional")} className="group block">
+                <div className="relative aspect-[4/5] sm:aspect-[7/6] w-full overflow-hidden rounded-t-[24px] bg-[#0B1220]/5">
                   <Image
                     src={featured.image}
                     alt={featured.name}
@@ -79,7 +79,7 @@ export default function ClinicTeam(): React.JSX.Element {
               {rest.map((s, i) => (
                 <Link
                   key={s.slug}
-                  href={h(locale, "/specialistes")}
+                  href={h(locale, "/professional")}
                   className="group flex items-center gap-5 py-5"
                 >
                   <div className="relative h-20 w-16 md:h-24 md:w-20 overflow-hidden rounded-lg bg-[#0B1220]/5 shrink-0">
@@ -95,14 +95,14 @@ export default function ClinicTeam(): React.JSX.Element {
                     <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.18em] uppercase">
                       {String(i + 2).padStart(2, "0")}
                     </span>
-                    <h3 className="heading-serif text-[#0B1220] text-xl lg:text-2xl leading-snug group-hover:text-[#159AA9] transition-colors">
+                    <h3 className="heading-serif text-[#0B1220] text-xl lg:text-2xl leading-snug group-hover:text-[#B88A5A] transition-colors">
                       {s.name}
                     </h3>
                     <p className="mt-1 text-[#0B1220]/45 text-sm">
                       {isEn ? (s.roleEn ?? s.role) : s.role}
                     </p>
                   </div>
-                  <svg className="w-4 h-4 shrink-0 text-[#0B1220]/30 transition-transform group-hover:translate-x-1 group-hover:text-[#159AA9]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <svg className="w-4 h-4 shrink-0 text-[#0B1220]/30 transition-transform group-hover:translate-x-1 group-hover:text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
                 </Link>
@@ -111,7 +111,7 @@ export default function ClinicTeam(): React.JSX.Element {
 
             <div className="mt-8">
               <Link
-                href={h(locale, "/specialistes")}
+                href={h(locale, "/professional")}
                 className="inline-flex items-center gap-2 text-sm font-semibold text-[#0B1220] group"
               >
                 <span className="underline underline-offset-8 decoration-[#B88A5A]/40 group-hover:decoration-[#B88A5A] transition-colors">

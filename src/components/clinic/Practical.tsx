@@ -26,7 +26,7 @@ export default function ClinicPractical(): React.JSX.Element {
 
   return (
     <section ref={sectionRef} className="relative bg-[#FAF8F4] px-6 sm:px-10">
-      <div className="max-w-7xl mx-auto py-16 lg:py-20">
+      <div className="max-w-7xl mx-auto py-14 lg:py-20">
         <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.24em] uppercase block mb-6">
           {t("clinic.practical.badge")}
         </span>
@@ -34,7 +34,7 @@ export default function ClinicPractical(): React.JSX.Element {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
           {/* Large clinic image */}
           <div className="lg:col-span-7">
-            <div className="relative overflow-hidden rounded-t-[28px] bg-[#0B1220]/5 min-h-[240px] sm:min-h-[320px] lg:h-full">
+            <div className="relative overflow-hidden rounded-t-[24px] bg-[#0B1220]/5 min-h-[240px] sm:min-h-[320px] lg:h-full">
               <Image
                 src="/pratiques/infirmerie.jpg"
                 alt={isEn ? "Inside the Wenaya Clinic in Casablanca" : "L'intérieur de la Wenaya Clinic à Casablanca"}
@@ -90,17 +90,20 @@ export default function ClinicPractical(): React.JSX.Element {
             <div className="mt-6 flex flex-col sm:flex-row items-start gap-4">
               <Link
                 href="tel:+212666124035"
-                className="inline-flex items-center justify-center gap-2 h-12 px-7 text-white text-sm font-semibold transition-all duration-300 hover:-translate-y-px"
+                className="inline-flex items-center justify-center gap-2.5 h-13 px-8 text-white text-sm font-semibold transition-all duration-300 hover:-translate-y-px"
                 style={{
                   background: "linear-gradient(135deg, #B88A5A 0%, #9A7242 100%)",
                   boxShadow: "0 1px 0 rgba(255,255,255,0.14) inset, 0 6px 24px rgba(184,138,90,0.3)",
                 }}
               >
                 {t("clinic.practical.ctaCall")}
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
               </Link>
               <Link
-                href={h(locale, "/specialistes")}
-                className="inline-flex items-center justify-center gap-2 h-12 px-6 text-[#0B1220] text-sm font-medium border border-[#0B1220]/[0.16] transition-all duration-300 hover:border-[#0B1220]/[0.35]"
+                href={h(locale, "/professional")}
+                className="inline-flex items-center justify-center gap-2 h-13 px-6 text-[#0B1220] text-sm font-medium border border-[#0B1220]/[0.16] transition-all duration-300 hover:border-[#0B1220]/[0.35]"
               >
                 {isEn ? "Book" : "Réserver"}
               </Link>

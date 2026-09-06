@@ -15,9 +15,9 @@ export function h(locale: HrefLocale, path: string): string {
 
 /**
  * Locale-aware href for the group-sessions page.
- * The EN public route uses a different path name (/en/group-sessions) than the
- * French route (/seance-de-groupe), so the generic h() prefixing cannot apply.
+ * The EN listing matches live wenaya.com and uses the same segment as French
+ * (/en/seance-de-groupe), so the EN path simply adds the /en prefix.
  */
 export function groupSessionsHref(locale: HrefLocale): string {
-  return locale === "en" ? "/en/group-sessions" : "/seance-de-groupe";
+  return locale === "en" ? "/en/seance-de-groupe" : "/seance-de-groupe";
 }

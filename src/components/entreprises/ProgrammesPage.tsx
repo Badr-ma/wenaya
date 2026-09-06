@@ -1,7 +1,7 @@
 /**
  * Programmes Page — detailed showcase of Wenaya's corporate wellness programs.
- * Shared by the French (/solutions/entreprises/programmes) and English
- * (/en/solutions/entreprises/programmes) routes.
+ * Shared by the French (/corporate/programmes) and English
+ * (/en/corporate/programmes) routes.
  * Client component with program cards, pricing tiers, feature comparisons,
  * and CTA sections. Extensive page with multiple program options.
  */
@@ -189,7 +189,7 @@ function ImpactChart({ data }: { data: { label: string; value: number }[] }) {
 
 export default function ProgrammesPage() {
   const { locale, t, tRaw } = useLocale();
-  const backEnterpriseHref = locale === "en" ? "/en/solutions/entreprises" : "/solutions/entreprises";
+  const backEnterpriseHref = locale === "en" ? "/en/corporate" : "/corporate";
   const programmes = tRaw<Program[]>("entreprises.programmes.list");
   const programmeExtras = tRaw<Record<string, ProgramExtras>>("entreprises.programmes.details");
   const [activeIdx, setActiveIdx] = useState(0);

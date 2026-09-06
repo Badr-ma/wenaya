@@ -1,5 +1,5 @@
 /**
- * Blog Hero — featured/latest blog post hero card at the top of /blog.
+ * Blog Hero — featured/latest blog post hero card at the top of /articles.
  * Two-column layout: large featured image on left, post metadata on right
  * (category badge, title, excerpt, author avatar, date, read time).
  * Uses Framer Motion for scroll-triggered fade-in.
@@ -48,7 +48,7 @@ export default function BlogHero({ latest }: { latest: PostWithAuthor | null }) 
       {latest && (
         <section className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 -mt-6 mb-12">
           <Link
-            href={h(locale, `/blog/${latest.slug}`)}
+            href={h(locale, `/articles/${latest.slug}`)}
             className="group block relative bg-white rounded-2xl border border-gray-100 overflow-hidden transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] hover:-translate-y-1"
           >
             <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-transparent via-transparent to-transparent group-hover:from-[#B88A5A]/20 group-hover:via-[#159AA9]/10 group-hover:to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700 z-0 pointer-events-none" />

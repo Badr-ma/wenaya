@@ -17,7 +17,7 @@ export default function ClinicIntro(): React.JSX.Element {
 
   return (
     <section ref={sectionRef} className="relative bg-[#F2EFE9] px-6 sm:px-10">
-      <div className="max-w-7xl mx-auto py-16 lg:py-20">
+      <div className="max-w-7xl mx-auto py-14 lg:py-20">
         <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.24em] uppercase block mb-6">
           {t("clinic.intro.badge")}
         </span>
@@ -25,7 +25,7 @@ export default function ClinicIntro(): React.JSX.Element {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-10">
           {/* Image story */}
           <div className="lg:col-span-6">
-            <div className="relative overflow-hidden rounded-t-[32px]">
+            <div className="relative overflow-hidden rounded-t-[24px]">
               <Image
                 src={locale === "en" ? "/images/diverse-team.jpg" : "/images/diverse-team.jpg"}
                 alt={locale === "en" ? "The multidisciplinary Wenaya team" : "L'équipe pluridisciplinaire Wenaya"}

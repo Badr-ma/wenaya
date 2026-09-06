@@ -11,7 +11,7 @@ import { SITE_URL } from "./site-config";
 
 /**
  * Returns the `alternates.languages` map for a page that exists in both FR and EN.
- * @param frPath — the FR-path of the page (e.g. "/" or "/about" or "/specialistes/ghita")
+ * @param frPath — the FR-path of the page (e.g. "/" or "/about" or "/professional/ghita")
  */
 export function languageAlternates(frPath: string): Record<string, string> {
   const enPath = `/en${frPath === "/" ? "" : frPath}`;

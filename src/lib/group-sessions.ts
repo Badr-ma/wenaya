@@ -17,6 +17,10 @@
  *   getGroupSessionLabels(locale)          → GroupSessionDetailLabels
  *   getCanonicalGroupSession(slug)         → CanonicalGroupSession | undefined (either locale slug)
  *   getGroupSessionAlternateUrls(canonical)→ hreflang map
+ *
+ * Public URLs (matching live wenaya.com):
+ *   FR listing/detail  → /seance-de-groupe/{slugFr}
+ *   EN listing/detail  → /en/seance-de-groupe/{slugFr}  (EN uses the same FR slug)
  */
 import fr from "@/i18n/fr";
 import en from "@/i18n/en";
@@ -77,8 +81,9 @@ export interface GroupSessionDetailLabels {
 }
 
 // ─── Canonical data (non-translatable) ─────────────────────────
-// Slugs are stable, SEO-friendly and locale-specific (the EN route uses a
-// different path name, so EN slugs are fully translated).
+// Slugs are stable and SEO-friendly. Live wenaya.com serves the ENGLISH detail
+// pages under the FRENCH slug: /en/seance-de-groupe/{slugFr}. The translated
+// slugEn is kept only for the booking `service` query value on the contact form.
 
 export interface CanonicalGroupSession {
   /** i18n key into the shared `coursAteliers` bundle */
@@ -168,8 +173,8 @@ function normalize(c: CanonicalGroupSession, locale: GroupSessionLocale): GroupS
   const formats = b.seanceDeGroupe?.formats?.items;
   const detail = b.seanceDeGroupe?.detail;
 
-  const slug = locale === "en" ? c.slugEn : c.slugFr;
-  const path = locale === "en" ? `/en/group-sessions/${c.slugEn}` : `/seance-de-groupe/${c.slugFr}`;
+  const slug = c.slugFr;
+  const path = locale === "en" ? `/en/seance-de-groupe/${c.slugFr}` : `/seance-de-groupe/${c.slugFr}`;
 
   const formatKey = c.format === "weekly" ? "semana" : c.format === "workshop" ? "ateliers" : undefined;
   const format = formatKey && formats?.[formatKey] ? { title: formats[formatKey].title, desc: formats[formatKey].desc } : undefined;
@@ -213,9 +218,9 @@ export function getGroupSessionBySlug(slug: string, locale: GroupSessionLocale =
   return normalize(canonical, locale);
 }
 
-/** Get all group-session slugs for a locale (for generateStaticParams) */
-export function getAllGroupSessionSlugs(locale: GroupSessionLocale = "fr"): string[] {
-  return canonicalSessions.map((c) => (locale === "en" ? c.slugEn : c.slugFr));
+/** Get all group-session slugs (EN public route uses the same FR slugs as live) */
+export function getAllGroupSessionSlugs(): string[] {
+  return canonicalSessions.map((c) => c.slugFr);
 }
 
 /** Get the N related sessions for a given session id */
@@ -253,11 +258,11 @@ export function getGroupSessionLabels(locale: GroupSessionLocale = "fr"): GroupS
   };
 }
 
-/** Hreflang alternates for a canonical session — FR and EN URLs differ beyond the /en prefix. */
+/** Hreflang alternates for a canonical session — English detail pages live at /en/seance-de-groupe/{slugFr}. */
 export function getGroupSessionAlternateUrls(c: CanonicalGroupSession): Record<string, string> {
   return {
     "fr-MA": `${SITE_URL}/seance-de-groupe/${c.slugFr}`,
-    "en-MA": `${SITE_URL}/en/group-sessions/${c.slugEn}`,
+    "en-MA": `${SITE_URL}/en/seance-de-groupe/${c.slugFr}`,
     "x-default": `${SITE_URL}/seance-de-groupe/${c.slugFr}`,
   };
 }

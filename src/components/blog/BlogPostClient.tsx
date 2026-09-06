@@ -101,7 +101,7 @@ export default function BlogPostClient({
             <div className="flex items-center gap-2 text-sm text-white/50 mb-6">
               <Link href={h(locale, "/")} className="hover:text-white transition-colors">{t("blog.accueil")}</Link>
               <span>/</span>
-              <Link href={h(locale, "/blog")} className="hover:text-white transition-colors">Blog</Link>
+              <Link href={h(locale, "/articles")} className="hover:text-white transition-colors">Blog</Link>
               <span>/</span>
               <span className="text-white/70">{post.title.slice(0, 40)}...</span>
             </div>
@@ -329,7 +329,7 @@ export default function BlogPostClient({
               {related.map((r) => (
                 <Link
                   key={r.slug}
-                  href={h(locale, `/blog/${r.slug}`)}
+                  href={h(locale, `/articles/${r.slug}`)}
                   className="group block bg-[#F2EFE9] rounded-2xl overflow-hidden border border-gray-100 transition-all duration-500 hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] hover:-translate-y-1"
                 >
                   <div className="aspect-[16/9] overflow-hidden">

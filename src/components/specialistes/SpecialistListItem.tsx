@@ -26,7 +26,7 @@ export default function SpecialistListItem({
   return (
     <Link
       id={`specialist-${specialist.slug}`}
-      href={h(locale, `/specialistes/${specialist.slug}`)}
+      href={h(locale, `/professional/${specialist.slug}`)}
       onClick={onClick}
       onMouseEnter={() => onHover(specialist.slug)}
       onMouseLeave={onLeave}

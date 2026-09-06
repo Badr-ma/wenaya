@@ -56,7 +56,7 @@ export default function SpecialistDetail({ specialist, practices = [] }: { speci
       {/* ── HEADER ── */}
       <section className="pt-28 sm:pt-36 pb-8 sm:pb-12">
         <div className="max-w-7xl mx-auto px-6 sm:px-10">
-          <Link href={h(locale, "/specialistes")} className="inline-flex items-center text-[11px] font-mono text-[#2B2F36]/55 hover:text-[#2B2F36]/65 transition-colors mb-8">
+          <Link href={h(locale, "/professional")} className="inline-flex items-center text-[11px] font-mono text-[#2B2F36]/55 hover:text-[#2B2F36]/65 transition-colors mb-8">
             <span className="mr-2">←</span> {t("specialistes.detail.backLink")}
           </Link>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

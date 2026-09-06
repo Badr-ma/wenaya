@@ -212,7 +212,7 @@ gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', { page_path: window.location.
             <LenisProvider> {/* Enables Lenis smooth scrolling across the site */}
               <ScrollToTop />
               {children} {/* Page content rendered here */}
-              <CorporateConsultationWidget /> {/* Floating consultation pill on /solutions/entreprises */}
+              <CorporateConsultationWidget /> {/* Floating consultation pill on /corporate */}
             </LenisProvider>
           </CartProvider>
         </LanguageProvider>

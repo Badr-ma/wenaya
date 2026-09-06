@@ -113,7 +113,7 @@ function SpecialistMarker({
           </div>
           <p className="text-xs text-[#2B2F36]/50 mb-2">{specialist.location.address}</p>
           <Link
-            href={h(locale, `/specialistes/${specialist.slug}`)}
+            href={h(locale, `/professional/${specialist.slug}`)}
             className="inline-block text-xs font-medium text-[#B88A5A] hover:text-[#B88A5A]/70 transition-colors"
           >
             {t("specialistes.list.viewProfile")} →

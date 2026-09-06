@@ -13,7 +13,7 @@ const sessionKeys = ["yoga", "sophrologie", "nutrition", "breathwork", "jjb", "p
 
 const alternateLanguages = {
   "fr-MA": `${SITE_URL}/seance-de-groupe`,
-  "en-MA": `${SITE_URL}/en/group-sessions`,
+  "en-MA": `${SITE_URL}/en/seance-de-groupe`,
   "x-default": `${SITE_URL}/seance-de-groupe`,
 } as const;
 

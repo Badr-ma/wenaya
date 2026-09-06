@@ -370,7 +370,7 @@ export default function HowItWorks({ content }: HowItWorksProps): React.JSX.Elem
         {/* CTAs */}
         <div ref={ctaRef} className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-10">
           <Link
-            href={h(locale, "/specialistes")}
+            href={h(locale, "/professional")}
             className="inline-flex items-center justify-center h-11 px-7 rounded-xl text-white text-[13.5px] font-semibold transition-all duration-300 hover:-translate-y-px"
             style={{ background: "#0B1220", boxShadow: "0 4px 20px rgba(11,18,32,0.18)" }}
           >

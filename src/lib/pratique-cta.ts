@@ -5,9 +5,9 @@
  * specialists genuinely cover that practice (see `pratique-specialists.ts`), so
  * the user flows practice → specialist(s) → booking in as few steps as possible:
  *
- *   0 specialists → /specialistes            (the listing — no single match)
- *   1 specialist  → /specialistes/[slug]     (straight to the right specialist)
- *   2+ specialists→ #specialists             (scroll to the in-page list to choose)
+ *   0 specialists → /professional          (the listing — no single match)
+ *   1 specialist  → /professional/[slug]   (straight to the right specialist)
+ *   2+ specialists→ #specialists           (scroll to the in-page list to choose)
  *
  * Locale-aware via the shared `h()` helper. Kept here once so no practice
  * component re-implements the decision.
@@ -30,10 +30,10 @@ export function getPratiqueBookingCta(
   singleSlug?: string
 ): PratiqueCta {
   if (specialistCount === 1 && singleSlug) {
-    return { href: h(locale, `/specialistes/${singleSlug}`), label: "book" };
+    return { href: h(locale, `/professional/${singleSlug}`), label: "book" };
   }
   if (specialistCount >= 2) {
     return { href: "#specialists", label: "choose" };
   }
-  return { href: h(locale, "/specialistes"), label: "view" };
+  return { href: h(locale, "/professional"), label: "view" };
 }

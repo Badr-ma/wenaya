@@ -128,7 +128,7 @@ export default function Pricing({ content }: PricingProps): React.JSX.Element {
                 ))}
               </ul>
               <Link
-                href={h(locale, "/specialistes")}
+                href={h(locale, "/professional")}
                 className={`block text-center text-sm font-semibold py-3.5 rounded-full transition-all duration-300 ${
                   plan.popular
                     ? "bg-[#B88A5A] hover:bg-[#A07848] text-white hover:shadow-lg hover:shadow-[rgba(184,138,90,0.25)]"

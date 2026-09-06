@@ -17,7 +17,7 @@ interface BreadcrumbItem {
 const routeLabels: Record<string, Record<string, string>> = {
   fr: {
     about: "Cliniques",
-    blog: "Blog",
+    articles: "Blog",
     produits: "Boutique",
     pratiques: "Pratiques",
     faq: "FAQ",
@@ -25,15 +25,16 @@ const routeLabels: Record<string, Record<string, string>> = {
     conditions: "Conditions Générales",
     confidentialite: "Politique de Confidentialité",
     login: "Connexion",
-    specialistes: "Spécialistes",
+    professional: "Spécialistes",
     solutions: "Solutions",
     entreprises: "Entreprises",
+    corporate: "Entreprises",
     programmes: "Programmes",
     "seance-de-groupe": "Séances de groupe",
   },
   en: {
     about: "Clinics",
-    blog: "Blog",
+    articles: "Blog",
     produits: "Products",
     pratiques: "Practices",
     faq: "FAQ",
@@ -41,11 +42,12 @@ const routeLabels: Record<string, Record<string, string>> = {
     conditions: "Terms & Conditions",
     confidentialite: "Privacy Policy",
     login: "Login",
-    specialistes: "Specialists",
+    professional: "Specialists",
     solutions: "Solutions",
     entreprises: "Enterprise",
+    corporate: "Enterprise",
     programmes: "Programs",
-    "group-sessions": "Group Sessions",
+    "seance-de-groupe": "Group Sessions",
   },
 };
 

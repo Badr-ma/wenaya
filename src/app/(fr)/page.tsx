@@ -109,7 +109,7 @@ export default async function Home() {
           <SectionBreak />
           <div data-section-bg="light"><HowItWorks /></div>
           <Spacer />
-          <div data-section-bg="dark"><PracticesSection /></div>
+          <div data-section-bg="light"><PracticesSection /></div>
           <Spacer />
           <div data-section-bg="light"><Biomarkers /></div>
           <Spacer />
