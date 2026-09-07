@@ -14,7 +14,6 @@ const PracticesSection = dynamic(() => import("@/components/PracticesSection"), 
 const Biomarkers = dynamic(() => import("@/components/Biomarkers"), { ssr: true });
 const TestimonialsSection = dynamic(() => import("@/components/TestimonialsSection"), { ssr: true });
 const ComparisonTable = dynamic(() => import("@/components/ComparisonTable"), { ssr: true });
-const Pricing = dynamic(() => import("@/components/Pricing"), { ssr: true });
 const CoursAteliers = dynamic(() => import("@/components/CoursAteliers"), { ssr: true });
 const CtaSection = dynamic(() => import("@/components/CtaSection"), { ssr: true });
 const YoloSection = dynamic(() => import("@/components/YoloSection"), { ssr: true });
@@ -110,7 +109,10 @@ function SectionComponent({ section }: { section: HomepageSection }) {
     case "comparison-table":
       return <ComparisonTable content={section.content} />;
     case "pricing":
-      return <Pricing content={section.content} />;
+      // TEMPORARILY HIDDEN from the public homepage. Component, i18n, types,
+      // CMS schema and editor support are all kept intact — only the public
+      // render of this section is suppressed.
+      return null;
     case "cours-ateliers":
       return <CoursAteliers content={section.content} />;
     case "cta":

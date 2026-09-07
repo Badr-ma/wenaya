@@ -1,286 +1,439 @@
 /**
- * Clinic Group Sessions Explorer — visual discovery for the Clinic/B2C page.
+ * Clinic Group Sessions — image-led horizontal swipe gallery.
  *
- * Editorial split: a large active-session image (left) + numbered session list
- * (right). Hovering or keyboard-focusing a row activates it (image swap, type,
- * one-line summary, location, CTA destination). Rows are real `<a>` links to
- * the session detail page — no fake selectors.
+ * An editorial, image-led presentation of the group sessions (distinct from
+ * the numbered practice explorer and from the homepage's overlay-text square
+ * gallery): each slide is a landscape photograph with the session type, title,
+ * one-line summary, location and "Découvrir la séance" link BELOW the image —
+ * no full-bleed overlay, no cards, no numbered vertical list.
  *
- * Mobile: single-open accordion (image + summary + location + detail CTA on
- * tap), no hover, no carousel. All 6 session names + links are server-rendered
- * (accordion panels keep content in the DOM); only the active/outgoing desktop
- * images mount, and collapsed mobile images stay `loading="lazy"` at zero
- * height (no fetch until expanded).
+ *   Gallery: all sessions in a native horizontal scroll-snap track — exactly
+ *           3 panels on desktop, ~2 on tablet, ~1 + next-preview on mobile.
+ *           Each panel carries TWO actions: a primary "Book Now" link to the
+ *           booking flow (contact form with the session preselected) and an
+ *           "Explore" link to its session detail page (image, title and text
+ *           link all navigate to the detail page).
+ *
+ *   Interaction: native swipe on touch; mouse drag with instant follow
+ *           (pointer-capture is NOT used so link/button clicks are never
+ *           retargeted — movement beyond a threshold cancels the following
+ *           click instead); arrow buttons glide the track with a slow premium
+ *           ease (~850ms easeOutQuint) and disable at the ends.
+ *
+ *   Motion: the active (snap-aligned) slide image settles scale 1.05→1 /
+ *           opacity .9→1 (`.hp-img`/`.hp-img-active`). No GSAP — carousel
+ *           movement only. Everything is disabled under prefers-reduced-motion.
+ *
+ * Content derives from the shared group-sessions adapter and is untouched.
+ * Titles + links are present in the initial HTML (SSR / SEO); only the first
+ * slide image is eager, the rest lazy.
  */
 "use client";
 
-import Link from "next/link";
+import { useRef, useState } from "react";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 
 export interface SessionItem {
-  number: string;
   slug: string;
   title: string;
   type: string;
   summary: string;
   location?: string;
   image: string;
+  /** Locale-aware session detail URL (/seance-de-groupe/<slug> or /en/…) — "Explore" destination */
   href: string;
+  /** Locale-aware booking URL (contact form with the session preselected) — "Book Now" destination */
+  bookingHref: string;
 }
 
-interface Props {
+interface SessionsExplorerProps {
   sessions: SessionItem[];
+  /** "Découvrir la séance" / "Explore session" — visible detail link label. */
   ctaDetail: string;
+  /** "Réserver" / "Book Now" — visible primary action label. */
+  bookNow: string;
+  /** "Réserver — {title}" / "Book — {title}" — accessible Book Now name. */
+  bookNowAria: string;
+  /** "Découvrir — {title}" / "Explore — {title}" — accessible Explore name. */
+  exploreAria: string;
+  /** Accessible name of the carousel region. */
+  galleryLabel: string;
+  /** Accessible prev / next names. */
+  prevLabel: string;
+  nextLabel: string;
 }
 
-const PANEL_SIZES = "(min-width: 1024px) 44vw, 92vw";
+/** Pointer movement above this cancels the following click (drag ≠ tap). */
+const DRAG_THRESHOLD = 8;
+/** Arrow glide duration — premium slow transition (~850ms). */
+const GLIDE_DURATION = 850;
+/** Ease-out quint ≈ cubic-bezier(0.22, 1, 0.36, 1): fast start, soft landing. */
+const easeOutQuint = (x: number): number => 1 - Math.pow(1 - x, 5);
 
-export default function SessionsExplorer({ sessions, ctaDetail }: Props): React.JSX.Element | null {
+const PANEL_SIZES = "(max-width: 767px) 82vw, (max-width: 1023px) 48vw, 33vw";
+const PANEL_WIDTH =
+  "w-[85vw] md:w-[calc((100%_-_24px)/2)] lg:w-[calc((100%_-_48px)/3)]";
+
+export default function SessionsExplorer({
+  sessions,
+  ctaDetail,
+  bookNow,
+  bookNowAria,
+  exploreAria,
+  galleryLabel,
+  prevLabel,
+  nextLabel,
+}: SessionsExplorerProps): React.JSX.Element {
+  const trackRef = useRef<HTMLDivElement | null>(null);
   const [activeIdx, setActiveIdx] = useState(0);
-  const [prev, setPrev] = useState<SessionItem | null>(null);
-  const [openIdx, setOpenIdx] = useState(0);
-  const activeRef = useRef(0);
-  const [loaded, setLoaded] = useState<Record<string, boolean>>(() =>
-    sessions.length > 0 ? { [sessions[0].image]: true } : {}
-  );
+  const activeIdxRef = useRef(0);
+  const scrollRafRef = useRef(0);
+  const glideRafRef = useRef(0);
+  const glideSnapRef = useRef(false);
+  const dragRef = useRef<{
+    id: number;
+    lastX: number;
+    startX: number;
+    moved: boolean;
+    winUp: (e: PointerEvent) => void;
+    winBlur: () => void;
+  } | null>(null);
+  const suppressClickRef = useRef(false);
 
-  useEffect(() => {
-    if (!prev) return;
-    const t = setTimeout(() => setPrev(null), 560);
-    return () => clearTimeout(t);
-  }, [prev]);
+  const reduceMotion = (): boolean =>
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  if (sessions.length === 0) return null;
+  const stepSize = (): number => {
+    const track = trackRef.current;
+    if (!track) return 0;
+    const first = track.querySelector(".hp-slide") as HTMLElement | null;
+    if (!first) return 0;
+    const gap = parseFloat(getComputedStyle(track).columnGap || "12") || 12;
+    return first.offsetWidth + gap;
+  };
 
-  const active = sessions[activeIdx];
+  const clampIndex = (i: number): number =>
+    Math.max(0, Math.min(sessions.length - 1, i));
 
-  function activate(i: number): void {
-    if (i === activeRef.current) return;
-    setPrev(sessions[activeRef.current]);
-    activeRef.current = i;
-    setActiveIdx(i);
-  }
+  const currentIndex = (): number => {
+    const track = trackRef.current;
+    if (!track || sessions.length === 0) return 0;
+    const step = stepSize();
+    if (!step) return 0;
+    return clampIndex(Math.round(track.scrollLeft / step));
+  };
 
-  function markLoaded(src: string): void {
-    setLoaded((s) => (s[src] ? s : { ...s, [src]: true }));
-  }
+  const syncActive = (): void => {
+    const idx = currentIndex();
+    if (idx !== activeIdxRef.current) {
+      activeIdxRef.current = idx;
+      setActiveIdx(idx);
+    }
+  };
+
+  const cancelGlide = (): void => {
+    if (glideRafRef.current) cancelAnimationFrame(glideRafRef.current);
+    glideRafRef.current = 0;
+    if (glideSnapRef.current) {
+      glideSnapRef.current = false;
+      const track = trackRef.current;
+      if (track) track.style.scrollSnapType = "";
+    }
+  };
+
+  const glideTo = (index: number, duration = GLIDE_DURATION): void => {
+    const track = trackRef.current;
+    if (!track) return;
+    const step = stepSize();
+    if (!step) return;
+    cancelGlide();
+    const from = track.scrollLeft;
+    const to = clampIndex(index) * step;
+    if (Math.abs(to - from) < 1) {
+      syncActive();
+      return;
+    }
+    glideSnapRef.current = true;
+    track.style.scrollSnapType = "none";
+    const start = performance.now();
+    const tick = (now: number): void => {
+      const p = Math.min(1, (now - start) / duration);
+      track.scrollLeft = from + (to - from) * easeOutQuint(p);
+      if (p < 1) {
+        glideRafRef.current = requestAnimationFrame(tick);
+      } else {
+        glideRafRef.current = 0;
+        glideSnapRef.current = false;
+        track.style.scrollSnapType = "";
+        syncActive();
+      }
+    };
+    glideRafRef.current = requestAnimationFrame(tick);
+  };
+
+  const goPrev = (): void => {
+    if (activeIdxRef.current > 0) {
+      glideTo(activeIdxRef.current - 1, reduceMotion() ? 1 : GLIDE_DURATION);
+    }
+  };
+
+  const goNext = (): void => {
+    if (activeIdxRef.current < sessions.length - 1) {
+      glideTo(activeIdxRef.current + 1, reduceMotion() ? 1 : GLIDE_DURATION);
+    }
+  };
+
+  const onTrackScroll = (): void => {
+    if (scrollRafRef.current) return;
+    scrollRafRef.current = requestAnimationFrame(() => {
+      scrollRafRef.current = 0;
+      syncActive();
+    });
+  };
+
+  /** End a mouse drag: detach window listeners, restore snap, re-snap to nearest. */
+  const endMouseDrag = (id: number): void => {
+    const drag = dragRef.current;
+    if (!drag || drag.id !== id) return;
+    dragRef.current = null;
+    window.removeEventListener("pointerup", drag.winUp);
+    window.removeEventListener("pointercancel", drag.winUp);
+    window.removeEventListener("blur", drag.winBlur);
+    const track = trackRef.current;
+    if (!track) return;
+    track.style.cursor = "";
+    if (drag.moved) {
+      track.style.scrollSnapType = "";
+      glideTo(currentIndex(), reduceMotion() ? 1 : 400);
+      suppressClickRef.current = true;
+      window.setTimeout(() => {
+        suppressClickRef.current = false;
+      }, 0);
+    } else {
+      track.style.scrollSnapType = "";
+    }
+  };
+
+  const onTrackPointerDown = (e: React.PointerEvent<HTMLDivElement>): void => {
+    if (e.pointerType !== "mouse" || e.button !== 0) return;
+    cancelGlide();
+    const track = trackRef.current;
+    if (!track) return;
+    // Window-level listeners (NOT pointer capture, which would retarget the
+    // following click away from the slide link and kill navigation).
+    const winUp = (ev: PointerEvent): void => endMouseDrag(ev.pointerId);
+    const winBlur = (): void => {
+      const d = dragRef.current;
+      if (d) endMouseDrag(d.id);
+    };
+    window.addEventListener("pointerup", winUp);
+    window.addEventListener("pointercancel", winUp);
+    window.addEventListener("blur", winBlur);
+    track.style.scrollSnapType = "none";
+    track.style.cursor = "grabbing";
+    dragRef.current = {
+      id: e.pointerId,
+      lastX: e.clientX,
+      startX: e.clientX,
+      moved: false,
+      winUp,
+      winBlur,
+    };
+  };
+
+  const onTrackPointerMove = (e: React.PointerEvent<HTMLDivElement>): void => {
+    const drag = dragRef.current;
+    if (!drag || drag.id !== e.pointerId) return;
+    const track = trackRef.current;
+    if (!track) return;
+    const dx = e.clientX - drag.lastX;
+    track.scrollLeft -= dx;
+    drag.lastX = e.clientX;
+    if (Math.abs(e.clientX - drag.startX) > DRAG_THRESHOLD) drag.moved = true;
+  };
+
+  const onTrackPointerUp = (e: React.PointerEvent<HTMLDivElement>): void => {
+    endMouseDrag(e.pointerId);
+  };
+
+  const onTrackClickCapture = (e: React.MouseEvent<HTMLDivElement>): void => {
+    if (suppressClickRef.current) {
+      e.preventDefault();
+      e.stopPropagation();
+      suppressClickRef.current = false;
+    }
+  };
+
+  if (sessions.length === 0) return <></>;
+  const lastIndex = sessions.length - 1;
 
   return (
-    <div className="mt-10 lg:mt-14">
-      {/* ── Desktop: active image + numbered list ── */}
-      <div className="hidden lg:grid lg:grid-cols-[1.06fr_1fr] lg:gap-14 xl:gap-20 items-start">
-        {/* Active session showcase */}
-        <div className="flex flex-col">
-          <div className="relative aspect-[4/3] overflow-hidden bg-[#0B1220]/5">
-            {prev ? (
-              <Image
-                key={`prev-${prev.slug}`}
-                src={prev.image}
-                alt=""
-                fill
-                sizes={PANEL_SIZES}
-                aria-hidden="true"
-                className="ch-img-fadeout absolute inset-0 object-cover"
-              />
-            ) : null}
-            <Image
-              key={`active-${active.slug}`}
-              src={active.image}
-              alt={active.title}
-              fill
-              sizes={PANEL_SIZES}
-              onLoad={() => markLoaded(active.image)}
-              className={`absolute inset-0 object-cover transition-all duration-500 ease-out ${
-                loaded[active.image] ? "opacity-100 scale-100" : "opacity-0 scale-[1.03]"
-              }`}
-            />
-          </div>
-
-          <div aria-live="polite" className="mt-6 sm:mt-7 flex flex-col gap-3">
-            <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.22em] uppercase">
-              {active.type}
-            </span>
-            <h3 className="heading-serif text-[#0B1220] leading-tight" style={{ fontSize: "clamp(1.9rem, 2.6vw, 2.75rem)" }}>
-              {active.title}
-            </h3>
-            <p className="text-[#0B1220]/55 text-base leading-relaxed max-w-md">{active.summary}</p>
-            {active.location ? (
-              <p className="mt-1 text-[#0B1220]/45 text-sm flex items-center gap-2">
-                <svg className="w-4 h-4 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                {active.location}
-              </p>
-            ) : null}
+    <div
+      role="region"
+      aria-roledescription="carousel"
+      aria-label={galleryLabel}
+    >
+      <div
+        ref={trackRef}
+        onScroll={onTrackScroll}
+        onPointerDown={onTrackPointerDown}
+        onPointerMove={onTrackPointerMove}
+        onPointerUp={onTrackPointerUp}
+        onClickCapture={onTrackClickCapture}
+        className="hp-track flex gap-3 md:gap-6 overflow-x-auto snap-x snap-mandatory overscroll-x-contain cursor-grab select-none"
+      >
+{sessions.map((s, i) => (
+          <div key={s.slug} className={`hp-slide shrink-0 snap-start ${PANEL_WIDTH}`}>
             <Link
-              href={active.href}
-              className="group/link inline-flex items-center gap-2 mt-2 text-sm font-semibold text-[#0B1220] self-start"
+              href={s.href}
+              aria-label={exploreAria.replace("{title}", s.title)}
+              className="group block outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#B88A5A]"
             >
-              <span className="underline underline-offset-8 decoration-[#B88A5A]/40 group-hover/link:decoration-[#B88A5A] transition-colors">
-                {ctaDetail}
-              </span>
-              <svg
-                className="w-4 h-4 text-[#B88A5A] transition-transform group-hover/link:translate-x-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-                aria-hidden="true"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </Link>
-          </div>
-        </div>
-
-        {/* Numbered session list */}
-        <ul className="divide-y divide-[#0B1220]/[0.08]">
-          {sessions.map((s, i) => {
-            const isActive = i === activeIdx;
-            return (
-              <li key={s.slug} className="relative">
-                <a
-                  href={s.href}
-                  aria-current={isActive ? "true" : undefined}
-                  onMouseEnter={() => activate(i)}
-                  onFocus={() => activate(i)}
-                  className="group relative flex items-baseline gap-5 sm:gap-7 py-5 outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#B88A5A]/70"
-                >
-                  <span
-                    className={`font-mono text-sm tabular-nums transition-colors duration-300 ${
-                      isActive ? "text-[#B88A5A]" : "text-[#0B1220]/35 group-hover:text-[#B88A5A]"
-                    }`}
-                  >
-                    {s.number}
-                  </span>
-                  <span
-                    className={`heading-serif transition-all duration-300 ${
-                      isActive ? "text-[#0B1220] font-semibold" : "text-[#0B1220]/60 group-hover:text-[#0B1220]/85"
-                    }`}
-                    style={{ fontSize: "clamp(1.4rem, 1.9vw, 2rem)" }}
-                  >
-                    {s.title}
-                  </span>
-                  <span
-                    aria-hidden="true"
-                    className={`absolute inset-x-0 -bottom-px h-px bg-[#B88A5A] origin-left transition-transform duration-500 ${
-                      isActive ? "scale-x-100" : "scale-x-0"
-                    }`}
+              <div className="relative overflow-hidden rounded-[20px] bg-[#0B1220]/5">
+                <div className="relative aspect-[4/3]">
+                  <Image
+                    src={s.image}
+                    alt={s.title}
+                    fill
+                    {...(i === 0 ? { priority: true } : { loading: "lazy" })}
+                    sizes={PANEL_SIZES}
+                    className={`hp-img object-cover ${i === activeIdx ? "hp-img-active" : ""}`}
                   />
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-
-      {/* ── Mobile: accordion (no hover required) ── */}
-      <ul className="lg:hidden divide-y divide-[#0B1220]/[0.08]">
-        {sessions.map((s, i) => {
-          const isOpen = i === openIdx;
-          const btnId = `clinic-session-btn-${s.slug}`;
-          const panelId = `clinic-session-panel-${s.slug}`;
-          return (
-            <li key={s.slug}>
-              <button
-                id={btnId}
-                type="button"
-                aria-expanded={isOpen}
-                aria-controls={panelId}
-                onClick={() => setOpenIdx(isOpen ? -1 : i)}
-                className="group flex items-center gap-5 w-full py-5 text-left outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#B88A5A]/70"
-              >
-                <span
-                  className={`font-mono text-sm tabular-nums transition-colors duration-300 ${
-                    isOpen ? "text-[#B88A5A]" : "text-[#0B1220]/35"
-                  }`}
-                >
-                  {s.number}
-                </span>
-                <span className="flex-1 min-w-0">
-                  <span
-                    className={`heading-serif block transition-all duration-300 ${
-                      isOpen ? "text-[#0B1220] font-semibold" : "text-[#0B1220]/70"
-                    }`}
-                    style={{ fontSize: "clamp(1.3rem, 5.6vw, 1.6rem)" }}
-                  >
-                    {s.title}
-                  </span>
-                  <span className="block text-[#B88A5A] text-[11px] font-semibold tracking-[0.18em] uppercase mt-0.5">
-                    {s.type}
-                  </span>
-                </span>
-                <svg
-                  aria-hidden="true"
-                  className={`w-4 h-4 shrink-0 transition-transform duration-300 ${
-                    isOpen ? "rotate-180 text-[#B88A5A]" : "text-[#0B1220]/40"
-                  }`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-
-              <div
-                id={panelId}
-                role="region"
-                aria-labelledby={btnId}
-                className={`grid transition-[grid-template-rows] duration-500 ease-in-out ${
-                  isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-                }`}
-              >
-                <div className="overflow-hidden min-h-0">
-                  <div className="pt-1 pb-7 flex flex-col gap-4">
-                    <div className="relative aspect-[16/9] overflow-hidden bg-[#0B1220]/5">
-                      <Image
-                        src={s.image}
-                        alt={s.title}
-                        fill
-                        loading="lazy"
-                        sizes={PANEL_SIZES}
-                        className="object-cover"
-                      />
-                    </div>
-                    <p className="text-[#0B1220]/55 text-[15px] leading-relaxed">{s.summary}</p>
-                    {s.location ? (
-                      <p className="text-[#0B1220]/45 text-sm flex items-center gap-2">
-                        <svg className="w-4 h-4 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        {s.location}
-                      </p>
-                    ) : null}
-                    <Link
-                      href={s.href}
-                      className="group/link inline-flex items-center gap-2 text-sm font-semibold text-[#0B1220] self-start"
-                    >
-                      <span className="underline underline-offset-8 decoration-[#B88A5A]/40 group-hover/link:decoration-[#B88A5A] transition-colors">
-                        {ctaDetail}
-                      </span>
-                      <svg
-                        className="w-4 h-4 text-[#B88A5A] transition-transform group-hover/link:translate-x-1"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                        aria-hidden="true"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                      </svg>
-                    </Link>
-                  </div>
                 </div>
               </div>
-            </li>
-          );
-        })}
-      </ul>
+            </Link>
+
+            <div className="mt-4 sm:mt-5 pr-1">
+              <span className="flex items-center gap-2 flex-wrap">
+                <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.2em] uppercase">
+                  {s.type}
+                </span>
+                {s.location ? (
+                  <span className="inline-flex items-center gap-1 text-xs text-[#0B1220]/45">
+                    <svg
+                      className="w-3.5 h-3.5 text-[#B88A5A]"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      aria-hidden="true"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                    </svg>
+                    {s.location}
+                  </span>
+                ) : null}
+              </span>
+
+              <Link
+                href={s.href}
+                className="group/title block outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#B88A5A]"
+              >
+                <h3
+                  className="heading-serif text-[#0B1220] leading-tight mt-1.5 transition-colors group-hover/title:text-[#B88A5A]"
+                  style={{ fontSize: "clamp(1.2rem, 1.4vw, 1.65rem)" }}
+                >
+                  {s.title}
+                </h3>
+              </Link>
+
+              <p className="mt-2 text-[#0B1220]/60 text-sm sm:text-[15px] leading-relaxed line-clamp-2">
+                {s.summary}
+              </p>
+
+              <div className="mt-4 sm:mt-5 flex flex-col sm:flex-row sm:items-center gap-3">
+                <Link
+                  href={s.bookingHref}
+                  aria-label={bookNowAria.replace("{title}", s.title)}
+                  className="inline-flex h-11 w-full sm:w-auto items-center justify-center rounded-lg bg-gradient-to-b from-[#B88A5A] to-[#9A7242] px-5 text-sm font-semibold text-white shadow-sm whitespace-nowrap transition hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B88A5A]"
+                >
+                  {bookNow}
+                </Link>
+                <Link
+                  href={s.href}
+                  aria-label={exploreAria.replace("{title}", s.title)}
+                  className="group/explore inline-flex items-center gap-1.5 text-sm font-semibold text-[#0B1220] outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#B88A5A]"
+                >
+                  <span className="underline underline-offset-8 decoration-[#B88A5A]/40 transition-colors group-hover/explore:decoration-[#B88A5A]">
+                    {ctaDetail}
+                  </span>
+                  <svg
+                    className="w-4 h-4 text-[#B88A5A] transition-transform group-hover/explore:translate-x-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* ── Progress dots + arrow controls (disabled at the ends) ── */}
+      <div className="mt-8 lg:mt-10 flex items-center justify-end gap-3">
+        <span className="mr-auto flex items-center gap-2" aria-hidden="true">
+          {sessions.map((_, i) => (
+            <span
+              key={i}
+              className={`h-1.5 rounded-full transition-all duration-500 ${
+                i === activeIdx ? "w-4 bg-[#B88A5A]" : "w-1.5 bg-[#0B1220]/20"
+              }`}
+            />
+          ))}
+        </span>
+        <button
+          type="button"
+          aria-label={prevLabel}
+          disabled={activeIdx === 0}
+          onClick={goPrev}
+          className="flex h-11 w-11 items-center justify-center rounded-full border border-[#0B1220]/15 text-[#0B1220] transition-colors hover:border-[#B88A5A] hover:text-[#B88A5A] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B88A5A] disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:border-[#0B1220]/15 disabled:hover:text-[#0B1220]"
+        >
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+            aria-hidden="true"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          aria-label={nextLabel}
+          disabled={activeIdx === lastIndex}
+          onClick={goNext}
+          className="flex h-11 w-11 items-center justify-center rounded-full border border-[#0B1220]/15 text-[#0B1220] transition-colors hover:border-[#B88A5A] hover:text-[#B88A5A] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B88A5A] disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:border-[#0B1220]/15 disabled:hover:text-[#0B1220]"
+        >
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+            aria-hidden="true"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
     </div>
   );
 }

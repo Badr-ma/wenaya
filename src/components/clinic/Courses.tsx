@@ -34,8 +34,7 @@ export default function ClinicCourses({
   const { t } = getTranslations(lang);
   const all = getAllGroupSessions(locale as GroupSessionLocale);
 
-  const items: SessionItem[] = all.map((s, i) => ({
-    number: String(i + 1).padStart(2, "0"),
+  const items: SessionItem[] = all.map((s) => ({
     slug: s.slug,
     title: s.title,
     type: s.typeLabel,
@@ -43,10 +42,11 @@ export default function ClinicCourses({
     location: s.location.title,
     image: s.image,
     href: s.path,
+    bookingHref: s.bookingHref,
   }));
 
   return (
-    <section className="relative bg-[#FAF8F4] px-6 sm:px-10">
+    <section className="relative bg-[#F2EFE9] px-6 sm:px-10">
       <div className="max-w-7xl mx-auto py-14 lg:py-20">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
           <div>
@@ -82,7 +82,16 @@ export default function ClinicCourses({
           </Link>
         </div>
 
-        <SessionsExplorer sessions={items} ctaDetail={t("clinic.courses.ctaDetail")} />
+        <SessionsExplorer
+          sessions={items}
+          ctaDetail={t("clinic.courses.ctaDetail")}
+          bookNow={t("clinic.courses.bookNow")}
+          bookNowAria={t("clinic.courses.bookNowAria")}
+          exploreAria={t("clinic.courses.exploreAria")}
+          galleryLabel={t("clinic.courses.galleryLabel")}
+          prevLabel={t("clinic.courses.prev")}
+          nextLabel={t("clinic.courses.next")}
+        />
       </div>
     </section>
   );

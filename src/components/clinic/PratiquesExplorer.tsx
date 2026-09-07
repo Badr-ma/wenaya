@@ -5,7 +5,7 @@
  * one-sentence teaser, image, canonical-slug href) and hands it to this client
  * component for the interaction layer:
  *
- *   Desktop (lg+):  numbered editorial list on the left, large active-practice
+ *   Desktop (lg+):  editorial list on the left, large active-practice
  *                   panel on the right. Hovering or keyboard-focusing a row
  *                   activates it; clicking navigates to the practice detail page.
  *                   The right image crossfades (opacity + slight scale), only the
@@ -27,8 +27,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 export interface ExplorerItem {
-  /** Zero-padded ordering label ("01") */
-  number: string;
   /** Canonical ASCII slug; used for keys + aria ids */
   slug: string;
   /** Locale-resolved practice title */
@@ -84,7 +82,7 @@ export default function PratiquesExplorer({ items, ctaDetail }: Props): React.JS
 
   return (
     <div className="mt-10 lg:mt-14">
-      {/* ── Desktop: numbered list + active panel ── */}
+      {/* ── Desktop: list + active panel ── */}
       <div className="hidden lg:grid lg:grid-cols-[1fr_1.06fr] lg:gap-14 xl:gap-20 items-start">
         <ul className="divide-y divide-[#0B1220]/[0.08]">
           {items.map((it, i) => {
@@ -96,15 +94,8 @@ export default function PratiquesExplorer({ items, ctaDetail }: Props): React.JS
                   aria-current={isActive ? "true" : undefined}
                   onMouseEnter={() => activate(i)}
                   onFocus={() => activate(i)}
-                  className="group relative flex items-baseline gap-5 sm:gap-7 py-5 outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#B88A5A]/70"
+                  className="group relative flex items-center py-5 outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#B88A5A]/70"
                 >
-                  <span
-                    className={`font-mono text-sm tabular-nums transition-colors duration-300 ${
-                      isActive ? "text-[#B88A5A]" : "text-[#0B1220]/35 group-hover:text-[#B88A5A]"
-                    }`}
-                  >
-                    {it.number}
-                  </span>
                   <span
                     className={`heading-serif transition-all duration-300 ${
                       isActive
@@ -155,7 +146,6 @@ export default function PratiquesExplorer({ items, ctaDetail }: Props): React.JS
           </div>
 
           <div aria-live="polite" className="mt-6 sm:mt-7 flex flex-col gap-3">
-            <span className="text-[#B88A5A] font-mono text-sm tabular-nums">{active.number}</span>
             <h3 className="heading-serif text-[#0B1220] leading-tight" style={{ fontSize: "clamp(1.9rem, 2.6vw, 2.75rem)" }}>
               {active.title}
             </h3>
@@ -198,13 +188,6 @@ export default function PratiquesExplorer({ items, ctaDetail }: Props): React.JS
                 onClick={() => setOpenIdx(isOpen ? -1 : i)}
                 className="group flex items-center gap-5 w-full py-5 text-left outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#B88A5A]/70"
               >
-                <span
-                  className={`font-mono text-sm tabular-nums transition-colors duration-300 ${
-                    isOpen ? "text-[#B88A5A]" : "text-[#0B1220]/35"
-                  }`}
-                >
-                  {it.number}
-                </span>
                 <span
                   className={`heading-serif flex-1 transition-all duration-300 ${
                     isOpen ? "text-[#0B1220] font-semibold" : "text-[#0B1220]/70"

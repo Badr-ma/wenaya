@@ -16,6 +16,7 @@ import ClinicCourses from "@/components/clinic/Courses";
 import ClinicPathologies from "@/components/clinic/Pathologies";
 import ClinicTeam from "@/components/clinic/Team";
 import ClinicHealthNeeds from "@/components/clinic/HealthNeeds";
+import ClinicHomecareBanner from "@/components/clinic/HomecareBanner";
 import ClinicRecruitment from "@/components/clinic/Recruitment";
 import ClinicPractical from "@/components/clinic/Practical";
 import ClinicNews from "@/components/clinic/News";
@@ -70,9 +71,10 @@ export default function AboutPage() {
             <ClinicIntro />
             <ClinicPractices locale={locale} lang={lang} />
             <ClinicCourses locale={locale} lang={lang} />
-            <ClinicPathologies />
+            <ClinicPathologies locale={locale} lang={lang} />
             <ClinicTeam />
             <ClinicHealthNeeds />
+            <ClinicHomecareBanner />
             <ClinicRecruitment />
             <ClinicPractical />
             <ClinicNews locale={locale} lang={lang} />

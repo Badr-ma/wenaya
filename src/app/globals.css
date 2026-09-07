@@ -321,6 +321,15 @@ body {
 .ch-line { transform: translateY(115%); }
 .ch-fade { opacity: 0; }
 
+/* Homecare hero (cinematic /soins-a-domicile hero).
+ * Same family as the Clinic hero but with its own `dc-*` tokens so the two
+ * heroes animate independently. Initial states live in CSS (no flash at first
+ * paint), revealed by GSAP; under prefers-reduced-motion everything shows
+ * statically visible. */
+.dc-bg-wrap { transform: scale(1.07); will-change: transform; }
+.dc-line { transform: translateY(115%); }
+.dc-fade { opacity: 0; }
+
 @keyframes ch-scroll-hint {
   0%         { transform: translateY(-100%); }
   55%, 100%  { transform: translateY(300%); }
@@ -338,11 +347,24 @@ body {
   pointer-events: none;
 }
 
+/* Clinic health needs — active-detail panel rise: the keyed panel remounts on
+ * selection and slides up + fades in under the shared bronze rule. */
+@keyframes hn-fade-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hn-fade { animation: hn-fade-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
 @media (prefers-reduced-motion: reduce) {
+  .hn-fade { animation: none; }
+  .ch-bg-wrap { transform: none; }
   .ch-bg-wrap { transform: none; }
   .ch-line { transform: none; }
   .ch-fade { opacity: 1; }
   .ch-scroll-dot { animation: none; opacity: 0.4; }
+  .dc-bg-wrap { transform: none; }
+  .dc-line { transform: none; }
+  .dc-fade { opacity: 1; }
 }
 
 /* Homepage practices — cinematic swipe gallery.

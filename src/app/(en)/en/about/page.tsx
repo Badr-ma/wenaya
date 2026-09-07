@@ -71,7 +71,7 @@ export default function EnglishAboutPage() {
             <ClinicIntro />
             <ClinicPractices locale={locale} lang={lang} />
             <ClinicCourses locale={locale} lang={lang} />
-            <ClinicPathologies />
+            <ClinicPathologies locale={locale} lang={lang} />
             <ClinicTeam />
             <ClinicHealthNeeds />
             <ClinicRecruitment />

@@ -54,7 +54,6 @@ const PracticesSection = dynamic(() => import("@/components/PracticesSection"), 
 const Biomarkers = dynamic(() => import("@/components/Biomarkers"), { ssr: true });
 const TestimonialsSection = dynamic(() => import("@/components/TestimonialsSection"), { ssr: true });
 const ComparisonTable = dynamic(() => import("@/components/ComparisonTable"), { ssr: true });
-const Pricing = dynamic(() => import("@/components/Pricing"), { ssr: true });
 const CoursAteliers = dynamic(() => import("@/components/CoursAteliers"), { ssr: true });
 const CtaSection = dynamic(() => import("@/components/CtaSection"), { ssr: true });
 const Footer = dynamic(() => import("@/components/Footer"), { ssr: true });
@@ -118,8 +117,6 @@ export default async function Home() {
           <div data-section-bg="light"><ExpertiseSection /></div>
           <Spacer />
           <div data-section-bg="light"><ComparisonTable /></div>
-          <Spacer />
-          <div data-section-bg="light"><Pricing /></div>
           <Spacer />
           <div data-section-bg="dark"><CoursAteliers /></div>
           <div data-section-bg="dark"><CtaSection /></div>

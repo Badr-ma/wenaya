@@ -1,6 +1,6 @@
 /**
  * Clinic Practices — interactive service-exploration section for the Clinic/B2C
- * page. Replaces the previous static preview trio with an editorial numbered
+ * page. Replaces the previous static preview trio with an editorial
  * explorer (desktop: list + active panel; mobile: accordion) that answers
  * "what kinds of care can I explore at Wenaya?" without duplicating the
  * detail-page content.
@@ -59,11 +59,10 @@ export default function ClinicPractices({
   const { t } = getTranslations(lang);
   const all = getAllPratiques(locale);
 
-  const items: ExplorerItem[] = EXPLORER_SLUGS.map((slug, i) => {
+  const items: ExplorerItem[] = EXPLORER_SLUGS.map((slug) => {
     const p = all.find((candidate) => candidate.slug === slug);
     if (!p) return null;
     return {
-      number: String(i + 1).padStart(2, "0"),
       slug,
       title: p.title,
       teaser: explorerTeaser(p.description),
@@ -75,7 +74,7 @@ export default function ClinicPractices({
   if (items.length === 0) return <></>;
 
   return (
-    <section className="relative bg-[#F2EFE9] px-6 sm:px-10">
+    <section className="relative bg-[#FAF8F4] px-6 sm:px-10">
       <div className="max-w-7xl mx-auto py-14 lg:py-20">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
           <div>

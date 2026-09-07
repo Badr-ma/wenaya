@@ -57,7 +57,7 @@ export default function ClinicTeam(): React.JSX.Element {
                     className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/70 via-transparent to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-7 lg:p-9 flex items-end justify-between gap-6">
+                  <div className="absolute bottom-0 left-0 right-0 p-7 lg:p-9 flex items-end gap-6">
                     <div>
                       <h3 className="heading-serif text-white text-2xl lg:text-3xl leading-tight">
                         {featured.name}
@@ -66,7 +66,6 @@ export default function ClinicTeam(): React.JSX.Element {
                         {isEn ? (featured.roleEn ?? featured.role) : featured.role}
                       </p>
                     </div>
-                    <span className="text-white/40 font-mono text-sm hidden sm:inline">01</span>
                   </div>
                 </div>
               </Link>
@@ -76,7 +75,7 @@ export default function ClinicTeam(): React.JSX.Element {
           {/* Secondary rows */}
           <div className="lg:col-span-5 flex flex-col justify-end">
             <div className="space-y-0 divide-y divide-[#0B1220]/[0.06]">
-              {rest.map((s, i) => (
+              {rest.map((s) => (
                 <Link
                   key={s.slug}
                   href={h(locale, "/professional")}
@@ -92,9 +91,6 @@ export default function ClinicTeam(): React.JSX.Element {
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.18em] uppercase">
-                      {String(i + 2).padStart(2, "0")}
-                    </span>
                     <h3 className="heading-serif text-[#0B1220] text-xl lg:text-2xl leading-snug group-hover:text-[#B88A5A] transition-colors">
                       {s.name}
                     </h3>
