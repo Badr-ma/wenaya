@@ -10,6 +10,7 @@ import Link from "next/link";
 import type { Product } from "@/types/product";
 import ProductRating from "./ProductRating";
 import { h } from "@/lib/href";
+import { formatPrice } from "@/lib/format";
 
 type ProductCardProps = {
   product: Product;
@@ -17,15 +18,6 @@ type ProductCardProps = {
   variant?: "default" | "compact";
   priority?: boolean;
 };
-
-function formatPrice(price: number, currency?: string, locale?: string): string {
-  const localeFmt = locale === "en" ? "en-MA" : "fr-MA";
-  const formatted = new Intl.NumberFormat(localeFmt, {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  }).format(price);
-  return currency ? `${formatted} ${currency}` : formatted;
-}
 
 export default function ProductCard({
   product,

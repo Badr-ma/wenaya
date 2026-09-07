@@ -7,20 +7,10 @@ import type { HomepageFieldDef } from "@/lib/homepage-editor-fields";
 import { SECTION_EDITOR_DEFS } from "@/lib/homepage-editor-fields";
 import { useLocale } from "@/contexts/LanguageContext";
 import HomepageRenderer from "@/components/homepage/HomepageRenderer";
+import { apiFetch } from "@/lib/api-http";
 
 interface Props {
   token: string;
-}
-
-async function apiFetch(url: string, token: string, init?: RequestInit) {
-  return fetch(url, {
-    ...init,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-      ...init?.headers,
-    },
-  });
 }
 
 export default function HomepageEditor({ token }: Props) {

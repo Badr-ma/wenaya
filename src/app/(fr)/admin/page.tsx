@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import HomepageEditor from "@/components/admin/HomepageEditor";
+import { apiFetch } from "@/lib/api-http";
 
 /* ── Types ── */
 
@@ -42,19 +43,6 @@ interface Specialist {
   certifications: string[];
   services: SpecialistService[];
   [key: string]: unknown;
-}
-
-/* ── Fetch helpers ── */
-
-async function apiFetch(url: string, token: string, init?: RequestInit) {
-  return fetch(url, {
-    ...init,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-      ...init?.headers,
-    },
-  });
 }
 
 /* ── Login component ── */

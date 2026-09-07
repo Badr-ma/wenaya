@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { useCart } from "@/contexts/CartContext";
 import { useLocale } from "@/contexts/LanguageContext";
 import { h } from "@/lib/href";
+import { formatPrice } from "@/lib/format";
 
 type Availability = "in_stock" | "out_of_stock" | "pre_order" | "limited";
 
@@ -26,15 +27,6 @@ interface CartActionsProps {
   purchaseUrl?: string;
   hasWebsiteUrl: boolean;
   websiteUrl?: string;
-}
-
-function formatPrice(price: number, currency: string, locale: string): string {
-  const localeFmt = locale === "fr" ? "fr-MA" : "en-MA";
-  const formatted = new Intl.NumberFormat(localeFmt, {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  }).format(price);
-  return currency ? `${formatted} ${currency}` : formatted;
 }
 
 export default function CartActions({
