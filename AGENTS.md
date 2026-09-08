@@ -500,3 +500,47 @@ Verification (dev :3000 + real browser CDP at 390/768/1440): 12 bronze rules == 
 Gotchas: React SSR emits the self-closing rule span as <span ...></span> (not />), so a ...mb-4" /> string-probe returns 0 though the element is present -- probe the class substring instead.
 
 Code-quality: npx tsc --noEmit clean; npx eslint src/components/domicile clean; npm run build 254 pages (unchanged; kill-node + Remove-Item .next before rebuild). Prod server needs restart (build killed node). Browser-only runtime: none new (static decoration; reduced-motion N/A as no animation added).
+
+### 2026-09-08 — SEO MIGRATION: high-confidence redirects only (from audit CSVs, branch pre-production-cleanup)
+
+Implemented ONLY the CSV-marked high-confidence redirect actions from `wenaya-seo-migration-map.csv`. Audit-only philosophy maintained: no invented redirects, no new wildcards beyond pre-existing ones, no redirects for MANUAL/NEEDS-CONTENT rows, no commit. Prod server on :3002, fresh `next start` after `Remove-Item .next`.
+
+**Files changed:** `next.config.ts` only (+12 lines, 1 block comment).
+
+**Added (all `permanent: true` → 308):**
+- `/fr` → `/` (CSV duplicate-home variant, canonical is root).
+- Practice accented-slug gaps: `/pratiques/ost%C3%A9opathie` → `/pratiques/osteopathie`, `/pratiques/sono-th%C3%A9rapie` → `/pratiques/sono-therapie`, plus EN equivalents. (Other 6 accented slugs were already present; these two were the CSV-mapped stragglers, both target routes verified in `SLUG_ORDER`.).
+- Arabic precise mappings inserted BEFORE the existing temp `/ar/:path*` catch-all (order = first-match-wins): `/ar/about-us` → `/about`, `/ar/pratiques` → `/pratiques`, `/ar/parcours-de-soins/grossesse-&-maternite` → `/pratiques/kinesitherapie`, `/ar/search/all/all` → `/`. The `/ar/:path*` → `/` (307) remains as the fallback for every other AR URL without a mapped destination.
+
+**Not touched (per CSV classification):**
+- Broken catch-alls: `/articles/undefined`, `/en/articles/undefined`, `/evenements/undefined` — must 404. Verified the new app returns **404** for each (articles `[slug]` page calls `notFound()`; there is no `/evenements` route in the new app). No redirect added.
+- Broken professional URLs (`/professional/*`, `Undefined | Wenaya` titles): KEEP — same URL, never redirected away.
+- MANUAL/NEEDS-CONTENT: `/parcours-de-soins/*`, `/maux-troubles/{slug}`, `/search/*` variants, `/professional/*/booking` — left untouched (pre-existing temp 307 `/parcours-de-soins/:slug+` → `/` kept as-is).
+- `/en/soins-a-domicile`: DO-NOT-INDEX — no EN homecare route exists (verified 404), not in sitemap (only FR single entry), robots leaves it unlisted (a 404 needs no disallow).
+
+**Verified (prod :3002, curl no-follow + follow):** `22/22` redirect sources return **308** with correct `Location` and **final 200** single-hop (no chains/loops): `/fr`, `/about-us`, `/en/about-us`, `/contact-us`, `/terms-and-conditions`, `/privacy-policy`, `/for-entreprise`, `/soins`, `/maux-troubles`, `/en/maux-troubles`, `/user/sign-in`, `/en/user/sign-in`, `/specialistes`, `/specialistes/nadine-kita`, `/en/group-sessions/prenatal-yoga` + `brazilian-jiu-jitsu`, accented `kin%C3%A9sith%C3%A9rapie`/`ost%C3%A9opathie`/`sono-th%C3%A9rapie` FR+EN (percent-encoded AND raw `é` UTF-8 both 308 → ASCII target), `/ar/about-us`, `/ar/pratiques`, `/ar/parcours-de-soins/grossesse-&-maternite`, `/ar/search/all/all`. Pre-existing 307s unchanged (`/evenements`, `/search/all/all`, `/ar/*` fallback, `/parcours-de-soins/:slug+`). `/en/group-sessions/zumba-anim` → `/en/seance-de-groupe/zumba-anim` fallback (pre-existing, unverified-detail risk — documented, not new).
+
+**Sitemap/canonical (sitemap.xml at :3002, 231 URLs):** zero redirect-source URLs present; canonicals `/`, `/en`, `/soins-a-domicile`, `/pratiques/kinesitherapie`, `/en/pratiques/osteopathie` present; no `/en/soins-a-domicile`; `/en` emitted WITHOUT trailing slash by `dual("/")` (pre-existing). Canonical + `hrefLang` fr-MA/en-MA/x-default correct on FR+EN pairs (pages use camelCase `hrefLang`). `robots.txt`: `/login`, `/en/login`, `/admin`, `/api/` disallowed.
+
+**Code-quality:** `npx tsc --noEmit` clean; `npx eslint .` **0E/12W** (unchanged pre-existing baseline, next.config.ts clean); `npm run build` passes. Prod server left running on :3002.
+
+### 2026-09-08 — SEO MIGRATION (Phase 4): verified care-journey targets + fixed AR mapping (branch pre-production-cleanup)
+
+Deep-verified the 3 ambiguous care journeys using the REAL live content (detail bodies captured via CDP; the "Invalid tab!" SPA artifact resolved by direct-load URLs). Then applied the confirmed redirect batch + corrected the Phase-3 AR target.
+
+**Live journey evidence (web + browser captures):**
+- **Troubles de l'apprentissage → PROVEN** `/pratiques/orthophonie`: live body *"Diagnostic précoce — réalisé par un professionnel de santé (**orthophoniste**, neuropsychologue…)"* + *"Interventions spécifiques: **Orthophonie**: pour les troubles du langage écrit (dyslexie, dysorthographie)"* — orthophonist is first-named practitioner, orthophonie first intervention. Confirms `pathologies.ts:45`.
+- **Grossesse & Maternité → NOT single-practice** `/pratiques`: body explicitly enumerates exactly 4 approaches *"1. Le yoga prénatal et postnatal, 2. La massothérapie, 3. La nutrition, 4. La psychologie"*; conclusion *"En intégrant le yoga, la massothérapie, la nutrition et la psychologie…"*. Kinésithérapie appears nowhere → the old `/ar/parcours-de-soins/grossesse-&-maternite` → `/pratiques/kinesitherapie` (added Phase 3) was WRONG.
+- **Santé holistique → NOT single-practice** `/pratiques`: generic wellness pillars body; practitioners "un naturopathe, un médecin généraliste… ou un coach" + "yoga, méditation, réflexologie, aromathérapie". No dominant practice.
+- `/maux-troubles/grossesse` → `/pratiques` (same non-single-practice rationale).
+- Technique notes: care-journey detail pages are the broken SPA ("Invalid tab!" appears when navigating client-side); direct top-level navigation renders the full body. The hub page IS fully SSR'd (journey teasers in HTML); its `__NEXT_DATA__` holds only the i18n bundle (no per-journey content); detail `_next/data/<build>/fr/parcours-de-soins/<slug>.json` likewise (i18n frame). Journey slugs carry raw apostrophe (`les-troubles-de-l'apprentissage`), curly-quote encode `%E2%80%99` does NOT resolve (Invalid tab) — must use raw `'`.
+
+**Files changed:** `next.config.ts` only (+14 lines). Changes:
+- **AR fix:** `/ar/parcours-de-soins/grossesse-&-maternite` destination `/pratiques/kinesitherapie` → `/pratiques`.
+- **New care-journey 308s** (FR+EN, each with both the canonical accented URL and the unaccented CSV alias), inserted BEFORE the temp `/parcours-de-soins/:slug+` catch-all (order = first-match-wins): apprentissage → `/pratiques/orthophonie` (+`/en/…`), grossesse (accented `maternit%C3%A9` + unaccented) → `/pratiques` (+EN), santé-holistique (accented + unaccented) → `/pratiques` (+EN).
+- **New:** `/maux-troubles/grossesse` → `/pratiques` (permanent), placed beside the existing `/maux-troubles` entry.
+- Unmapped journey slugs (`le-vertige-positionnel`, `tecar-therapie`, …) still fall to the pre-existing 307 catch-all → `/` (deliberate — not in this batch).
+
+**Verified (prod :3002, curl no-follow + follow):** `14/14` new/prefixed sources return **308** + final **200** single-hop; `11/11` regression checks pass unchanged (incl. pre-existing 307s `/search/all/all`, `/ar/*` fallback, `/parcours-de-soins/le-vertige-positionnel` + `tecar-therapie` still 307 → `/`). Target routes `/pratiques`, `/en/pratiques`, `/pratiques/orthophonie`, `/en/pratiques/orthophonie` → 200. Sitemap 231 URLs, zero redirect sources present, no `/parcours-de-soins/` in sitemap.
+
+**Code-quality:** `npx tsc --noEmit` clean; `npx eslint next.config.ts` clean; `npm run build` 254 pages (kill-node + `Remove-Item .next` before rebuild). Prod server left running on :3002. NOT committed/pushed.

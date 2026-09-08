@@ -34,10 +34,15 @@ const nextConfig: NextConfig = {
       { source: "/en/for-entreprise/:path*", destination: "/en/corporate/:path*",       permanent: true },
       { source: "/en/solutions/entreprises", destination: "/en/corporate",             permanent: true },
       { source: "/en/solutions/entreprises/:path*", destination: "/en/corporate/:path*", permanent: true },
+      /* Duplicate home variant — canonical is the root */
+      { source: "/fr", destination: "/", permanent: true },
 
       /* ── Category 2: Semantic mappings (permanent for renamed, temporary for removed) ── */
       { source: "/soins",             destination: "/pratiques",   permanent: true },
       { source: "/maux-troubles",     destination: "/pratiques",   permanent: true },
+      /* Old trouble detail: pluridisciplinary by nature (yoga/massothérapie/
+         nutrition/psychologie) — folds to the practices listing, no single practice. */
+      { source: "/maux-troubles/grossesse", destination: "/pratiques", permanent: true },
       { source: "/blog",              destination: "/articles",    permanent: true },
       { source: "/blog/:path*",       destination: "/articles/:path*", permanent: true },
       { source: "/evenements",        destination: "/",            permanent: false },
@@ -66,11 +71,35 @@ const nextConfig: NextConfig = {
       { source: "/en/group-sessions/breathwork",  destination: "/en/seance-de-groupe/breathwork",  permanent: true },
       { source: "/en/group-sessions/:path*",      destination: "/en/seance-de-groupe/:path*",      permanent: true },
 
-      /* ── Category 3: Care pathways — no equivalent in new app (temporary) ── */
+      /* ── Category 3: Care pathways ──
+         Semantic targets proven from the live journey content first (permanent,
+         308), then the legacy catch-all (temporary). Sources cover both the
+         canonical accented URL and the CSV alias form.
+         Proof: apprentissage page names "orthophoniste" as first practitioner and
+         "Orthophonie" as first intervention; grossesse & santé holistique are
+         explicitly pluridisciplinary (yoga/massothérapie/nutrition/psychologie and
+         generic holistic), so they fold to the practices listing — no single practice. */
+      { source: "/parcours-de-soins/les-troubles-de-l%27apprentissage", destination: "/pratiques/orthophonie", permanent: true },
+      { source: "/parcours-de-soins/les-troubles-de-l-apprentissage",    destination: "/pratiques/orthophonie", permanent: true },
+      { source: "/parcours-de-soins/grossesse-&-maternit%C3%A9",        destination: "/pratiques",             permanent: true },
+      { source: "/parcours-de-soins/grossesse-&-maternite",             destination: "/pratiques",             permanent: true },
+      { source: "/parcours-de-soins/sant%C3%A9-holistique",             destination: "/pratiques",             permanent: true },
+      { source: "/parcours-de-soins/sante-holistique",                  destination: "/pratiques",             permanent: true },
+      { source: "/en/parcours-de-soins/les-troubles-de-l%27apprentissage", destination: "/en/pratiques/orthophonie", permanent: true },
+      { source: "/en/parcours-de-soins/les-troubles-de-l-apprentissage",    destination: "/en/pratiques/orthophonie", permanent: true },
+      { source: "/en/parcours-de-soins/grossesse-&-maternit%C3%A9",        destination: "/en/pratiques",             permanent: true },
+      { source: "/en/parcours-de-soins/grossesse-&-maternite",             destination: "/en/pratiques",             permanent: true },
+      { source: "/en/parcours-de-soins/sant%C3%A9-holistique",             destination: "/en/pratiques",             permanent: true },
+      { source: "/en/parcours-de-soins/sante-holistique",                  destination: "/en/pratiques",             permanent: true },
       { source: "/parcours-de-soins/:slug+", destination: "/",        permanent: false },
       { source: "/en/parcours-de-soins/:slug+", destination: "/en/",  permanent: false },
 
-      /* ── Category 4: Arabic locale — not supported in new app, redirect to FR ── */
+      /* ── Category 4: Arabic locale — not supported in new app, redirect to FR ──
+         Precise mappings first (permanent), then the catch-all for anything else. */
+      { source: "/ar/about-us", destination: "/about",                    permanent: true },
+      { source: "/ar/pratiques", destination: "/pratiques",               permanent: true },
+      { source: "/ar/parcours-de-soins/grossesse-&-maternite", destination: "/pratiques", permanent: true },
+      { source: "/ar/search/all/all", destination: "/",                   permanent: true },
       { source: "/ar/:path*", destination: "/", permanent: false },
 
       /* ── Category 5: Legacy URL compatibility — verified destinations only ──
@@ -100,6 +129,8 @@ const nextConfig: NextConfig = {
       { source: "/pratiques/m%C3%A9ditation",            destination: "/pratiques/meditation",           permanent: true },
       { source: "/pratiques/psychomotricit%C3%A9",       destination: "/pratiques/psychomotricite",      permanent: true },
       { source: "/pratiques/psychoth%C3%A9rapie",        destination: "/pratiques/psychotherapie",       permanent: true },
+      { source: "/pratiques/ost%C3%A9opathie",           destination: "/pratiques/osteopathie",          permanent: true },
+      { source: "/pratiques/sono-th%C3%A9rapie",         destination: "/pratiques/sono-therapie",        permanent: true },
       /* EN equivalents */
       { source: "/en/pratiques/art-martial-th%C3%A9rapie", destination: "/en/pratiques/art-martial-therapie", permanent: true },
       { source: "/en/pratiques/kin%C3%A9sith%C3%A9rapie",   destination: "/en/pratiques/kinesitherapie",       permanent: true },
@@ -107,6 +138,8 @@ const nextConfig: NextConfig = {
       { source: "/en/pratiques/m%C3%A9ditation",            destination: "/en/pratiques/meditation",           permanent: true },
       { source: "/en/pratiques/psychomotricit%C3%A9",       destination: "/en/pratiques/psychomotricite",      permanent: true },
       { source: "/en/pratiques/psychoth%C3%A9rapie",        destination: "/en/pratiques/psychotherapie",       permanent: true },
+      { source: "/en/pratiques/ost%C3%A9opathie",           destination: "/en/pratiques/osteopathie",          permanent: true },
+      { source: "/en/pratiques/sono-th%C3%A9rapie",         destination: "/en/pratiques/sono-therapie",        permanent: true },
     ];
   },
   /** Enables app/global-not-found.tsx — restores the custom French 404 for unmatched URLs (multi-root-layout app) */
