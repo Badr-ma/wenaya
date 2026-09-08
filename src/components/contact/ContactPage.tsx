@@ -1,6 +1,6 @@
 /**
  * Contact Page — contact form and clinic information.
- * Shared by the French (/contact) and English (/en/contact) routes.
+ * Shared by the French (/contact-us) and English (/en/contact-us) routes.
  * Features: form with name/email/subject/message fields, validation, success state,
  * clinic address, phone, email, and Google Maps embed.
  * Client component with i18n translations.

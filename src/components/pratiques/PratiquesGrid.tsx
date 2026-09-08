@@ -421,7 +421,7 @@ export default function PratiquesGrid({
         {/* CTA */}
         <div className="text-center mt-12 sm:mt-16">
           <Link
-            href={h(locale, "/contact")}
+            href={h(locale, "/contact-us")}
             className="inline-flex items-center gap-3 h-11 px-7 rounded-xl text-[13px] font-semibold text-white transition-all duration-300 hover:-translate-y-px active:translate-y-0"
             style={{
               background: "linear-gradient(135deg, #C99B68 0%, #9A7242 100%)",

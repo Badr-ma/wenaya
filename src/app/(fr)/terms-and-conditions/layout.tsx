@@ -1,5 +1,5 @@
 /**
- * Conditions Layout — provides SEO metadata for the /conditions page.
+ * Conditions Layout — provides SEO metadata for the /terms-and-conditions page.
  * Needed because the page is a client component and can't export Metadata.
  */
 import type { Metadata } from "next";
@@ -11,15 +11,15 @@ export const metadata: Metadata = {
   description:
     "Conditions générales d'utilisation de la plateforme Wenaya Clinic Casablanca. Droits, obligations, propriété intellectuelle et modalités de service.",
   alternates: {
-    canonical: `${SITE_URL}/conditions`,
-    languages: languageAlternates("/conditions"),
+    canonical: `${SITE_URL}/terms-and-conditions`,
+    languages: languageAlternates("/terms-and-conditions"),
   },
   openGraph: {
     ...OG_DEFAULTS,
     title: "Conditions Générales — Wenaya",
     description:
       "Conditions générales d'utilisation de la plateforme Wenaya Clinic.",
-    url: `${SITE_URL}/conditions`,
+    url: `${SITE_URL}/terms-and-conditions`,
   },
   twitter: {
     ...TWITTER_DEFAULTS,

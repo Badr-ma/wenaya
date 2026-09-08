@@ -90,11 +90,11 @@ export default function LoginClient() {
           </div>
 
           <div className="mt-8 flex items-center justify-center gap-x-4 text-[11px] text-[#2B2F36]/45">
-            <Link href={h(locale, "/conditions")} className="hover:text-[#0B1220] transition-colors">
+            <Link href={h(locale, "/terms-and-conditions")} className="hover:text-[#0B1220] transition-colors">
               {t("login.terms")}
             </Link>
             <span className="w-1 h-1 rounded-full bg-[#B88A5A]" aria-hidden="true" />
-            <Link href={h(locale, "/confidentialite")} className="hover:text-[#0B1220] transition-colors">
+            <Link href={h(locale, "/privacy-policy")} className="hover:text-[#0B1220] transition-colors">
               {t("login.privacy")}
             </Link>
           </div>

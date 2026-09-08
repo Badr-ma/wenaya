@@ -27,8 +27,8 @@ const socialUrls: Record<string, string> = {
   TikTok: "https://www.tiktok.com/@wenaya_maroc",
 };
 
-const navUrls = ["/about", "/professional", "/seance-de-groupe", "/corporate", "/faq"];
-const legalUrls = ["/confidentialite", "/conditions"];
+const navUrls = ["/about-us", "/professional", "/seance-de-groupe", "/corporate", "/faq"];
+const legalUrls = ["/privacy-policy", "/terms-and-conditions"];
 
 interface FooterProps {
   content?: FooterContent;
@@ -168,7 +168,7 @@ export default function Footer({ content }: FooterProps): React.JSX.Element {
                       </a>
                     </li>
                     <li>
-                      <Link href={h(locale, "/contact")} className="text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed">
+                      <Link href={h(locale, "/contact-us")} className="text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed">
                         {contactRaw.contact}
                       </Link>
                     </li>

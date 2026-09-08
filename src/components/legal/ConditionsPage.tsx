@@ -1,6 +1,6 @@
 /**
  * Terms & Conditions Page — legal page with general terms of use.
- * Shared by the French (/conditions) and English (/en/conditions) routes.
+ * Shared by the French (/terms-and-conditions) and English (/en/terms-and-conditions) routes.
  * Client component that renders terms content with i18n.
  * Includes metadata via separate layout.tsx.
  */

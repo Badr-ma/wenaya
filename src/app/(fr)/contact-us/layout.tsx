@@ -1,5 +1,5 @@
 /**
- * Contact Layout — provides SEO metadata for the /contact page.
+ * Contact Layout — provides SEO metadata for the /contact-us page.
  * Needed because contact/page.tsx is a client component and can't export Metadata.
  */
 import type { Metadata } from "next";
@@ -18,15 +18,15 @@ export const metadata: Metadata = {
     "Wenaya Clinic adresse",
   ],
   alternates: {
-    canonical: `${SITE_URL}/contact`,
-    languages: languageAlternates("/contact"),
+    canonical: `${SITE_URL}/contact-us`,
+    languages: languageAlternates("/contact-us"),
   },
   openGraph: {
     ...OG_DEFAULTS,
     title: "Contact — Wenaya Clinic Casablanca",
     description:
       "Contactez Wenaya Clinic à Casablanca. Kinésithérapie, psychologie, nutrition et bien-être. Prenez rendez-vous en ligne.",
-    url: `${SITE_URL}/contact`,
+    url: `${SITE_URL}/contact-us`,
   },
   twitter: {
     ...TWITTER_DEFAULTS,

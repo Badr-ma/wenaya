@@ -47,7 +47,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
    */
   const staticPages: SitemapEntry[] = [
     ...dual("/", { changeFrequency: "weekly", priority: 1.0 }),
-    ...dual("/about", { changeFrequency: "monthly", priority: 0.9 }),
+    ...dual("/about-us", { changeFrequency: "monthly", priority: 0.9 }),
     ...dual("/corporate", { changeFrequency: "monthly", priority: 0.9 }),
     ...dual("/corporate/programmes", { changeFrequency: "monthly", priority: 0.8 }),
     {
@@ -84,9 +84,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...dual("/professional", { changeFrequency: "weekly", priority: 0.9 }),
     ...dual("/articles", { changeFrequency: "weekly", priority: 0.9 }),
     ...dual("/faq", { changeFrequency: "monthly", priority: 0.7 }),
-    ...dual("/contact", { changeFrequency: "monthly", priority: 0.8 }),
-    ...dual("/confidentialite", { changeFrequency: "yearly", priority: 0.2 }),
-    ...dual("/conditions", { changeFrequency: "yearly", priority: 0.2 }),
+    ...dual("/contact-us", { changeFrequency: "monthly", priority: 0.8 }),
+    ...dual("/privacy-policy", { changeFrequency: "yearly", priority: 0.2 }),
+    ...dual("/terms-and-conditions", { changeFrequency: "yearly", priority: 0.2 }),
   ];
 
   /** Blog post URLs — shared slug set, both locales have the same posts */

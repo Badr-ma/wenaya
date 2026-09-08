@@ -22,7 +22,7 @@ export default function HomecareCoordination(): React.JSX.Element {
           </div>
           <div className="lg:col-span-4 lg:justify-self-end">
             <Link
-              href="/about"
+              href="/about-us"
               className="inline-flex items-center gap-2 text-sm font-semibold text-[#0B1220] group whitespace-nowrap"
             >
               <span className="underline underline-offset-8 decoration-[#B88A5A]/40 group-hover:decoration-[#B88A5A] transition-colors">

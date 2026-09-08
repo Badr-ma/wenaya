@@ -199,8 +199,8 @@ function normalize(c: CanonicalGroupSession, locale: GroupSessionLocale): GroupS
     location: inPerson ? { title: inPerson.title, desc: inPerson.desc } : { title: slug, desc: "" },
     bookingHref:
       locale === "en"
-        ? `/en/contact?service=${c.slugEn}&type=group-session`
-        : `/contact?service=${c.slugFr}&type=group-session`,
+        ? `/en/contact-us?service=${c.slugEn}&type=group-session`
+        : `/contact-us?service=${c.slugFr}&type=group-session`,
   };
 }
 

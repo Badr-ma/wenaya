@@ -313,9 +313,9 @@ export default function BookingPanel({
                   </p>
                   <p className="text-[11px] text-[#2B2F36]/40 mb-2">{t("specialistes.booking.termsNote")}</p>
                   <div className="flex items-center justify-center gap-3">
-                    <Link href={h(locale, "/confidentialite")} className="text-[11px] text-[#B88A5A] underline underline-offset-2">{legalLinks[0]}</Link>
+                    <Link href={h(locale, "/privacy-policy")} className="text-[11px] text-[#B88A5A] underline underline-offset-2">{legalLinks[0]}</Link>
                     <span className="text-[#2B2F36]/20">·</span>
-                    <Link href={h(locale, "/conditions")} className="text-[11px] text-[#B88A5A] underline underline-offset-2">{legalLinks[1]}</Link>
+                    <Link href={h(locale, "/terms-and-conditions")} className="text-[11px] text-[#B88A5A] underline underline-offset-2">{legalLinks[1]}</Link>
                   </div>
                   <p className="text-center text-[11px] text-[#2B2F36]/20 mt-3">{specialist.hours}</p>
                 </div>
@@ -367,9 +367,9 @@ export default function BookingPanel({
                   <p className="text-[11px] text-[#2B2F36]/50 leading-relaxed mb-3">{t("specialistes.booking.confirmNote")}</p>
                   <p className="text-[11px] text-[#2B2F36]/35 leading-relaxed mb-2">{t("specialistes.booking.termsNote")}</p>
                   <div className="flex flex-wrap items-center gap-3">
-                    <Link href={h(locale, "/confidentialite")} className="text-[11px] text-[#B88A5A] underline underline-offset-2">{legalLinks[0]}</Link>
+                    <Link href={h(locale, "/privacy-policy")} className="text-[11px] text-[#B88A5A] underline underline-offset-2">{legalLinks[0]}</Link>
                     <span className="text-[#2B2F36]/20">·</span>
-                    <Link href={h(locale, "/conditions")} className="text-[11px] text-[#B88A5A] underline underline-offset-2">{legalLinks[1]}</Link>
+                    <Link href={h(locale, "/terms-and-conditions")} className="text-[11px] text-[#B88A5A] underline underline-offset-2">{legalLinks[1]}</Link>
                   </div>
                 </div>
               </>

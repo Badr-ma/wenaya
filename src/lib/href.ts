@@ -1,7 +1,7 @@
 /**
  * Locale-aware internal link helper.
  * English pages live under `/en/...`; French pages stay at the root.
- * `h("en", "/about")` → "/en/about"; `h("fr", "/about")` → "/about".
+ * `h("en", "/about-us")` → "/en/about-us"; `h("fr", "/about-us")` → "/about-us".
  * External/anchor paths are returned unchanged.
  */
 export type HrefLocale = "fr" | "en";

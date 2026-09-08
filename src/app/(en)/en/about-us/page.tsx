@@ -1,5 +1,5 @@
 /**
- * About Page — server component assembling all Clinic/B2C page sections.
+ * English About Page — assembles the same Clinic/B2C sections as the French page.
  * Rebuilt to an editorial, no-card design using live wenaya.com content.
  * Sections: Hero, Trust, Intro, Practices, Courses, Pathologies, Team,
  * HealthNeeds, Recruitment, Practical, News, and Footer.
@@ -16,7 +16,6 @@ import ClinicCourses from "@/components/clinic/Courses";
 import ClinicPathologies from "@/components/clinic/Pathologies";
 import ClinicTeam from "@/components/clinic/Team";
 import ClinicHealthNeeds from "@/components/clinic/HealthNeeds";
-import ClinicHomecareBanner from "@/components/clinic/HomecareBanner";
 import ClinicRecruitment from "@/components/clinic/Recruitment";
 import ClinicPractical from "@/components/clinic/Practical";
 import ClinicNews from "@/components/clinic/News";
@@ -26,44 +25,45 @@ import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
 export const metadata: Metadata = {
-  title: "Wenaya Clinic — Centre de Santé Intégrée à Casablanca",
+  title: "Wenaya Clinic — Integrated Health Center in Casablanca",
   description:
-    "Wenaya Clinic, un écosystème de santé intégrée à Casablanca : kinésithérapie, ostéopathie, psychologie, neuropsychologie, nutrition, orthophonie et thérapies complémentaires — pour un accompagnement global et personnalisé.",
+    "Wenaya Clinic, an integrated health ecosystem in Casablanca: physiotherapy, osteopathy, psychology, neuropsychology, nutrition, speech therapy and complementary therapies — for comprehensive and personalized care.",
   keywords: [
     "Wenaya Clinic Casablanca",
-    "centre santé intégrée Casablanca",
-    "clinique pluridisciplinaire Casablanca",
-    "kinésithérapie Casablanca",
-    "ostéopathie Casablanca",
-    "santé intégrée Maroc",
+    "integrated health center Casablanca",
+    "multidisciplinary clinic Casablanca",
+    "physiotherapy Casablanca",
+    "osteopathy Casablanca",
+    "integrated health Morocco",
   ],
   alternates: {
-    canonical: `${SITE_URL}/about`,
-    languages: languageAlternates("/about"),
+    canonical: `${SITE_URL}/en/about-us`,
+    languages: languageAlternates("/about-us"),
   },
   openGraph: {
     ...OG_DEFAULTS,
-    title: "Wenaya Clinic — Centre de Santé Intégrée à Casablanca",
+    locale: "en_MA",
+    title: "Wenaya Clinic — Integrated Health Center in Casablanca",
     description:
-      "Un écosystème de santé intégrée réunissant des spécialistes pluridisciplinaires à Casablanca pour un accompagnement global et personnalisé.",
-    url: `${SITE_URL}/about`,
+      "An integrated health ecosystem bringing together multidisciplinary specialists in Casablanca for comprehensive and personalized care.",
+    url: `${SITE_URL}/en/about-us`,
   },
   twitter: {
     ...TWITTER_DEFAULTS,
-    title: "Wenaya Clinic — Centre de Santé Intégrée à Casablanca",
+    title: "Wenaya Clinic — Integrated Health Center in Casablanca",
     description:
-      "Un écosystème de santé intégrée réunissant des spécialistes pluridisciplinaires à Casablanca pour un accompagnement global et personnalisé.",
+      "An integrated health ecosystem bringing together multidisciplinary specialists in Casablanca for comprehensive and personalized care.",
   },
 };
 
-export default function AboutPage() {
-  const lang = "fr";
+export default function EnglishAboutPage() {
+  const lang = "en";
   const locale = lang;
   return (
     <>
       <ErrorBoundary>
         <main>
-          <ClinicStructuredData lang="fr" canonicalPath="/about" />
+          <ClinicStructuredData lang="en" canonicalPath="/en/about-us" />
           <Breadcrumbs />
           <div className="flex flex-col">
             <ClinicHero />
@@ -74,7 +74,6 @@ export default function AboutPage() {
             <ClinicPathologies locale={locale} lang={lang} />
             <ClinicTeam />
             <ClinicHealthNeeds />
-            <ClinicHomecareBanner />
             <ClinicRecruitment />
             <ClinicPractical />
             <ClinicNews locale={locale} lang={lang} />

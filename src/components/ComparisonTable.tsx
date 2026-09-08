@@ -13,7 +13,7 @@ import { h } from "@/lib/href";
 import type { ComparisonTableContent } from "@/lib/homepage-types";
 
 const cardKeys = [
-  { key: "clinics", featured: true, href: "/about", icon: (
+  { key: "clinics", featured: true, href: "/about-us", icon: (
     <svg viewBox="0 0 48 48" className="w-10 h-10" fill="none">
       <rect x="10" y="14" width="28" height="28" rx="3" stroke="currentColor" strokeWidth="1" />
       <path d="M22 24v8M18 28h8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />

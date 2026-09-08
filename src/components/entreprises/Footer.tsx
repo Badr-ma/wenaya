@@ -152,7 +152,7 @@ export default function EntreprisesFooter(): React.JSX.Element {
                       : group.title === footerResources.title
                         ? [h(locale, "/faq"), "#", "#"]
                         : group.title === footerAPropos.title
-                          ? [h(locale, "/about"), h(locale, "/pratiques"), "#", "#"]
+                          ? [h(locale, "/about-us"), h(locale, "/pratiques"), "#", "#"]
                           : null;
                   return (
                     <div key={group.title}>

@@ -226,7 +226,7 @@ export default function Nav(): React.JSX.Element {
               <ul className="flex items-center gap-0">
                 {[
                   { label: t("nav.accueil"), href: h(locale, "/") },
-                  { label: t("nav.aPropos"), href: h(locale, "/about") },
+                  { label: t("nav.aPropos"), href: h(locale, "/about-us") },
                   { label: t("nav.solutions"), href: h(locale, "/corporate") },
                   { label: t("nav.produits"), href: h(locale, "/produits") },
                   { label: t("nav.specialistes"), href: h(locale, "/professional") },

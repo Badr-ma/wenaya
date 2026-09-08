@@ -1,6 +1,6 @@
 /**
  * Privacy Policy Page — legal page explaining data privacy practices.
- * Shared by the French (/confidentialite) and English (/en/confidentialite) routes.
+ * Shared by the French (/privacy-policy) and English (/en/privacy-policy) routes.
  * Client component that renders the privacy policy content with i18n.
  * Includes metadata via separate layout.tsx (can't export Metadata from client components).
  */

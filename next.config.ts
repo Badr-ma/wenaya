@@ -16,20 +16,23 @@ const nextConfig: NextConfig = {
   /** URL redirects — old site → new app. Specific routes first, catch-alls last. */
   async redirects() {
     return [
-      /* ── Category 1: Direct mappings (permanent, same content) ── */
-      { source: "/about-us",            destination: "/about",                  permanent: true },
-      { source: "/contact-us",          destination: "/contact",                 permanent: true },
-      { source: "/terms-and-conditions",destination: "/conditions",              permanent: true },
-      { source: "/privacy-policy",      destination: "/confidentialite",         permanent: true },
+      /* ── Category 1: Canonical parity — live URLs stay canonical (permanent) ──
+         The new app's shorter paths (/about, /contact, /conditions,
+         /confidentialite) fold INTO the live canonical URLs the old site indexed
+         (/about-us, /contact-us, /terms-and-conditions, /privacy-policy). */
+      { source: "/about",            destination: "/about-us",                  permanent: true },
+      { source: "/contact",          destination: "/contact-us",                 permanent: true },
+      { source: "/conditions",       destination: "/terms-and-conditions",       permanent: true },
+      { source: "/confidentialite",  destination: "/privacy-policy",             permanent: true },
       { source: "/for-entreprise",      destination: "/corporate",               permanent: true },
       { source: "/for-entreprise/:path*", destination: "/corporate/:path*",       permanent: true },
       { source: "/solutions/entreprises", destination: "/corporate",             permanent: true },
       { source: "/solutions/entreprises/:path*", destination: "/corporate/:path*", permanent: true },
       /* EN equivalents */
-      { source: "/en/about-us",            destination: "/en/about",                  permanent: true },
-      { source: "/en/contact-us",          destination: "/en/contact",                 permanent: true },
-      { source: "/en/terms-and-conditions",destination: "/en/conditions",              permanent: true },
-      { source: "/en/privacy-policy",      destination: "/en/confidentialite",         permanent: true },
+      { source: "/en/about",            destination: "/en/about-us",                  permanent: true },
+      { source: "/en/contact",          destination: "/en/contact-us",                 permanent: true },
+      { source: "/en/conditions",       destination: "/en/terms-and-conditions",       permanent: true },
+      { source: "/en/confidentialite",  destination: "/en/privacy-policy",             permanent: true },
       { source: "/en/for-entreprise",      destination: "/en/corporate",               permanent: true },
       { source: "/en/for-entreprise/:path*", destination: "/en/corporate/:path*",       permanent: true },
       { source: "/en/solutions/entreprises", destination: "/en/corporate",             permanent: true },
@@ -96,7 +99,7 @@ const nextConfig: NextConfig = {
 
       /* ── Category 4: Arabic locale — not supported in new app, redirect to FR ──
          Precise mappings first (permanent), then the catch-all for anything else. */
-      { source: "/ar/about-us", destination: "/about",                    permanent: true },
+      { source: "/ar/about-us", destination: "/about-us",                  permanent: true },
       { source: "/ar/pratiques", destination: "/pratiques",               permanent: true },
       { source: "/ar/parcours-de-soins/grossesse-&-maternite", destination: "/pratiques", permanent: true },
       { source: "/ar/search/all/all", destination: "/",                   permanent: true },

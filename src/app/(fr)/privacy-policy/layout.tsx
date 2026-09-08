@@ -1,5 +1,5 @@
 /**
- * Confidentialité Layout — provides SEO metadata for the /confidentialite page.
+ * Confidentialité Layout — provides SEO metadata for the /privacy-policy page.
  * Needed because the page is a client component and can't export Metadata.
  */
 import type { Metadata } from "next";
@@ -11,15 +11,15 @@ export const metadata: Metadata = {
   description:
     "Politique de confidentialité de Wenaya Clinic Casablanca. Protection des données personnelles, cookies, droits des patients — conforme au RGPD et à la loi 09-08 marocaine.",
   alternates: {
-    canonical: `${SITE_URL}/confidentialite`,
-    languages: languageAlternates("/confidentialite"),
+    canonical: `${SITE_URL}/privacy-policy`,
+    languages: languageAlternates("/privacy-policy"),
   },
   openGraph: {
     ...OG_DEFAULTS,
     title: "Politique de Confidentialité — Wenaya",
     description:
       "Protection des données personnelles chez Wenaya. Politique de confidentialité conforme au RGPD et à la loi marocaine 09-08.",
-    url: `${SITE_URL}/confidentialite`,
+    url: `${SITE_URL}/privacy-policy`,
   },
   twitter: {
     ...TWITTER_DEFAULTS,
