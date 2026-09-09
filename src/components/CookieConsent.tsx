@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useLocale } from "@/contexts/LanguageContext";
 
 const STORAGE_KEY = "wenaya-cookie-consent";
 
 export default function CookieConsent() {
+  const { t } = useLocale();
   const [visible, setVisible] = useState(false);
   const [animIn, setAnimIn] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -50,7 +52,7 @@ export default function CookieConsent() {
           </div>
           <button
             onClick={decline}
-            aria-label="Fermer"
+            aria-label={t("cookieConsent.close")}
             className="w-6 h-6 rounded-full flex items-center justify-center text-white/20 hover:text-white/50 hover:bg-white/[0.06] transition-all"
           >
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

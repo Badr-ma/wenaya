@@ -329,7 +329,7 @@ homePractices: {
     desc: "Multidisciplinary health center in Casablanca — Physiotherapy, osteopathy, psychology, neuropsychology, nutrition, speech therapy, naturopathy, psychomotricity and complementary therapies. Physical care and mental health for the whole family.",
     navigation: {
       title: "Navigation",
-      links: ["Cliniqus", "Specialties", "Courses & Workshops", "For companies", "FAQ"],
+      links: ["Clinics", "Specialties", "Courses & Workshops", "For companies", "FAQ"],
     },
     infosLegales: {
       title: "Legal",
@@ -366,6 +366,7 @@ homePractices: {
       heading1: "Your health,",
       heading2: "our priority",
       p1: "Wenaya is more than just a care center:",
+      imageAlt: "The multidisciplinary Wenaya team",
       paragraphs: [
         "Wenaya is an integrated health ecosystem that brings together specialists in physiotherapy, osteopathy, psychology, neuropsychology, nutrition, speech therapy, naturopathy, psychomotor therapy and complementary therapies.",
         "Our multidisciplinary center in Casablanca offers comprehensive assessments and coordinated care to support your physical, mental and cognitive health.",
@@ -499,6 +500,7 @@ courses: {
       hours: "Monday to Saturday, 8am to 8pm",
       appointment: "Consultations by appointment only",
       ctaCall: "Call the clinic",
+      imageAlt: "Inside the Wenaya Clinic in Casablanca",
     },
     news: {
       badge: "News",
@@ -951,6 +953,14 @@ courses: {
       success: "Your request has been sent successfully. We'll get back to you within one business day.",
       error: "An error occurred. Please try again.",
     },
+    consultWidget: {
+      close: "Close",
+      alt: "Corporate wellness",
+      heading: "Let's Build a Healthier Workplace",
+      body: "Book a free consultation with our corporate wellness specialists.",
+      cta: "Book Free Consultation",
+      pillAria: "Free consultation",
+    },
     retreat: {
       badge: "Corporate Retreats",
       heading1: "Step outside the routine.",
@@ -1135,6 +1145,8 @@ courses: {
     successMsg: "Your message has been sent successfully. We will reply within 24 hours.",
      sessionNotice: "Inquiry for",
      sessionPrefill: "Hello, I would like to book a spot for the group session:",
+     recruitmentLabel: "Recruitment",
+     recruitmentJoin: "Join the Wenaya team",
      recruitmentPrefill: "Hello, I would like to join the Wenaya team as a practitioner.",
     bookingHeading1: "Book",
     bookingHeading2: "with Wenaya",
@@ -1151,9 +1163,12 @@ courses: {
     ],
     bookingDetails: "Tell us what you need",
     bookingDetailsPlaceholder: "Tell us the practice, specialist, session, or any useful details.",
-    bookingSubmit: "Send my request",
+bookingSubmit: "Send my request",
     bookingSuccessMsg: "Your request has been sent. Our team will contact you to guide you and confirm the next steps.",
    },
+  cookieConsent: {
+    close: "Close",
+  },
   conditions: {
     badge: "Legal",
     heading1: "Terms",

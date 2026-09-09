@@ -41,14 +41,14 @@ export const metadata: Metadata = {
     ...OG_DEFAULTS,
     title: "Bien-être en Entreprise — Programmes Santé & Prévention | Wenaya",
     description:
-      "Wenaya designs evidence-based corporate wellness programs for Moroccan and international organizations. Mental health, physiotherapy, nutrition, prevention — measurable and tailored to your workforce.",
+      "Wenaya conçoit des programmes de bien-être en entreprise fondés sur des données probantes, pour organisations marocaines et internationales. Santé mentale, kinésithérapie, nutrition, prévention — mesurables et adaptés à vos équipes.",
     url: `${SITE_URL}/corporate`,
   },
   twitter: {
     ...TWITTER_DEFAULTS,
     title: "Bien-être en Entreprise — Programmes Santé & Prévention | Wenaya",
     description:
-      "Wenaya designs evidence-based corporate wellness programs for Moroccan and international organizations. Mental health, physiotherapy, nutrition, prevention — measurable and tailored to your workforce.",
+      "Wenaya conçoit des programmes de bien-être en entreprise fondés sur des données probantes, pour organisations marocaines et internationales. Santé mentale, kinésithérapie, nutrition, prévention — mesurables et adaptés à vos équipes.",
   },
 };
 

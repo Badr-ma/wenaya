@@ -1,0 +1,48 @@
+category,severity,route_or_area,source_file,line,fr_value,en_value_current,issue,recommended_action,status
+i18n-file,OK,,src/i18n/en.ts,300-1600,423 keys,423 keys,Zero missing keys in either direction,None,VERIFIED
+i18n-file,OK,,src/i18n/en.ts,-,0 accented chars,0 French accented characters in EN,None,VERIFIED
+i18n-file,P2,core,src/i18n/en.ts,332,nav.links specialists item,typofed "Cliniqus",Typo in EN nav link,Fix to "Clinic"/"Clinics",FIXED
+i18n-file,P2,corporate,src/i18n/fr.ts,992,Corporate Retreats,Corporate Retreats,English badge kept in FR section,Review: localize or confirm brand intent,NEEDS_DECISION
+i18n-file,P2,corporate,src/i18n/fr.ts,997,Retrait précédente??,Retreat précédent,Mixed-language prev label,Localize to French (or consistent brand hybrid),NEEDS_DECISION
+i18n-file,P2,corporate,src/i18n/fr.ts,998,(suggest),Retreat suivant,Mixed-language next label,Localize to French,NEEDS_DECISION
+i18n-file,P2,corporate,src/i18n/fr.ts,999,(suggest),Retreat,Mixed-language counter,Localize or keep as brand term,NEEDS_DECISION
+i18n-file,P2,corporate,src/i18n/fr.ts,1024,(suggest),Build Your Retreat,English CTA badge in FR section,Review localization,NEEDS_DECISION
+i18n-file,REVIEW,corporate,src/i18n/fr.ts,1000-1022,(French chapters),Reset & Recharge / Team Health & Cohesion / Active Wellness,English chapter titles in FR retreat,Human decision on brand styling,NEEDS_DECISION
+i18n-file,REVIEW,core,src/i18n/en.ts,?,satisfaction,satisfaction,Same lowercase word both locales,Human review,NEEDS_DECISION
+i18n-file,REVIEW,core,src/i18n/en.ts,?,Newsletter,Newsletter,Same word both locales,Human review (likely OK),NEEDS_DECISION
+i18n-file,OK,core,src/i18n/fr.ts,1047-1200,clinics.* block,clinics.* block,Dead code - zero consumers in src,Prune candidate (P3, not a bug),DEFERRED
+hardcoded,P1,corporate,src/components/CorporateConsultationWidget.tsx,79,(should be FR alt),alt="Corporate wellness",Hardcoded English alt on shared widget,i18n key,FIXED
+hardcoded,P1,corporate,src/components/CorporateConsultationWidget.tsx,101,(should be FR CTA),Book Free Consultation,Hardcoded English CTA - no i18n,i18n key,FIXED
+hardcoded,P1,corporate,src/components/CorporateConsultationWidget.tsx,119,(should be FR aria),aria-label="Free consultation",Hardcoded English aria-label,i18n key,FIXED
+hardcoded,P1,corporate,src/app/(fr)/corporate/page.tsx,44,FR page,OG/Twitter description in English,French corporate page shares English OG/Twitter description,Translate to French for FR route,FIXED
+hardcoded,P1,corporate,src/app/(fr)/corporate/page.tsx,51,FR page,OG/Twitter description in English,Same as row above (twitter dup),Translate to French,FIXED
+hardcoded,P2,clinic,src/components/clinic/Practical.tsx,108,Réserver,Book (isEn ternary),Locale ternary instead of i18n key,Use t("...") key,FIXED
+hardcoded,P2,clinic,src/components/clinic/Practical.tsx,40,(FR alt),(FR alt),French image alt on shared component,Locale-aware alt,FIXED
+hardcoded,P2,clinic,src/components/clinic/Intro.tsx,94,équipe pluridisciplinaire Wenaya (FR alt),(same FR alt on EN),French alt text visible on EN /about-us,Locale-aware alt,FIXED
+hardcoded,P2,contact,src/components/contact/ContactForm.tsx,125,équipe Wenaya,(FR text on EN),French phrase in shared success text,i18n key,FIXED
+hardcoded,P2,core,src/components/CookieConsent.tsx,53,Fermer,Fermer,Hardcoded French close aria-label on shared cookie banner (EN pages show "Fermer"),i18n key {close} -> t("cookieConsent.close") FR Fermer / EN Close,FIXED/VERIFIED
+hardcoded,LOW,clinic,src/components/clinic/HomecareBanner.tsx,22,Soins à domicile Wenaya Homecare Services,(FR alt),French alt - banner FR-only (not rendered on EN),None (unreachable on EN)
+hardcoded,OK,core,src/components/LanguageSwitcher.tsx,34,Switch to English / Passer en français,Switch to English / Passer en français,Both languages present,Brand label OK
+hardcoded,OK,core,src/components/Logo.tsx,-,alt="Wenaya",alt="Wenaya",Brand alt,None
+hardcoded,OK,core,src/components/Footer.tsx,-,alt="Wenaya",alt="Wenaya",Brand alt,None
+hardcoded,OK,specialists,src/components/specialistes/MapViewInner.tsx,-,French specialty keys,French specialty keys,Technical data keys matching data layer,None
+hardcoded,OK,core,src/components/Breadcrumbs.tsx,-,fr routeLabels record,en routeLabels record,Both records complete,None
+hardcoded,OK,clinic,src/components/clinic/StructuredData.tsx,27-56,FR branch,EN branch,Full FR/EN language branches via lang ternary,None (earlier flag WRONG)
+hardcoded,FLAG,shop,src/components/produits/ProductCard.tsx,24,locale="fr" default,locale="fr" default,Default locale prop could invite future misuse; EN pages pass explicitly,Confirm all EN usages pass locale
+hardcoded,INTENTIONAL,homecare,src/components/domicile/*,-,French copy,French copy,FR-only page by design (no authoritative EN),None
+hardcoded,INTENTIONAL,homecare,src/app/(fr)/soins-a-domicile/page.tsx,-,FR-only route,no EN,FR-only page documented in header,None
+clean,OK,homepage,src/components/HeroSection.tsx,-,t()-driven,t()-driven,Verified clean,None
+clean,OK,homepage,src/components/PracticesSection.tsx,-,tRaw()-driven,tRaw()-driven,Verified clean,None
+clean,OK,homepage,src/components/CoursAteliers.tsx,-,getAllGroupSessions(locale),getAllGroupSessions(locale),Locale-aware,None
+clean,OK,homepage,src/components/Biomarkers.tsx,-,t/tRaw,t/tRaw,Clean,None
+clean,OK,clinic,src/components/clinic/*,-,locale-aware,locale-aware,Explorers clean (Practices/Sessions/Pathologies/HealthNeeds/Parcours),None
+clean,OK,sessions,src/components/seance-de-groupe/*,-,labels props,labels props,Server detail receives pre-resolved labels,None
+clean,OK,care-journeys,src/components/care-journeys/*,-,getTranslations(locale),getTranslations(locale),Locale props + adapter bodies genuine EN,None
+clean,OK,practices,src/components/pratiques/PratiqueDetail.tsx,-,props,props,Detail server component localized via data adapter,None
+clean,OK,cart,src/components/cart/PanierView.tsx,-,t()/locale pluralization,t()/locale pluralization,article/item handled,None
+clean,OK,cart,src/components/cart/CheckoutView.tsx,-,t()/locale pluralization,t()/locale pluralization,Clean,None
+clean,OK,faq,src/components/FaqSection.tsx,-,faq.qN.q/a loop,faq.qN.q/a loop,Clean; EN page own JSON-LD,None
+clean,OK,legal,src/components/legal/ConfidentialitePage.tsx,-,i18n-driven,i18n-driven,Clean,None
+clean,OK,login,src/components/login/LoginClient.tsx,-,i18n-driven,i18n-driven,Clean (patient sign-in),None
+clean,OK,professional,src/app/(en)/en/professional/[slug]/page.tsx,-,roleEn fallback + EN metadata,FR metadata template,EN uses roleEn ?? role fallback,None
+clean,OK,programmes,src/components/entreprises/ProgrammeDetail.tsx,-,labels props,labels props,Server renderer,None

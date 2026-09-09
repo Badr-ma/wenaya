@@ -120,9 +120,9 @@ function ContactFormInner({ isBooking = false }: { isBooking?: boolean }): React
               />
               <p className="text-[#0B1220]/70 text-xs leading-relaxed">
                 <span className="font-semibold text-[#0B1220]">
-                  {locale === "en" ? "Recruitment" : "Recrutement"}
+                  {t("contact.recruitmentLabel")}
                 </span>{" "}
-                — {locale === "en" ? "Join the Wenaya team" : "Rejoindre l'équipe Wenaya"}
+                — {t("contact.recruitmentJoin")}
               </p>
             </div>
           )}

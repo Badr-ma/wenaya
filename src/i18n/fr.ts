@@ -366,6 +366,7 @@ const fr = {
       heading1: "Votre santé,",
       heading2: "notre priorité",
       p1: "Wenaya, c'est plus qu'un simple centre de soins :",
+      imageAlt: "L'équipe pluridisciplinaire Wenaya",
       paragraphs: [
         "Wenaya est un écosystème de santé intégrée qui réunit des spécialistes en kinésithérapie, ostéopathie, psychologie, neuropsychologie, nutrition, orthophonie, naturopathie, psychomotricité et thérapies complémentaires.",
         "Notre centre pluridisciplinaire à Casablanca propose des bilans complets et des prises en charge coordonnées pour soutenir votre santé physique, mentale et cognitive.",
@@ -499,6 +500,7 @@ const fr = {
       hours: "Du lundi au samedi de 8h à 20h",
       appointment: "Consultations uniquement sur rendez-vous",
       ctaCall: "Appeler la clinique",
+      imageAlt: "L'intérieur de la Wenaya Clinic à Casablanca",
     },
     news: {
       badge: "Actualités",
@@ -988,6 +990,14 @@ const fr = {
       success: "Votre demande a bien été envoyée. Nous vous répondrons sous 24h ouvrées.",
       error: "Une erreur est survenue. Veuillez réessayer.",
     },
+    consultWidget: {
+      close: "Fermer",
+      alt: "Bien-être en entreprise",
+      heading: "Construisons un lieu de travail plus sain",
+      body: "Réservez une consultation gratuite avec nos spécialistes du bien-être en entreprise.",
+      cta: "Réserver une consultation gratuite",
+      pillAria: "Consultation gratuite",
+    },
     retreat: {
       badge: "Corporate Retreats",
       heading1: "Sortez du cadre.",
@@ -1172,6 +1182,8 @@ const fr = {
     successMsg: "Votre message a bien été envoyé. Nous vous répondrons sous 24h.",
      sessionNotice: "Demande pour",
      sessionPrefill: "Bonjour, je souhaite réserver une place pour la séance de groupe :",
+     recruitmentLabel: "Recrutement",
+     recruitmentJoin: "Rejoindre l'équipe Wenaya",
      recruitmentPrefill: "Bonjour, je souhaite rejoindre l'équipe Wenaya en tant que praticien.",
     bookingHeading1: "Réserver",
     bookingHeading2: "avec Wenaya",
@@ -1188,9 +1200,12 @@ const fr = {
     ],
     bookingDetails: "Précisez votre besoin",
     bookingDetailsPlaceholder: "Indiquez la pratique, le spécialiste, la séance ou toute information utile.",
-    bookingSubmit: "Envoyer ma demande",
+bookingSubmit: "Envoyer ma demande",
     bookingSuccessMsg: "Votre demande a bien été envoyée. Notre équipe vous contactera pour vous orienter et confirmer les prochaines étapes.",
    },
+  cookieConsent: {
+    close: "Fermer",
+  },
   conditions: {
     badge: "Légal",
     heading1: "Conditions Générales",

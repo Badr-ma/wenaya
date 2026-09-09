@@ -37,7 +37,7 @@ export default function ClinicPractical(): React.JSX.Element {
             <div className="relative overflow-hidden rounded-t-[24px] bg-[#0B1220]/5 min-h-[240px] sm:min-h-[320px] lg:h-full">
               <Image
                 src="/pratiques/infirmerie.jpg"
-                alt={isEn ? "Inside the Wenaya Clinic in Casablanca" : "L'intérieur de la Wenaya Clinic à Casablanca"}
+                alt={t("clinic.practical.imageAlt")}
                 fill
                 sizes="(max-width: 1024px) 100vw, 58vw"
                 className="object-cover"
@@ -105,7 +105,7 @@ export default function ClinicPractical(): React.JSX.Element {
                 href={h(locale, "/professional")}
                 className="inline-flex items-center justify-center gap-2 h-13 px-6 text-[#0B1220] text-sm font-medium border border-[#0B1220]/[0.16] transition-all duration-300 hover:border-[#0B1220]/[0.35]"
               >
-                {isEn ? "Book" : "Réserver"}
+                {t("clinic.hero.ctaBook")}
               </Link>
             </div>
           </div>

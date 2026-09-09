@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useLocale } from "@/contexts/LanguageContext";
 
 function isCorporateRoute(pathname: string): boolean {
   return (
@@ -13,6 +14,7 @@ function isCorporateRoute(pathname: string): boolean {
 }
 
 export default function CorporateConsultationWidget() {
+  const { t } = useLocale();
   const pathname = usePathname();
   const isCorporate = isCorporateRoute(pathname);
   const [visible, setVisible] = useState(false);
@@ -64,7 +66,7 @@ export default function CorporateConsultationWidget() {
         {/* Close button */}
         <button
           onClick={close}
-          aria-label="Close"
+          aria-label={t("entreprises.consultWidget.close")}
           className="absolute top-3 right-3 w-7 h-7 rounded-full bg-black/20 backdrop-blur-md text-white/70 flex items-center justify-center transition-all duration-200 hover:bg-black/35 hover:text-white z-20"
         >
           <svg width="10" height="10" viewBox="0 0 14 14" fill="none">
@@ -76,7 +78,7 @@ export default function CorporateConsultationWidget() {
         <div className="relative w-full h-[140px]">
           <Image
             src="/images/wellness-stretch.jpg"
-            alt="Corporate wellness"
+            alt={t("entreprises.consultWidget.alt")}
             fill
             sizes="340px"
             className="object-cover"
@@ -87,10 +89,10 @@ export default function CorporateConsultationWidget() {
         {/* Content */}
         <div className="bg-white p-5">
           <h3 className="font-[family-name:var(--font-heading)] text-[#0B1220] text-[16px] font-bold leading-tight mb-1.5">
-            Let&apos;s Build a Healthier Workplace
+            {t("entreprises.consultWidget.heading")}
           </h3>
           <p className="text-[#0B1220]/45 text-[12px] leading-relaxed mb-4">
-            Book a free consultation with our corporate wellness specialists.
+            {t("entreprises.consultWidget.body")}
           </p>
           <Link
             href={pathname.startsWith("/en") ? "/en/corporate#contact" : "/corporate#contact"}
@@ -98,7 +100,7 @@ export default function CorporateConsultationWidget() {
             className="flex items-center justify-center w-full py-2.5 rounded-full text-white text-[13px] font-semibold transition-all duration-300 hover:-translate-y-px"
             style={{ backgroundColor: "#1A6B52" }}
           >
-            Book Free Consultation
+            {t("entreprises.consultWidget.cta")}
             <svg className="w-3.5 h-3.5 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
@@ -116,7 +118,7 @@ export default function CorporateConsultationWidget() {
           backgroundColor: expanded ? "#1A6B52" : "#0B1220",
           boxShadow: expanded ? "none" : "0 8px 30px rgba(11,18,32,0.25), 0 2px 8px rgba(11,18,32,0.1)",
         }}
-        aria-label="Free consultation"
+        aria-label={t("entreprises.consultWidget.pillAria")}
       >
         {/* Pulse dot */}
         {!expanded && (
@@ -138,7 +140,7 @@ export default function CorporateConsultationWidget() {
         {/* Label */}
         {!expanded && (
           <span className="text-white text-[12px] font-semibold whitespace-nowrap">
-            Free Consultation
+            {t("entreprises.consultWidget.pillAria")}
           </span>
         )}
       </button>

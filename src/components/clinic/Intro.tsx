@@ -27,7 +27,7 @@ const reduceMotion = (): boolean =>
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 export default function ClinicIntro(): React.JSX.Element {
-  const { t, tRaw, locale } = useLocale();
+  const { t, tRaw } = useLocale();
   const { elRef: sectionRef, ready } = useIntersectionDeferred();
   const paragraphs = tRaw<string[]>("clinic.intro.paragraphs");
 
@@ -91,7 +91,7 @@ export default function ClinicIntro(): React.JSX.Element {
             <div className="relative overflow-hidden rounded-t-[24px]">
               <Image
                 src="/images/diverse-team.jpg"
-                alt={locale === "en" ? "The multidisciplinary Wenaya team" : "L'équipe pluridisciplinaire Wenaya"}
+                alt={t("clinic.intro.imageAlt")}
                 fill={false}
                 width={900}
                 height={600}
