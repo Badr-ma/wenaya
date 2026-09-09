@@ -2,7 +2,7 @@
  * About Page — server component assembling all Clinic/B2C page sections.
  * Rebuilt to an editorial, no-card design using live wenaya.com content.
  * Sections: Hero, Trust, Intro, Practices, Courses, Pathologies, Team,
- * HealthNeeds, Recruitment, Practical, News, and Footer.
+ * HealthNeeds, Recruitment, Practical, and Footer.
  * Includes MedicalClinic structured data for SEO.
  */
 import type { Metadata } from "next";
@@ -16,10 +16,10 @@ import ClinicCourses from "@/components/clinic/Courses";
 import ClinicPathologies from "@/components/clinic/Pathologies";
 import ClinicTeam from "@/components/clinic/Team";
 import ClinicHealthNeeds from "@/components/clinic/HealthNeeds";
+import ClinicParcoursDeSoins from "@/components/clinic/ParcoursDeSoins";
 import ClinicHomecareBanner from "@/components/clinic/HomecareBanner";
 import ClinicRecruitment from "@/components/clinic/Recruitment";
 import ClinicPractical from "@/components/clinic/Practical";
-import ClinicNews from "@/components/clinic/News";
 import ClinicStructuredData from "@/components/clinic/StructuredData";
 import Footer from "@/components/Footer";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
@@ -74,10 +74,10 @@ export default function AboutPage() {
             <ClinicPathologies locale={locale} lang={lang} />
             <ClinicTeam />
             <ClinicHealthNeeds />
+            <ClinicParcoursDeSoins />
             <ClinicHomecareBanner />
             <ClinicRecruitment />
             <ClinicPractical />
-            <ClinicNews locale={locale} lang={lang} />
           </div>
         </main>
         <Footer />

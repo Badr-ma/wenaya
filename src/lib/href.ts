@@ -22,3 +22,18 @@ export function h(locale: HrefLocale, path: string): string {
 export function groupSessionsHref(locale: HrefLocale): string {
   return locale === "en" ? "/en/seance-de-groupe" : "/seance-de-groupe";
 }
+
+/**
+ * Decode a percent-encoded URL segment; never throws (returns the input on
+ * failure). Next.js may deliver a dynamic-segment param or the client router
+ * pathname either raw (`grossesse-&-maternite`) or percent-encoded
+ * (`grossesse-%26-maternite`) depending on render pass, so lookups and any
+ * string derived from a segment must compare the decoded form.
+ */
+export function safeDecodeURI(segment: string): string {
+  try {
+    return decodeURIComponent(segment);
+  } catch {
+    return segment;
+  }
+}

@@ -8,6 +8,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SITE_URL } from "@/lib/site-config";
+import { safeDecodeURI } from "@/lib/href";
 
 interface BreadcrumbItem {
   label: string;
@@ -31,6 +32,7 @@ const routeLabels: Record<string, Record<string, string>> = {
     corporate: "Entreprises",
     programmes: "Programmes",
     "seance-de-groupe": "Séances de groupe",
+    "parcours-de-soins": "Parcours de soins",
   },
   en: {
     "about-us": "Clinics",
@@ -48,6 +50,7 @@ const routeLabels: Record<string, Record<string, string>> = {
     corporate: "Enterprise",
     programmes: "Programs",
     "seance-de-groupe": "Group Sessions",
+    "parcours-de-soins": "Care Pathways",
   },
 };
 
@@ -57,7 +60,10 @@ export default function Breadcrumbs({ labels }: { labels?: Record<string, string
 
   if (pathname === "/" || pathname === "/en") return null;
 
-  const segments = pathname.split("/").filter(Boolean);
+  const segments = pathname
+    .split("/")
+    .filter(Boolean)
+    .map((segment) => safeDecodeURI(segment));
   const homeHref = locale === "en" ? "/en" : "/";
   const items: BreadcrumbItem[] = [];
   let path = locale === "en" ? "/en" : "";

@@ -79,33 +79,38 @@ const nextConfig: NextConfig = {
       { source: "/en/group-sessions/:path*",      destination: "/en/seance-de-groupe/:path*",      permanent: true },
 
       /* ── Category 3: Care pathways ──
-         Semantic targets proven from the live journey content first (permanent,
-         308), then the legacy catch-all (temporary). Sources cover both the
-         canonical accented URL and the CSV alias form.
-         Proof: apprentissage page names "orthophoniste" as first practitioner and
-         "Orthophonie" as first intervention; grossesse & santé holistique are
-         explicitly pluridisciplinary (yoga/massothérapie/nutrition/psychologie and
-         generic holistic), so they fold to the practices listing — no single practice. */
-      { source: "/parcours-de-soins/les-troubles-de-l%27apprentissage", destination: "/pratiques/orthophonie", permanent: true },
-      { source: "/parcours-de-soins/les-troubles-de-l-apprentissage",    destination: "/pratiques/orthophonie", permanent: true },
-      { source: "/parcours-de-soins/grossesse-&-maternit%C3%A9",        destination: "/pratiques",             permanent: true },
-      { source: "/parcours-de-soins/grossesse-&-maternite",             destination: "/pratiques",             permanent: true },
-      { source: "/parcours-de-soins/sant%C3%A9-holistique",             destination: "/pratiques",             permanent: true },
-      { source: "/parcours-de-soins/sante-holistique",                  destination: "/pratiques",             permanent: true },
-      { source: "/en/parcours-de-soins/les-troubles-de-l%27apprentissage", destination: "/en/pratiques/orthophonie", permanent: true },
-      { source: "/en/parcours-de-soins/les-troubles-de-l-apprentissage",    destination: "/en/pratiques/orthophonie", permanent: true },
-      { source: "/en/parcours-de-soins/grossesse-&-maternit%C3%A9",        destination: "/en/pratiques",             permanent: true },
-      { source: "/en/parcours-de-soins/grossesse-&-maternite",             destination: "/en/pratiques",             permanent: true },
-      { source: "/en/parcours-de-soins/sant%C3%A9-holistique",             destination: "/en/pratiques",             permanent: true },
-      { source: "/en/parcours-de-soins/sante-holistique",                  destination: "/en/pratiques",             permanent: true },
-      { source: "/parcours-de-soins/:slug+", destination: "/",        permanent: false },
-      { source: "/en/parcours-de-soins/:slug+", destination: "/en/",  permanent: false },
+         The 7 care journeys are now first-class pages at /parcours-de-soins/{slug}
+         (FR + EN). These rows only handle the LEGACY live alias forms (accented
+         URLs, apostrophe encoding variants) and 308 them one hop onto the
+         canonical ASCII slug. The canonical slugs themselves are NOT listed here
+         (they resolve to real pages). Any other /parcours-de-soins/{slug}
+         correctly 404s. */
+      { source: "/parcours-de-soins/grossesse-&-maternit%C3%A9",      destination: "/parcours-de-soins/grossesse-&-maternite",     permanent: true },
+      { source: "/parcours-de-soins/les-troubles-de-l%27apprentissage", destination: "/parcours-de-soins/les-troubles-de-l-apprentissage", permanent: true },
+      { source: "/parcours-de-soins/les-troubles-de-l'apprentissage", destination: "/parcours-de-soins/les-troubles-de-l-apprentissage", permanent: true },
+      { source: "/parcours-de-soins/sant%C3%A9-holistique",           destination: "/parcours-de-soins/sante-holistique",          permanent: true },
+      { source: "/parcours-de-soins/la-maladie-d%27Alzheimer",        destination: "/parcours-de-soins/la-maladie-d-alzheimer",    permanent: true },
+      { source: "/parcours-de-soins/la-maladie-d%E2%80%99Alzheimer",  destination: "/parcours-de-soins/la-maladie-d-alzheimer",    permanent: true },
+      { source: "/parcours-de-soins/la-maladie-d'Alzheimer",         destination: "/parcours-de-soins/la-maladie-d-alzheimer",    permanent: true },
+      { source: "/parcours-de-soins/la-maladie-d’Alzheimer",         destination: "/parcours-de-soins/la-maladie-d-alzheimer",    permanent: true },
+      { source: "/parcours-de-soins/tecar-th%C3%A9rapie",            destination: "/parcours-de-soins/tecar-therapie",            permanent: true },
+      { source: "/parcours-de-soins/kin%C3%A9sith%C3%A9rapie-&-avc",  destination: "/parcours-de-soins/kinesitherapie-&-avc",      permanent: true },
+      { source: "/en/parcours-de-soins/grossesse-&-maternit%C3%A9",     destination: "/en/parcours-de-soins/grossesse-&-maternite",         permanent: true },
+      { source: "/en/parcours-de-soins/les-troubles-de-l%27apprentissage", destination: "/en/parcours-de-soins/les-troubles-de-l-apprentissage", permanent: true },
+      { source: "/en/parcours-de-soins/les-troubles-de-l'apprentissage", destination: "/en/parcours-de-soins/les-troubles-de-l-apprentissage", permanent: true },
+      { source: "/en/parcours-de-soins/sant%C3%A9-holistique",          destination: "/en/parcours-de-soins/sante-holistique",              permanent: true },
+      { source: "/en/parcours-de-soins/la-maladie-d%27Alzheimer",       destination: "/en/parcours-de-soins/la-maladie-d-alzheimer",        permanent: true },
+      { source: "/en/parcours-de-soins/la-maladie-d%E2%80%99Alzheimer", destination: "/en/parcours-de-soins/la-maladie-d-alzheimer",        permanent: true },
+      { source: "/en/parcours-de-soins/la-maladie-d'Alzheimer",        destination: "/en/parcours-de-soins/la-maladie-d-alzheimer",        permanent: true },
+      { source: "/en/parcours-de-soins/la-maladie-d’Alzheimer",        destination: "/en/parcours-de-soins/la-maladie-d-alzheimer",        permanent: true },
+      { source: "/en/parcours-de-soins/tecar-th%C3%A9rapie",            destination: "/en/parcours-de-soins/tecar-therapie",                permanent: true },
+      { source: "/en/parcours-de-soins/kin%C3%A9sith%C3%A9rapie-&-avc", destination: "/en/parcours-de-soins/kinesitherapie-&-avc",          permanent: true },
 
       /* ── Category 4: Arabic locale — not supported in new app, redirect to FR ──
          Precise mappings first (permanent), then the catch-all for anything else. */
       { source: "/ar/about-us", destination: "/about-us",                  permanent: true },
       { source: "/ar/pratiques", destination: "/pratiques",               permanent: true },
-      { source: "/ar/parcours-de-soins/grossesse-&-maternite", destination: "/pratiques", permanent: true },
+      { source: "/ar/parcours-de-soins/grossesse-&-maternite", destination: "/parcours-de-soins/grossesse-&-maternite", permanent: true },
       { source: "/ar/search/all/all", destination: "/",                   permanent: true },
       { source: "/ar/:path*", destination: "/", permanent: false },
 

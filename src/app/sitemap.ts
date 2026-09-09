@@ -13,6 +13,7 @@ import { getAllSpecialistsAsync } from "@/lib/specialistes";
 import { getAllPratiqueSlugs } from "@/lib/pratiques";
 import { getAllProgrammeSlugs } from "@/lib/corporate-programmes";
 import { getAllGroupSessionSlugs } from "@/lib/group-sessions";
+import { getAllCareJourneySlugs } from "@/lib/care-journeys";
 import { SITE_URL } from "@/lib/site-config";
 
 /** Regenerate the sitemap on every request so CMS/Redis additions appear immediately */
@@ -61,6 +62,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     ...dual("/produits", { changeFrequency: "weekly", priority: 0.9 }),
     ...dual("/pratiques", { changeFrequency: "monthly", priority: 0.8 }),
+    ...dual("/parcours-de-soins", { changeFrequency: "monthly", priority: 0.8 }),
     {
       url: `${SITE_URL}/seance-de-groupe`,
       alternates: {
@@ -137,5 +139,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   });
 
-  return [...staticPages, ...blogEntries, ...productEntries, ...specialistEntries, ...practiceEntries, ...groupSessionEntries];
+  /** Care-journey detail page URLs — 7 FR + 7 EN (EN shares the FR slug under /en/parcours-de-soins) */
+  const careJourneyEntries = getAllCareJourneySlugs().flatMap((slug) =>
+    dual(`/parcours-de-soins/${slug}`, { changeFrequency: "monthly", priority: 0.7 })
+  );
+
+  return [...staticPages, ...blogEntries, ...productEntries, ...specialistEntries, ...practiceEntries, ...groupSessionEntries, ...careJourneyEntries];
 }

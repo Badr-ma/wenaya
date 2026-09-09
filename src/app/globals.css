@@ -399,6 +399,28 @@ body {
   }
 }
 
+/* Care-journey cinematic panels — subtle image zoom on hover (signature
+ * treatment distinct from the `.hp-img` active/sidelong settle). Base scale 1,
+ * gentle settle to ~1.06 on group hover; disabled under reduced motion. */
+.cj-img {
+  transform: scale(1);
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.group:hover .cj-img {
+  transform: scale(1.06);
+}
+@media (prefers-reduced-motion: reduce) {
+  .cj-img {
+    transform: none;
+    transition: none;
+    will-change: auto;
+  }
+  .group:hover .cj-img {
+    transform: none;
+  }
+}
+
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
