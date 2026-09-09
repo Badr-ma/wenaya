@@ -87,7 +87,7 @@ export default function MobileMenu({
               {t("nav.seConnecter")}
             </Link>
             <Link
-              href={h("/professional")}
+              href={`${h("/contact-us")}?type=booking`}
               onClick={onClose}
               className="flex items-center justify-center h-12 rounded-xl text-[#0B1220] text-sm font-semibold transition-all duration-300"
               style={{

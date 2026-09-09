@@ -4,6 +4,9 @@
  * Features: form with name/email/subject/message fields, validation, success state,
  * clinic address, phone, email, and Google Maps embed.
  * Client component with i18n translations.
+ * When `isBooking` is set (server passes it when the URL carries `type=booking`,
+ * the nav Réserver CTA target), the page renders in BOOKING mode:
+ * booking-specific header, category select, details field and submit/success copy.
  */
 "use client";
 
@@ -13,7 +16,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import Footer from "@/components/Footer";
 import ContactForm from "./ContactForm";
 
-export default function ContactPage() {
+export default function ContactPage({ isBooking = false }: { isBooking?: boolean }) {
   const { t } = useLocale();
 
   return (
@@ -28,17 +31,17 @@ export default function ContactPage() {
           </div>
 
           <h1 className="heading-serif text-[clamp(2.5rem,5vw,4.5rem)] text-[#0B1220] mb-6">
-            {t("contact.heading1")}{" "}
+            {isBooking ? t("contact.bookingHeading1") : t("contact.heading1")}{" "}
 <span style={{
   background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent",
 }}>
-  {t("contact.heading2")}
+  {isBooking ? t("contact.bookingHeading2") : t("contact.heading2")}
 </span>
           </h1>
           <p className="text-[#2B2F36]/55 text-sm max-w-lg mx-auto mb-14 leading-relaxed">
-            {t("contact.sub")}
+            {isBooking ? t("contact.bookingSub") : t("contact.sub")}
           </p>
         </div>
 
@@ -65,7 +68,7 @@ export default function ContactPage() {
               </InfoCard>
             </div>
 
-            <ContactForm />
+            <ContactForm isBooking={isBooking} />
           </div>
 
           {/* Map placeholder */}

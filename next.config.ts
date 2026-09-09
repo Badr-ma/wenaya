@@ -127,6 +127,31 @@ const nextConfig: NextConfig = {
       { source: "/en/specialistes",                 destination: "/en/professional",            permanent: true },
       { source: "/en/specialistes/:path*",          destination: "/en/professional/:path*",     permanent: true },
 
+      /* Old per-profile booking sub-page → the same specialist's profile
+         (the new booking flow is the in-profile booking panel; each target
+         route is verified to exist in /professional/[slug]). Only the
+         canonical 10 live slugs are wired — unknown slugs stay 404. */
+      { source: "/professional/nadine-kita/booking",          destination: "/professional/nadine-kita",          permanent: true },
+      { source: "/professional/dr-amal-benali/booking",      destination: "/professional/dr-amal-benali",        permanent: true },
+      { source: "/professional/khalid-ouazzani/booking",     destination: "/professional/khalid-ouazzani",       permanent: true },
+      { source: "/professional/nadia-tazi/booking",          destination: "/professional/nadia-tazi",            permanent: true },
+      { source: "/professional/yassine-el-amrani/booking",   destination: "/professional/yassine-el-amrani",     permanent: true },
+      { source: "/professional/sara-mansouri/booking",       destination: "/professional/sara-mansouri",         permanent: true },
+      { source: "/professional/mehdi-irzi/booking",          destination: "/professional/mehdi-irzi",            permanent: true },
+      { source: "/professional/najat-berrada/booking",       destination: "/professional/najat-berrada",         permanent: true },
+      { source: "/professional/omar-tazi/booking",           destination: "/professional/omar-tazi",             permanent: true },
+      { source: "/professional/fatima-zahra-alami/booking",  destination: "/professional/fatima-zahra-alami",    permanent: true },
+      { source: "/en/professional/nadine-kita/booking",          destination: "/en/professional/nadine-kita",          permanent: true },
+      { source: "/en/professional/dr-amal-benali/booking",      destination: "/en/professional/dr-amal-benali",        permanent: true },
+      { source: "/en/professional/khalid-ouazzani/booking",     destination: "/en/professional/khalid-ouazzani",       permanent: true },
+      { source: "/en/professional/nadia-tazi/booking",          destination: "/en/professional/nadia-tazi",            permanent: true },
+      { source: "/en/professional/yassine-el-amrani/booking",   destination: "/en/professional/yassine-el-amrani",     permanent: true },
+      { source: "/en/professional/sara-mansouri/booking",       destination: "/en/professional/sara-mansouri",         permanent: true },
+      { source: "/en/professional/mehdi-irzi/booking",          destination: "/en/professional/mehdi-irzi",            permanent: true },
+      { source: "/en/professional/najat-berrada/booking",       destination: "/en/professional/najat-berrada",         permanent: true },
+      { source: "/en/professional/omar-tazi/booking",           destination: "/en/professional/omar-tazi",             permanent: true },
+      { source: "/en/professional/fatima-zahra-alami/booking",  destination: "/en/professional/fatima-zahra-alami",    permanent: true },
+
       /* Login: live wenaya aliases fold into our locale pages.
          /en/user/sign-in → /en/login; /user/sign-in → /login. */
       { source: "/user/sign-in",   destination: "/login", permanent: true },
