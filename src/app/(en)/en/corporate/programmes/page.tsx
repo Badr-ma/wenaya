@@ -5,5 +5,5 @@
 import ProgrammesPage from "@/components/entreprises/ProgrammesPage";
 
 export default function ProgrammesRoute() {
-  return <ProgrammesPage />;
+  return <ProgrammesPage locale="en" />;
 }

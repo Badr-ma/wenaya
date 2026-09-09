@@ -1,30 +1,18 @@
 /**
- * Programs Section — displays the corporate wellness program tiers.
- * Interactive card-based UI with expandable details for each program level.
- * Features: tabbed navigation between program types, image carousels,
- * and CTA links to contact form.
+ * Programs Section — displays the corporate labelled-program tiers on /corporate.
+ * Interactive card carousel (drag + arrows) over the shared programme data source
+ * (src/lib/corporate-programmes.ts). Each card links to its static detail page.
+ * The live programme pages carry no images, so cards are typographic (no stock photos).
  */
 "use client";
 
 import { useRef, useEffect, useState, useCallback } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
-import { h, type HrefLocale } from "@/lib/href";
-
-interface Program {
-  badge: string; name: string; pitch: string; desc: string;
-  format: string; animator: string; link: string;
-}
-
-const cardImages = [
-  "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=2400&q=100",
-  "https://images.unsplash.com/photo-1552664730-d307ca884978?w=2400&q=100",
-  "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=2400&q=100",
-  "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=2400&q=100",
-];
+import { type HrefLocale } from "@/lib/href";
+import { getProgrammeHref, getAllProgrammeCards, type ProgrammeCard } from "@/lib/corporate-programmes";
 
 const EDGE_PX = 130;
 const EDGE_PX_MOBILE = 24;
@@ -38,82 +26,67 @@ const reducedMotion =
     : false;
 
 function CardContent({
-  program, image, isActive, locale, discoverLabel,
+  program, isActive, locale, discoverLabel,
 }: {
-  program: Program; image: string; isActive: boolean; locale: HrefLocale; discoverLabel: string;
+  program: ProgrammeCard; isActive: boolean; locale: HrefLocale; discoverLabel: string;
 }) {
-  if (!isActive) {
-    return (
-      <div
-        className="w-full rounded-3xl overflow-hidden relative"
-        style={{
-          height: "clamp(280px, 52vw, 460px)",
-          boxShadow: "0 2px 12px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(0,0,0,0.04)",
-        }}
-      >
-        <Image src={image} alt="" fill className="object-cover" sizes="600px" draggable={false} />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
-      </div>
-    );
-  }
+  const href = getProgrammeHref(locale, program.slug);
+  const accent = isActive
+    ? "border-[#B88A5A]/40 shadow-[0_20px_60px_rgba(0,0,0,0.12),0_8px_24px_rgba(0,0,0,0.06)]"
+    : "border-[#0B1220]/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.06)]";
 
   return (
     <div
-      className="w-full rounded-3xl overflow-hidden bg-white flex flex-col select-none"
-      style={{
-        height: "clamp(280px, 52vw, 460px)",
-        boxShadow: "0 20px 60px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.06)",
-      }}
+      className={`w-full rounded-3xl bg-[#FAF8F4] border flex flex-col select-none overflow-hidden ${accent}`}
+      style={{ height: "clamp(280px, 52vw, 460px)" }}
     >
-      <div className="relative h-[35%] sm:h-[48%] min-h-[90px] sm:min-h-[160px] overflow-hidden shrink-0">
-        <Image src={image} alt="" fill className="object-cover" sizes="600px" draggable={false} />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
-        <div className="absolute top-3 left-3 sm:top-5 sm:left-5">
-          <span className="inline-block px-2 py-0.5 sm:px-3 sm:py-1 rounded-full bg-white/10 backdrop-blur-md text-white/90 text-[9px] sm:text-[10px] font-bold tracking-[0.1em] uppercase border border-white/10">
-            {program.badge}
-          </span>
-        </div>
+      <div className="p-5 sm:p-7">
+        <span className="inline-block px-2.5 py-1 rounded-full bg-[#B88A5A]/10 text-[#B88A5A] text-[9px] sm:text-[10px] font-bold tracking-[0.1em] uppercase">
+          {program.badge}
+        </span>
       </div>
 
-      <div className="flex-1 flex flex-col justify-between p-2.5 sm:p-5 min-h-0">
+      <div className="flex-1 flex flex-col justify-between px-5 sm:px-7 pb-5 sm:pb-7 min-h-0">
         <div>
-          <h3 className="heading-serif text-[#0B1220] text-base sm:text-2xl font-semibold leading-tight">
+          <h3 className="heading-serif text-[#0B1220] text-[17px] sm:text-2xl font-semibold leading-tight">
             {program.name}
           </h3>
-          <p className="text-[#B88A5A] text-[9px] sm:text-xs font-medium mt-0.5 sm:mt-1">{program.pitch}</p>
-          <p className="text-[#2B2F36]/50 text-[11px] sm:text-[13px] leading-snug sm:leading-relaxed mt-1.5 sm:mt-2 line-clamp-2">{program.desc}</p>
+          <p className="text-[#B88A5A] text-[11px] sm:text-sm font-medium mt-1">{program.pitch}</p>
+          <p className="text-[#2B2F36]/50 text-[11px] sm:text-[13px] leading-snug sm:leading-relaxed mt-2 line-clamp-2">{program.desc}</p>
         </div>
 
-        <div className="flex items-center justify-between gap-2 pt-2 sm:pt-3 mt-1.5 sm:mt-2 border-t border-[#0B1220]/[0.05] shrink-0">
-          <div className="space-y-0 min-w-0">
-            <div className="flex items-center gap-1 sm:gap-1.5 text-[#2B2F36]/40 text-[9px] sm:text-xs">
-              <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span className="truncate">{program.format}</span>
-            </div>
-            <div className="flex items-center gap-1 sm:gap-1.5 text-[#2B2F36]/30 text-[9px] sm:text-xs">
-              <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-              </svg>
-              <span className="truncate">{program.animator}</span>
-            </div>
+        <div className="flex flex-col min-w-0 gap-1 pt-3 mt-2 border-t border-[#0B1220]/[0.05]">
+          <div className="flex items-center gap-1.5 text-[#2B2F36]/40 text-[10px] sm:text-xs">
+            <svg className="w-3.5 h-3.5 shrink-0 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span className="truncate">{program.format}</span>
           </div>
-          <Link
-            href={h(locale, `/corporate/programmes#${program.link.split("/").pop()}`)}
-            className="px-2.5 sm:px-5 h-7 sm:h-9 rounded-full bg-[#0B1220] text-white text-[9px] sm:text-xs font-semibold tracking-wide hover:bg-[#B88A5A] transition-colors duration-300 shrink-0 inline-flex items-center whitespace-nowrap"
-          >
-            {discoverLabel}
-          </Link>
+          <div className="flex items-center gap-1.5 text-[#2B2F36]/30 text-[10px] sm:text-xs">
+            <svg className="w-3.5 h-3.5 shrink-0 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.164-.584-7.447-1.632z" />
+            </svg>
+            <span className="truncate">{program.animator}</span>
+          </div>
         </div>
+
+        <Link
+          href={href}
+          className="mt-4 inline-flex items-center justify-center gap-2 h-10 rounded-full bg-[#0B1220] text-white text-xs font-semibold tracking-wide hover:bg-[#B88A5A] transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B88A5A]"
+        >
+          {discoverLabel}
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </Link>
       </div>
     </div>
   );
 }
 
 export default function ProgrammesSection() {
-  const { t, tRaw, locale } = useLocale();
-  const programmes = tRaw<Program[]>("entreprises.programmes.list");
+  const { t, locale } = useLocale();
+  const programmes = getAllProgrammeCards();
 
   const [activeIdx, setActiveIdx] = useState(0);
   const [direction, setDirection] = useState<1 | -1>(1);
@@ -237,7 +210,6 @@ export default function ProgrammesSection() {
                   >
                     <CardContent
                       program={program}
-                      image={cardImages[idx % cardImages.length]}
                       isActive={isActive}
                       locale={locale}
                       discoverLabel={t("entreprises.programmes.discoverLabel")}

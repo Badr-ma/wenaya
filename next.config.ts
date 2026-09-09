@@ -40,6 +40,10 @@ const nextConfig: NextConfig = {
       /* Duplicate home variant — canonical is the root */
       { source: "/fr", destination: "/", permanent: true },
 
+      /* Labelled-programme legacy paths — the malformed double "programmes/programmes/pcm"
+         (never canonical, 404 on live) folds onto the real PCM detail page. */
+      { source: "/corporate/programmes/programmes/pcm",     destination: "/corporate/programmes/pcm",     permanent: true },
+      { source: "/en/corporate/programmes/programmes/pcm",  destination: "/en/corporate/programmes/pcm",  permanent: true },
       /* ── Category 2: Semantic mappings (permanent for renamed, temporary for removed) ── */
       { source: "/soins",             destination: "/pratiques",   permanent: true },
       { source: "/maux-troubles",     destination: "/pratiques",   permanent: true },

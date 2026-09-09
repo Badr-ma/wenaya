@@ -11,6 +11,7 @@ import type { MetadataRoute } from "next";
 import { getPublishedPosts } from "@/lib/blog";
 import { getAllSpecialistsAsync } from "@/lib/specialistes";
 import { getAllPratiqueSlugs } from "@/lib/pratiques";
+import { getAllProgrammeSlugs } from "@/lib/corporate-programmes";
 import { getAllGroupSessionSlugs } from "@/lib/group-sessions";
 import { SITE_URL } from "@/lib/site-config";
 
@@ -50,6 +51,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...dual("/about-us", { changeFrequency: "monthly", priority: 0.9 }),
     ...dual("/corporate", { changeFrequency: "monthly", priority: 0.9 }),
     ...dual("/corporate/programmes", { changeFrequency: "monthly", priority: 0.8 }),
+    ...getAllProgrammeSlugs().flatMap((slug) =>
+      dual(`/corporate/programmes/${slug}`, { changeFrequency: "monthly", priority: 0.8 })
+    ),
     {
       url: `${SITE_URL}/soins-a-domicile`,
       changeFrequency: "monthly",
