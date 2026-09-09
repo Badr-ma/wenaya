@@ -25,8 +25,7 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
 
     const ctx = gsap.context(() => {
       gsap.timeline({ defaults: { ease: "power3.out" } })
-        .fromTo(".hero-eyebrow", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.55 })
-        .fromTo(".hero-line", { opacity: 0, y: 32 }, { opacity: 1, y: 0, duration: 0.75, stagger: 0.1 }, "-=0.25")
+        .fromTo(".hero-line", { opacity: 0, y: 32 }, { opacity: 1, y: 0, duration: 0.75, stagger: 0.1 })
         .fromTo(".hero-sub", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5 }, "-=0.35")
         .fromTo(".hero-cta", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.45 }, "-=0.25")
         .fromTo(trustRef.current, { opacity: 0 }, { opacity: 1, duration: 0.5 }, "-=0.25");
@@ -45,7 +44,7 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
   const stats = [
     { value: "35", label: t("hero.stats.therapeutes") },
     { value: "+2 000", label: t("hero.stats.patients") },
-    { value: "4,7 ★", label: t("hero.stats.avis") },
+    { value: "99%", label: t("hero.stats.satisfaction") },
     { value: "6", label: t("hero.stats.disciplines") },
   ];
 
@@ -95,16 +94,6 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pt-28 sm:pt-36 pb-16 sm:pb-20">
         <div className="max-w-2xl">
           <div>
-            {/* Eyebrow */}
-            <div className="hero-eyebrow inline-flex items-center gap-2.5 mb-8">
-              <div className="w-1.5 h-1.5 rounded-full bg-[#B88A5A] shrink-0" />
-              <span className="text-[#B88A5A]/75 text-[11px] font-semibold tracking-[0.24em] uppercase">
-                {content?.eyebrow ?? t("hero.eyebrow")}
-              </span>
-              <div className="w-8 h-px bg-[#B88A5A]/30" />
-              <span className="text-white/28 text-[11px] tracking-[0.14em] uppercase">{t("hero.depuis")}</span>
-            </div>
-
             {/* Headline */}
             <h1
               className="text-white leading-[1.04]"

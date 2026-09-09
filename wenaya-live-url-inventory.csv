@@ -1,103 +1,252 @@
-url,status,title,canonical,language,type,indexable,source,notes
-"https://wenaya.com/","200","Wenaya - Plateforme de Sante et Bien-etre au Maroc | Praticiens Verifies | Wenaya","https://wenaya.com/","fr","HOME","yes","sitemap_static","Homepage; canonical self; sitemap priority 1.0; body client-rendered (SPA shell)"
-"https://wenaya.com/fr","200","Wenaya - Plateforme de Sante et Bien-etre au Maroc | Praticiens Verifies | Wenaya","https://wenaya.com/","fr","HOME","yes","discovered","Duplicate of /; canonical points to /; renders partial content"
-"https://wenaya.com/about-us","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/about-us","fr","CLINIC","yes","sitemap_static","Live About/Clinic; H1 Qui sommes nous; server-rendered; -> /about in new"
-"https://wenaya.com/soins","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/soins","fr","PRACTICE","yes","sitemap_static","Live practices listing; SPA shell; -> /pratiques in new"
-"https://wenaya.com/maux-troubles","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/maux-troubles","fr","TROUBLE","yes","sitemap_static","Live troubles listing; SPA shell; -> /pratiques in new"
-"https://wenaya.com/seance-de-groupe","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/seance-de-groupe","fr","GROUP SESSION","yes","sitemap_static","Group sessions listing; SPA shell; KEEP SAME URL in new"
-"https://wenaya.com/evenements","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/evenements","fr","STATIC","yes","sitemap_static","Events page; SPA shell/empty; no new equivalent -> temporary 302 to /"
-"https://wenaya.com/pratiques","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/pratiques","fr","PRACTICE","yes","sitemap_static","Practice listing; SPA shell; KEEP SAME URL in new"
-"https://wenaya.com/articles","200","Articles et Actualites Wenaya - Sante & Bien-etre | Wenaya","https://wenaya.com/articles","fr","ARTICLE","yes","sitemap_static","Articles listing; server-rendered but empty (no articles); /articles in new"
-"https://wenaya.com/contact-us","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/contact-us","fr","CONTACT","yes","sitemap_static","Contact; SPA shell; -> /contact in new"
-"https://wenaya.com/terms-and-conditions","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/terms-and-conditions","fr","LEGAL","yes","sitemap_static","SPA shell; -> /conditions in new"
-"https://wenaya.com/privacy-policy","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/privacy-policy","fr","LEGAL","yes","sitemap_static","SPA shell; -> /confidentialite in new"
-"https://wenaya.com/for-entreprise","404","","","fr","CORPORATE","no","sitemap_static","404 on live; -> /corporate in new"
-"https://wenaya.com/search/all/all","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/search/all/all","fr","STATIC","yes","sitemap_search","Search catch-all; server-rendered; 302 to /produits in new"
-"https://wenaya.com/search/all/casablanca","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/search/all/casablanca","fr","STATIC","yes","discovered","Search by city; no new equivalent (manual review / noindex)"
-"https://wenaya.com/search/kine/all","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/search/kine/all","fr","STATIC","yes","discovered","Search by specialty; no new equivalent (manual review / noindex)"
-"https://wenaya.com/search","200","","","fr","STATIC","yes","discovered","Search root route"
-"https://wenaya.com/user/sign-in","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/user/sign-in","fr","AUTH","yes","discovered","Live patient sign-in; -> /login in new"
-"https://wenaya.com/parcours-de-soins","200","Parcours de soins | Wenaya","https://wenaya.com/parcours-de-soins","fr","CARE JOURNEY","yes","discovered","Care-pathway listing; server-rendered; no new equivalent (needs content)"
-"https://wenaya.com/parcours-de-soins/grossesse-&-maternite","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/parcours-de-soins/grossesse-&-maternite","fr","CARE JOURNEY","yes","sitemap_static","Accented slug; no new equivalent; semantic -> /pratiques/kinesitherapie (manual)"
-"https://wenaya.com/parcours-de-soins/les-troubles-de-l-apprentissage","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/parcours-de-soins/les-troubles-de-l-apprentissage","fr","CARE JOURNEY","yes","sitemap_static","Accented/apostrophe slug; semantic -> /pratiques/orthophonie (manual)"
-"https://wenaya.com/parcours-de-soins/le-vertige-positionnel","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/parcours-de-soins/le-vertige-positionnel","fr","CARE JOURNEY","yes","sitemap_static","No new equivalent; semantic -> /pratiques/kinesitherapie (manual)"
-"https://wenaya.com/parcours-de-soins/la-maladie-d-Alzheimer","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/parcours-de-soins/la-maladie-d-Alzheimer","fr","CARE JOURNEY","yes","sitemap_static","Accented/apostrophe; semantic -> /pratiques/neuropsychologie (manual)"
-"https://wenaya.com/parcours-de-soins/sante-holistique","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/parcours-de-soins/sante-holistique","fr","CARE JOURNEY","yes","sitemap_static","Accented slug; semantic -> /pratiques/naturopathie (manual)"
-"https://wenaya.com/parcours-de-soins/tecar-therapie","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/parcours-de-soins/tecar-therapie","fr","CARE JOURNEY","yes","sitemap_static","Accented slug; semantic -> /pratiques/kinesitherapie (manual)"
-"https://wenaya.com/parcours-de-soins/kinesitherapie-&-avc","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/parcours-de-soins/kinesitherapie-&-avc","fr","CARE JOURNEY","yes","sitemap_static","Accented slug; semantic -> /pratiques/kinesitherapie (manual)"
-"https://wenaya.com/maux-troubles/grossesse","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/maux-troubles/grossesse","fr","TROUBLE","yes","discovered","Trouble detail; semantic -> /pratiques/kinesitherapie (manual)"
-"https://wenaya.com/articles/undefined","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/articles/undefined","fr","ARTICLE","broken-200","discovered","BROKEN: undefined slug catch-all returns 200; don't redirect"
-"https://wenaya.com/evenements/undefined","200","","","fr","STATIC","broken-200","discovered","BROKEN catch-all with undefined; don't redirect"
-"https://wenaya.com/corporate","200","Cultivez le bien-etre, recoltez la performance | Wenaya Corporate | Wenaya","https://wenaya.com/corporate","fr","CORPORATE","yes-broken","discovered","BROKEN H1=for_business_title (raw translation key); server-rendered; KEEP SAME URL"
-"https://wenaya.com/soins-a-domicile","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/soins-a-domicile","fr","HOMECARE","yes","discovered","SPA shell; KEEP SAME URL in new (FR page exists)"
-"https://wenaya.com/faq","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/faq","fr","STATIC","yes","discovered","SPA shell; /faq in new"
-"https://wenaya.com/llms.txt","200","LLMs.txt for https://wenaya.com","","fr","OTHER","yes","discovered","LLM guidance file; no new equivalent (recreate optionally)"
-"https://wenaya.com/manifest.json","200","","","fr","OTHER","no","discovered","PWA manifest; no new equivalent"
-"https://wenaya.com/professional/nadine-kita","200","Undefined | Wenaya","https://wenaya.com/professional/nadine-kita","fr","PROFESSIONAL","yes-broken","discovered","BROKEN title=Undefined; server-rendered; KEEP SAME URL in new"
-"https://wenaya.com/professional/dr-amal-benali","200","Undefined | Wenaya","https://wenaya.com/professional/dr-amal-benali","fr","PROFESSIONAL","yes-broken","discovered","BROKEN title=Undefined; KEEP SAME URL"
-"https://wenaya.com/professional/khalid-ouazzani","200","Undefined | Wenaya","https://wenaya.com/professional/khalid-ouazzani","fr","PROFESSIONAL","yes-broken","discovered","BROKEN title=Undefined; KEEP SAME URL"
-"https://wenaya.com/professional/nadia-tazi","200","Undefined | Wenaya","https://wenaya.com/professional/nadia-tazi","fr","PROFESSIONAL","yes-broken","discovered","BROKEN title=Undefined; KEEP SAME URL"
-"https://wenaya.com/professional/yassine-el-amrani","200","Undefined | Wenaya","https://wenaya.com/professional/yassine-el-amrani","fr","PROFESSIONAL","yes-broken","discovered","BROKEN title=Undefined; KEEP SAME URL"
-"https://wenaya.com/professional/sara-mansouri","200","Undefined | Wenaya","https://wenaya.com/professional/sara-mansouri","fr","PROFESSIONAL","yes-broken","discovered","BROKEN title=Undefined; KEEP SAME URL"
-"https://wenaya.com/professional/mehdi-irzi","200","Undefined | Wenaya","https://wenaya.com/professional/mehdi-irzi","fr","PROFESSIONAL","yes-broken","discovered","BROKEN title=Undefined; KEEP SAME URL"
-"https://wenaya.com/professional/najat-berrada","200","Undefined | Wenaya","https://wenaya.com/professional/najat-berrada","fr","PROFESSIONAL","yes-broken","discovered","BROKEN title=Undefined; KEEP SAME URL"
-"https://wenaya.com/professional/omar-tazi","200","Undefined | Wenaya","https://wenaya.com/professional/omar-tazi","fr","PROFESSIONAL","yes-broken","discovered","BROKEN title=Undefined; KEEP SAME URL"
-"https://wenaya.com/professional/fatima-zahra-alami","200","Undefined | Wenaya","https://wenaya.com/professional/fatima-zahra-alami","fr","PROFESSIONAL","yes-broken","discovered","BROKEN title=Undefined; KEEP SAME URL"
-"https://wenaya.com/professional/nadine-kita/booking","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/professional/nadine-kita/booking","fr","PROFESSIONAL","yes","discovered-llms","Booking sub-page; new booking via /contact?service=... (manual)"
-"https://wenaya.com/en/","200","Wenaya - Plateforme de Sante et Bien-etre au Maroc | Praticiens Verifies | Wenaya","https://wenaya.com/en/","en","HOME","yes","sitemap_static-en","EN home; KEEP in new (/en)"
-"https://wenaya.com/en/about-us","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/en/about-us","en","CLINIC","yes","sitemap_static-en","EN about; H1 Qui sommes nous; -> /en/about"
-"https://wenaya.com/en/soins","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/en/soins","en","PRACTICE","yes","sitemap_static-en","EN practices; SPA shell; -> /en/pratiques"
-"https://wenaya.com/en/maux-troubles","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/en/maux-troubles","en","TROUBLE","yes","sitemap_static-en","EN troubles; SPA shell; -> /en/pratiques"
-"https://wenaya.com/en/seance-de-groupe","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/en/seance-de-groupe","en","GROUP SESSION","yes","sitemap_static-en","EN group sessions; KEEP SAME URL in new"
-"https://wenaya.com/en/evenements","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/en/evenements","en","STATIC","yes","sitemap_static-en","EN events placeholder; 302 to /en/ in new"
-"https://wenaya.com/en/pratiques","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/en/pratiques","en","PRACTICE","yes","sitemap_static-en","EN practice listing; KEEP SAME URL"
-"https://wenaya.com/en/articles","200","Articles et Actualites Wenaya - Sante & Bien-etre | Wenaya","https://wenaya.com/en/articles","en","ARTICLE","yes","sitemap_static-en","EN articles (empty); /en/articles in new"
-"https://wenaya.com/en/contact-us","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/en/contact-us","en","CONTACT","yes","sitemap_static-en","-> /en/contact"
-"https://wenaya.com/en/terms-and-conditions","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/en/terms-and-conditions","en","LEGAL","yes","sitemap_static-en","-> /en/conditions"
-"https://wenaya.com/en/privacy-policy","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/en/privacy-policy","en","LEGAL","yes","sitemap_static-en","-> /en/confidentialite"
-"https://wenaya.com/en/for-entreprise","404","","","en","CORPORATE","no","sitemap_static-en","404 live; -> /en/corporate"
-"https://wenaya.com/en/search/all/all","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/en/search/all/all","en","STATIC","yes","sitemap_search-en","302 to /en/produits in new"
-"https://wenaya.com/en/user/sign-in","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/en/user/sign-in","en","AUTH","yes","discovered","-> /en/login"
-"https://wenaya.com/en/parcours-de-soins/grossesse-&-maternite","200","","","en","CARE JOURNEY","yes","sitemap_static-en","EN care pathway; no EN new equivalent"
-"https://wenaya.com/en/corporate","200","Cultivez le bien-etre, recoltez la performance | Wenaya Corporate | Wenaya","https://wenaya.com/en/corporate","en","CORPORATE","yes-broken","discovered","BROKEN H1=for_business_title; server-rendered; KEEP SAME URL"
-"https://wenaya.com/en/soins-a-domicile","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/en/soins-a-domicile","en","HOMECARE","yes","discovered","SPA shell; serves FR content under lang=en; no EN route in new -> DO NOT INDEX / drop"
-"https://wenaya.com/en/professional/nadine-kita","200","Undefined | Wenaya","https://wenaya.com/en/professional/nadine-kita","en","PROFESSIONAL","yes-broken","discovered","BROKEN title=Undefined; KEEP SAME URL"
-"https://wenaya.com/en/professional/nadine-kita/booking","200","","","en","PROFESSIONAL","yes","discovered-llms","EN booking sub-page"
-"https://wenaya.com/en/articles/undefined","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/en/articles/undefined","en","ARTICLE","broken-200","discovered","BROKEN catch-all; don't redirect"
-"https://wenaya.com/en/faq","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/en/faq","en","STATIC","yes","discovered","/en/faq in new"
-"https://wenaya.com/ar/","200","","","ar","HOME","yes","sitemap_static-ar","AR home; not supported in new -> fold to /"
-"https://wenaya.com/ar/about-us","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/ar/about-us","ar","CLINIC","yes","sitemap_static-ar","AR about; -> /"
-"https://wenaya.com/ar/pratiques","200","","","ar","PRACTICE","yes","sitemap_static-ar","AR practices; -> /"
-"https://wenaya.com/ar/search/all/all","200","","","ar","STATIC","yes","sitemap_search-ar","AR search; -> /"
-"https://wenaya.com/ar/parcours-de-soins/grossesse-&-maternite","200","","","ar","CARE JOURNEY","yes","sitemap_static-ar","AR care pathway; -> /"
-"https://wenaya.com/pratiques/art-martial-therapie","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/pratiques/art-martial-therapie","fr","PRACTICE","yes","api+probe","ACCENTED live slug (art-martial-therapie); -> /pratiques/art-martial-therapie ASCII"
-"https://wenaya.com/pratiques/coaching-sportif","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/pratiques/coaching-sportif","fr","PRACTICE","yes","api+probe","KEEP SAME URL (ASCII)"
-"https://wenaya.com/pratiques/cupping-therapy-hijama","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/pratiques/cupping-therapy-hijama","fr","PRACTICE","yes","api+probe","KEEP SAME URL"
-"https://wenaya.com/pratiques/infirmerie","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/pratiques/infirmerie","fr","PRACTICE","yes","api+probe","KEEP SAME URL"
-"https://wenaya.com/pratiques/kinesitherapie","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/pratiques/kinesitherapie","fr","PRACTICE","yes","api+probe","ACCENTED live slug (kinesitherapie); -> /pratiques/kinesitherapie ASCII"
-"https://wenaya.com/pratiques/massotherapie","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/pratiques/massotherapie","fr","PRACTICE","yes","api+probe","ACCENTED (massotherapie) -> /pratiques/massotherapie"
-"https://wenaya.com/pratiques/meditation","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/pratiques/meditation","fr","PRACTICE","yes","api+probe","ACCENTED (meditation) -> /pratiques/meditation"
-"https://wenaya.com/pratiques/naturopathie","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/pratiques/naturopathie","fr","PRACTICE","yes","api+probe","KEEP SAME URL"
-"https://wenaya.com/pratiques/neuropsychologie","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/pratiques/neuropsychologie","fr","PRACTICE","yes","api+probe","KEEP SAME URL"
-"https://wenaya.com/pratiques/nutrition","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/pratiques/nutrition","fr","PRACTICE","yes","api+probe","KEEP SAME URL"
-"https://wenaya.com/pratiques/orthophonie","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/pratiques/orthophonie","fr","PRACTICE","yes","api+probe","KEEP SAME URL"
-"https://wenaya.com/pratiques/osteopathie","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/pratiques/osteopathie","fr","PRACTICE","yes","api+probe","ACCENTED (osteopathie) -> /pratiques/osteopathie"
-"https://wenaya.com/pratiques/psychologie","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/pratiques/psychologie","fr","PRACTICE","yes","api+probe","KEEP SAME URL"
-"https://wenaya.com/pratiques/psychomotricite","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/pratiques/psychomotricite","fr","PRACTICE","yes","api+probe","ACCENTED (psychomotricite) -> /pratiques/psychomotricite"
-"https://wenaya.com/pratiques/psychotherapie","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/pratiques/psychotherapie","fr","PRACTICE","yes","api+probe","ACCENTED (psychotherapie) -> /pratiques/psychotherapie"
-"https://wenaya.com/pratiques/sexologie","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/pratiques/sexologie","fr","PRACTICE","yes","api+probe","KEEP SAME URL"
-"https://wenaya.com/pratiques/sono-therapie","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/pratiques/sono-therapie","fr","PRACTICE","yes","api+probe","ACCENTED (sono-therapie) -> /pratiques/sono-therapie"
-"https://wenaya.com/pratiques/sophrologie","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/pratiques/sophrologie","fr","PRACTICE","yes","api+probe","KEEP SAME URL"
-"https://wenaya.com/pratiques/yoga","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/pratiques/yoga","fr","PRACTICE","yes","api+probe","KEEP SAME URL"
-"https://wenaya.com/seance-de-groupe/yoga-prenatal","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/seance-de-groupe/yoga-prenatal","fr","GROUP SESSION","yes","probe","KEEP SAME URL in new"
-"https://wenaya.com/seance-de-groupe/sophrologie","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/seance-de-groupe/sophrologie","fr","GROUP SESSION","yes","probe","KEEP SAME URL"
-"https://wenaya.com/seance-de-groupe/nutrition","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/seance-de-groupe/nutrition","fr","GROUP SESSION","yes","probe","KEEP SAME URL"
-"https://wenaya.com/seance-de-groupe/breathwork","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/seance-de-groupe/breathwork","fr","GROUP SESSION","yes","probe","KEEP SAME URL"
-"https://wenaya.com/seance-de-groupe/jiu-jitsu-bresilien","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/seance-de-groupe/jiu-jitsu-bresilien","fr","GROUP SESSION","yes","probe","KEEP SAME URL"
-"https://wenaya.com/seance-de-groupe/pilates-et-posture","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/seance-de-groupe/pilates-et-posture","fr","GROUP SESSION","yes","probe","KEEP SAME URL"
-"https://wenaya.com/en/seance-de-groupe/yoga-prenatal","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/en/seance-de-groupe/yoga-prenatal","en","GROUP SESSION","yes","probe","EN uses same FR slug; KEEP SAME URL"
-"https://wenaya.com/en/seance-de-groupe/sophrologie","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/en/seance-de-groupe/sophrologie","en","GROUP SESSION","yes","probe","KEEP SAME URL"
-"https://wenaya.com/en/seance-de-groupe/nutrition","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/en/seance-de-groupe/nutrition","en","GROUP SESSION","yes","probe","KEEP SAME URL"
-"https://wenaya.com/en/seance-de-groupe/breathwork","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/en/seance-de-groupe/breathwork","en","GROUP SESSION","yes","probe","KEEP SAME URL"
-"https://wenaya.com/en/seance-de-groupe/jiu-jitsu-bresilien","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/en/seance-de-groupe/jiu-jitsu-bresilien","en","GROUP SESSION","yes","probe","KEEP SAME URL"
-"https://wenaya.com/en/seance-de-groupe/pilates-et-posture","200","Vos besoins de sante en un seul lieu | Wenaya","https://wenaya.com/en/seance-de-groupe/pilates-et-posture","en","GROUP SESSION","yes","probe","KEEP SAME URL"
+﻿url,status,title,canonical,language,type,indexable,source,notes
+/,200,"Wenaya — Santé Intégrée & Bien-être | Casablanca, Maroc",https://www.wenaya.com/,fr,HOME,yes,sitemap; SSR verified 2026-09-08,Homepage; H1 + cinematic hero; priority 1.0; x-default->FR
+/en,200,"Wenaya — Integrated Health & Wellbeing | Casablanca, Morocco",https://www.wenaya.com/en,en,HOME,yes,sitemap; SSR verified 2026-09-08,EN homepage
+/about-us,200,Wenaya Clinic — Centre de Santé Intégrée à Casablanca,https://www.wenaya.com/about-us,fr,CLINIC,yes,sitemap; SSR verified 2026-09-08,Canonical Clinic page (short /about folds here 308)
+/en/about-us,200,Wenaya Clinic — Integrated Health Center in Casablanca,https://www.wenaya.com/en/about-us,en,CLINIC,yes,sitemap; SSR verified 2026-09-08,EN Clinic
+/pratiques,200,"Nos Pratiques — Kinésithérapie, Ostéopathie, Psychologie & Nutrition",https://www.wenaya.com/pratiques,fr,PRACTICE,yes,sitemap; SSR verified 2026-09-08,19-practice catalog; API-backed listing (revalidate 1h) + pagination
+/en/pratiques,200,"Our Practices — Physiotherapy, Osteopathy, Psychology & Nutrition",https://www.wenaya.com/en/pratiques,en,PRACTICE,yes,sitemap; SSR verified 2026-09-08,EN catalog
+/seance-de-groupe,200,Séances de groupe à Casablanca,https://www.wenaya.com/seance-de-groupe,fr,GROUP SESSION,yes,sitemap; SSR verified 2026-09-08,6 sessions listing
+/en/seance-de-groupe,200,Group Sessions in Casablanca,https://www.wenaya.com/en/seance-de-groupe,en,GROUP SESSION,yes,sitemap; SSR verified 2026-09-08,EN listing
+/professional,200,Nos Spécialistes — Wenaya Casablanca,https://www.wenaya.com/professional,fr,PROFESSIONAL,yes,sitemap; SSR verified 2026-09-08,10 specialists listing
+/en/professional,200,Our Specialists — Wenaya Casablanca,https://www.wenaya.com/en/professional,en,PROFESSIONAL,yes,sitemap; SSR verified 2026-09-08,EN listing
+/articles,200,"Blog Santé & Bien-être — Conseils, Études et Guides",https://www.wenaya.com/articles,fr,ARTICLE,yes,sitemap; SSR verified 2026-09-08,7 articles listing
+/en/articles,200,-,https://www.wenaya.com/en/articles,en,ARTICLE,yes,sitemap; SSR verified 2026-09-08,EN listing
+/corporate,200,Bien-être en Entreprise — Programmes Santé & Prévention,https://www.wenaya.com/corporate,fr,CORPORATE,yes,sitemap; SSR verified 2026-09-08,Corporate wellness landing
+/en/corporate,200,Corporate Wellness — Health & Prevention Programs,https://www.wenaya.com/en/corporate,en,CORPORATE,yes,sitemap; SSR verified 2026-09-08,EN corporate
+/corporate/programmes,200,Programmes — Wenaya Corporate,https://www.wenaya.com/corporate/programmes,fr,STATIC,yes,sitemap; SSR verified 2026-09-08,Corporate programmes
+/en/corporate/programmes,200,Programmes — Wenaya Corporate,https://www.wenaya.com/en/corporate/programmes,en,STATIC,yes,sitemap; SSR verified 2026-09-08,EN programmes
+/soins-a-domicile,200,Soins à domicile — Garde malade & infirmier à domicile à Casablanca,https://www.wenaya.com/soins-a-domicile,fr,HOMECARE,yes,sitemap; SSR verified 2026-09-08,Homecare FR ONLY (no EN route)
+/contact-us,200,Contact — Wenaya Clinic Casablanca | Prendre Rendez-vous,https://www.wenaya.com/contact-us,fr,CONTACT,yes,sitemap; SSR verified 2026-09-08,Canonical contact (short /contact folds here 308)
+/en/contact-us,200,Contact — Wenaya Clinic Casablanca | Book an Appointment,https://www.wenaya.com/en/contact-us,en,CONTACT,yes,sitemap; SSR verified 2026-09-08,EN contact
+/terms-and-conditions,200,Conditions Générales d'Utilisation — Wenaya,https://www.wenaya.com/terms-and-conditions,fr,LEGAL,yes,sitemap; SSR verified 2026-09-08,Canonical legal (short /conditions folds here 308)
+/en/terms-and-conditions,200,Terms & Conditions — Wenaya,https://www.wenaya.com/en/terms-and-conditions,en,LEGAL,yes,sitemap; SSR verified 2026-09-08,EN legal
+/privacy-policy,200,Politique de Confidentialité — Wenaya,https://www.wenaya.com/privacy-policy,fr,LEGAL,yes,sitemap; SSR verified 2026-09-08,Canonical legal (short /confidentialite folds here 308)
+/en/privacy-policy,200,Privacy Policy — Wenaya,https://www.wenaya.com/en/privacy-policy,en,LEGAL,yes,sitemap; SSR verified 2026-09-08,EN privacy
+/faq,200,FAQ — Wenaya,https://www.wenaya.com/faq,fr,STATIC,yes,sitemap; SSR verified 2026-09-08,FAQ
+/en/faq,200,FAQ — Wenaya,https://www.wenaya.com/en/faq,en,STATIC,yes,sitemap; SSR verified 2026-09-08,EN FAQ
+/login,200,Connexion — Espace Patient Wenaya,https://www.wenaya.com/login,fr,AUTH,no,sitemap; SSR verified 2026-09-08,Patient login placeholder; noindex (no real auth backend yet)
+/en/login,200,Sign in — Wenaya Patient Space,https://www.wenaya.com/en/login,en,AUTH,no,sitemap; SSR verified 2026-09-08,EN login; noindex
+/pratiques/kinesitherapie,200,Kin├®sith├®rapie | Wenaya,https://www.wenaya.com/pratiques/kinesitherapie,fr,PRACTICE,yes,sitemap; SSR verified 2026-09-08,ASCII canonical slug
+/en/pratiques/kinesitherapie,200,Physiotherapy | Wenaya,https://www.wenaya.com/en/pratiques/kinesitherapie,en,PRACTICE,yes,sitemap; SSR verified 2026-09-08,EN practice
+/pratiques/osteopathie,200,Ost├®opathie | Wenaya,https://www.wenaya.com/pratiques/osteopathie,fr,PRACTICE,yes,sitemap; SSR verified 2026-09-08,ASCII canonical slug
+/en/pratiques/osteopathie,200,Osteopathy | Wenaya,https://www.wenaya.com/en/pratiques/osteopathie,en,PRACTICE,yes,sitemap; SSR verified 2026-09-08,EN practice
+/pratiques/massotherapie,200,Massoth├®rapie | Wenaya,https://www.wenaya.com/pratiques/massotherapie,fr,PRACTICE,yes,sitemap; SSR verified 2026-09-08,ASCII canonical slug
+/en/pratiques/massotherapie,200,Massotherapy | Wenaya,https://www.wenaya.com/en/pratiques/massotherapie,en,PRACTICE,yes,sitemap; SSR verified 2026-09-08,EN practice
+/pratiques/cupping-therapy-hijama,200,Cupping therapy-Hijama | Wenaya,https://www.wenaya.com/pratiques/cupping-therapy-hijama,fr,PRACTICE,yes,sitemap; SSR verified 2026-09-08,ASCII canonical slug
+/en/pratiques/cupping-therapy-hijama,200,Cupping Therapy ÔÇô Hijama | Wenaya,https://www.wenaya.com/en/pratiques/cupping-therapy-hijama,en,PRACTICE,yes,sitemap; SSR verified 2026-09-08,EN practice
+/pratiques/psychologie,200,Psychologie | Wenaya,https://www.wenaya.com/pratiques/psychologie,fr,PRACTICE,yes,sitemap; SSR verified 2026-09-08,ASCII canonical slug
+/en/pratiques/psychologie,200,Psychology | Wenaya,https://www.wenaya.com/en/pratiques/psychologie,en,PRACTICE,yes,sitemap; SSR verified 2026-09-08,EN practice
+/pratiques/neuropsychologie,200,Neuropsychologie | Wenaya,https://www.wenaya.com/pratiques/neuropsychologie,fr,PRACTICE,yes,sitemap; SSR verified 2026-09-08,ASCII canonical slug
+/en/pratiques/neuropsychologie,200,Neuropsychology | Wenaya,https://www.wenaya.com/en/pratiques/neuropsychologie,en,PRACTICE,yes,sitemap; SSR verified 2026-09-08,EN practice
+/pratiques/psychotherapie,200,Psychoth├®rapie | Wenaya,https://www.wenaya.com/pratiques/psychotherapie,fr,PRACTICE,yes,sitemap; SSR verified 2026-09-08,ASCII canonical slug
+/en/pratiques/psychotherapie,200,Psychotherapy | Wenaya,https://www.wenaya.com/en/pratiques/psychotherapie,en,PRACTICE,yes,sitemap; SSR verified 2026-09-08,EN practice
+/pratiques/sexologie,200,Sexologie | Wenaya,https://www.wenaya.com/pratiques/sexologie,fr,PRACTICE,yes,sitemap; SSR verified 2026-09-08,ASCII canonical slug
+/en/pratiques/sexologie,200,Sexology | Wenaya,https://www.wenaya.com/en/pratiques/sexologie,en,PRACTICE,yes,sitemap; SSR verified 2026-09-08,EN practice
+/pratiques/meditation,200,M├®ditation | Wenaya,https://www.wenaya.com/pratiques/meditation,fr,PRACTICE,yes,sitemap; SSR verified 2026-09-08,ASCII canonical slug
+/en/pratiques/meditation,200,Meditation | Wenaya,https://www.wenaya.com/en/pratiques/meditation,en,PRACTICE,yes,sitemap; SSR verified 2026-09-08,EN practice
+/pratiques/sophrologie,200,Sophrologie | Wenaya,https://www.wenaya.com/pratiques/sophrologie,fr,PRACTICE,yes,sitemap; SSR verified 2026-09-08,ASCII canonical slug
+/en/pratiques/sophrologie,200,Sophrology | Wenaya,https://www.wenaya.com/en/pratiques/sophrologie,en,PRACTICE,yes,sitemap; SSR verified 2026-09-08,EN practice
+/pratiques/nutrition,200,Nutrition | Wenaya,https://www.wenaya.com/pratiques/nutrition,fr,PRACTICE,yes,sitemap; SSR verified 2026-09-08,ASCII canonical slug
+/en/pratiques/nutrition,200,Nutrition | Wenaya,https://www.wenaya.com/en/pratiques/nutrition,en,PRACTICE,yes,sitemap; SSR verified 2026-09-08,EN practice
+/pratiques/coaching-sportif,200,Coaching Sportif | Wenaya,https://www.wenaya.com/pratiques/coaching-sportif,fr,PRACTICE,yes,sitemap; SSR verified 2026-09-08,ASCII canonical slug
+/en/pratiques/coaching-sportif,200,Sport Coaching | Wenaya,https://www.wenaya.com/en/pratiques/coaching-sportif,en,PRACTICE,yes,sitemap; SSR verified 2026-09-08,EN practice
+/pratiques/orthophonie,200,Orthophonie | Wenaya,https://www.wenaya.com/pratiques/orthophonie,fr,PRACTICE,yes,sitemap; SSR verified 2026-09-08,ASCII canonical slug
+/en/pratiques/orthophonie,200,Speech Therapy | Wenaya,https://www.wenaya.com/en/pratiques/orthophonie,en,PRACTICE,yes,sitemap; SSR verified 2026-09-08,EN practice
+/pratiques/naturopathie,200,Naturopathie | Wenaya,https://www.wenaya.com/pratiques/naturopathie,fr,PRACTICE,yes,sitemap; SSR verified 2026-09-08,ASCII canonical slug
+/en/pratiques/naturopathie,200,Naturopathy | Wenaya,https://www.wenaya.com/en/pratiques/naturopathie,en,PRACTICE,yes,sitemap; SSR verified 2026-09-08,EN practice
+/pratiques/psychomotricite,200,Psychomotricit├® | Wenaya,https://www.wenaya.com/pratiques/psychomotricite,fr,PRACTICE,yes,sitemap; SSR verified 2026-09-08,ASCII canonical slug
+/en/pratiques/psychomotricite,200,Psychomotricity | Wenaya,https://www.wenaya.com/en/pratiques/psychomotricite,en,PRACTICE,yes,sitemap; SSR verified 2026-09-08,EN practice
+/pratiques/art-martial-therapie,200,Art Martial Th├®rapie | Wenaya,https://www.wenaya.com/pratiques/art-martial-therapie,fr,PRACTICE,yes,sitemap; SSR verified 2026-09-08,ASCII canonical slug
+/en/pratiques/art-martial-therapie,200,Martial Arts Therapy | Wenaya,https://www.wenaya.com/en/pratiques/art-martial-therapie,en,PRACTICE,yes,sitemap; SSR verified 2026-09-08,EN practice
+/pratiques/sono-therapie,200,Sono-th├®rapie | Wenaya,https://www.wenaya.com/pratiques/sono-therapie,fr,PRACTICE,yes,sitemap; SSR verified 2026-09-08,ASCII canonical slug
+/en/pratiques/sono-therapie,200,Sound Healing | Wenaya,https://www.wenaya.com/en/pratiques/sono-therapie,en,PRACTICE,yes,sitemap; SSR verified 2026-09-08,EN practice
+/pratiques/yoga,200,Yoga | Wenaya,https://www.wenaya.com/pratiques/yoga,fr,PRACTICE,yes,sitemap; SSR verified 2026-09-08,ASCII canonical slug
+/en/pratiques/yoga,200,Yoga | Wenaya,https://www.wenaya.com/en/pratiques/yoga,en,PRACTICE,yes,sitemap; SSR verified 2026-09-08,EN practice
+/pratiques/infirmerie,200,Infirmerie | Wenaya,https://www.wenaya.com/pratiques/infirmerie,fr,PRACTICE,yes,sitemap; SSR verified 2026-09-08,ASCII canonical slug
+/en/pratiques/infirmerie,200,Nursing | Wenaya,https://www.wenaya.com/en/pratiques/infirmerie,en,PRACTICE,yes,sitemap; SSR verified 2026-09-08,EN practice
+/seance-de-groupe/yoga-prenatal,200,Yoga Pr├®natal ├á Casablanca | Wenaya,https://www.wenaya.com/seance-de-groupe/yoga-prenatal,fr,GROUP SESSION,yes,sitemap; SSR verified 2026-09-08,FR/EN share FR slug
+/en/seance-de-groupe/yoga-prenatal,200,Prenatal Yoga in Casablanca | Wenaya,https://www.wenaya.com/en/seance-de-groupe/yoga-prenatal,en,GROUP SESSION,yes,sitemap; SSR verified 2026-09-08,EN session
+/seance-de-groupe/sophrologie,200,Sophrologie ├á Casablanca | Wenaya,https://www.wenaya.com/seance-de-groupe/sophrologie,fr,GROUP SESSION,yes,sitemap; SSR verified 2026-09-08,FR/EN share FR slug
+/en/seance-de-groupe/sophrologie,200,Sophrology in Casablanca | Wenaya,https://www.wenaya.com/en/seance-de-groupe/sophrologie,en,GROUP SESSION,yes,sitemap; SSR verified 2026-09-08,EN session
+/seance-de-groupe/nutrition,200,Nutrition ├á Casablanca | Wenaya,https://www.wenaya.com/seance-de-groupe/nutrition,fr,GROUP SESSION,yes,sitemap; SSR verified 2026-09-08,FR/EN share FR slug
+/en/seance-de-groupe/nutrition,200,Nutrition in Casablanca | Wenaya,https://www.wenaya.com/en/seance-de-groupe/nutrition,en,GROUP SESSION,yes,sitemap; SSR verified 2026-09-08,EN session
+/seance-de-groupe/breathwork,200,Breathwork ├á Casablanca | Wenaya,https://www.wenaya.com/seance-de-groupe/breathwork,fr,GROUP SESSION,yes,sitemap; SSR verified 2026-09-08,FR/EN share FR slug
+/en/seance-de-groupe/breathwork,200,Breathwork in Casablanca | Wenaya,https://www.wenaya.com/en/seance-de-groupe/breathwork,en,GROUP SESSION,yes,sitemap; SSR verified 2026-09-08,EN session
+/seance-de-groupe/jiu-jitsu-bresilien,200,Jiu Jitsu Br├®silien ├á Casablanca | Wenaya,https://www.wenaya.com/seance-de-groupe/jiu-jitsu-bresilien,fr,GROUP SESSION,yes,sitemap; SSR verified 2026-09-08,FR/EN share FR slug
+/en/seance-de-groupe/jiu-jitsu-bresilien,200,Brazilian Jiu-Jitsu in Casablanca | Wenaya,https://www.wenaya.com/en/seance-de-groupe/jiu-jitsu-bresilien,en,GROUP SESSION,yes,sitemap; SSR verified 2026-09-08,EN session
+/seance-de-groupe/pilates-et-posture,200,Pilates & Posture ├á Casablanca | Wenaya,https://www.wenaya.com/seance-de-groupe/pilates-et-posture,fr,GROUP SESSION,yes,sitemap; SSR verified 2026-09-08,FR/EN share FR slug
+/en/seance-de-groupe/pilates-et-posture,200,Pilates & Posture in Casablanca | Wenaya,https://www.wenaya.com/en/seance-de-groupe/pilates-et-posture,en,GROUP SESSION,yes,sitemap; SSR verified 2026-09-08,EN session
+/professional/nadine-kita,200,-,https://www.wenaya.com/professional/nadine-kita,fr,PROFESSIONAL,yes,sitemap; SSR verified 2026-09-08,Profile + in-profile booking panel
+/en/professional/nadine-kita,200,Nadine Kita ÔÇö Physiotherapist | Wenaya Casablanca | Wenaya,https://www.wenaya.com/en/professional/nadine-kita,en,PROFESSIONAL,yes,sitemap; SSR verified 2026-09-08,EN profile
+/professional/dr-amal-benali,200,Dr. Amal Benali ÔÇö M├®decin G├®n├®raliste | Wenaya Casablanca | Wenaya,https://www.wenaya.com/professional/dr-amal-benali,fr,PROFESSIONAL,yes,sitemap; SSR verified 2026-09-08,Profile + in-profile booking panel
+/en/professional/dr-amal-benali,200,Dr. Amal Benali ÔÇö General Practitioner | Wenaya Casablanca | Wenaya,https://www.wenaya.com/en/professional/dr-amal-benali,en,PROFESSIONAL,yes,sitemap; SSR verified 2026-09-08,EN profile
+/professional/khalid-ouazzani,200,Khalid Ouazzani ÔÇö Ost├®opathe | Wenaya Casablanca | Wenaya,https://www.wenaya.com/professional/khalid-ouazzani,fr,PROFESSIONAL,yes,sitemap; SSR verified 2026-09-08,Profile + in-profile booking panel
+/en/professional/khalid-ouazzani,200,Khalid Ouazzani ÔÇö Osteopath | Wenaya Casablanca | Wenaya,https://www.wenaya.com/en/professional/khalid-ouazzani,en,PROFESSIONAL,yes,sitemap; SSR verified 2026-09-08,EN profile
+/professional/nadia-tazi,200,Nadia Tazi ÔÇö Psychologue Clinicienne | Wenaya Casablanca | Wenaya,https://www.wenaya.com/professional/nadia-tazi,fr,PROFESSIONAL,yes,sitemap; SSR verified 2026-09-08,Profile + in-profile booking panel
+/en/professional/nadia-tazi,200,Nadia Tazi ÔÇö Clinical Psychologist | Wenaya Casablanca | Wenaya,https://www.wenaya.com/en/professional/nadia-tazi,en,PROFESSIONAL,yes,sitemap; SSR verified 2026-09-08,EN profile
+/professional/yassine-el-amrani,200,Yassine El Amrani ÔÇö Nutritionniste | Wenaya Casablanca | Wenaya,https://www.wenaya.com/professional/yassine-el-amrani,fr,PROFESSIONAL,yes,sitemap; SSR verified 2026-09-08,Profile + in-profile booking panel
+/en/professional/yassine-el-amrani,200,Yassine El Amrani ÔÇö Nutritionist | Wenaya Casablanca | Wenaya,https://www.wenaya.com/en/professional/yassine-el-amrani,en,PROFESSIONAL,yes,sitemap; SSR verified 2026-09-08,EN profile
+/professional/sara-mansouri,200,Sara Mansouri ÔÇö Psychomotricienne | Wenaya Casablanca | Wenaya,https://www.wenaya.com/professional/sara-mansouri,fr,PROFESSIONAL,yes,sitemap; SSR verified 2026-09-08,Profile + in-profile booking panel
+/en/professional/sara-mansouri,200,Sara Mansouri ÔÇö Psychomotor Therapist | Wenaya Casablanca | Wenaya,https://www.wenaya.com/en/professional/sara-mansouri,en,PROFESSIONAL,yes,sitemap; SSR verified 2026-09-08,EN profile
+/professional/mehdi-irzi,200,Mehdi Irzi ÔÇö Orthophoniste | Wenaya Casablanca | Wenaya,https://www.wenaya.com/professional/mehdi-irzi,fr,PROFESSIONAL,yes,sitemap; SSR verified 2026-09-08,Profile + in-profile booking panel
+/en/professional/mehdi-irzi,200,Mehdi Irzi ÔÇö Speech Therapist | Wenaya Casablanca | Wenaya,https://www.wenaya.com/en/professional/mehdi-irzi,en,PROFESSIONAL,yes,sitemap; SSR verified 2026-09-08,EN profile
+/professional/najat-berrada,200,Najat Berrada ÔÇö Naturopathe | Wenaya Casablanca | Wenaya,https://www.wenaya.com/professional/najat-berrada,fr,PROFESSIONAL,yes,sitemap; SSR verified 2026-09-08,Profile + in-profile booking panel
+/en/professional/najat-berrada,200,Najat Berrada ÔÇö Naturopath | Wenaya Casablanca | Wenaya,https://www.wenaya.com/en/professional/najat-berrada,en,PROFESSIONAL,yes,sitemap; SSR verified 2026-09-08,EN profile
+/professional/omar-tazi,200,Omar Tazi ÔÇö M├®decin du Sport | Wenaya Casablanca | Wenaya,https://www.wenaya.com/professional/omar-tazi,fr,PROFESSIONAL,yes,sitemap; SSR verified 2026-09-08,Profile + in-profile booking panel
+/en/professional/omar-tazi,200,Omar Tazi ÔÇö Sports Physician | Wenaya Casablanca | Wenaya,https://www.wenaya.com/en/professional/omar-tazi,en,PROFESSIONAL,yes,sitemap; SSR verified 2026-09-08,EN profile
+/professional/fatima-zahra-alami,200,Fatima Zahra Alami ÔÇö Di├®t├®ticienne-Nutritionniste | Wenaya Casablanca | Wenaya,https://www.wenaya.com/professional/fatima-zahra-alami,fr,PROFESSIONAL,yes,sitemap; SSR verified 2026-09-08,Profile + in-profile booking panel
+/en/professional/fatima-zahra-alami,200,Fatima Zahra Alami ÔÇö Dietitian-Nutritionist | Wenaya Casablanca | Wenaya,https://www.wenaya.com/en/professional/fatima-zahra-alami,en,PROFESSIONAL,yes,sitemap; SSR verified 2026-09-08,EN profile
+/parcours-de-soins,200,Parcours de soins | Wenaya | Wenaya,https://www.wenaya.com/parcours-de-soins,fr,CARE JOURNEY,yes,sitemap; SSR verified 2026-09-08,Journeys hub (previously 404; now canonical from live capture)
+/en/parcours-de-soins,200,Parcours de soins | Wenaya | Wenaya,https://www.wenaya.com/en/parcours-de-soins,en,CARE JOURNEY,yes,sitemap; SSR verified 2026-09-08,EN hub (FR copy under EN chrome)
+/parcours-de-soins/grossesse-&-maternite,200,Grossesse & Maternité | Wenaya | Wenaya,https://www.wenaya.com/parcours-de-soins/grossesse-&-maternite,fr,CARE JOURNEY,yes,sitemap; SSR verified 2026-09-08,Canonical journey page from live capture
+/en/parcours-de-soins/grossesse-&-maternite,200,Grossesse & Maternité | Wenaya | Wenaya,https://www.wenaya.com/en/parcours-de-soins/grossesse-&-maternite,en,CARE JOURNEY,yes,sitemap; SSR verified 2026-09-08,EN journey (FR content per live)
+/parcours-de-soins/les-troubles-de-l-apprentissage,200,Les troubles de l'apprentissage chez l'enfant : comprendre et agir | Wenaya | Wenaya,https://www.wenaya.com/parcours-de-soins/les-troubles-de-l-apprentissage,fr,CARE JOURNEY,yes,sitemap; SSR verified 2026-09-08,Canonical journey page from live capture
+/en/parcours-de-soins/les-troubles-de-l-apprentissage,200,Les troubles de l'apprentissage chez l'enfant : comprendre et agir | Wenaya | Wenaya,https://www.wenaya.com/en/parcours-de-soins/les-troubles-de-l-apprentissage,en,CARE JOURNEY,yes,sitemap; SSR verified 2026-09-08,EN journey (FR content per live)
+/parcours-de-soins/le-vertige-positionnel,200,Le Vertige Positionnel Paroxystique Bénin (VPPB) | Wenaya | Wenaya,https://www.wenaya.com/parcours-de-soins/le-vertige-positionnel,fr,CARE JOURNEY,yes,sitemap; SSR verified 2026-09-08,Canonical journey page from live capture
+/en/parcours-de-soins/le-vertige-positionnel,200,Le Vertige Positionnel Paroxystique Bénin (VPPB) | Wenaya | Wenaya,https://www.wenaya.com/en/parcours-de-soins/le-vertige-positionnel,en,CARE JOURNEY,yes,sitemap; SSR verified 2026-09-08,EN journey (FR content per live)
+/parcours-de-soins/la-maladie-d-alzheimer,200,La maladie d'Alzheimer | Wenaya | Wenaya,https://www.wenaya.com/parcours-de-soins/la-maladie-d-alzheimer,fr,CARE JOURNEY,yes,sitemap; SSR verified 2026-09-08,Canonical journey page from live capture
+/en/parcours-de-soins/la-maladie-d-alzheimer,200,La maladie d'Alzheimer | Wenaya | Wenaya,https://www.wenaya.com/en/parcours-de-soins/la-maladie-d-alzheimer,en,CARE JOURNEY,yes,sitemap; SSR verified 2026-09-08,EN journey (FR content per live)
+/parcours-de-soins/sante-holistique,200,L'approche holistique en santé : qu'est-ce que cela signifie pour vous ? | Wenaya | Wenaya,https://www.wenaya.com/parcours-de-soins/sante-holistique,fr,CARE JOURNEY,yes,sitemap; SSR verified 2026-09-08,Canonical journey page from live capture
+/en/parcours-de-soins/sante-holistique,200,L'approche holistique en santé : qu'est-ce que cela signifie pour vous ? | Wenaya | Wenaya,https://www.wenaya.com/en/parcours-de-soins/sante-holistique,en,CARE JOURNEY,yes,sitemap; SSR verified 2026-09-08,EN journey (FR content per live)
+/parcours-de-soins/tecar-therapie,200,La TECAR Thérapie : Une approche innovante en rééducation et physiothérapie | Wenaya | Wenaya,https://www.wenaya.com/parcours-de-soins/tecar-therapie,fr,CARE JOURNEY,yes,sitemap; SSR verified 2026-09-08,Canonical journey page from live capture
+/en/parcours-de-soins/tecar-therapie,200,La TECAR Thérapie : Une approche innovante en rééducation et physiothérapie | Wenaya | Wenaya,https://www.wenaya.com/en/parcours-de-soins/tecar-therapie,en,CARE JOURNEY,yes,sitemap; SSR verified 2026-09-08,EN journey (FR content per live)
+/parcours-de-soins/kinesitherapie-&-avc,200,Comment la kinésithérapie peut transformer la rééducation après un AVC | Wenaya | Wenaya,https://www.wenaya.com/parcours-de-soins/kinesitherapie-&-avc,fr,CARE JOURNEY,yes,sitemap; SSR verified 2026-09-08,Canonical journey page from live capture
+/en/parcours-de-soins/kinesitherapie-&-avc,200,Comment la kinésithérapie peut transformer la rééducation après un AVC | Wenaya | Wenaya,https://www.wenaya.com/en/parcours-de-soins/kinesitherapie-&-avc,en,CARE JOURNEY,yes,sitemap; SSR verified 2026-09-08,EN journey (FR content per live)
+/articles/5-benefits-of-preventive-healthcare,200,-,https://www.wenaya.com/articles/5-benefits-of-preventive-healthcare,fr,ARTICLE,yes,sitemap; SSR verified 2026-09-08,NEW article (no live legacy)
+/en/articles/5-benefits-of-preventive-healthcare,200,-,https://www.wenaya.com/en/articles/5-benefits-of-preventive-healthcare,en,ARTICLE,yes,sitemap; SSR verified 2026-09-08,NEW article (no live legacy)
+/articles/future-preventive-medicine-ai,200,-,https://www.wenaya.com/articles/future-preventive-medicine-ai,fr,ARTICLE,yes,sitemap; SSR verified 2026-09-08,NEW article (no live legacy)
+/en/articles/future-preventive-medicine-ai,200,-,https://www.wenaya.com/en/articles/future-preventive-medicine-ai,en,ARTICLE,yes,sitemap; SSR verified 2026-09-08,NEW article (no live legacy)
+/articles/525-biomarkers-explained,200,-,https://www.wenaya.com/articles/525-biomarkers-explained,fr,ARTICLE,yes,sitemap; SSR verified 2026-09-08,NEW article (no live legacy)
+/en/articles/525-biomarkers-explained,200,-,https://www.wenaya.com/en/articles/525-biomarkers-explained,en,ARTICLE,yes,sitemap; SSR verified 2026-09-08,NEW article (no live legacy)
+/articles/personalized-nutrition-biochemistry,200,-,https://www.wenaya.com/articles/personalized-nutrition-biochemistry,fr,ARTICLE,yes,sitemap; SSR verified 2026-09-08,NEW article (no live legacy)
+/en/articles/personalized-nutrition-biochemistry,200,-,https://www.wenaya.com/en/articles/personalized-nutrition-biochemistry,en,ARTICLE,yes,sitemap; SSR verified 2026-09-08,NEW article (no live legacy)
+/articles/inflammation-chronic-disease-lifestyle,200,-,https://www.wenaya.com/articles/inflammation-chronic-disease-lifestyle,fr,ARTICLE,yes,sitemap; SSR verified 2026-09-08,NEW article (no live legacy)
+/en/articles/inflammation-chronic-disease-lifestyle,200,-,https://www.wenaya.com/en/articles/inflammation-chronic-disease-lifestyle,en,ARTICLE,yes,sitemap; SSR verified 2026-09-08,NEW article (no live legacy)
+/articles/longevity-blue-zones-lessons,200,-,https://www.wenaya.com/articles/longevity-blue-zones-lessons,fr,ARTICLE,yes,sitemap; SSR verified 2026-09-08,NEW article (no live legacy)
+/en/articles/longevity-blue-zones-lessons,200,-,https://www.wenaya.com/en/articles/longevity-blue-zones-lessons,en,ARTICLE,yes,sitemap; SSR verified 2026-09-08,NEW article (no live legacy)
+/articles/sleep-circadian-rhythm-optimization,200,-,https://www.wenaya.com/articles/sleep-circadian-rhythm-optimization,fr,ARTICLE,yes,sitemap; SSR verified 2026-09-08,NEW article (no live legacy)
+/en/articles/sleep-circadian-rhythm-optimization,200,-,https://www.wenaya.com/en/articles/sleep-circadian-rhythm-optimization,en,ARTICLE,yes,sitemap; SSR verified 2026-09-08,NEW article (no live legacy)
+/fr,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> / (high); Duplicate live home variant; canonical is root
+/about,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /about-us (high); Parity: short form folds to live canonical
+/en/about,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/about-us (high); Parity EN
+/contact,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /contact-us (high); Parity: short form folds to live canonical
+/en/contact,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/contact-us (high); Parity EN
+/conditions,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /terms-and-conditions (high); Parity: short form folds to live canonical
+/en/conditions,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/terms-and-conditions (high); Parity EN
+/confidentialite,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /privacy-policy (high); Parity: short form folds to live canonical
+/en/confidentialite,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/privacy-policy (high); Parity EN
+/for-entreprise,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /corporate (high); Renamed company page
+/for-entreprise/:path*,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /corporate/:path* (high); Company glob
+/solutions/entreprises,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /corporate (high); Legacy alias
+/solutions/entreprises/:path*,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /corporate/:path* (high); Legacy alias glob
+/en/for-entreprise,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/corporate (high); Renamed company page
+/en/for-entreprise/:path*,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/corporate/:path* (high); Company glob
+/en/solutions/entreprises,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/corporate (high); Renamed company page
+/en/solutions/entreprises/:path*,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/corporate/:path* (high); Legacy alias glob
+/soins,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /pratiques (high); Practice listing renamed
+/en/soins,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/pratiques (high); EN
+/maux-troubles,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /pratiques (high); No new troubles family; fold listing
+/en/maux-troubles,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/pratiques (high); EN
+/maux-troubles/grossesse,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /pratiques (high); Verified live canonical; pluridisciplinary (yoga/masso/nutrition/psycho) -> listing
+/maux-troubles/grossesse-maternite,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /pratiques (high); Verified live canonical slug; pluridisciplinary -> listing
+/maux-troubles/vertiges,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /pratiques (high); Verified live canonical slug; pluridisciplinary -> listing
+/blog,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /articles (high); Blog renamed; new site has 7 articles
+/blog/:path*,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /articles/:path* (high); Blog glob
+/en/blog,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/articles (high); EN
+/en/blog/:path*,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/articles/:path* (high); EN blog glob
+/evenements,307,-,-,fr,REDIRECT-SOURCE,yes(temp),next.config.ts; verified 2026-09-08 (122-check suite),-> /seance-de-groupe (high); No events feature; live URL was group-booking app
+/en/evenements,307,-,-,en,REDIRECT-SOURCE,yes(temp),next.config.ts; verified 2026-09-08 (122-check suite),-> /en/seance-de-groupe (high); No events feature (EN)
+/search/all/all,307,-,-,fr,REDIRECT-SOURCE,yes(temp),next.config.ts; verified 2026-09-08 (122-check suite),"-> /pratiques (high); Legacy full-clinic search; catalog is practices, NOT shop (p/produits target was wrong)"
+/en/search/all/all,307,-,-,en,REDIRECT-SOURCE,yes(temp),next.config.ts; verified 2026-09-08 (122-check suite),-> /en/pratiques (high); EN search fold
+/pratiques/psychologie-clinique,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /pratiques/psychologie (high); Renamed practice
+/pratiques/therapies-complementaires,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /pratiques (high); Merged practice -> catalog
+/en/pratiques/psychologie-clinique,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/pratiques/psychologie (high); EN
+/en/pratiques/therapies-complementaires,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/pratiques (high); EN
+/pratiques/art-martial-th%C3%A9rapie,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /pratiques/art-martial-therapie (high); Legacy accented live slug -> ASCII canonical
+/en/pratiques/art-martial-th%C3%A9rapie,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/pratiques/art-martial-therapie (high); EN accented
+/pratiques/kin%C3%A9sith%C3%A9rapie,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /pratiques/kinesitherapie (high); Legacy accented live slug -> ASCII canonical
+/en/pratiques/kin%C3%A9sith%C3%A9rapie,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/pratiques/kinesitherapie (high); EN accented
+/pratiques/massoth%C3%A9rapie,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /pratiques/massotherapie (high); Legacy accented live slug -> ASCII canonical
+/en/pratiques/massoth%C3%A9rapie,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/pratiques/massotherapie (high); EN accented
+/pratiques/m%C3%A9ditation,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /pratiques/meditation (high); Legacy accented live slug -> ASCII canonical
+/en/pratiques/m%C3%A9ditation,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/pratiques/meditation (high); EN accented
+/pratiques/psychomotricit%C3%A9,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /pratiques/psychomotricite (high); Legacy accented live slug -> ASCII canonical
+/en/pratiques/psychomotricit%C3%A9,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/pratiques/psychomotricite (high); EN accented
+/pratiques/psychoth%C3%A9rapie,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /pratiques/psychotherapie (high); Legacy accented live slug -> ASCII canonical
+/en/pratiques/psychoth%C3%A9rapie,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/pratiques/psychotherapie (high); EN accented
+/pratiques/ost%C3%A9opathie,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /pratiques/osteopathie (high); Legacy accented live slug -> ASCII canonical
+/en/pratiques/ost%C3%A9opathie,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/pratiques/osteopathie (high); EN accented
+/pratiques/sono-th%C3%A9rapie,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /pratiques/sono-therapie (high); Legacy accented live slug -> ASCII canonical
+/en/pratiques/sono-th%C3%A9rapie,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/pratiques/sono-therapie (high); EN accented
+/en/group-sessions,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/seance-de-groupe (high); Legacy EN listing alias
+/en/group-sessions/prenatal-yoga,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/seance-de-groupe/yoga-prenatal (high); EN legacy slug -> FR slug
+/en/group-sessions/sophrology,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/seance-de-groupe/sophrologie (high); EN legacy slug -> FR slug
+/en/group-sessions/brazilian-jiu-jitsu,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/seance-de-groupe/jiu-jitsu-bresilien (high); EN legacy slug -> FR slug
+/en/group-sessions/pilates-and-posture,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/seance-de-groupe/pilates-et-posture (high); EN legacy slug -> FR slug
+/en/group-sessions/nutrition,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/seance-de-groupe/nutrition (high); EN legacy slug (same)
+/en/group-sessions/breathwork,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/seance-de-groupe/breathwork (high); EN legacy slug (same)
+/en/group-sessions/:path*,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/seance-de-groupe/:path* (high); Legacy EN glob fallback
+/parcours-de-soins/grossesse-&-maternit%C3%A9,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /parcours-de-soins/grossesse-&-maternite (high); Legacy journey form -> canonical page; Accented e form -> canonical
+/en/parcours-de-soins/grossesse-&-maternit%C3%A9,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/parcours-de-soins/grossesse-&-maternite (high); EN alias; Accented e form -> canonical
+/parcours-de-soins/les-troubles-de-l%27apprentissage,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /parcours-de-soins/les-troubles-de-l-apprentissage (high); Legacy journey form -> canonical page; Percent-encoded apostrophe -> canonical
+/en/parcours-de-soins/les-troubles-de-l%27apprentissage,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/parcours-de-soins/les-troubles-de-l-apprentissage (high); EN alias; Percent-encoded apostrophe -> canonical
+/parcours-de-soins/les-troubles-de-l'apprentissage,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /parcours-de-soins/les-troubles-de-l-apprentissage (high); Legacy journey form -> canonical page; Raw apostrophe -> canonical
+/en/parcours-de-soins/les-troubles-de-l'apprentissage,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/parcours-de-soins/les-troubles-de-l-apprentissage (high); EN alias; Raw apostrophe -> canonical
+/parcours-de-soins/sant%C3%A9-holistique,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /parcours-de-soins/sante-holistique (high); Legacy journey form -> canonical page; Accented e form -> canonical
+/en/parcours-de-soins/sant%C3%A9-holistique,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/parcours-de-soins/sante-holistique (high); EN alias; Accented e form -> canonical
+/parcours-de-soins/la-maladie-d%27Alzheimer,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /parcours-de-soins/la-maladie-d-alzheimer (high); Legacy journey form -> canonical page; Percent-encoded apostrophe -> canonical
+/en/parcours-de-soins/la-maladie-d%27Alzheimer,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/parcours-de-soins/la-maladie-d-alzheimer (high); EN alias; Percent-encoded apostrophe -> canonical
+/parcours-de-soins/la-maladie-d%E2%80%99Alzheimer,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /parcours-de-soins/la-maladie-d-alzheimer (high); Legacy journey form -> canonical page; Curly-quote form the live hub emits -> canonical
+/en/parcours-de-soins/la-maladie-d%E2%80%99Alzheimer,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/parcours-de-soins/la-maladie-d-alzheimer (high); EN alias; Curly-quote form the live hub emits -> canonical
+/parcours-de-soins/la-maladie-d'Alzheimer,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /parcours-de-soins/la-maladie-d-alzheimer (high); Legacy journey form -> canonical page; Raw apostrophe -> canonical
+/en/parcours-de-soins/la-maladie-d'Alzheimer,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/parcours-de-soins/la-maladie-d-alzheimer (high); EN alias; Raw apostrophe -> canonical
+/parcours-de-soins/la-maladie-d’Alzheimer,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /parcours-de-soins/la-maladie-d-alzheimer (high); Raw curly-quote form -> canonical
+/en/parcours-de-soins/la-maladie-d’Alzheimer,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/parcours-de-soins/la-maladie-d-alzheimer (high); Raw curly-quote form -> canonical
+/parcours-de-soins/tecar-th%C3%A9rapie,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /parcours-de-soins/tecar-therapie (high); Legacy journey form -> canonical page; Accented form -> canonical
+/en/parcours-de-soins/tecar-th%C3%A9rapie,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/parcours-de-soins/tecar-therapie (high); EN alias; Accented form -> canonical
+/parcours-de-soins/kin%C3%A9sith%C3%A9rapie-&-avc,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /parcours-de-soins/kinesitherapie-&-avc (high); Legacy journey form -> canonical page; Accented form -> canonical
+/en/parcours-de-soins/kin%C3%A9sith%C3%A9rapie-&-avc,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/parcours-de-soins/kinesitherapie-&-avc (high); EN alias; Accented form -> canonical
+/ar/parcours-de-soins/grossesse-&-maternite,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /parcours-de-soins/grossesse-&-maternite (high); AR journey -> canonical FR journey page
+/ar/about-us,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /about-us (high); AR precise mapping
+/ar/pratiques,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /pratiques (high); AR precise mapping
+/ar/search/all/all,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> / (high); AR search fold
+/ar/:path*,307,-,-,fr,REDIRECT-SOURCE,yes(temp),next.config.ts; verified 2026-09-08 (122-check suite),-> / (high); AR catch-all -> FR home (AR unsupported)
+/specialistes,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /professional (high); Old alias
+/specialistes/:path*,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /professional/:path* (high); Alias glob
+/en/specialistes,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/professional (high); EN alias
+/en/specialistes/:path*,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/professional/:path* (high); EN alias glob
+/professional/nadine-kita/booking,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /professional/nadine-kita (high); Old per-profile booking -> same profile (in-page booking panel)
+/en/professional/nadine-kita/booking,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/professional/nadine-kita (high); EN
+/professional/dr-amal-benali/booking,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /professional/dr-amal-benali (high); Old per-profile booking -> same profile (in-page booking panel)
+/en/professional/dr-amal-benali/booking,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/professional/dr-amal-benali (high); EN
+/professional/khalid-ouazzani/booking,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /professional/khalid-ouazzani (high); Old per-profile booking -> same profile (in-page booking panel)
+/en/professional/khalid-ouazzani/booking,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/professional/khalid-ouazzani (high); EN
+/professional/nadia-tazi/booking,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /professional/nadia-tazi (high); Old per-profile booking -> same profile (in-page booking panel)
+/en/professional/nadia-tazi/booking,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/professional/nadia-tazi (high); EN
+/professional/yassine-el-amrani/booking,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /professional/yassine-el-amrani (high); Old per-profile booking -> same profile (in-page booking panel)
+/en/professional/yassine-el-amrani/booking,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/professional/yassine-el-amrani (high); EN
+/professional/sara-mansouri/booking,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /professional/sara-mansouri (high); Old per-profile booking -> same profile (in-page booking panel)
+/en/professional/sara-mansouri/booking,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/professional/sara-mansouri (high); EN
+/professional/mehdi-irzi/booking,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /professional/mehdi-irzi (high); Old per-profile booking -> same profile (in-page booking panel)
+/en/professional/mehdi-irzi/booking,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/professional/mehdi-irzi (high); EN
+/professional/najat-berrada/booking,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /professional/najat-berrada (high); Old per-profile booking -> same profile (in-page booking panel)
+/en/professional/najat-berrada/booking,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/professional/najat-berrada (high); EN
+/professional/omar-tazi/booking,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /professional/omar-tazi (high); Old per-profile booking -> same profile (in-page booking panel)
+/en/professional/omar-tazi/booking,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/professional/omar-tazi (high); EN
+/professional/fatima-zahra-alami/booking,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /professional/fatima-zahra-alami (high); Old per-profile booking -> same profile (in-page booking panel)
+/en/professional/fatima-zahra-alami/booking,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/professional/fatima-zahra-alami (high); EN
+/user/sign-in,308,-,-,fr,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /login (high); Live patient sign-in alias
+/en/user/sign-in,308,-,-,en,REDIRECT-SOURCE,no,next.config.ts; verified 2026-09-08 (122-check suite),-> /en/login (high); EN
+/search,404,-,-,fr,BROKEN,no,verified 2026-09-08,DONT-REDIRECT; keep 404 (no safe equivalent)
+/search/kine/all,404,-,-,fr,BROKEN,no,verified 2026-09-08,DONT-REDIRECT; keep 404 (no safe equivalent)
+/search/all/casablanca,404,-,-,fr,BROKEN,no,verified 2026-09-08,DONT-REDIRECT; keep 404 (no safe equivalent)
+/search/all/paris,404,-,-,fr,BROKEN,no,verified 2026-09-08,DONT-REDIRECT; keep 404 (no safe equivalent)
+/maux-troubles/back-pain-guide,404,-,-,fr,BROKEN,no,verified 2026-09-08,DONT-REDIRECT; keep 404 (no safe equivalent)
+/professional/ghita,404,-,-,fr,BROKEN,no,verified 2026-09-08,DONT-REDIRECT; keep 404 (no safe equivalent)
+/professional/unknown-slug-xyz,404,-,-,fr,BROKEN,no,verified 2026-09-08,DONT-REDIRECT; keep 404 (no safe equivalent)
+/en/professional/ghita,404,-,-,en,BROKEN,no,verified 2026-09-08,DONT-REDIRECT; keep 404 (no safe equivalent)
+/articles/undefined,404,-,-,fr,BROKEN,no,verified 2026-09-08,DONT-REDIRECT; keep 404 (no safe equivalent)
+/evenements/undefined,404,-,-,fr,BROKEN,no,verified 2026-09-08,DONT-REDIRECT; keep 404 (no safe equivalent)
+/pratiques/does-not-exist-xyz,404,-,-,fr,BROKEN,no,verified 2026-09-08,DONT-REDIRECT; keep 404 (no safe equivalent)
+/en/seance-de-groupe/does-not-exist-xyz,404,-,-,en,BROKEN,no,verified 2026-09-08,DONT-REDIRECT; keep 404 (no safe equivalent)
+/en/soins-a-domicile,404,-,-,en,BROKEN,no,verified 2026-09-08,DONT-REDIRECT; keep 404 (no safe equivalent)

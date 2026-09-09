@@ -229,7 +229,6 @@ export default function Nav(): React.JSX.Element {
                   { label: t("nav.aPropos"), href: h(locale, "/about-us") },
                   { label: t("nav.solutions"), href: h(locale, "/corporate") },
                   { label: t("nav.produits"), href: h(locale, "/produits") },
-                  { label: t("nav.specialistes"), href: h(locale, "/professional") },
                 ].map((link) => (
                     <li key={link.label}>
                       <Link

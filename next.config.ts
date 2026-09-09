@@ -44,16 +44,25 @@ const nextConfig: NextConfig = {
          (never canonical, 404 on live) folds onto the real PCM detail page. */
       { source: "/corporate/programmes/programmes/pcm",     destination: "/corporate/programmes/pcm",     permanent: true },
       { source: "/en/corporate/programmes/programmes/pcm",  destination: "/en/corporate/programmes/pcm",  permanent: true },
+
       /* ── Category 2: Semantic mappings (permanent for renamed, temporary for removed) ── */
       { source: "/soins",             destination: "/pratiques",   permanent: true },
       { source: "/maux-troubles",     destination: "/pratiques",   permanent: true },
       /* Old trouble detail: pluridisciplinary by nature (yoga/massothérapie/
-         nutrition/psychologie) — folds to the practices listing, no single practice. */
+         nutrition/psychologie) — folds to the practices listing, no single practice.
+         Only VERIFIED live canonical slugs are wired (the SPA served any slug);
+         remaining /maux-troubles/* slugs stay 404 pending content sign-off. */
       { source: "/maux-troubles/grossesse", destination: "/pratiques", permanent: true },
+      { source: "/maux-troubles/grossesse-maternite", destination: "/pratiques", permanent: true },
+      { source: "/maux-troubles/vertiges", destination: "/pratiques", permanent: true },
       { source: "/blog",              destination: "/articles",    permanent: true },
       { source: "/blog/:path*",       destination: "/articles/:path*", permanent: true },
-      { source: "/evenements",        destination: "/",            permanent: false },
-      { source: "/search/all/all",    destination: "/produits",    permanent: false },
+      { source: "/evenements",        destination: "/seance-de-groupe", permanent: false },
+      /* Old full-clinic search has no new equivalent; fold to the practice
+         catalog (the search page searched specialists/practices — NOT the
+         shop, which was the previous destination). Deep /search/{spec}/{city}
+         variants stay 404; an 410 is recommended at the deploy edge. */
+      { source: "/search/all/all",    destination: "/pratiques",   permanent: false },
       /* Old practice slugs — renamed/merged during 19-practice migration */
       { source: "/pratiques/psychologie-clinique",    destination: "/pratiques/psychologie",    permanent: true },
       { source: "/pratiques/therapies-complementaires", destination: "/pratiques",              permanent: true },
@@ -62,8 +71,9 @@ const nextConfig: NextConfig = {
       { source: "/en/maux-troubles",     destination: "/en/pratiques",   permanent: true },
       { source: "/en/blog",           destination: "/en/articles", permanent: true },
       { source: "/en/blog/:path*",    destination: "/en/articles/:path*", permanent: true },
-      { source: "/en/evenements",        destination: "/en/",            permanent: false },
-      { source: "/en/search/all/all",    destination: "/en/produits",    permanent: false },
+      { source: "/en/evenements",        destination: "/en/seance-de-groupe", permanent: false },
+      /* See FR note above — practice catalog, not the shop. */
+      { source: "/en/search/all/all",    destination: "/en/pratiques",    permanent: false },
       { source: "/en/pratiques/psychologie-clinique",    destination: "/en/pratiques/psychologie",    permanent: true },
       { source: "/en/pratiques/therapies-complementaires", destination: "/en/pratiques",              permanent: true },
       /* Group sessions: live canonical is /en/seance-de-groupe/{fr-slug}; old app

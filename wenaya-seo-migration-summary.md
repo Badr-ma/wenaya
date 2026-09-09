@@ -1,258 +1,241 @@
-# Wenaya — Live URL Index & SEO Migration Map (AUDIT ONLY)
+# Wenaya — Live URL Index & SEO Migration Map
 
-**Date:** 2026-09-08
-**Scope:** Inventory every existing/indexed public URL on `https://wenaya.com` and map it to the new Wenaya canonical architecture.
-**Status:** AUDIT ONLY — NO code changes, NO redirects wired, NO commit, NO push.
-
----
-
-## A. Total live URLs discovered
-
-**~122 unique URLs** catalogued (FR + EN + AR + infra). Of these:
-- ~51 individual detail URLs (19 practices × FR+EN, 6 group sessions × FR+EN, 10 professional profiles × FR+EN)
-- ~45 FR static/listing/utility URLs
-- ~21 EN static/listing/utility URLs
-- ~6 AR URLs
-- 2 infrastructure URLs (llms.txt, manifest.json)
-
-> Note: artistic/article detail URLs are **not** enumerated because the live sitemap_articles.xml is **empty** — there are zero indexed article detail pages on live.
+**Date:** 2026-09-08 (refreshed — care-journey pages built; alias-only redirect surface)
+**Branch:** `pre-production-cleanup` · **HEAD:** 35a34d7 (uncommitted changes: `next.config.ts` + care-journey pages + sitemap.lang + 2 `loading.tsx` deletions + deliverables)
+**Scope:** Care journeys built as **first-class pages** (`/parcours-de-soins/{slug}` FR+EN, live-verbatim content); every legacy journey URL now resolves **canonically or via exact 308 alias** — no temp catch-alls anywhere. Redirects **wired in `next.config.ts` and validated** against the production build.
+**Status:** IMPLEMENTED + VERIFIED (suite PASS) — NOT committed, NOT pushed.
 
 ---
 
-## B. Sources used
+## A. Summary numbers
+
+| Metric | Count |
+|--------|-------|
+| Canonical pages (new site, SSR-verified 200) | **127** |
+| Redirect sources wired (`next.config.ts`) | **111** |
+| Verified 404s kept (no safe equivalent — DONT-REDIRECT) | **13** |
+| Total rows (inventory + migration-map CSV) | **251** |
+| Regression suite (redirects + 404s + follow + canonical 200s) | **PASS** |
+
+---
+
+## B. Sources used (this refresh)
 
 | Source | Result |
 |--------|--------|
-| `https://wenaya.com/sitemap.xml` | Sitemap index → 6 child sitemaps |
-| `sitemap_static/search/practices/articles/professionals/troubles.xml` (FR) | Fetched (practices/professionals/troubles/articles **empty**) |
-| `sitemap_articles.xml` | **EMPTY** (no article URLs) |
-| `sitemap_practices.xml`, `sitemap_troubles.xml`, `sitemap_professionals.xml` | **EMPTY** (details not in sitemap — practice details sourced via API instead) |
-| `sitemap_search.xml` | Only `/search/all/all` |
-| `/en/sitemap.xml` + child sitemaps | Fetched (parallel structure) |
-| `/ar/sitemap.xml` + child sitemaps | Fetched (parallel structure) |
-| `robots.txt` | Lists `/en/` + `/ar/` sitemaps; allows `articles`, `pratiques`, `maux-troubles`, `seance-de-groupe`, `search`, `professional` |
-| Live navigation + footer (homepage render) | Discovered `parcours-de-soins`, `evenements`, `fr`, `search/{spec}/{city}`, `professional/{slug}/booking` |
-| `llms.txt` | Confirmed URL families incl. `/professional/{slug}/booking`, `/search/{specialty}/{city}` |
-| Backend API `getAllPublicSpecialitiesWithPaginate` | Discovered all **19 public practice slugs** (accented `fr_slug`) |
-| Web search (Google/Bing index surface) | Confirmed indexed `/articles`, `/en/articles/undefined`, `/corporate`, broken-profile titles |
-| Live HTTP probing (HEAD + GET, status/title/canonical/lang/robots) | Verified every URL status + meta |
-| Project source (`sitemap.ts`, `next.config.ts`, `src/app/**`) | Current-site canonical route map |
+| `next.config.ts` (`redirects()` block) | The authoritative route table — every row re-verified live |
+| `sitemap.xml` (prod :3002) | 247 URLs; canonical + aliases; FR-only `/soins-a-domicile`; zero redirect sources; 19 practices + 6 sessions + 10 professionals + 7 articles × FR/EN + 9 journeys (FR) / 9 (EN) |
+| SSR probes (curl, prod build) | Title/canonical/status for every canonical + redirect + 404 row |
+| 139-check regression suite (`%TEMP%\opencode\smoke-final.mjs`) | no-follow (status+Location) + follow (final URL) + expect-404 + expect-temp + canonical-200 |
+| Live wenaya.com content captures (`%TEMP%\opencode\`) | `pds-hub.html`, `mt_vertiges.html`, `mt_grossesse-maternite.html` canonical tags, CDP detail bodies (journey evidence) |
+| dumps `data_professional.json`, `data_maux-troubles.json`, `live-sitemap_*.xml` | **Inconclusive for slug enumeration** (Next pageProps, empty detail sitemaps) — replaced by the verified canonical-tag evidence |
 
 ---
 
-## C. URL count by page family
+## C. Canonical URL count by family (new site)
 
-| Family | FR | EN | AR | Total |
-|--------|----|----|----|-------|
-| HOME | 2 (`/`, `/fr`) | 1 (`/en`) | 1 | 4 |
-| CLINIC (About) | 1 | 1 | 1 | 3 |
-| PRACTICE (listing) | 1 | 1 | 1 | 3 |
-| PRACTICE (detail, 19) | 19 | 19 | 0 | 38 |
-| GROUP SESSION (listing+d) | 7 | 7 | 0 | 14 |
-| PROFESSIONAL (listing+d+booking) | 12 | 12 | 0 | 24 |
-| TROUBLE / MAUX | 2 | 1 | 0 | 3 |
-| CARE JOURNEY (parcours) | 8 | 1 | 1 | 10 |
-| CORPORATE | 1 | 1 | 0 | 2 |
-| HOMECARE | 1 | 1 | 0 | 2 |
-| ARTICLE (listing) | 1 | 1 | 1 | 3 |
-| LEGAL | 2 | 2 | 0 | 4 |
-| AUTH | 1 | 1 | 0 | 2 |
-| CONTACT | 1 | 1 | 0 | 2 |
-| STATIC (search/evenements/faq) | 7 | 5 | 1 | 13 |
-| OTHER (infra) | 2 | 0 | 0 | 2 |
-| **TOTAL** | | | | **~122** |
-
----
-
-## D. Valid 200 pages
-
-All FR/EN/AR public listing + static pages return 200. Notably:
-- `/pratiques`, `/en/pratiques` (listings) — 200
-- All 19 practice detail pages FR+EN — 200 (accented slugs)
-- All 6 group-session detail pages FR+EN — 200
-- All 10 professional profiles FR+EN — 200
-- `/soins-a-domicile`, `/en/soins-a-domicile`, `/faq`, `/search/*`, `/parcours-de-soins/*`, `/about-us`, `/corporate` — 200
+| Family | FR | EN | Total |
+|--------|----|----|-------|
+| HOME | 1 (`/`) | 1 (`/en`) | 2 |
+| CLINIC (`/about-us`) | 1 | 1 | 2 |
+| PRACTICE listing (`/pratiques`) | 1 | 1 | 2 |
+| PRACTICE detail (19 ASCII) | 19 | 19 | 38 |
+| GROUP SESSION listing (`/seance-de-groupe`) | 1 | 1 | 2 |
+| GROUP SESSION detail (6) | 6 | 6 | 12 |
+| PROFESSIONAL listing (`/professional`) | 1 | 1 | 2 |
+| PROFESSIONAL detail (10) | 10 | 10 | 20 |
+| ARTICLE listing (`/articles`) | 1 | 1 | 2 |
+| ARTICLE detail (7) | 7 | 7 | 14 |
+| CORPORATE (`/corporate`) | 1 | 1 | 2 |
+| CORPORATE `/programmes` | 1 | 1 | 2 |
+| HOMECARE (`/soins-a-domicile`) | 1 | 0 | 1 |
+| CARE JOURNEY hub (`/parcours-de-soins`) | 1 | 1 | 2 |
+| CARE JOURNEY detail (7) | 7 | 7 | 14 |
+| CONTACT (`/contact-us`) | 1 | 1 | 2 |
+| LEGAL (`/terms-and-conditions`, `/privacy-policy`) | 2 | 2 | 4 |
+| FAQ | 1 | 1 | 2 |
+| AUTH (`/login`, noindex) | 1 | 1 | 2 |
+| **TOTAL canonical** | | | **127** |
 
 ---
 
-## E. Redirecting pages (live)
+## D. Valid 200 pages (verified)
 
-- `/en/` → 308 → `/en` (trailing-slash normalization; same content)
-- `/ar/` → 308 → `/ar`
-- Trailing-slash / non-www / mixed variants normalize to canonical (standard)
-
-No other live 301/302 redirects detected at the edge (redirects to the new site are configured only in the **new** `next.config.ts`, not live).
-
----
-
-## F. Broken / placeholder 200 pages (CRITICAL)
-
-These return HTTP 200 but are broken or empty:
-
-| URL | Problem |
-|-----|---------|
-| `/professional/{slug}` + `/en/...` | **Title renders `"Undefined | Wenaya"`** — professional name lookup broken on live |
-| `/corporate`, `/en/corporate` | **H1 renders raw translation key `for_business_title`** — untranslated/placeholder content |
-| `/articles/undefined`, `/en/articles/undefined` | **Catch-all returns 200 with `undefined` slug** — broken detail route indexed in Google |
-| `/evenements/undefined` | Same catch-all pattern returning 200 |
-| **SPA "Loading…" shells:** `/pratiques`, `/soins`, `/seance-de-groupe`, all practice details, all group-session details, `/maux-troubles`, `/evenements`, `/contact-us`, `/terms-and-conditions`, `/privacy-policy`, `/soins-a-domicile`, `/faq`, `/en/soins-a-domicile` (and most EN equivalents) | Body is only `"Loading..."` server-side — **no crawlable content** for these key pages |
-| `/search/all/all` | Minimal body (search UI) |
-
-**Impact:** Google currently sees near-empty shells on the highest-value pages (practices, sessions, homecare, contact). The new site **fully server-renders** these → this is a significant upgrade and should be a positive ranking signal post-migration.
+All 111 canonical pages above return 200 with genuine server-rendered content, self-canonicals, and correct FR/EN copy. Key upgrades over live:
+- `/pratiques` listing is fully SSR’d (API-backed catalog, 19 practices) — live was a SPA shell.
+- All practice/session/professional details SSR with real content + JSON-LD.
+- `/soins-a-domicile` (FR) SSR’d with live-verbatim copy.
+- Login pages serve as patient-space placeholders, `noindex`.
 
 ---
 
-## G. 404 / dead URLs on live
+## E. Redirect surface (wired + verified)
 
-| URL | Live | New site target status |
-|-----|------|------------------------|
-| `/for-entreprise`, `/en/for-entreprise` | **404** (sitemap still lists it) | New `/corporate` is live → safe 301 |
-| `/specialistes`, `/en/specialistes`, `/specialistes/*` | **404** | Project alias → 301 to `/professional/*` |
-| `/blog`, `/en/blog` | **404** | `/articles/*` |
-| `/login`, `/en/login` | **404** | New `/login`, `/en/login` exist |
-| `/group-sessions*` | **404** | `/seance-de-groupe/*` |
-| `/solutions/entreprises*` | **404** | `/corporate*` |
-| `/produits*`, `/en/produits*` | **404** (no shop on live) | NEW route (no legacy to preserve) |
-| `/conditions`, `/en/conditions`, `/confidentialite`, `/en/confidentialite` | **404** (live uses `terms-and-conditions`) | NEW route |
-| `/corporate/programmes*` | **404** | NEW route (no legacy) |
+111 sources → 308/307, no chains, single-hop, final 200:
 
----
+| Family | Sources | Code | Target rationale |
+|--------|---------|------|------------------|
+| Canonical parity (`/about`, `/contact`, `/conditions`, `/confidentialite` FR+EN) | 8 | 308 | Short forms fold INTO live-canonical forms (`-us`, `terms-and-conditions`, `privacy-policy`) — INVERTED from the pre-parity draft |
+| `/fr` duplicate home | 1 | 308 | Canonical is `/` |
+| Corporate aliases (`/for-entreprise`*, `/solutions/entreprises`*) | 4 | 308 | → `/corporate`* |
+| Practices renamed (`/soins`, `/pratiques/psychologie-clinique`, `/pratiques/therapies-complementaires` FR+EN) | 6 | 308 | → `/pratiques` family |
+| Maux-troubles listing + verified details | 5 | 308 | → `/pratiques` (pluridisciplinary fold) |
+| Blog (`/blog` FR+EN) | 2 | 308 | → `/articles` |
+| Legacy search (`/search/all/all` FR+EN) | 2 | **307** | → `/pratiques` (the OLD search searched specialists/practices — `/produits` target was wrong) |
+| Accented practice slugs (8 ASCII gaps × FR+EN) | 16 | 308 | → ASCII canonical ± EN |
+| EN group-sessions aliases (± glob) | 8 | 308 | → `/en/seance-de-groupe/{fr-slug}` |
+| Care journeys — legacy URL forms exact 308 → canonical page (7 journeys × FR+EN: accented + percent-encoded + raw-straight + raw-curly `’` apostrophe forms) | 20 | 308 | canonical journey pages; temp catch-alls REMOVED (unmapped `/parcours-de-soins/{slug}` → 404) |
+| Arabic precise mappings + catch-all | 5 | 308/307 | → FR equivalents / `/` |
+| `/specialistes`* FR+EN | 4 | 308 | → `/professional`* |
+| Per-profile booking sub-page (10 slugs × FR+EN) | 20 | 308 | → same profile (booking panel is in-profile) |
+| `/user/sign-in` FR+EN | 2 | 308 | → `/login` |
+| Events (`/evenements` FR+EN) | 2 | **307** | → `/seance-de-groupe` (temporary; live URL was group-booking app, no events feature) |
+| Blog `:path*` globs FR+EN | 2 | 308 | → `/articles/:path*` |
+| EN corporate aliases (`/en/for-entreprise`*, `/en/solutions/entreprises`*) | 4 | 308 | → `/en/corporate`* |
 
-## H. Exact detail URLs discovered
-
-### Practice (19) — FR at `/pratiques/{slug}`, EN at `/en/pratiques/{slug}` (accented live slugs)
-`art-martial-thérapie · coaching-sportif · cupping-therapy-hijama · infirmerie · kinésithérapie · massothérapie · méditation · naturopathie · neuropsychologie · nutrition · orthophonie · ostéopathie · psychologie · psychomotricité · psychothérapie · sexologie · sono-thérapie · sophrologie · yoga`
-
-### Group session (6) — FR + EN share the same FR slug `/seance-de-groupe/{slug}`
-`yoga-prenatal · sophrologie · nutrition · breathwork · jiu-jitsu-bresilien · pilates-et-posture`
-
-### Professional (10) — FR+EN at `/professional/{slug}`
-`nadine-kita · dr-amal-benali · khalid-ouazzani · nadia-tazi · yassine-el-amrani · sara-mansouri · mehdi-irzi · najat-berrada · omar-tazi · fatima-zahra-alami` (+`/booking` sub-pages)
-
-### Care pathway / parcours-de-soins (7)
-`grossesse-&-maternité · les-troubles-de-l'apprentissage · le-vertige-positionnel · la-maladie-d'Alzheimer · santé-holistique · tecar-thérapie · kinésithérapie-&-avc`
+**Pre-existing edges kept:** `/ar/:path*`→`/` 307, `/en/group-sessions/:path*`→EN 308 glob, `/evenements`→`/seance-de-groupe` 307, `/search/all/all` 307. Care-journey `:slug+` catch-alls **removed** — unmapped `/parcours-de-soins/{slug}` now returns 404 (never a broken 200).
 
 ---
 
-## I. Current-new-site equivalents
+## F. Pre-existing live breakage vs new site
 
-New site map (from `src/app/sitemap.ts` + routes):
+| Live symptom | New site status |
+|--------------|-----------------|
+| `/professional/{slug}` `"Undefined \| Wenaya"` titles | Fixed — real SSR profiles. **Plus a NEW-site bug fixed this pass:** unknown slugs returned HTTP **200** (streaming `loading.tsx` boundary flushed the shell before `notFound()`). Deleted both `[slug]/loading.tsx` → `/professional/ghita` now **404** (noindex, `Page Introuvable — 404` title) |
+| `/articles/undefined`, `/evenements/undefined` catch-alls → 200 | Now **404** |
+| Corporate `for_business_title` raw-key H1 | Fixed — real EN/FR copy, `index` |
+| SPA `"Loading…"` shells (pratiques, sessions, homecare, contact, legal) | Fully server-rendered |
+
+---
+
+## G. Verified 404s kept (DONT-REDIRECT — no manufactured target)
+
+`/search`, `/search/kine/all`, `/search/all/casablanca`, `/search/all/paris`, `/en/search`, `/en/search/kine/all`, `/en/search/all/casablanca`, `/en/search/all/paris`, `/maux-troubles/{unverified}` (e.g. `/maux-troubles/back-pain-guide`), `/professional/ghita`, `/professional/{unknown}`, `/en/professional/ghita`, `/articles/undefined`, `/en/articles/undefined`, `/evenements/undefined`, `/pratiques/{nonexistent}`, `/en/seance-de-groupe/{nonexistent}`, `/en/soins-a-domicile` (no EN homecare — live serves FR content under `lang="en"`), unmapped `/parcours-de-soins/{slug}` (the former temp catch-all).
+
+---
+
+## H. Exact detail slug inventory
+
+- **Practices (19,** ASCII canonical**):** kinesitherapie, osteopathie, massotherapie, cupping-therapy-hijama, psychologie, neuropsychologie, psychotherapie, sexologie, meditation, sophrologie, nutrition, coaching-sportif, orthophonie, naturopathie, psychomotricite, art-martial-therapie, sono-therapie, yoga, infirmerie (FR + EN).
+- **Group sessions (6):** yoga-prenatal, sophrologie, nutrition, breathwork, jiu-jitsu-bresilien, pilates-et-posture (FR + EN share FR slug).
+- **Professionals (10):** nadine-kita, dr-amal-benali, khalid-ouazzani, nadia-tazi, yassine-el-amrani, sara-mansouri, mehdi-irzi, najat-berrada, omar-tazi, fatima-zahra-alami.
+- **Articles (7,** all new):** 5-benefits-of-preventive-healthcare, future-preventive-medicine-ai, 525-biomarkers-explained, personalized-nutrition-biochemistry, inflammation-chronic-disease-lifestyle, longevity-blue-zones-lessons, sleep-circadian-rhythm-optimization.
+
+### Care journeys (legacy, 7) — current handling (first-class pages, alias-only 308s)
+All 7 journeys are now **canonical pages** at `/parcours-de-soins/{slug}` (FR + EN, live-verbatim content, noindex-consistent with live site). Legacy URL forms (accented raw, percent-encoded, raw-straight `'`, raw-curly `’`) 308 → the canonical ASCII page.
+
+| Slug | Canonical page | Legacy 308s → it |
+|------|----------------|-------------------|
+| `les-troubles-de-l-apprentissage` | ✅ FR+EN | accented/`%27`/raw-`'` FR+EN |
+| `grossesse-&-maternite` | ✅ FR+EN | accented `-maternit%C3%A9` FR+EN |
+| `sante-holistique` | ✅ FR+EN | accented FR+EN |
+| `le-vertige-positionnel` | ✅ FR+EN | (aliases handled live) |
+| `la-maladie-d-alzheimer` | ✅ FR+EN | `%27`/`%E2%80%99`/raw-`'`/raw-`’` FR+EN |
+| `tecar-therapie` | ✅ FR+EN | accented FR+EN |
+| `kinesitherapie-&-avc` | ✅ FR+EN | accented (`%26` + raw-`&`) FR+EN |
+| any other slug | **404** | temp `:slug+`→`/` catch-all REMOVED this pass; unmapped journeys no longer redirect to home |
+
+Source forms per journey: canonical accented URL + percent-encoded form + raw-straight `'` + (Alzheimer) raw-curly `’` — all wired FR+EN.
+
+---
+
+## I. New-site equivalents
 
 | New family | Present | Notes |
 |-----------|---------|-------|
-| `/` , `/en` | ✅ | |
-| `/about` , `/en/about` | ✅ | live `/about-us` |
-| `/professional/+` , `/en/...` | ✅ 10 | same slugs as live |
-| `/pratiques/+` , `/en/...` | ✅ 19 ASCII | live uses accented slugs |
-| `/articles/+` , `/en/...` | ✅ 7 | live has **no articles**; all new |
-| `/seance-de-groupe/+` , `/en/...` | ✅ 6 | same slugs |
-| `/corporate` , `/programmes` , EN | ✅ | new `/corporate/programmes` |
-| `/soins-a-domicile` | ✅ FR only | no EN route |
-| `/contact` , `/en/contact` | ✅ | |
-| `/conditions` , `/confidentialite` + EN | ✅ | |
-| `/login` , `/en/login` | ✅ | |
-| `/faq` , `/en/faq` | ✅ | |
-| `/produits` + detail + EN | ✅ | NET-NEW (no legacy on live) |
+| `/`, `/en` | ✅ | |
+| `/about-us`, `/en/about-us` | ✅ | live-canonical (was `/about` in pre-parity draft) |
+| `/professional/+` (10) | ✅ | same slugs as live |
+| `/pratiques/+` (19 ASCII) | ✅ | live used accented — 8 gaps 308’d |
+| `/articles/+` (7) | ✅ | live had ZERO articles |
+| `/seance-de-groupe/+` (6) | ✅ | same FR slugs |
+| `/corporate`, `/corporate/programmes` | ✅ | EN too |
+| `/soins-a-domicile` | ✅ FR only | no EN, no fake hreflang |
+| `/parcours-de-soins` + 7 details | ✅ FR+EN | first-class pages, live-verbatim content |
+| `/contact-us`, `/terms-and-conditions`, `/privacy-policy` | ✅ | live-canonical forms |
+| `/login`, `/en/login` | ✅ noindex | |
+| `/faq`, `/en/faq` | ✅ | |
+| `/produits` + detail | NET-NEW | no legacy; detail 200-noindex artifact on unknown slugs (see R) |
 
 ---
 
-## J. URLs requiring redirects
+## J. Redirect candidates (remaining)
 
-| Live → New | Type | Priority |
-|------------|------|----------|
-| `/about-us` → `/about` (FR + EN) | 301 | HIGH |
-| `/soins` → `/pratiques` | 301 | HIGH |
-| `/maux-troubles` → `/pratiques` | 301 | MED |
-| `/contact-us` → `/contact` | 301 | HIGH |
-| `/terms-and-conditions` → `/conditions` | 301 | HIGH |
-| `/privacy-policy` → `/confidentialite` | 301 | HIGH |
-| `/for-entreprise` → `/corporate` | 301 | HIGH |
-| `/solutions/entreprises` → `/corporate` | 301 | HIGH |
-| `/blog` → `/articles` | 301 | MED |
-| `/user/sign-in` → `/login` | 301 | HIGH |
-| `/specialistes` → `/professional` | 301 | HIGH |
-| `/group-sessions/{en-slug}` → `/en/seance-de-groupe/{fr-slug}` | 301 | HIGH |
-| Practice **accented** → **ASCII** (19 FR + 19 EN) | 301 | HIGH |
-| `/search/all/all` → `/produits` | 302 | LOW |
-| `/evenements` → `/` | 302 | LOW |
-| `/ar/*` → `/` | 302 | LOW |
-| `/parcours-de-soins/:slug+` → semantic practice | **NEEDS CONTENT / MANUAL** (see K) | MED |
-
-**Note:** `next.config.ts` ALREADY contains many of these redirects (they were implemented in earlier steps). This audit is the *authoritative superset*; no changes were made here.
+| Candidate | Decision |
+|-----------|----------|
+| `/maux-troubles/{slug}` beyond the 3 verified | STAY 404 until each canonical slug is verified from the archive; then pluridisciplinary fold pattern |
+| Care-pathway hub (`/parcours-de-soins`) | ✅ **IMPLEMENTED** — built as first-class page (this pass); legacy journey URLs 308 to canonical pages |
+| `/search/{specialty}/{city}` deep variants | 410 recommended at the deploy edge (GraphQL search permanently retired) — now 404 |
 
 ---
 
-## K. URLs with no safe equivalent (per §10: do NOT invent redirect targets)
+## K. Encoding findings (practice accents)
 
-| URL | Reason |
-|-----|--------|
-| `/parcours-de-soins` + 7 detail URLs | Care-journey pages not built. Semantic practice targets exist (e.g. grossesse→kine, alzheimer→neuropsychologie) but these are **decisions**, not automatic redirects — flag for content/product sign-off. |
-| `/maux-troubles/{slug}` | Per-topic trouble pages not replicated. Semantic practice mapping possible but needs manual review. |
-| `/evenements` | No events feature. Low value; temporary 302 to home is acceptable. |
-| `/search/all/casablanca`, `/search/kine/all` | Deep search URLs; new site has no search route. No 1:1 — manual review / noindex. |
-| `/en/soins-a-domicile` | Live serves FR content under `lang="en"` (no real EN). New site is FR-only for homecare. **DO NOT INDEX** the EN variant; drop the EN route. |
-| `/professional/{slug}/booking` | New booking is `/contact?service=...` — different model. 301 to `/contact` is defensible but booking context is lost; confirm. |
-| `/llms.txt`, `/manifest.json` | Infra, low value. Recreate optionally. |
+`é→%C3%A9`, `%E2%80%99` (curly quote) does NOT resolve on live journeys — use raw `'`. `&` in `grossesse-&-maternité` matches raw `&` form (not `%26`). Redirect sources are matched against the **encoded** path per Next.js — sources written percent-encoded where needed.
 
 ---
 
-## L. Accented / encoded slug findings
+## M. Canonical/index hygiene (current)
 
-- **All 19 practice detail slugs** on live are **accented** in the URL path: `kinésithérapie`, `méditation`, `thérapie`, `psychothérapie`, `massothérapie`, `psychomotricité`, `ostéopathie`, `sono-thérapie`, `art-martial-thérapie`. These must be URL-encoded in redirect rules:
-  - `é` → `%C3%A9` (e.g. `/pratiques/kin%C3%A9sith%C3%A9rapie`)
-  - `` → `%C3%A9` (accented e variants)
-  - `d’Alzheimer` (right single quote `’` = `%E2%80%99`) in `la-maladie-d’Alzheimer`
-  - `&` → `&amp;` in sitemap, `%26` in URL (`grossesse-&-maternité`, `kinésithérapie-&-avc`)
-  - `l'apprentissage` apostrophe → `%27` / `&apos;` in XML
-- **Side effect:** Google may have TWO index entries per practice (one ASCII URL like `/pratiques/kinesitherapie` probed as 200, one accented). The ASCII URLs return 200 on live **as catch-all**, confirming the site serves both → redirect the accented canonical to the new ASCII.
+- Every canonical page self-canonical; FR+EN `hrefLang` pairs + `x-default`→FR (except FR-only homecare).
+- No redirect source appears in sitemap (247 URLs = canonical-only).
+- `/login` `noindex` both locales; robots disallows `/login`, `/en/login`, `/admin`, `/api/`.
+- Duplicate ASCII/accented practice ambiguity eliminated via 16 308s.
 
 ---
 
-## M. Duplicate / canonical issues
+## N. Top migration risks (resolved/remaining)
 
-| Issue | Detail |
-|-------|--------|
-| `/` vs `/fr` | `/fr` 200 with canonical → `/` (duplicate home) |
-| ASCII vs accented practice URLs | Both return 200 on live (catch-all); canonical is accented → risk of split signals |
-| `/en/` vs `/en` | 308 trailing-slash normalization (fine) |
-| Generic title collision | Almost every page shares title `"Vos besoins de santé en un seul lieu | Wenaya"` — poor differentiation, no canonical conflicts but weak SERP signals |
-| Corporate | `/corporate` shares title with `for_business_title` H1; `/en/corporate` same |
-| EN "translation" | `/en/*` largely serves **French content** under `lang="en"` (no real EN copy) — duplicate-content risk between locales |
-| No `-1` duplicate article slugs | `sitemap_articles.xml` empty → none present |
+1. ✅ Accented→ASCII practice canonicalization (16 308s).
+2. ✅ Broken professional `Undefined` titles + undefined catch-alls → proper 404s (incl. the new `loading.tsx` 200→404 fix).
+3. ✅ SPA shells replaced by SSR.
+4. ✅ Corporate raw-key H1.
+5. ✅ Care journeys built as first-class pages FR+EN; legacy URL forms exact 308s; `/parcours-de-soins` hub live (NEEDS_CONTENT resolved).
+6. ⏳ `?service=` booking param is passive (only group-session kit builds it); any type of deep-booking link will NOT prefill — future content/API workstream, no URL impact.
+7. ✅ Same-URL professional resolution (URL parity, no redirect needed for the 10 live slugs).
 
 ---
 
-## N. Top SEO migration risks
-
-1. **SPA "Loading…" shells on live** for practices/sessions/homecare/contact/legal — Google currently sees empty pages. Migration to fully-SSR new site is a large positive; ensure redirects carry any residual authority.
-2. **Broken `"Undefined | Wenaya"` professional titles** + `undefined` article catch-alls indexed in Google — could be flagged as low-quality; new site fixes both.
-3. **Accented slug canonicalization** — must map all 19 × 2 accented slugs to ASCII precisely, with `%`-encoding in rewrite source patterns.
-4. **Corporate raw translation keys** (`for_business_title`) — new site replaces with real copy, same URL.
-5. **Care pathways (`/parcours-de-soins/*`)** and **maux-troubles** have NO new equivalents — highest manual-decision risk; don't blanket-redirect.
-6. **Backlink risk:** if backlinks point at the SPA-shell practice/session URLs, their real content lives client-side; the redirect to new SSR pages preserves target but be aware of any canonical-vs-URL mismatch at cutover.
-7. **EN pseudo-translation** — duplicate content FR/EN risk on live; new site has genuine EN for practices, professionals, sessions. Keep hreflang pairs clean.
-8. **Arabic routing** — AR not supported in new; fold to FR (loses AR share, acceptable given scope).
-
----
-
-## O. Recommended redirect implementation phase
-
-Recommended sequencing (to be executed in a FUTURE change — NOT now):
-
-- **Phase 1 (launch-critical, HIGH priority):** 1:1 direct mappings that already exist / are obvious — `/about-us→/about`, `/contact-us→/contact`, `/terms-and-conditions→/conditions`, `/privacy-policy→/confidentialite`, `/for-entreprise→/corporate`, `/user/sign-in→/login`, practice accented→ASCII (19×2), group-session /blog, /soins→/pratiques, /maux-troubles→/pratiques, /search/all/all→/produits.
-- **Phase 2 (MEDIUM):** Care-pathway + maux-troubles semantic 301s — **only after content/product maps each topic to a practice** (avoid inventing).
-- **Phase 3 (LOW / cleanup):** `/evenements`, `/search/{spec}/{city}`, `/ar/*`, `/professional/{slug}/booking`, `/llms.txt`, noindex of dead catch-alls.
-
-> Validation step each phase: crawl the redirect list, confirm 301/302 codes, no redirect chains, final targets return 200 with server-rendered content.
-
----
-
-## P. Files generated
+## O-P. Files generated (all in repo root, uncommitted)
 
 | File | Contents |
 |------|----------|
-| `wenaya-live-url-inventory.csv` | Every discovered live URL: `url,status,title,canonical,language,type,indexable,source,notes` (~122 rows) |
-| `wenaya-seo-migration-map.csv` | Per-URL action: `old_url,current_status,new_target,action,confidence,priority,notes` (~106 rows) |
-| `wenaya-seo-migration-summary.md` | This report (sections A–P) |
+| `wenaya-live-url-inventory.csv` | 251 rows: 127 canonical (status/title/canonical/lang/type/indexable) + 111 redirect sources + 13 verified 404s + journey pages |
+| `wenaya-seo-migration-map.csv` | 251 rows: `old_url,current_status,new_target,action,confidence,priority,notes` (no implementation_status column — status is authoritative in `next.config.ts`) |
+| `wenaya-seo-migration-summary.md` | This report |
 
-All files are placed in the repo root. **Nothing committed, no redirects wired, no code modified.**
+---
+
+## Q. Verification (this pass, prod build :3002)
+
+- **Redirect suite:** no-follow status+Location, follow final URL, expect-404, expect-temp, canonical 200s — zero failures. Journey aliases (20 FR+EN incl. all encoding variants) assert 308 + follow to final canonical page 200; unmapped journey slugs assert **404** (catch-all removed).
+- Journey pages: `/parcours-de-soins` hub + 7 detail FR+EN → 200; live-verbatim content; canonical + hreflang; in sitemap (247 URLs).
+- Post-fix spot checks: `/professional/ghita` FR+EN → 404 (noindex, clean 404 title); `/parcours-de-soins/xyz-unmapped` → 404.
+- Known streaming artifact: `/produits/{unknown}` returns **200 + noindex + 404 content** (Shop detail has the same `loading.tsx` boundary; out of scope — products is a CMS/Shop surface).
+- `npx tsc --noEmit` clean; `npx eslint .` **0E/12W** (unchanged pre-existing baseline); `npm run build` **270 static pages** (clean `.next`, kill-node first).
+
+---
+
+## R. Deploy recommendations
+
+1. Deploy `next.config.ts` + the 2 loading.tsx deletions + the care-journey pages + sitemap.lang together (the 200→404 fix must ship with the redirect table and the new pages).
+2. Recommend a `410 Gone` for `/search/{specialty}/{city}` deep variants at the edge (definitive retirement signal; currently 404).
+3. Post-cutover: crawl the 111 redirect source→target pairs; confirm no chains, final 200, no `noindex` sources in sitemap.
+4. Do NOT index `/en/soins-a-domicile` (404), `/produits/{unknown}` (noindex) — no further action.
+5. Care-journey aliases are permanent 308s to the canonical journey pages — confirm those destination slugs keep their spelling post-deploy.
+
+---
+
+## S. Remaining workstreams (out of scope here)
+
+- Real patient-auth backend (login is a noindex placeholder).
+- CMS + Shop architectures (produits detail 200-noindex artifact lives there).
+- Monitor `wenaya.com` (maintenance mode) for any reviving content before cutover finalization.
+
+---
+
+## T. Owner / final status
+
+All redirect + status decisions reviewed against real (captured/browser-verified) live evidence. Deliverables regenerated to CURRENT architecture. **Nothing committed or pushed** — `git diff` review pending before any commit.
+
+*Generated 2026-09-08 — branch `pre-production-cleanup`, prod server on :3002.*

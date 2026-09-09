@@ -21,13 +21,13 @@ export interface ClinicFeature {
 export const clinicMetrics = (locale: "fr" | "en"): ClinicMetric[] =>
   locale === "en"
     ? [
-        { value: "99%", label: "of our users recommend their practitioner" },
+        { value: "4,7 ★", label: "Google Maps reviews" },
         { value: "+148", label: "Google reviews" },
         { value: "9", label: "care disciplines" },
         { value: "1", label: "multidisciplinary center" },
       ]
     : [
-        { value: "99%", label: "de nos utilisateurs recommandent leur praticien" },
+        { value: "4,7 ★", label: "avis Google Maps" },
         { value: "+148", label: "avis Google" },
         { value: "9", label: "disciplines de soin" },
         { value: "1", label: "centre pluridisciplinaire" },

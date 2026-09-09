@@ -11,7 +11,6 @@ const fr = {
     aPropos: "Cliniques",
     faq: "FAQ",
     produits: "Boutique",
-    specialistes: "Spécialistes",
     seConnecter: "Se connecter",
     reserver: "Réserver",
     menu: "Menu",
@@ -37,8 +36,6 @@ const fr = {
     text: "Wenaya Clinic Casablanca — Soins physiques, santé mentale & bien-être pluridisciplinaire",
   },
   hero: {
-    eyebrow: "Casablanca · Maroc",
-    depuis: "Depuis 2019",
     vousMéritez: "Vous méritez",
     uneSante: "une santé",
     complete: "complète.",
@@ -47,7 +44,7 @@ const fr = {
     stats: {
       therapeutes: "thérapeutes certifiés",
       patients: "patients accompagnés",
-      avis: "avis Google Maps",
+      satisfaction: "de nos utilisateurs recommandent leur praticien",
       disciplines: "disciplines cliniques",
     },
   },

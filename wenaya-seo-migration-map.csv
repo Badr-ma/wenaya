@@ -1,102 +1,252 @@
-old_url,current_status,new_target,action,confidence,priority,notes
-"https://wenaya.com/","200","https://wenaya.com/","KEEP","high","-","Homepage preserved; body SPA shell on live vs server-rendered new"
-"https://wenaya.com/fr","200","https://wenaya.com/","301","high","low","Duplicate home variant; canonical already /; redirect"
-"https://wenaya.com/about-us","200","https://wenaya.com/about","301","high","high","1:1 semantic: live About -> new Clinic page"
-"https://wenaya.com/en/about-us","200","https://wenaya.com/en/about","301","high","high","1:1 semantic EN"
-"https://wenaya.com/soins","200","https://wenaya.com/pratiques","301","high","high","Practice listing renamed -> /pratiques in new"
-"https://wenaya.com/en/soins","200","https://wenaya.com/en/pratiques","301","high","high","EN practice listing"
-"https://wenaya.com/pratiques","200","https://wenaya.com/pratiques","KEEP","high","-","Same URL kept in new (canonical listing)"
-"https://wenaya.com/en/pratiques","200","https://wenaya.com/en/pratiques","KEEP","high","-","EN same URL kept"
-"https://wenaya.com/maux-troubles","200","https://wenaya.com/pratiques","301","high","high","Troubles listing has no new family; fold into /pratiques"
-"https://wenaya.com/en/maux-troubles","200","https://wenaya.com/en/pratiques","301","high","high","EN troubles fold"
-"https://wenaya.com/maux-troubles/grossesse","200","https://wenaya.com/pratiques/kinesitherapie","301","medium","manual","NEEDS CONTENT/MANUAL: no new trouble pages; semantic target proposed"
-"https://wenaya.com/seance-de-groupe","200","https://wenaya.com/seance-de-groupe","KEEP","high","-","Group sessions listing exists in new"
-"https://wenaya.com/en/seance-de-groupe","200","https://wenaya.com/en/seance-de-groupe","KEEP","high","-","EN same"
-"https://wenaya.com/evenements","200","https://wenaya.com/","302","low","low","Events page has no new equivalent; temporary fold pending content"
-"https://wenaya.com/en/evenements","200","https://wenaya.com/en/","302","low","low","EN events placeholder"
-"https://wenaya.com/articles","200","https://wenaya.com/articles","KEEP","high","-","Articles listing kept; new site has 7 posts"
-"https://wenaya.com/en/articles","200","https://wenaya.com/en/articles","KEEP","high","-","EN articles kept"
-"https://wenaya.com/articles/undefined","200","","DONT-REDIRECT","high","high","BROKEN undefined catch-all: fix (404) in new; never redirect"
-"https://wenaya.com/en/articles/undefined","200","","DONT-REDIRECT","high","high","BROKEN EN catch-all; fix"
-"https://wenaya.com/evenements/undefined","200","","DONT-REDIRECT","high","high","BROKEN catch-all; fix"
-"https://wenaya.com/contact-us","200","https://wenaya.com/contact","301","high","high","1:1 semantic contact"
-"https://wenaya.com/en/contact-us","200","https://wenaya.com/en/contact","301","high","high","EN contact"
-"https://wenaya.com/terms-and-conditions","200","https://wenaya.com/conditions","301","high","high","Legal route renamed"
-"https://wenaya.com/en/terms-and-conditions","200","https://wenaya.com/en/conditions","301","high","high","EN legal"
-"https://wenaya.com/privacy-policy","200","https://wenaya.com/confidentialite","301","high","high","Legal route renamed"
-"https://wenaya.com/en/privacy-policy","200","https://wenaya.com/en/confidentialite","301","high","high","EN privacy"
-"https://wenaya.com/for-entreprise","404","https://wenaya.com/corporate","301","high","low","404 on live currently but route semantics = corporate"
-"https://wenaya.com/en/for-entreprise","404","https://wenaya.com/en/corporate","301","high","low","EN corporate 404 alias"
-"https://wenaya.com/corporate","200","https://wenaya.com/corporate","KEEP","high","-","Same URL kept (new version fixed H1)"
-"https://wenaya.com/en/corporate","200","https://wenaya.com/en/corporate","KEEP","high","-","EN corporate kept"
-"https://wenaya.com/search/all/all","200","https://wenaya.com/produits","302","low","low","Search has no new equivalent; fold to products (manual review)"
-"https://wenaya.com/en/search/all/all","200","https://wenaya.com/en/produits","302","low","low","EN search fold"
-"https://wenaya.com/search/all/casablanca","200","","CLEANUP","low","low","Niche search by city; noindex or drop"
-"https://wenaya.com/search/kine/all","200","","CLEANUP","low","low","Niche search by specialty; noindex or drop"
-"https://wenaya.com/search","200","","CLEANUP","low","low","Search root; noindex or drop"
-"https://wenaya.com/user/sign-in","200","https://wenaya.com/login","301","high","high","Patient sign-in -> new /login (already redirected live alias)"
-"https://wenaya.com/en/user/sign-in","200","https://wenaya.com/en/login","301","high","high","EN patient sign-in"
-"https://wenaya.com/parcours-de-soins","200","","NEEDS-CONTENT","medium","manual","Care-pathway hub; no new equivalent; decide fold to /pratiques or create"
-"https://wenaya.com/parcours-de-soins/grossesse-&-maternite","200","https://wenaya.com/pratiques/kinesitherapie","301","medium","manual","NEEDS CONTENT: semantic only; manual confirm"
-"https://wenaya.com/parcours-de-soins/les-troubles-de-l-apprentissage","200","https://wenaya.com/pratiques/orthophonie","301","medium","manual","NEEDS CONTENT: semantic only; manual confirm"
-"https://wenaya.com/parcours-de-soins/le-vertige-positionnel","200","https://wenaya.com/pratiques/kinesitherapie","301","medium","manual","NEEDS CONTENT: semantic only; manual confirm"
-"https://wenaya.com/parcours-de-soins/la-maladie-d-Alzheimer","200","https://wenaya.com/pratiques/neuropsychologie","301","medium","manual","NEEDS CONTENT: semantic only; manual confirm"
-"https://wenaya.com/parcours-de-soins/sante-holistique","200","https://wenaya.com/pratiques/naturopathie","301","medium","manual","NEEDS CONTENT: semantic only; manual confirm"
-"https://wenaya.com/parcours-de-soins/tecar-therapie","200","https://wenaya.com/pratiques/kinesitherapie","301","medium","manual","NEEDS CONTENT: semantic only; manual confirm"
-"https://wenaya.com/parcours-de-soins/kinesitherapie-&-avc","200","https://wenaya.com/pratiques/kinesitherapie","301","medium","manual","NEEDS CONTENT: semantic only; manual confirm"
-"https://wenaya.com/en/parcours-de-soins/grossesse-&-maternite","200","https://wenaya.com/en/pratiques/kinesitherapie","301","medium","manual","EN care pathway; no EN new equivalent"
-"https://wenaya.com/soins-a-domicile","200","https://wenaya.com/soins-a-domicile","KEEP","high","-","FR homecare page exists in new (STEP 16)"
-"https://wenaya.com/en/soins-a-domicile","200","","DO-NOT-INDEX","high","medium","Live serves FR under lang=en; new is FR-only -> drop index no redirect"
-"https://wenaya.com/ar/","200","https://wenaya.com/","301","high","medium","AR not supported; fold FR home"
-"https://wenaya.com/ar/about-us","200","https://wenaya.com/about","301","high","medium","AR about fold"
-"https://wenaya.com/ar/pratiques","200","https://wenaya.com/pratiques","301","high","medium","AR practices fold"
-"https://wenaya.com/ar/search/all/all","200","https://wenaya.com/","301","high","low","AR search fold"
-"https://wenaya.com/ar/parcours-de-soins/grossesse-&-maternite","200","https://wenaya.com/pratiques/kinesitherapie","301","high","low","AR care pathway fold"
-"https://wenaya.com/faq","200","https://wenaya.com/faq","KEEP","high","-","FAQ exists in new"
-"https://wenaya.com/en/faq","200","https://wenaya.com/en/faq","KEEP","high","-","EN FAQ exists in new"
-"https://wenaya.com/llms.txt","200","","OPTIONAL","low","low","Recreate equivalent llms.txt optionally; otherwise cleanup"
-"https://wenaya.com/manifest.json","200","","CLEANUP","low","low","PWA manifest; no new equivalent"
-"https://wenaya.com/pratiques/art-martial-therapie","200","https://wenaya.com/pratiques/art-martial-therapie","301","high","high","Accented live slug -> ASCII (canonical). Existing next.config redirect family"
-"https://wenaya.com/pratiques/kinesitherapie","200","https://wenaya.com/pratiques/kinesitherapie","301","high","high","Accented -> ASCII kinesitherapie"
-"https://wenaya.com/pratiques/massotherapie","200","https://wenaya.com/pratiques/massotherapie","301","high","high","Accented -> ASCII massotherapie"
-"https://wenaya.com/pratiques/meditation","200","https://wenaya.com/pratiques/meditation","301","high","high","Accented -> ASCII meditation"
-"https://wenaya.com/pratiques/osteopathie","200","https://wenaya.com/pratiques/osteopathie","301","high","high","Accented -> ASCII osteopathie"
-"https://wenaya.com/pratiques/psychomotricite","200","https://wenaya.com/pratiques/psychomotricite","301","high","high","Accented -> ASCII psychomotricite"
-"https://wenaya.com/pratiques/psychotherapie","200","https://wenaya.com/pratiques/psychotherapie","301","high","high","Accented -> ASCII psychotherapie"
-"https://wenaya.com/pratiques/sono-therapie","200","https://wenaya.com/pratiques/sono-therapie","301","high","high","Accented -> ASCII sono-therapie"
-"https://wenaya.com/pratiques/coaching-sportif","200","https://wenaya.com/pratiques/coaching-sportif","KEEP","high","-","Already canonical"
-"https://wenaya.com/pratiques/cupping-therapy-hijama","200","https://wenaya.com/pratiques/cupping-therapy-hijama","KEEP","high","-","Already canonical"
-"https://wenaya.com/pratiques/infirmerie","200","https://wenaya.com/pratiques/infirmerie","KEEP","high","-","Already canonical"
-"https://wenaya.com/pratiques/naturopathie","200","https://wenaya.com/pratiques/naturopathie","KEEP","high","-","Already canonical"
-"https://wenaya.com/pratiques/neuropsychologie","200","https://wenaya.com/pratiques/neuropsychologie","KEEP","high","-","Already canonical"
-"https://wenaya.com/pratiques/nutrition","200","https://wenaya.com/pratiques/nutrition","KEEP","high","-","Already canonical"
-"https://wenaya.com/pratiques/orthophonie","200","https://wenaya.com/pratiques/orthophonie","KEEP","high","-","Already canonical"
-"https://wenaya.com/pratiques/psychologie","200","https://wenaya.com/pratiques/psychologie","KEEP","high","-","Already canonical"
-"https://wenaya.com/pratiques/sexologie","200","https://wenaya.com/pratiques/sexologie","KEEP","high","-","Already canonical"
-"https://wenaya.com/pratiques/sophrologie","200","https://wenaya.com/pratiques/sophrologie","KEEP","high","-","Already canonical"
-"https://wenaya.com/pratiques/yoga","200","https://wenaya.com/pratiques/yoga","KEEP","high","-","Already canonical"
-"https://wenaya.com/professional/nadine-kita","200","https://wenaya.com/professional/nadine-kita","KEEP","high","-","Same URL kept; new fixes Undefined title"
-"https://wenaya.com/professional/dr-amal-benali","200","https://wenaya.com/professional/dr-amal-benali","KEEP","high","-","Same URL kept"
-"https://wenaya.com/professional/khalid-ouazzani","200","https://wenaya.com/professional/khalid-ouazzani","KEEP","high","-","Same URL kept"
-"https://wenaya.com/professional/nadia-tazi","200","https://wenaya.com/professional/nadia-tazi","KEEP","high","-","Same URL kept"
-"https://wenaya.com/professional/yassine-el-amrani","200","https://wenaya.com/professional/yassine-el-amrani","KEEP","high","-","Same URL kept"
-"https://wenaya.com/professional/sara-mansouri","200","https://wenaya.com/professional/sara-mansouri","KEEP","high","-","Same URL kept"
-"https://wenaya.com/professional/mehdi-irzi","200","https://wenaya.com/professional/mehdi-irzi","KEEP","high","-","Same URL kept"
-"https://wenaya.com/professional/najat-berrada","200","https://wenaya.com/professional/najat-berrada","KEEP","high","-","Same URL kept"
-"https://wenaya.com/professional/omar-tazi","200","https://wenaya.com/professional/omar-tazi","KEEP","high","-","Same URL kept"
-"https://wenaya.com/professional/fatima-zahra-alami","200","https://wenaya.com/professional/fatima-zahra-alami","KEEP","high","-","Same URL kept"
-"https://wenaya.com/professional/nadine-kita/booking","200","https://wenaya.com/contact?service=nadine-kita","301","medium","manual","Booking sub-page; new booking flow via /contact; manual confirm"
-"https://wenaya.com/en/professional/nadine-kita","200","https://wenaya.com/en/professional/nadine-kita","KEEP","high","-","EN kept"
-"https://wenaya.com/en/professional/nadine-kita/booking","200","https://wenaya.com/en/contact?service=nadine-kita","301","medium","manual","EN booking sub-page"
-"https://wenaya.com/seance-de-groupe/yoga-prenatal","200","https://wenaya.com/seance-de-groupe/yoga-prenatal","KEEP","high","-","Same URL kept in new"
-"https://wenaya.com/seance-de-groupe/sophrologie","200","https://wenaya.com/seance-de-groupe/sophrologie","KEEP","high","-","Same URL kept"
-"https://wenaya.com/seance-de-groupe/nutrition","200","https://wenaya.com/seance-de-groupe/nutrition","KEEP","high","-","Same URL kept"
-"https://wenaya.com/seance-de-groupe/breathwork","200","https://wenaya.com/seance-de-groupe/breathwork","KEEP","high","-","Same URL kept"
-"https://wenaya.com/seance-de-groupe/jiu-jitsu-bresilien","200","https://wenaya.com/seance-de-groupe/jiu-jitsu-bresilien","KEEP","high","-","Same URL kept"
-"https://wenaya.com/seance-de-groupe/pilates-et-posture","200","https://wenaya.com/seance-de-groupe/pilates-et-posture","KEEP","high","-","Same URL kept"
-"https://wenaya.com/en/seance-de-groupe/yoga-prenatal","200","https://wenaya.com/en/seance-de-groupe/yoga-prenatal","KEEP","high","-","EN kept"
-"https://wenaya.com/en/seance-de-groupe/sophrologie","200","https://wenaya.com/en/seance-de-groupe/sophrologie","KEEP","high","-","EN kept"
-"https://wenaya.com/en/seance-de-groupe/nutrition","200","https://wenaya.com/en/seance-de-groupe/nutrition","KEEP","high","-","EN kept"
-"https://wenaya.com/en/seance-de-groupe/breathwork","200","https://wenaya.com/en/seance-de-groupe/breathwork","KEEP","high","-","EN kept"
-"https://wenaya.com/en/seance-de-groupe/jiu-jitsu-bresilien","200","https://wenaya.com/en/seance-de-groupe/jiu-jitsu-bresilien","KEEP","high","-","EN kept"
-"https://wenaya.com/en/seance-de-groupe/pilates-et-posture","200","https://wenaya.com/en/seance-de-groupe/pilates-et-posture","KEEP","high","-","EN kept"
+﻿old_url,current_status,new_target,action,confidence,priority,notes
+https://www.wenaya.com/fr,308,https://www.wenaya.com/,308 PM,high,low,Duplicate live home variant; canonical is root
+https://www.wenaya.com/about,308,https://www.wenaya.com/about-us,308 PM,high,high,Parity: short form folds to live canonical
+https://www.wenaya.com/en/about,308,https://www.wenaya.com/en/about-us,308 PM,high,high,Parity EN
+https://www.wenaya.com/contact,308,https://www.wenaya.com/contact-us,308 PM,high,high,Parity: short form folds to live canonical
+https://www.wenaya.com/en/contact,308,https://www.wenaya.com/en/contact-us,308 PM,high,high,Parity EN
+https://www.wenaya.com/conditions,308,https://www.wenaya.com/terms-and-conditions,308 PM,high,high,Parity: short form folds to live canonical
+https://www.wenaya.com/en/conditions,308,https://www.wenaya.com/en/terms-and-conditions,308 PM,high,high,Parity EN
+https://www.wenaya.com/confidentialite,308,https://www.wenaya.com/privacy-policy,308 PM,high,high,Parity: short form folds to live canonical
+https://www.wenaya.com/en/confidentialite,308,https://www.wenaya.com/en/privacy-policy,308 PM,high,high,Parity EN
+https://www.wenaya.com/for-entreprise,308,https://www.wenaya.com/corporate,308 PM,high,high,Renamed company page
+https://www.wenaya.com/for-entreprise/:path*,308,https://www.wenaya.com/corporate/:path*,308 PM,high,high,Company glob
+https://www.wenaya.com/solutions/entreprises,308,https://www.wenaya.com/corporate,308 PM,high,high,Legacy alias
+https://www.wenaya.com/solutions/entreprises/:path*,308,https://www.wenaya.com/corporate/:path*,308 PM,high,high,Legacy alias glob
+https://www.wenaya.com/en/for-entreprise,308,https://www.wenaya.com/en/corporate,308 PM,high,high,Renamed company page
+https://www.wenaya.com/en/for-entreprise/:path*,308,https://www.wenaya.com/en/corporate/:path*,308 PM,high,high,Company glob
+https://www.wenaya.com/en/solutions/entreprises,308,https://www.wenaya.com/en/corporate,308 PM,high,high,Renamed company page
+https://www.wenaya.com/en/solutions/entreprises/:path*,308,https://www.wenaya.com/en/corporate/:path*,308 PM,high,high,Legacy alias glob
+https://www.wenaya.com/soins,308,https://www.wenaya.com/pratiques,308 PM,high,high,Practice listing renamed
+https://www.wenaya.com/en/soins,308,https://www.wenaya.com/en/pratiques,308 PM,high,high,EN
+https://www.wenaya.com/maux-troubles,308,https://www.wenaya.com/pratiques,308 PM,high,high,No new troubles family; fold listing
+https://www.wenaya.com/en/maux-troubles,308,https://www.wenaya.com/en/pratiques,308 PM,high,high,EN
+https://www.wenaya.com/maux-troubles/grossesse,308,https://www.wenaya.com/pratiques,308 PM,high,medium,Verified live canonical; pluridisciplinary (yoga/masso/nutrition/psycho) -> listing
+https://www.wenaya.com/maux-troubles/grossesse-maternite,308,https://www.wenaya.com/pratiques,308 PM,high,medium,Verified live canonical slug; pluridisciplinary -> listing
+https://www.wenaya.com/maux-troubles/vertiges,308,https://www.wenaya.com/pratiques,308 PM,high,medium,Verified live canonical slug; pluridisciplinary -> listing
+https://www.wenaya.com/blog,308,https://www.wenaya.com/articles,308 PM,high,medium,Blog renamed; new site has 7 articles
+https://www.wenaya.com/blog/:path*,308,https://www.wenaya.com/articles/:path*,308 PM,high,high,Blog glob
+https://www.wenaya.com/en/blog,308,https://www.wenaya.com/en/articles,308 PM,high,medium,EN
+https://www.wenaya.com/en/blog/:path*,308,https://www.wenaya.com/en/articles/:path*,308 PM,high,high,EN blog glob
+https://www.wenaya.com/evenements,307,https://www.wenaya.com/seance-de-groupe,307 TEMP,high,low,"No events feature; live URL was group-booking app -> session gallery re-target"
+https://www.wenaya.com/en/evenements,307,https://www.wenaya.com/en/seance-de-groupe,307 TEMP,high,low,"No events feature (EN); re-target to EN session gallery"
+https://www.wenaya.com/search/all/all,307,https://www.wenaya.com/pratiques,307 TEMP,high,low,"Legacy full-clinic search; catalog is practices, NOT shop (p/produits target was wrong)"
+https://www.wenaya.com/en/search/all/all,307,https://www.wenaya.com/en/pratiques,307 TEMP,high,low,EN search fold
+https://www.wenaya.com/pratiques/psychologie-clinique,308,https://www.wenaya.com/pratiques/psychologie,308 PM,high,high,Renamed practice
+https://www.wenaya.com/pratiques/therapies-complementaires,308,https://www.wenaya.com/pratiques,308 PM,high,medium,Merged practice -> catalog
+https://www.wenaya.com/en/pratiques/psychologie-clinique,308,https://www.wenaya.com/en/pratiques/psychologie,308 PM,high,high,EN
+https://www.wenaya.com/en/pratiques/therapies-complementaires,308,https://www.wenaya.com/en/pratiques,308 PM,high,medium,EN
+https://www.wenaya.com/pratiques/art-martial-th%C3%A9rapie,308,https://www.wenaya.com/pratiques/art-martial-therapie,308 PM,high,high,Legacy accented live slug -> ASCII canonical
+https://www.wenaya.com/en/pratiques/art-martial-th%C3%A9rapie,308,https://www.wenaya.com/en/pratiques/art-martial-therapie,308 PM,high,high,EN accented
+https://www.wenaya.com/pratiques/kin%C3%A9sith%C3%A9rapie,308,https://www.wenaya.com/pratiques/kinesitherapie,308 PM,high,high,Legacy accented live slug -> ASCII canonical
+https://www.wenaya.com/en/pratiques/kin%C3%A9sith%C3%A9rapie,308,https://www.wenaya.com/en/pratiques/kinesitherapie,308 PM,high,high,EN accented
+https://www.wenaya.com/pratiques/massoth%C3%A9rapie,308,https://www.wenaya.com/pratiques/massotherapie,308 PM,high,high,Legacy accented live slug -> ASCII canonical
+https://www.wenaya.com/en/pratiques/massoth%C3%A9rapie,308,https://www.wenaya.com/en/pratiques/massotherapie,308 PM,high,high,EN accented
+https://www.wenaya.com/pratiques/m%C3%A9ditation,308,https://www.wenaya.com/pratiques/meditation,308 PM,high,high,Legacy accented live slug -> ASCII canonical
+https://www.wenaya.com/en/pratiques/m%C3%A9ditation,308,https://www.wenaya.com/en/pratiques/meditation,308 PM,high,high,EN accented
+https://www.wenaya.com/pratiques/psychomotricit%C3%A9,308,https://www.wenaya.com/pratiques/psychomotricite,308 PM,high,high,Legacy accented live slug -> ASCII canonical
+https://www.wenaya.com/en/pratiques/psychomotricit%C3%A9,308,https://www.wenaya.com/en/pratiques/psychomotricite,308 PM,high,high,EN accented
+https://www.wenaya.com/pratiques/psychoth%C3%A9rapie,308,https://www.wenaya.com/pratiques/psychotherapie,308 PM,high,high,Legacy accented live slug -> ASCII canonical
+https://www.wenaya.com/en/pratiques/psychoth%C3%A9rapie,308,https://www.wenaya.com/en/pratiques/psychotherapie,308 PM,high,high,EN accented
+https://www.wenaya.com/pratiques/ost%C3%A9opathie,308,https://www.wenaya.com/pratiques/osteopathie,308 PM,high,high,Legacy accented live slug -> ASCII canonical
+https://www.wenaya.com/en/pratiques/ost%C3%A9opathie,308,https://www.wenaya.com/en/pratiques/osteopathie,308 PM,high,high,EN accented
+https://www.wenaya.com/pratiques/sono-th%C3%A9rapie,308,https://www.wenaya.com/pratiques/sono-therapie,308 PM,high,high,Legacy accented live slug -> ASCII canonical
+https://www.wenaya.com/en/pratiques/sono-th%C3%A9rapie,308,https://www.wenaya.com/en/pratiques/sono-therapie,308 PM,high,high,EN accented
+https://www.wenaya.com/en/group-sessions,308,https://www.wenaya.com/en/seance-de-groupe,308 PM,high,high,Legacy EN listing alias
+https://www.wenaya.com/en/group-sessions/prenatal-yoga,308,https://www.wenaya.com/en/seance-de-groupe/yoga-prenatal,308 PM,high,high,EN legacy slug -> FR slug
+https://www.wenaya.com/en/group-sessions/sophrology,308,https://www.wenaya.com/en/seance-de-groupe/sophrologie,308 PM,high,high,EN legacy slug -> FR slug
+https://www.wenaya.com/en/group-sessions/brazilian-jiu-jitsu,308,https://www.wenaya.com/en/seance-de-groupe/jiu-jitsu-bresilien,308 PM,high,high,EN legacy slug -> FR slug
+https://www.wenaya.com/en/group-sessions/pilates-and-posture,308,https://www.wenaya.com/en/seance-de-groupe/pilates-et-posture,308 PM,high,high,EN legacy slug -> FR slug
+https://www.wenaya.com/en/group-sessions/nutrition,308,https://www.wenaya.com/en/seance-de-groupe/nutrition,308 PM,high,high,EN legacy slug (same)
+https://www.wenaya.com/en/group-sessions/breathwork,308,https://www.wenaya.com/en/seance-de-groupe/breathwork,308 PM,high,high,EN legacy slug (same)
+https://www.wenaya.com/en/group-sessions/:path*,308,https://www.wenaya.com/en/seance-de-groupe/:path*,308 PM,high,low,Legacy EN glob fallback
+https://www.wenaya.com/parcours-de-soins/grossesse-&-maternit%C3%A9,308,https://www.wenaya.com/parcours-de-soins/grossesse-&-maternite,308 PM,high,medium,Legacy journey form -> canonical page; Accented e form -> canonical
+https://www.wenaya.com/en/parcours-de-soins/grossesse-&-maternit%C3%A9,308,https://www.wenaya.com/en/parcours-de-soins/grossesse-&-maternite,308 PM,high,medium,EN alias; Accented e form -> canonical
+https://www.wenaya.com/parcours-de-soins/les-troubles-de-l%27apprentissage,308,https://www.wenaya.com/parcours-de-soins/les-troubles-de-l-apprentissage,308 PM,high,medium,Legacy journey form -> canonical page; Percent-encoded apostrophe -> canonical
+https://www.wenaya.com/en/parcours-de-soins/les-troubles-de-l%27apprentissage,308,https://www.wenaya.com/en/parcours-de-soins/les-troubles-de-l-apprentissage,308 PM,high,medium,EN alias; Percent-encoded apostrophe -> canonical
+https://www.wenaya.com/parcours-de-soins/les-troubles-de-l'apprentissage,308,https://www.wenaya.com/parcours-de-soins/les-troubles-de-l-apprentissage,308 PM,high,medium,Legacy journey form -> canonical page; Raw apostrophe -> canonical
+https://www.wenaya.com/en/parcours-de-soins/les-troubles-de-l'apprentissage,308,https://www.wenaya.com/en/parcours-de-soins/les-troubles-de-l-apprentissage,308 PM,high,medium,EN alias; Raw apostrophe -> canonical
+https://www.wenaya.com/parcours-de-soins/sant%C3%A9-holistique,308,https://www.wenaya.com/parcours-de-soins/sante-holistique,308 PM,high,medium,Legacy journey form -> canonical page; Accented e form -> canonical
+https://www.wenaya.com/en/parcours-de-soins/sant%C3%A9-holistique,308,https://www.wenaya.com/en/parcours-de-soins/sante-holistique,308 PM,high,medium,EN alias; Accented e form -> canonical
+https://www.wenaya.com/parcours-de-soins/la-maladie-d%27Alzheimer,308,https://www.wenaya.com/parcours-de-soins/la-maladie-d-alzheimer,308 PM,high,medium,Legacy journey form -> canonical page; Percent-encoded apostrophe -> canonical
+https://www.wenaya.com/en/parcours-de-soins/la-maladie-d%27Alzheimer,308,https://www.wenaya.com/en/parcours-de-soins/la-maladie-d-alzheimer,308 PM,high,medium,EN alias; Percent-encoded apostrophe -> canonical
+https://www.wenaya.com/parcours-de-soins/la-maladie-d%E2%80%99Alzheimer,308,https://www.wenaya.com/parcours-de-soins/la-maladie-d-alzheimer,308 PM,high,medium,Legacy journey form -> canonical page; Curly-quote form the live hub emits -> canonical
+https://www.wenaya.com/en/parcours-de-soins/la-maladie-d%E2%80%99Alzheimer,308,https://www.wenaya.com/en/parcours-de-soins/la-maladie-d-alzheimer,308 PM,high,medium,EN alias; Curly-quote form the live hub emits -> canonical
+https://www.wenaya.com/parcours-de-soins/la-maladie-d'Alzheimer,308,https://www.wenaya.com/parcours-de-soins/la-maladie-d-alzheimer,308 PM,high,medium,Legacy journey form -> canonical page; Raw apostrophe -> canonical
+https://www.wenaya.com/en/parcours-de-soins/la-maladie-d'Alzheimer,308,https://www.wenaya.com/en/parcours-de-soins/la-maladie-d-alzheimer,308 PM,high,medium,EN alias; Raw apostrophe -> canonical
+https://www.wenaya.com/parcours-de-soins/la-maladie-d’Alzheimer,308,https://www.wenaya.com/parcours-de-soins/la-maladie-d-alzheimer,308 PM,high,medium,Legacy journey form -> canonical page; Raw curly-quote form the live hub emits -> canonical
+https://www.wenaya.com/en/parcours-de-soins/la-maladie-d’Alzheimer,308,https://www.wenaya.com/en/parcours-de-soins/la-maladie-d-alzheimer,308 PM,high,medium,EN alias; Raw curly-quote form the live hub emits -> canonical
+https://www.wenaya.com/parcours-de-soins/tecar-th%C3%A9rapie,308,https://www.wenaya.com/parcours-de-soins/tecar-therapie,308 PM,high,medium,Legacy journey form -> canonical page; Accented form -> canonical
+https://www.wenaya.com/en/parcours-de-soins/tecar-th%C3%A9rapie,308,https://www.wenaya.com/en/parcours-de-soins/tecar-therapie,308 PM,high,medium,EN alias; Accented form -> canonical
+https://www.wenaya.com/parcours-de-soins/kin%C3%A9sith%C3%A9rapie-&-avc,308,https://www.wenaya.com/parcours-de-soins/kinesitherapie-&-avc,308 PM,high,medium,Legacy journey form -> canonical page; Accented form -> canonical
+https://www.wenaya.com/en/parcours-de-soins/kin%C3%A9sith%C3%A9rapie-&-avc,308,https://www.wenaya.com/en/parcours-de-soins/kinesitherapie-&-avc,308 PM,high,medium,EN alias; Accented form -> canonical
+https://www.wenaya.com/ar/parcours-de-soins/grossesse-&-maternite,308,https://www.wenaya.com/parcours-de-soins/grossesse-&-maternite,308 PM,high,low,AR journey -> canonical FR journey page
+https://www.wenaya.com/ar/about-us,308,https://www.wenaya.com/about-us,308 PM,high,low,AR precise mapping
+https://www.wenaya.com/ar/pratiques,308,https://www.wenaya.com/pratiques,308 PM,high,low,AR precise mapping
+https://www.wenaya.com/ar/search/all/all,308,https://www.wenaya.com/,308 PM,high,low,AR search fold
+https://www.wenaya.com/ar/:path*,307,https://www.wenaya.com/,307 TEMP,high,low,AR catch-all -> FR home (AR unsupported)
+https://www.wenaya.com/specialistes,308,https://www.wenaya.com/professional,308 PM,high,high,Old alias
+https://www.wenaya.com/specialistes/:path*,308,https://www.wenaya.com/professional/:path*,308 PM,high,high,Alias glob
+https://www.wenaya.com/en/specialistes,308,https://www.wenaya.com/en/professional,308 PM,high,high,EN alias
+https://www.wenaya.com/en/specialistes/:path*,308,https://www.wenaya.com/en/professional/:path*,308 PM,high,high,EN alias glob
+https://www.wenaya.com/professional/nadine-kita/booking,308,https://www.wenaya.com/professional/nadine-kita,308 PM,high,medium,Old per-profile booking -> same profile (in-page booking panel)
+https://www.wenaya.com/en/professional/nadine-kita/booking,308,https://www.wenaya.com/en/professional/nadine-kita,308 PM,high,medium,EN
+https://www.wenaya.com/professional/dr-amal-benali/booking,308,https://www.wenaya.com/professional/dr-amal-benali,308 PM,high,medium,Old per-profile booking -> same profile (in-page booking panel)
+https://www.wenaya.com/en/professional/dr-amal-benali/booking,308,https://www.wenaya.com/en/professional/dr-amal-benali,308 PM,high,medium,EN
+https://www.wenaya.com/professional/khalid-ouazzani/booking,308,https://www.wenaya.com/professional/khalid-ouazzani,308 PM,high,medium,Old per-profile booking -> same profile (in-page booking panel)
+https://www.wenaya.com/en/professional/khalid-ouazzani/booking,308,https://www.wenaya.com/en/professional/khalid-ouazzani,308 PM,high,medium,EN
+https://www.wenaya.com/professional/nadia-tazi/booking,308,https://www.wenaya.com/professional/nadia-tazi,308 PM,high,medium,Old per-profile booking -> same profile (in-page booking panel)
+https://www.wenaya.com/en/professional/nadia-tazi/booking,308,https://www.wenaya.com/en/professional/nadia-tazi,308 PM,high,medium,EN
+https://www.wenaya.com/professional/yassine-el-amrani/booking,308,https://www.wenaya.com/professional/yassine-el-amrani,308 PM,high,medium,Old per-profile booking -> same profile (in-page booking panel)
+https://www.wenaya.com/en/professional/yassine-el-amrani/booking,308,https://www.wenaya.com/en/professional/yassine-el-amrani,308 PM,high,medium,EN
+https://www.wenaya.com/professional/sara-mansouri/booking,308,https://www.wenaya.com/professional/sara-mansouri,308 PM,high,medium,Old per-profile booking -> same profile (in-page booking panel)
+https://www.wenaya.com/en/professional/sara-mansouri/booking,308,https://www.wenaya.com/en/professional/sara-mansouri,308 PM,high,medium,EN
+https://www.wenaya.com/professional/mehdi-irzi/booking,308,https://www.wenaya.com/professional/mehdi-irzi,308 PM,high,medium,Old per-profile booking -> same profile (in-page booking panel)
+https://www.wenaya.com/en/professional/mehdi-irzi/booking,308,https://www.wenaya.com/en/professional/mehdi-irzi,308 PM,high,medium,EN
+https://www.wenaya.com/professional/najat-berrada/booking,308,https://www.wenaya.com/professional/najat-berrada,308 PM,high,medium,Old per-profile booking -> same profile (in-page booking panel)
+https://www.wenaya.com/en/professional/najat-berrada/booking,308,https://www.wenaya.com/en/professional/najat-berrada,308 PM,high,medium,EN
+https://www.wenaya.com/professional/omar-tazi/booking,308,https://www.wenaya.com/professional/omar-tazi,308 PM,high,medium,Old per-profile booking -> same profile (in-page booking panel)
+https://www.wenaya.com/en/professional/omar-tazi/booking,308,https://www.wenaya.com/en/professional/omar-tazi,308 PM,high,medium,EN
+https://www.wenaya.com/professional/fatima-zahra-alami/booking,308,https://www.wenaya.com/professional/fatima-zahra-alami,308 PM,high,medium,Old per-profile booking -> same profile (in-page booking panel)
+https://www.wenaya.com/en/professional/fatima-zahra-alami/booking,308,https://www.wenaya.com/en/professional/fatima-zahra-alami,308 PM,high,medium,EN
+https://www.wenaya.com/user/sign-in,308,https://www.wenaya.com/login,308 PM,high,high,Live patient sign-in alias
+https://www.wenaya.com/en/user/sign-in,308,https://www.wenaya.com/en/login,308 PM,high,high,EN
+https://www.wenaya.com/,200,https://www.wenaya.com/,KEEP,high,-,Canonical kept; Homepage; H1 + cinematic hero; priority 1.0; x-default->FR
+https://www.wenaya.com/en,200,https://www.wenaya.com/en,KEEP,high,-,Canonical kept; EN homepage
+https://www.wenaya.com/about-us,200,https://www.wenaya.com/about-us,KEEP,high,-,Canonical kept; Canonical Clinic page (short /about folds here 308)
+https://www.wenaya.com/en/about-us,200,https://www.wenaya.com/en/about-us,KEEP,high,-,Canonical kept; EN Clinic
+https://www.wenaya.com/pratiques,200,https://www.wenaya.com/pratiques,KEEP,high,-,Canonical kept; 19-practice catalog; API-backed listing (revalidate 1h) + pagination
+https://www.wenaya.com/en/pratiques,200,https://www.wenaya.com/en/pratiques,KEEP,high,-,Canonical kept; EN catalog
+https://www.wenaya.com/seance-de-groupe,200,https://www.wenaya.com/seance-de-groupe,KEEP,high,-,Canonical kept; 6 sessions listing
+https://www.wenaya.com/en/seance-de-groupe,200,https://www.wenaya.com/en/seance-de-groupe,KEEP,high,-,Canonical kept; EN listing
+https://www.wenaya.com/professional,200,https://www.wenaya.com/professional,KEEP,high,-,Canonical kept; 10 specialists listing
+https://www.wenaya.com/en/professional,200,https://www.wenaya.com/en/professional,KEEP,high,-,Canonical kept; EN listing
+https://www.wenaya.com/articles,200,https://www.wenaya.com/articles,KEEP,high,-,Canonical kept; 7 articles listing
+https://www.wenaya.com/en/articles,200,https://www.wenaya.com/en/articles,KEEP,high,-,Canonical kept; EN listing
+https://www.wenaya.com/corporate,200,https://www.wenaya.com/corporate,KEEP,high,-,Canonical kept; Corporate wellness landing
+https://www.wenaya.com/en/corporate,200,https://www.wenaya.com/en/corporate,KEEP,high,-,Canonical kept; EN corporate
+https://www.wenaya.com/corporate/programmes,200,https://www.wenaya.com/corporate/programmes,KEEP,high,-,Canonical kept; Corporate programmes
+https://www.wenaya.com/en/corporate/programmes,200,https://www.wenaya.com/en/corporate/programmes,KEEP,high,-,Canonical kept; EN programmes
+https://www.wenaya.com/soins-a-domicile,200,https://www.wenaya.com/soins-a-domicile,KEEP,high,-,Canonical kept; Homecare FR ONLY (no EN route)
+https://www.wenaya.com/contact-us,200,https://www.wenaya.com/contact-us,KEEP,high,-,Canonical kept; Canonical contact (short /contact folds here 308)
+https://www.wenaya.com/en/contact-us,200,https://www.wenaya.com/en/contact-us,KEEP,high,-,Canonical kept; EN contact
+https://www.wenaya.com/terms-and-conditions,200,https://www.wenaya.com/terms-and-conditions,KEEP,high,-,Canonical kept; Canonical legal (short /conditions folds here 308)
+https://www.wenaya.com/en/terms-and-conditions,200,https://www.wenaya.com/en/terms-and-conditions,KEEP,high,-,Canonical kept; EN legal
+https://www.wenaya.com/privacy-policy,200,https://www.wenaya.com/privacy-policy,KEEP,high,-,Canonical kept; Canonical legal (short /confidentialite folds here 308)
+https://www.wenaya.com/en/privacy-policy,200,https://www.wenaya.com/en/privacy-policy,KEEP,high,-,Canonical kept; EN privacy
+https://www.wenaya.com/faq,200,https://www.wenaya.com/faq,KEEP,high,-,Canonical kept; FAQ
+https://www.wenaya.com/en/faq,200,https://www.wenaya.com/en/faq,KEEP,high,-,Canonical kept; EN FAQ
+https://www.wenaya.com/login,200,https://www.wenaya.com/login,KEEP,high,-,Canonical kept; Patient login placeholder; noindex (no real auth backend yet)
+https://www.wenaya.com/en/login,200,https://www.wenaya.com/en/login,KEEP,high,-,Canonical kept; EN login; noindex
+https://www.wenaya.com/pratiques/kinesitherapie,200,https://www.wenaya.com/pratiques/kinesitherapie,KEEP,high,-,Canonical kept; ASCII canonical slug
+https://www.wenaya.com/en/pratiques/kinesitherapie,200,https://www.wenaya.com/en/pratiques/kinesitherapie,KEEP,high,-,Canonical kept; EN practice
+https://www.wenaya.com/pratiques/osteopathie,200,https://www.wenaya.com/pratiques/osteopathie,KEEP,high,-,Canonical kept; ASCII canonical slug
+https://www.wenaya.com/en/pratiques/osteopathie,200,https://www.wenaya.com/en/pratiques/osteopathie,KEEP,high,-,Canonical kept; EN practice
+https://www.wenaya.com/pratiques/massotherapie,200,https://www.wenaya.com/pratiques/massotherapie,KEEP,high,-,Canonical kept; ASCII canonical slug
+https://www.wenaya.com/en/pratiques/massotherapie,200,https://www.wenaya.com/en/pratiques/massotherapie,KEEP,high,-,Canonical kept; EN practice
+https://www.wenaya.com/pratiques/cupping-therapy-hijama,200,https://www.wenaya.com/pratiques/cupping-therapy-hijama,KEEP,high,-,Canonical kept; ASCII canonical slug
+https://www.wenaya.com/en/pratiques/cupping-therapy-hijama,200,https://www.wenaya.com/en/pratiques/cupping-therapy-hijama,KEEP,high,-,Canonical kept; EN practice
+https://www.wenaya.com/pratiques/psychologie,200,https://www.wenaya.com/pratiques/psychologie,KEEP,high,-,Canonical kept; ASCII canonical slug
+https://www.wenaya.com/en/pratiques/psychologie,200,https://www.wenaya.com/en/pratiques/psychologie,KEEP,high,-,Canonical kept; EN practice
+https://www.wenaya.com/pratiques/neuropsychologie,200,https://www.wenaya.com/pratiques/neuropsychologie,KEEP,high,-,Canonical kept; ASCII canonical slug
+https://www.wenaya.com/en/pratiques/neuropsychologie,200,https://www.wenaya.com/en/pratiques/neuropsychologie,KEEP,high,-,Canonical kept; EN practice
+https://www.wenaya.com/pratiques/psychotherapie,200,https://www.wenaya.com/pratiques/psychotherapie,KEEP,high,-,Canonical kept; ASCII canonical slug
+https://www.wenaya.com/en/pratiques/psychotherapie,200,https://www.wenaya.com/en/pratiques/psychotherapie,KEEP,high,-,Canonical kept; EN practice
+https://www.wenaya.com/pratiques/sexologie,200,https://www.wenaya.com/pratiques/sexologie,KEEP,high,-,Canonical kept; ASCII canonical slug
+https://www.wenaya.com/en/pratiques/sexologie,200,https://www.wenaya.com/en/pratiques/sexologie,KEEP,high,-,Canonical kept; EN practice
+https://www.wenaya.com/pratiques/meditation,200,https://www.wenaya.com/pratiques/meditation,KEEP,high,-,Canonical kept; ASCII canonical slug
+https://www.wenaya.com/en/pratiques/meditation,200,https://www.wenaya.com/en/pratiques/meditation,KEEP,high,-,Canonical kept; EN practice
+https://www.wenaya.com/pratiques/sophrologie,200,https://www.wenaya.com/pratiques/sophrologie,KEEP,high,-,Canonical kept; ASCII canonical slug
+https://www.wenaya.com/en/pratiques/sophrologie,200,https://www.wenaya.com/en/pratiques/sophrologie,KEEP,high,-,Canonical kept; EN practice
+https://www.wenaya.com/pratiques/nutrition,200,https://www.wenaya.com/pratiques/nutrition,KEEP,high,-,Canonical kept; ASCII canonical slug
+https://www.wenaya.com/en/pratiques/nutrition,200,https://www.wenaya.com/en/pratiques/nutrition,KEEP,high,-,Canonical kept; EN practice
+https://www.wenaya.com/pratiques/coaching-sportif,200,https://www.wenaya.com/pratiques/coaching-sportif,KEEP,high,-,Canonical kept; ASCII canonical slug
+https://www.wenaya.com/en/pratiques/coaching-sportif,200,https://www.wenaya.com/en/pratiques/coaching-sportif,KEEP,high,-,Canonical kept; EN practice
+https://www.wenaya.com/pratiques/orthophonie,200,https://www.wenaya.com/pratiques/orthophonie,KEEP,high,-,Canonical kept; ASCII canonical slug
+https://www.wenaya.com/en/pratiques/orthophonie,200,https://www.wenaya.com/en/pratiques/orthophonie,KEEP,high,-,Canonical kept; EN practice
+https://www.wenaya.com/pratiques/naturopathie,200,https://www.wenaya.com/pratiques/naturopathie,KEEP,high,-,Canonical kept; ASCII canonical slug
+https://www.wenaya.com/en/pratiques/naturopathie,200,https://www.wenaya.com/en/pratiques/naturopathie,KEEP,high,-,Canonical kept; EN practice
+https://www.wenaya.com/pratiques/psychomotricite,200,https://www.wenaya.com/pratiques/psychomotricite,KEEP,high,-,Canonical kept; ASCII canonical slug
+https://www.wenaya.com/en/pratiques/psychomotricite,200,https://www.wenaya.com/en/pratiques/psychomotricite,KEEP,high,-,Canonical kept; EN practice
+https://www.wenaya.com/pratiques/art-martial-therapie,200,https://www.wenaya.com/pratiques/art-martial-therapie,KEEP,high,-,Canonical kept; ASCII canonical slug
+https://www.wenaya.com/en/pratiques/art-martial-therapie,200,https://www.wenaya.com/en/pratiques/art-martial-therapie,KEEP,high,-,Canonical kept; EN practice
+https://www.wenaya.com/pratiques/sono-therapie,200,https://www.wenaya.com/pratiques/sono-therapie,KEEP,high,-,Canonical kept; ASCII canonical slug
+https://www.wenaya.com/en/pratiques/sono-therapie,200,https://www.wenaya.com/en/pratiques/sono-therapie,KEEP,high,-,Canonical kept; EN practice
+https://www.wenaya.com/pratiques/yoga,200,https://www.wenaya.com/pratiques/yoga,KEEP,high,-,Canonical kept; ASCII canonical slug
+https://www.wenaya.com/en/pratiques/yoga,200,https://www.wenaya.com/en/pratiques/yoga,KEEP,high,-,Canonical kept; EN practice
+https://www.wenaya.com/pratiques/infirmerie,200,https://www.wenaya.com/pratiques/infirmerie,KEEP,high,-,Canonical kept; ASCII canonical slug
+https://www.wenaya.com/en/pratiques/infirmerie,200,https://www.wenaya.com/en/pratiques/infirmerie,KEEP,high,-,Canonical kept; EN practice
+https://www.wenaya.com/seance-de-groupe/yoga-prenatal,200,https://www.wenaya.com/seance-de-groupe/yoga-prenatal,KEEP,high,-,Canonical kept; FR/EN share FR slug
+https://www.wenaya.com/en/seance-de-groupe/yoga-prenatal,200,https://www.wenaya.com/en/seance-de-groupe/yoga-prenatal,KEEP,high,-,Canonical kept; EN session
+https://www.wenaya.com/seance-de-groupe/sophrologie,200,https://www.wenaya.com/seance-de-groupe/sophrologie,KEEP,high,-,Canonical kept; FR/EN share FR slug
+https://www.wenaya.com/en/seance-de-groupe/sophrologie,200,https://www.wenaya.com/en/seance-de-groupe/sophrologie,KEEP,high,-,Canonical kept; EN session
+https://www.wenaya.com/seance-de-groupe/nutrition,200,https://www.wenaya.com/seance-de-groupe/nutrition,KEEP,high,-,Canonical kept; FR/EN share FR slug
+https://www.wenaya.com/en/seance-de-groupe/nutrition,200,https://www.wenaya.com/en/seance-de-groupe/nutrition,KEEP,high,-,Canonical kept; EN session
+https://www.wenaya.com/seance-de-groupe/breathwork,200,https://www.wenaya.com/seance-de-groupe/breathwork,KEEP,high,-,Canonical kept; FR/EN share FR slug
+https://www.wenaya.com/en/seance-de-groupe/breathwork,200,https://www.wenaya.com/en/seance-de-groupe/breathwork,KEEP,high,-,Canonical kept; EN session
+https://www.wenaya.com/seance-de-groupe/jiu-jitsu-bresilien,200,https://www.wenaya.com/seance-de-groupe/jiu-jitsu-bresilien,KEEP,high,-,Canonical kept; FR/EN share FR slug
+https://www.wenaya.com/en/seance-de-groupe/jiu-jitsu-bresilien,200,https://www.wenaya.com/en/seance-de-groupe/jiu-jitsu-bresilien,KEEP,high,-,Canonical kept; EN session
+https://www.wenaya.com/seance-de-groupe/pilates-et-posture,200,https://www.wenaya.com/seance-de-groupe/pilates-et-posture,KEEP,high,-,Canonical kept; FR/EN share FR slug
+https://www.wenaya.com/en/seance-de-groupe/pilates-et-posture,200,https://www.wenaya.com/en/seance-de-groupe/pilates-et-posture,KEEP,high,-,Canonical kept; EN session
+https://www.wenaya.com/professional/nadine-kita,200,https://www.wenaya.com/professional/nadine-kita,KEEP,high,-,Canonical kept; Profile + in-profile booking panel
+https://www.wenaya.com/en/professional/nadine-kita,200,https://www.wenaya.com/en/professional/nadine-kita,KEEP,high,-,Canonical kept; EN profile
+https://www.wenaya.com/professional/dr-amal-benali,200,https://www.wenaya.com/professional/dr-amal-benali,KEEP,high,-,Canonical kept; Profile + in-profile booking panel
+https://www.wenaya.com/en/professional/dr-amal-benali,200,https://www.wenaya.com/en/professional/dr-amal-benali,KEEP,high,-,Canonical kept; EN profile
+https://www.wenaya.com/professional/khalid-ouazzani,200,https://www.wenaya.com/professional/khalid-ouazzani,KEEP,high,-,Canonical kept; Profile + in-profile booking panel
+https://www.wenaya.com/en/professional/khalid-ouazzani,200,https://www.wenaya.com/en/professional/khalid-ouazzani,KEEP,high,-,Canonical kept; EN profile
+https://www.wenaya.com/professional/nadia-tazi,200,https://www.wenaya.com/professional/nadia-tazi,KEEP,high,-,Canonical kept; Profile + in-profile booking panel
+https://www.wenaya.com/en/professional/nadia-tazi,200,https://www.wenaya.com/en/professional/nadia-tazi,KEEP,high,-,Canonical kept; EN profile
+https://www.wenaya.com/professional/yassine-el-amrani,200,https://www.wenaya.com/professional/yassine-el-amrani,KEEP,high,-,Canonical kept; Profile + in-profile booking panel
+https://www.wenaya.com/en/professional/yassine-el-amrani,200,https://www.wenaya.com/en/professional/yassine-el-amrani,KEEP,high,-,Canonical kept; EN profile
+https://www.wenaya.com/professional/sara-mansouri,200,https://www.wenaya.com/professional/sara-mansouri,KEEP,high,-,Canonical kept; Profile + in-profile booking panel
+https://www.wenaya.com/en/professional/sara-mansouri,200,https://www.wenaya.com/en/professional/sara-mansouri,KEEP,high,-,Canonical kept; EN profile
+https://www.wenaya.com/professional/mehdi-irzi,200,https://www.wenaya.com/professional/mehdi-irzi,KEEP,high,-,Canonical kept; Profile + in-profile booking panel
+https://www.wenaya.com/en/professional/mehdi-irzi,200,https://www.wenaya.com/en/professional/mehdi-irzi,KEEP,high,-,Canonical kept; EN profile
+https://www.wenaya.com/professional/najat-berrada,200,https://www.wenaya.com/professional/najat-berrada,KEEP,high,-,Canonical kept; Profile + in-profile booking panel
+https://www.wenaya.com/en/professional/najat-berrada,200,https://www.wenaya.com/en/professional/najat-berrada,KEEP,high,-,Canonical kept; EN profile
+https://www.wenaya.com/professional/omar-tazi,200,https://www.wenaya.com/professional/omar-tazi,KEEP,high,-,Canonical kept; Profile + in-profile booking panel
+https://www.wenaya.com/en/professional/omar-tazi,200,https://www.wenaya.com/en/professional/omar-tazi,KEEP,high,-,Canonical kept; EN profile
+https://www.wenaya.com/professional/fatima-zahra-alami,200,https://www.wenaya.com/professional/fatima-zahra-alami,KEEP,high,-,Canonical kept; Profile + in-profile booking panel
+https://www.wenaya.com/en/professional/fatima-zahra-alami,200,https://www.wenaya.com/en/professional/fatima-zahra-alami,KEEP,high,-,Canonical kept; EN profile
+https://www.wenaya.com/parcours-de-soins,200,https://www.wenaya.com/parcours-de-soins,KEEP,high,-,Canonical kept; Journeys hub (previously 404; now canonical from live capture)
+https://www.wenaya.com/en/parcours-de-soins,200,https://www.wenaya.com/en/parcours-de-soins,KEEP,high,-,Canonical kept; EN hub (FR copy under EN chrome)
+https://www.wenaya.com/parcours-de-soins/grossesse-&-maternite,200,https://www.wenaya.com/parcours-de-soins/grossesse-&-maternite,KEEP,high,-,Canonical kept; Canonical journey page from live capture
+https://www.wenaya.com/en/parcours-de-soins/grossesse-&-maternite,200,https://www.wenaya.com/en/parcours-de-soins/grossesse-&-maternite,KEEP,high,-,Canonical kept; EN journey (FR content per live)
+https://www.wenaya.com/parcours-de-soins/les-troubles-de-l-apprentissage,200,https://www.wenaya.com/parcours-de-soins/les-troubles-de-l-apprentissage,KEEP,high,-,Canonical kept; Canonical journey page from live capture
+https://www.wenaya.com/en/parcours-de-soins/les-troubles-de-l-apprentissage,200,https://www.wenaya.com/en/parcours-de-soins/les-troubles-de-l-apprentissage,KEEP,high,-,Canonical kept; EN journey (FR content per live)
+https://www.wenaya.com/parcours-de-soins/le-vertige-positionnel,200,https://www.wenaya.com/parcours-de-soins/le-vertige-positionnel,KEEP,high,-,Canonical kept; Canonical journey page from live capture
+https://www.wenaya.com/en/parcours-de-soins/le-vertige-positionnel,200,https://www.wenaya.com/en/parcours-de-soins/le-vertige-positionnel,KEEP,high,-,Canonical kept; EN journey (FR content per live)
+https://www.wenaya.com/parcours-de-soins/la-maladie-d-alzheimer,200,https://www.wenaya.com/parcours-de-soins/la-maladie-d-alzheimer,KEEP,high,-,Canonical kept; Canonical journey page from live capture
+https://www.wenaya.com/en/parcours-de-soins/la-maladie-d-alzheimer,200,https://www.wenaya.com/en/parcours-de-soins/la-maladie-d-alzheimer,KEEP,high,-,Canonical kept; EN journey (FR content per live)
+https://www.wenaya.com/parcours-de-soins/sante-holistique,200,https://www.wenaya.com/parcours-de-soins/sante-holistique,KEEP,high,-,Canonical kept; Canonical journey page from live capture
+https://www.wenaya.com/en/parcours-de-soins/sante-holistique,200,https://www.wenaya.com/en/parcours-de-soins/sante-holistique,KEEP,high,-,Canonical kept; EN journey (FR content per live)
+https://www.wenaya.com/parcours-de-soins/tecar-therapie,200,https://www.wenaya.com/parcours-de-soins/tecar-therapie,KEEP,high,-,Canonical kept; Canonical journey page from live capture
+https://www.wenaya.com/en/parcours-de-soins/tecar-therapie,200,https://www.wenaya.com/en/parcours-de-soins/tecar-therapie,KEEP,high,-,Canonical kept; EN journey (FR content per live)
+https://www.wenaya.com/parcours-de-soins/kinesitherapie-&-avc,200,https://www.wenaya.com/parcours-de-soins/kinesitherapie-&-avc,KEEP,high,-,Canonical kept; Canonical journey page from live capture
+https://www.wenaya.com/en/parcours-de-soins/kinesitherapie-&-avc,200,https://www.wenaya.com/en/parcours-de-soins/kinesitherapie-&-avc,KEEP,high,-,Canonical kept; EN journey (FR content per live)
+https://www.wenaya.com/articles/5-benefits-of-preventive-healthcare,200,https://www.wenaya.com/articles/5-benefits-of-preventive-healthcare,KEEP,high,-,Canonical kept; NEW article (no live legacy)
+https://www.wenaya.com/en/articles/5-benefits-of-preventive-healthcare,200,https://www.wenaya.com/en/articles/5-benefits-of-preventive-healthcare,KEEP,high,-,Canonical kept; NEW article (no live legacy)
+https://www.wenaya.com/articles/future-preventive-medicine-ai,200,https://www.wenaya.com/articles/future-preventive-medicine-ai,KEEP,high,-,Canonical kept; NEW article (no live legacy)
+https://www.wenaya.com/en/articles/future-preventive-medicine-ai,200,https://www.wenaya.com/en/articles/future-preventive-medicine-ai,KEEP,high,-,Canonical kept; NEW article (no live legacy)
+https://www.wenaya.com/articles/525-biomarkers-explained,200,https://www.wenaya.com/articles/525-biomarkers-explained,KEEP,high,-,Canonical kept; NEW article (no live legacy)
+https://www.wenaya.com/en/articles/525-biomarkers-explained,200,https://www.wenaya.com/en/articles/525-biomarkers-explained,KEEP,high,-,Canonical kept; NEW article (no live legacy)
+https://www.wenaya.com/articles/personalized-nutrition-biochemistry,200,https://www.wenaya.com/articles/personalized-nutrition-biochemistry,KEEP,high,-,Canonical kept; NEW article (no live legacy)
+https://www.wenaya.com/en/articles/personalized-nutrition-biochemistry,200,https://www.wenaya.com/en/articles/personalized-nutrition-biochemistry,KEEP,high,-,Canonical kept; NEW article (no live legacy)
+https://www.wenaya.com/articles/inflammation-chronic-disease-lifestyle,200,https://www.wenaya.com/articles/inflammation-chronic-disease-lifestyle,KEEP,high,-,Canonical kept; NEW article (no live legacy)
+https://www.wenaya.com/en/articles/inflammation-chronic-disease-lifestyle,200,https://www.wenaya.com/en/articles/inflammation-chronic-disease-lifestyle,KEEP,high,-,Canonical kept; NEW article (no live legacy)
+https://www.wenaya.com/articles/longevity-blue-zones-lessons,200,https://www.wenaya.com/articles/longevity-blue-zones-lessons,KEEP,high,-,Canonical kept; NEW article (no live legacy)
+https://www.wenaya.com/en/articles/longevity-blue-zones-lessons,200,https://www.wenaya.com/en/articles/longevity-blue-zones-lessons,KEEP,high,-,Canonical kept; NEW article (no live legacy)
+https://www.wenaya.com/articles/sleep-circadian-rhythm-optimization,200,https://www.wenaya.com/articles/sleep-circadian-rhythm-optimization,KEEP,high,-,Canonical kept; NEW article (no live legacy)
+https://www.wenaya.com/en/articles/sleep-circadian-rhythm-optimization,200,https://www.wenaya.com/en/articles/sleep-circadian-rhythm-optimization,KEEP,high,-,Canonical kept; NEW article (no live legacy)
+https://www.wenaya.com/search,404,-,DONT-REDIRECT,high,high,Keep 404 (no safe equivalent)
+https://www.wenaya.com/search/kine/all,404,-,DONT-REDIRECT,high,high,Keep 404 (no safe equivalent)
+https://www.wenaya.com/search/all/casablanca,404,-,DONT-REDIRECT,high,high,Keep 404 (no safe equivalent)
+https://www.wenaya.com/search/all/paris,404,-,DONT-REDIRECT,high,high,Keep 404 (no safe equivalent)
+https://www.wenaya.com/maux-troubles/back-pain-guide,404,-,DONT-REDIRECT,high,high,Keep 404 (no safe equivalent)
+https://www.wenaya.com/professional/ghita,404,-,DONT-REDIRECT,high,high,Keep 404 (no safe equivalent)
+https://www.wenaya.com/professional/unknown-slug-xyz,404,-,DONT-REDIRECT,high,high,Keep 404 (no safe equivalent)
+https://www.wenaya.com/en/professional/ghita,404,-,DONT-REDIRECT,high,high,Keep 404 (no safe equivalent)
+https://www.wenaya.com/articles/undefined,404,-,DONT-REDIRECT,high,high,Keep 404 (no safe equivalent)
+https://www.wenaya.com/evenements/undefined,404,-,DONT-REDIRECT,high,high,Keep 404 (no safe equivalent)
+https://www.wenaya.com/pratiques/does-not-exist-xyz,404,-,DONT-REDIRECT,high,high,Keep 404 (no safe equivalent)
+https://www.wenaya.com/en/seance-de-groupe/does-not-exist-xyz,404,-,DONT-REDIRECT,high,high,Keep 404 (no safe equivalent)
+https://www.wenaya.com/en/soins-a-domicile,404,-,DONT-REDIRECT,high,high,Keep 404 (no safe equivalent)

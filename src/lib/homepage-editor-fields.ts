@@ -22,7 +22,7 @@ export interface HomepageFieldDef {
   label: string;
   /** Content key stored on the section's content object. */
   key: string;
-  /** i18n key used as the default fallback (e.g. "hero.eyebrow"). */
+  /** i18n key used as the default fallback (e.g. "hero.vousMéritez"). */
   i18nPath?: string;
   /** Literal fallback for fields whose default is hardcoded in the component. */
   defaultText?: string;
@@ -50,7 +50,6 @@ export const SECTION_EDITOR_DEFS: Partial<Record<SectionType, HomepageSectionEdi
   hero: {
     helper: "Default content is managed through i18n. Override fields below:",
     fields: [
-      { label: "Eyebrow text", key: "eyebrow", i18nPath: "hero.eyebrow" },
       { label: "Heading line 1", key: "heading1", i18nPath: "hero.vousMéritez" },
       { label: "Heading line 2", key: "heading2", i18nPath: "hero.complete" },
       { label: "Description", key: "sub", i18nPath: "hero.sub", rows: 2 },
