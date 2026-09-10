@@ -50,7 +50,7 @@ export default function PratiquesFilterBar({
           type="text"
           value={pratiquesSearch}
           onChange={(e) => onFilterChange("searchQuery", e.target.value)}
-          placeholder="Search practices…"
+          placeholder={t("pratiques.search")}
           className={`w-[130px] sm:w-[170px] py-1.5 bg-transparent border-b text-sm outline-none transition-colors ${
             isDark
               ? "text-white/85 placeholder-white/30 border-white/[0.2] focus:border-white/40"

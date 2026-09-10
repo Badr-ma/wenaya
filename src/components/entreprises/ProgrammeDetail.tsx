@@ -17,6 +17,7 @@ export interface ProgrammeDetailLabels {
   backEnterprise: string;
   practicalLabel: string;
   practicalNote: string;
+  newTab: string;
   othersLabel: string;
   othersCta: string;
 }
@@ -198,7 +199,7 @@ export default function ProgrammeDetail({
                   href={exchangeCta.href}
                   target={exchangeCta.external ? "_blank" : undefined}
                   rel={exchangeCta.external ? "noopener noreferrer" : undefined}
-                  aria-label={exchangeCta.external ? `${exchangeCta.label} (nouvel onglet)` : exchangeCta.label}
+                  aria-label={exchangeCta.external ? `${exchangeCta.label} (${labels.newTab})` : exchangeCta.label}
                   className="inline-flex items-center justify-center h-13 px-8 rounded-full bg-gradient-to-r from-[#B88A5A] to-[#9A7242] text-white text-sm font-semibold tracking-wide hover:opacity-95 transition-opacity whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B88A5A]"
                 >
                   {exchangeCta.label}

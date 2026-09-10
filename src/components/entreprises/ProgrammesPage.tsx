@@ -25,6 +25,7 @@ interface ProgrammeListingLabels {
   ctaPrimary: string;
   requestQuote: string;
   ctaNote: string;
+  newTab: string;
 }
 
 function ProgrammeCardLink({
@@ -34,7 +35,7 @@ function ProgrammeCardLink({
   locale: HrefLocale;
   labels: ProgrammeListingLabels;
 }) {
-  const programmes = getAllProgrammes();
+  const programmes = getAllProgrammes(locale);
 
   return (
     <>
@@ -95,6 +96,7 @@ export default function ProgrammesPage({ locale = "fr" }: { locale?: HrefLocale 
     ctaPrimary: t("entreprises.programmes.ctaPrimary"),
     requestQuote: t("entreprises.programmes.requestQuote"),
     ctaNote: t("entreprises.programmes.ctaNote"),
+    newTab: t("entreprises.programmes.newTab"),
   };
   const title = tRaw<string>("entreprises.programmes.title");
 
@@ -151,7 +153,7 @@ export default function ProgrammesPage({ locale = "fr" }: { locale?: HrefLocale 
                 href={PROGRAMME_AUDIT_CALENDAR_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`${labels.ctaPrimary} (nouvel onglet)`}
+                aria-label={`${labels.ctaPrimary} (${labels.newTab})`}
                 className="inline-flex items-center justify-center h-13 px-8 rounded-full bg-gradient-to-r from-[#B88A5A] to-[#9A7242] text-white text-sm font-semibold tracking-wide hover:opacity-95 transition-opacity whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B88A5A]"
               >
                 {labels.ctaPrimary}

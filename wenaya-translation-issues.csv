@@ -45,4 +45,8 @@ clean,OK,faq,src/components/FaqSection.tsx,-,faq.qN.q/a loop,faq.qN.q/a loop,Cle
 clean,OK,legal,src/components/legal/ConfidentialitePage.tsx,-,i18n-driven,i18n-driven,Clean,None
 clean,OK,login,src/components/login/LoginClient.tsx,-,i18n-driven,i18n-driven,Clean (patient sign-in),None
 clean,OK,professional,src/app/(en)/en/professional/[slug]/page.tsx,-,roleEn fallback + EN metadata,FR metadata template,EN uses roleEn ?? role fallback,None
-clean,OK,programmes,src/components/entreprises/ProgrammeDetail.tsx,-,labels props,labels props,Server renderer,None
+clean,VERIFIED,programmes,src/lib/corporate-programmes.ts,-,labels props + localized en bodies,labels props + localized en bodies,EN programme bodies were French pre-2026-09-10 - now localized fr/en content sets (4 programmes) with FR byte-unchanged; verified 61/61 SSR + 73/73 browser,None,VERIFIED
+clean,VERIFIED,programmes,src/lib/corporate-programmes.ts,leadership-360,FR body (kept verbatim),EN body translated (Facilitation language),EN detail served French body -> now English,None,VERIFIED
+clean,VERIFIED,programmes,src/lib/corporate-programmes.ts,pcm,FR body (kept verbatim),EN body translated (Facilitation language),EN detail served French body -> now English,None,VERIFIED
+clean,VERIFIED,programmes,src/lib/corporate-programmes.ts,art-des-priorites,FR body (kept verbatim),EN body translated + name The Art of Priorities,EN detail served French body -> now English,None,VERIFIED
+clean,VERIFIED,programmes,src/lib/corporate-programmes.ts,people-model-canvas,FR body (kept verbatim),EN body translated (Facilitation language),EN detail served French body -> now English,None,VERIFIED

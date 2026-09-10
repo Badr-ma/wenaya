@@ -353,16 +353,16 @@ export default function HowItWorks({ content }: HowItWorksProps): React.JSX.Elem
           ref={gridRef}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6"
         >
-          <Card num="01" step={t("howItWorks.etape1")} title="Assess" desc={t("howItWorks.assess.desc")}>
+          <Card num="01" step={t("howItWorks.etape1")} title={t("howItWorks.assess.title")} desc={t("howItWorks.assess.desc")}>
             <AssessViz />
           </Card>
-          <Card num="02" step={t("howItWorks.etape2")} title="Align" desc={t("howItWorks.align.desc")}>
+          <Card num="02" step={t("howItWorks.etape2")} title={t("howItWorks.align.title")} desc={t("howItWorks.align.desc")}>
             <AlignViz />
           </Card>
-          <Card num="03" step={t("howItWorks.etape3")} title="Activate" desc={t("howItWorks.activate.desc")}>
+          <Card num="03" step={t("howItWorks.etape3")} title={t("howItWorks.activate.title")} desc={t("howItWorks.activate.desc")}>
             <ActivateViz />
           </Card>
-          <Card num="04" step={t("howItWorks.etape4")} title="Sustain" desc={t("howItWorks.sustain.desc")}>
+          <Card num="04" step={t("howItWorks.etape4")} title={t("howItWorks.sustain.title")} desc={t("howItWorks.sustain.desc")}>
             <SustainViz />
           </Card>
         </div>

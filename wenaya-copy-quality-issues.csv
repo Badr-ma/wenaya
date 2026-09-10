@@ -1,0 +1,22 @@
+ROUTE,LOCALE,CURRENT_TEXT,ISSUE_TYPE,SEVERITY,SOURCE_FILE,ACTION,STATUS
+/ (homepage testimonials),FR,"Real people. / Real results.",MIXED_LANGUAGE,P1,src/i18n/fr.ts,Translate to "De vraies personnes. / De vrais résultats.",FIXED
+/ (homepage) + /articles (blog heading),FR,"Insights",MIXED_LANGUAGE,P2,src/i18n/fr.ts,Change to "Analyses" (Analyses & Recherche),FIXED
+/ (homepage) + /articles (blog sub),FR,"Expert analysis on the science of longevity, biomarker optimization, and the future of personalized preventive medicine.",MIXED_LANGUAGE,P1,src/i18n/fr.ts,Translated to FR "Des analyses d'experts sur la science de la longévité, l'optimisation des biomarqueurs et l'avenir de la médecine préventive personnalisée.",FIXED
+/ (homepage Méthode Wenaya cards),FR,"Assess / Align / Activate / Sustain",MIXED_LANGUAGE,P2,src/i18n/fr.ts + src/components/HowItWorks.tsx,FR titles -> "Évaluer / Aligner / Activer / Pérenniser" + component now reads t("howItWorks.*.title"),FIXED
+/produits (shop filters),FR,"Wearables",MIXED_LANGUAGE,P2,src/i18n/fr.ts,Change to "Objets connectés",FIXED
+/produits (continuous-glucose-monitor desc),FR,"...temps réel avec insights personnalisés...",MIXED_LANGUAGE,P2,src/i18n/fr.ts,Change to "...avec des analyses personnalisées...",FIXED
+/produits (whoop-5-0-band desc),FR,"Wearable avancé avec suivi...",TERMINOLOGY,P3,src/i18n/fr.ts,Change to "Appareil connecté avancé...",FIXED
+/corporate/programmes (chrome: back/others/cta),EN,"Back to programmes / Explore our other programmes / View all programmes",TERMINOLOGY,P3,src/i18n/en.ts,Normalize to US "programs",FIXED
+/corporate quote form option,EN,"Annual Programme — long-term approach",TERMINOLOGY,P3,src/i18n/en.ts,Change label to "Annual Program — long-term approach" (value key kept),FIXED
+/corporate/programmes (Prevention Pack pitch),EN,"Ideal to launch a wellness initiative",GRAMMAR,P2,src/i18n/en.ts,Change to "Ideal for launching...",FIXED
+/ (homepage ExpertiseSection arrows),EN,"aria-label=""Précédent"" / ""Suivant""",MIXED_LANGUAGE,P2,src/components/about/ExpertiseSection.tsx,Locale-aware -> "Previous" / "Next",FIXED
+/ (detail pages sr-only breadcrumbs),FR,"aria-label=""Breadcrumb""",MIXED_LANGUAGE,P3,src/components/Breadcrumbs.tsx,Locale-aware -> "Fil d'Ariane",FIXED
+/pratiques (nav compact search placeholder),FR,"Search practices…",MIXED_LANGUAGE,P2,src/components/nav/PratiquesFilterBar.tsx,Use t("pratiques.search") -> "Rechercher une pratique.",FIXED
+/about-us (HomecareBanner image alt),FR,"Soins à domicile Wenaya Homecare Services",MIXED_LANGUAGE,P3,src/components/clinic/HomecareBanner.tsx,Change alt to "Soins à domicile Wenaya",FIXED
+/ (corporate testimonials quotes),EN,"« ... » guillemets in English quotes",PUNCTUATION,P3,src/i18n/en.ts,Review - EN typographic convention is curly double quotes; mirrors FR layout,REVIEW
+/corporate/programmes/* (detail bodies),EN,"programme / organisational (British spelling)",TERMINOLOGY,P3,src/lib/corporate-programmes.ts,Review - normalize to US program/organization if desired,REVIEW
+/practice detail pages (EN translations),EN,"programme / personalised (British spelling)",TERMINOLOGY,P3,src/lib/en-translations.ts + practice-content.ts,Review - normalize to US spelling if desired,REVIEW
+/contact-us (address),EN,"88 Rue de Jabal Azourki (lowercase de)",CAPITALIZATION,P3,src/i18n/en.ts,Optional - align casing with Rue De elsewhere,REVIEW
+/corporate (programmes choice),EN,"A la carte or program (unaccented à)",PUNCTUATION,P3,src/i18n/en.ts,Optional - use "à la carte",REVIEW
+/ (retreat block),FR,"Team Health & Cohesion / Active Wellness / Build Your Retreat",MIXED_LANGUAGE,REVIEW,src/i18n/fr.ts,Pre-existing documented policy (NEEDS_DECISION) - untouched,REVIEW
+/produits (topic filter label),FR,"Fitness",TERMINOLOGY,P4,src/i18n/fr.ts,Optional - "Condition physique",REVIEW

@@ -86,7 +86,7 @@ function CardContent({
 
 export default function ProgrammesSection() {
   const { t, locale } = useLocale();
-  const programmes = getAllProgrammeCards();
+  const programmes = getAllProgrammeCards(locale);
 
   const [activeIdx, setActiveIdx] = useState(0);
   const [direction, setDirection] = useState<1 | -1>(1);

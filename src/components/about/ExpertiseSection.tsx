@@ -85,10 +85,10 @@ export default function ExpertiseSection({ content }: ExpertiseSectionProps): Re
                 </Link>
               ))}
             </div>
-            <button onClick={() => scroll("left")} aria-label="Précédent" className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm shadow-md items-center justify-center hover:bg-white transition-colors z-20">
+            <button onClick={() => scroll("left")} aria-label={locale === "en" ? "Previous" : "Précédent"} className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm shadow-md items-center justify-center hover:bg-white transition-colors z-20">
               <svg className="w-4 h-4 text-[#0B1220]" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M10 4l-4 4 4 4" /></svg>
             </button>
-            <button onClick={() => scroll("right")} aria-label="Suivant" className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm shadow-md items-center justify-center hover:bg-white transition-colors z-20">
+            <button onClick={() => scroll("right")} aria-label={locale === "en" ? "Next" : "Suivant"} className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm shadow-md items-center justify-center hover:bg-white transition-colors z-20">
               <svg className="w-4 h-4 text-[#0B1220]" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 4l4 4-4 4" /></svg>
             </button>
           </div>

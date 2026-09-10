@@ -95,7 +95,7 @@ export default function Breadcrumbs({ labels }: { labels?: Record<string, string
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <nav
-        aria-label="Breadcrumb"
+        aria-label={locale === "en" ? "Breadcrumb" : "Fil d'Ariane"}
         className="sr-only"
       >
         <ol className="flex items-center gap-1.5 text-xs text-[#0B1220]/40">

@@ -40,7 +40,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const programme = getProgramme(slug);
+  const programme = getProgramme(slug, "fr");
   if (!programme) return {};
 
   const title = SEOTitle(programme.name);
@@ -67,7 +67,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProgrammeDetailPage({ params }: Props) {
   const { slug } = await params;
-  const programme = getProgramme(slug);
+  const programme = getProgramme(slug, "fr");
   if (!programme) notFound();
 
   const { t } = getTranslations("fr");
@@ -76,6 +76,7 @@ export default async function ProgrammeDetailPage({ params }: Props) {
     backEnterprise: t("entreprises.programmes.backEnterprise"),
     practicalLabel: t("entreprises.programmes.practicalLabel"),
     practicalNote: t("entreprises.programmes.ctaNote"),
+    newTab: t("entreprises.programmes.newTab"),
     othersLabel: t("entreprises.programmes.othersLabel"),
     othersCta: t("entreprises.programmes.othersCta"),
   };
