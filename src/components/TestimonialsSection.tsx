@@ -9,6 +9,7 @@ import { useRef, useEffect, useCallback, type ReactNode } from "react";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
 import type { TestimonialsContent } from "@/lib/homepage-types";
+import PracticesSection from "@/components/PracticesSection";
 
 type TestimonialItem = {
   type: "testimonial";
@@ -109,6 +110,9 @@ export default function TestimonialsSection({ content }: TestimonialsSectionProp
     <section ref={sectionRef} className="bg-[#F2EFE9] noise accent-top relative py-12 sm:py-24 px-6" id="avis-google">
       <div className="max-w-7xl mx-auto">
         <div ref={headingRef} className="flex flex-col items-center text-center mb-8 sm:mb-16 lg:mb-24">
+          <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.22em] uppercase mb-6">
+            {content?.eyebrow ?? t("testimonialsSection.eyebrow")}
+          </span>
           <h2 className="heading-serif text-3xl sm:text-4xl text-[#0B1220]">
             {content?.heading1 ?? t("testimonialsSection.heading1")}{" "}
 <span style={{
@@ -150,6 +154,11 @@ export default function TestimonialsSection({ content }: TestimonialsSectionProp
             </div>
           ))}
         </div>
+      </div>
+
+      {/* ── Pratiques gallery (verbatim PracticesSection embedded here) ── */}
+      <div className="-mx-6">
+        <PracticesSection />
       </div>
     </section>
   );

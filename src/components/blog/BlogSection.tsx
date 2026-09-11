@@ -82,23 +82,23 @@ export default function BlogSection({ posts, content }: { posts: PostWithAuthor[
         <div ref={headingRef} className="text-center mb-10 sm:mb-14 max-w-xl mx-auto">
           <div className="inline-flex items-center gap-2 mb-5">
             <div className="w-4 h-px bg-[#B88A5A]/40" />
-            <span className="text-[#B88A5A] text-[10.5px] font-bold tracking-[0.22em] uppercase">{t("blog.badge")}</span>
+            <span className="text-[#B88A5A] text-[10.5px] font-bold tracking-[0.22em] uppercase">{t("homeBlog.badge")}</span>
             <div className="w-4 h-px bg-[#B88A5A]/40" />
           </div>
-          <h2 className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220]">{content?.heading1 ?? t("blog.heading1")}{" "}
+          <h2 className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220]">{content?.heading1 ?? t("homeBlog.heading1")}{" "}
 <span style={{
   background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent",
 }}>
-  {content?.heading2 ?? t("blog.heading2")}
+  {content?.heading2 ?? t("homeBlog.heading2")}
 </span></h2>
           <p className="text-[#2B2F36]/55 text-[14px] sm:text-[15px] mt-4 leading-relaxed">
-            {content?.sub ?? t("blog.sub")}
+            {content?.sub ?? t("homeBlog.sub")}
           </p>
           <Link href={h(locale, "/articles")}
             className="mt-6 inline-flex items-center gap-1.5 text-xs font-medium text-[#B88A5A] hover:text-[#B88A5A]/70 transition-colors">
-            <span>{content?.voirTous ?? t("blog.voirTous")}</span>
+            <span>{content?.voirTous ?? t("homeBlog.voirTous")}</span>
             <svg className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
             </svg>

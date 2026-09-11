@@ -63,7 +63,7 @@ export default function ThematiquesSection() {
   };
 
   return (
-    <section ref={sectionRef} className="relative bg-[#F2EFE9] py-16 sm:py-24 px-6 overflow-hidden scroll-mt-20">
+    <section ref={sectionRef} className="relative bg-[#FAF8F4] py-16 sm:py-24 px-6 overflow-hidden scroll-mt-20">
       <div className="max-w-7xl mx-auto">
         <div className="th-head flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10 sm:mb-14">
           <div className="max-w-2xl">
@@ -96,7 +96,7 @@ export default function ThematiquesSection() {
                 aria-controls={`theme-panel-${i}`}
                 tabIndex={isActive ? 0 : -1}
                 onClick={() => setActive(i)}
-                className={`th-selector group inline-flex items-end gap-2.5 px-4 sm:px-6 pt-4 pb-4 border-b-2 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B88A5A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F2EFE9] ${
+                className={`th-selector group inline-flex items-end gap-2.5 px-4 sm:px-6 pt-4 pb-4 border-b-2 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B88A5A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAF8F4] ${
                   isActive
                     ? "border-[#B88A5A] text-[#0B1220]"
                     : "border-transparent text-[#0B1220]/35 hover:text-[#0B1220]/70"

@@ -17,7 +17,8 @@ import ClinicPathologies from "@/components/clinic/Pathologies";
 import ClinicTeam from "@/components/clinic/Team";
 import ClinicHealthNeeds from "@/components/clinic/HealthNeeds";
 import ClinicParcoursDeSoins from "@/components/clinic/ParcoursDeSoins";
-import ClinicHomecareBanner from "@/components/clinic/HomecareBanner";
+/* HIDDEN — temporarily disabled; re-enable by uncommenting import + render below */
+// import ClinicHomecareBanner from "@/components/clinic/HomecareBanner";
 import ClinicRecruitment from "@/components/clinic/Recruitment";
 import ClinicPractical from "@/components/clinic/Practical";
 import ClinicStructuredData from "@/components/clinic/StructuredData";
@@ -75,7 +76,7 @@ export default function AboutPage() {
             <ClinicTeam />
             <ClinicHealthNeeds />
             <ClinicParcoursDeSoins />
-            <ClinicHomecareBanner />
+            {/* <ClinicHomecareBanner /> — HIDDEN temporarily */}
             <ClinicRecruitment />
             <ClinicPractical />
           </div>

@@ -55,6 +55,8 @@ export interface Programme {
   practical: ProgrammePracticalRow[];
   note: string;
   ctas: ProgrammeCTA[];
+  cardFormat?: string;
+  cardAnimator?: string;
 }
 
 export interface ProgrammeCard {
@@ -77,6 +79,8 @@ interface ProgrammeContent {
   practical: ProgrammePracticalRow[];
   note: string;
   ctas: ProgrammeCTA[];
+  cardFormat?: string;
+  cardAnimator?: string;
 }
 
 interface LocalizedProgramme {
@@ -109,7 +113,7 @@ export const PROGRAMMES: LocalizedProgramme[] = [
     slug: "leadership-360",
     fr: {
       name: "Leadership 360°",
-      badge: "PROGRAMME LABELLISÉ · 5 AXES",
+      badge: "5 AXES",
       pitch: "Développer un leadership performant et humain.",
       intro: [
         "Le cursus Leadership 360° est un programme de développement managérial conçu pour accompagner les managers dans le renforcement de leurs compétences humaines, relationnelles et organisationnelles.",
@@ -161,10 +165,12 @@ export const PROGRAMMES: LocalizedProgramme[] = [
       ],
       note: "Tarif sur devis personnalisé · Format adapté à vos contraintes.",
       ctas: [AUDIT_CTA_FR, QUOTE_CTA_FR],
+      cardFormat: "Format : 3 jours (1+1+1) · Inter ou intra-entreprise",
+      cardAnimator: "Animée par un formateur Wenaya certifié",
     },
     en: {
       name: "Leadership 360°",
-      badge: "CERTIFIED PROGRAMME · 5 PILLARS",
+      badge: "5 PILLARS",
       pitch: "Develop high-performing, human leadership.",
       intro: [
         "The Leadership 360° programme is a managerial development programme designed to support managers in strengthening their interpersonal, relational and organisational skills.",
@@ -216,13 +222,15 @@ export const PROGRAMMES: LocalizedProgramme[] = [
       ],
       note: "Fee on personalised quote · Format adapted to your constraints.",
       ctas: [AUDIT_CTA_EN, QUOTE_CTA_EN],
+      cardFormat: "Format: 3 days (1+1+1) · Open-enrolment or in-house",
+      cardAnimator: "Facilitated by a certified Wenaya facilitator",
     },
   },
   {
     slug: "pcm",
     fr: {
       name: "Process Communication Model®",
-      badge: "PROGRAMME LABELLISÉ · NASA · 1978",
+      badge: "NASA · 1978",
       pitch: "Se comprendre, comprendre les autres, pour mieux travailler ensemble.",
       intro: [
         "Dans un environnement professionnel où la communication et la collaboration sont essentielles, comprendre les différences de fonctionnement entre les personnes devient un véritable levier de performance.",
@@ -273,10 +281,12 @@ export const PROGRAMMES: LocalizedProgramme[] = [
       ],
       note: "Tarif sur devis personnalisé · Format adapté à vos contraintes.",
       ctas: [AUDIT_CTA_FR, QUOTE_CTA_FR],
+      cardFormat: "Format : 2 jours · Inter ou intra-entreprise",
+      cardAnimator: "Animée par une formatrice Wenaya certifiée PCM",
     },
     en: {
       name: "Process Communication Model®",
-      badge: "CERTIFIED PROGRAMME · NASA · 1978",
+      badge: "NASA · 1978",
       pitch: "Understand yourself, understand others, to work better together.",
       intro: [
         "In a professional environment where communication and collaboration are essential, understanding how different people function becomes a genuine performance lever.",
@@ -327,13 +337,15 @@ export const PROGRAMMES: LocalizedProgramme[] = [
       ],
       note: "Fee on personalised quote · Format adapted to your constraints.",
       ctas: [AUDIT_CTA_EN, QUOTE_CTA_EN],
+      cardFormat: "Format: 2 days · Open-enrolment or in-house",
+      cardAnimator: "Facilitated by a certified PCM Wenaya facilitator",
     },
   },
   {
     slug: "art-des-priorites",
     fr: {
       name: "L'Art des Priorités",
-      badge: "PROGRAMME LABELLISÉ · ANTI-SURCHARGE",
+      badge: "ANTI-SURCHARGE",
       pitch: "Stop à la surcharge. Place à l'efficacité. Travailler mieux, pas forcément plus.",
       intro: [
         "Dans un environnement professionnel où les sollicitations sont constantes et les exigences toujours plus nombreuses, la capacité à gérer efficacement son temps et ses priorités est devenue une compétence clé.",
@@ -383,10 +395,12 @@ export const PROGRAMMES: LocalizedProgramme[] = [
       ],
       note: "Tarif sur devis personnalisé · Format adapté à vos contraintes.",
       ctas: [AUDIT_CTA_FR, QUOTE_CTA_FR],
+      cardFormat: "Format : 2 jours · Outil Key Timer optionnel",
+      cardAnimator: "Animée par un formateur Wenaya certifié",
     },
     en: {
       name: "The Art of Priorities",
-      badge: "CERTIFIED PROGRAMME · ANTI-OVERLOAD",
+      badge: "ANTI-OVERLOAD",
       pitch: "Stop the overload. Make way for effectiveness. Work better, not necessarily more.",
       intro: [
         "In a professional environment where demands are constant and requirements ever-growing, the ability to manage one's time and priorities effectively has become a key skill.",
@@ -436,13 +450,15 @@ export const PROGRAMMES: LocalizedProgramme[] = [
       ],
       note: "Fee on personalised quote · Format adapted to your constraints.",
       ctas: [AUDIT_CTA_EN, QUOTE_CTA_EN],
+      cardFormat: "Format: 2 days · Key Timer tool optional",
+      cardAnimator: "Facilitated by a certified Wenaya facilitator",
     },
   },
   {
     slug: "people-model-canvas",
     fr: {
       name: "People Model Canvas",
-      badge: "PROGRAMME LABELLISÉ · 20+ ANS DE RECHERCHE & TERRAIN",
+      badge: "20+ ANS · RECHERCHE & TERRAIN",
       pitch: "Un langage commun pour piloter vos décisions RH stratégiques.",
       intro: [
         "Fruit de plus de 20 ans de recherche universitaire et de mise en œuvre en entreprise, le People Model Canvas propose une approche structurée de la gestion des ressources humaines.",
@@ -488,10 +504,12 @@ export const PROGRAMMES: LocalizedProgramme[] = [
       ],
       note: "Tarif sur devis personnalisé · Format adapté à vos contraintes.",
       ctas: [AUDIT_CTA_FR, QUOTE_CTA_FR],
+      cardFormat: "Format sur mesure · Adapté à vos enjeux",
+      cardAnimator: "Animée par un consultant Wenaya certifié",
     },
     en: {
       name: "People Model Canvas",
-      badge: "CERTIFIED PROGRAMME · 20+ YEARS OF RESEARCH & FIELD WORK",
+      badge: "20+ YEARS · RESEARCH & FIELD WORK",
       pitch: "A common language to steer your strategic HR decisions.",
       intro: [
         "The result of more than 20 years of academic research and in-company implementation, the People Model Canvas offers a structured approach to human resources management.",
@@ -537,6 +555,8 @@ export const PROGRAMMES: LocalizedProgramme[] = [
       ],
       note: "Fee on personalised quote · Format adapted to your constraints.",
       ctas: [AUDIT_CTA_EN, QUOTE_CTA_EN],
+      cardFormat: "Bespoke format · Adapted to your challenges",
+      cardAnimator: "Facilitated by a certified Wenaya consultant",
     },
   },
 ];
@@ -553,6 +573,8 @@ function resolveProgramme(raw: LocalizedProgramme, locale: HrefLocale): Programm
     practical: content.practical,
     note: content.note,
     ctas: content.ctas,
+    cardFormat: content.cardFormat,
+    cardAnimator: content.cardAnimator,
   };
 }
 
@@ -580,8 +602,8 @@ export function getProgrammesListingHref(locale: HrefLocale): string {
 
 /** Card-level projection shared by the listing page and the /corporate carousel. */
 export function toProgrammeCard(p: Programme): ProgrammeCard {
-  const format = p.practical[0]?.value ?? "";
-  const animator =
+  const derivedFormat = p.practical[0]?.value ?? "";
+  const derivedAnimator =
     p.practical.find((r) => r.label === "Animation" || r.label === "Facilitation")?.value ?? "";
   return {
     slug: p.slug,
@@ -589,8 +611,8 @@ export function toProgrammeCard(p: Programme): ProgrammeCard {
     name: p.name,
     pitch: p.pitch,
     desc: p.intro[0] ?? "",
-    format,
-    animator,
+    format: p.cardFormat ?? derivedFormat,
+    animator: p.cardAnimator ?? derivedAnimator,
   };
 }
 

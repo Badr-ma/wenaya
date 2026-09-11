@@ -1,243 +1,109 @@
 /**
- * Programs Section — displays the corporate labelled-program tiers on /corporate.
- * Interactive card carousel (drag + arrows) over the shared programme data source
- * (src/lib/corporate-programmes.ts). Each card links to its static detail page.
- * The live programme pages carry no images, so cards are typographic (no stock photos).
+ * Programs Section — clean one-row card grid over the shared programme data
+ * source (src/lib/corporate-programmes.ts). The 4 labelled programmes render as
+ * equal-width editorial cards (image, index, badge, name, pitch, format, CTA):
+ * one row of 4 on desktop, 2×2 on tablet, single column on mobile. No slider,
+ * no staggered editorial layout, no animation.
  */
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
-import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
-import { type HrefLocale } from "@/lib/href";
-import { getProgrammeHref, getAllProgrammeCards, type ProgrammeCard } from "@/lib/corporate-programmes";
+import { getProgrammeHref, getAllProgrammeCards } from "@/lib/corporate-programmes";
 
-const EDGE_PX = 130;
-const EDGE_PX_MOBILE = 24;
-const SIDE_SCALE = 0.82;
-const SIDE_OPACITY = 0.4;
-const SPRING = { type: "spring" as const, stiffness: 500, damping: 35, mass: 0.5 };
+/** Editorial photography — reuse from the corporate Unsplash pool. */
+const PROGRAMME_IMAGES: Record<string, string> = {
+  "leadership-360": "https://images.unsplash.com/photo-1543269865-cbf427effbad?w=1600&q=100&auto=format&fit=crop",
+  pcm: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1600&q=100&auto=format&fit=crop",
+  "art-des-priorites": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1600&q=100&auto=format&fit=crop",
+  "people-model-canvas": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=1600&q=100&auto=format&fit=crop",
+};
 
-const reducedMotion =
-  typeof window !== "undefined"
-    ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    : false;
-
-function CardContent({
-  program, isActive, locale, discoverLabel,
-}: {
-  program: ProgrammeCard; isActive: boolean; locale: HrefLocale; discoverLabel: string;
-}) {
-  const href = getProgrammeHref(locale, program.slug);
-  const accent = isActive
-    ? "border-[#B88A5A]/40 shadow-[0_20px_60px_rgba(0,0,0,0.12),0_8px_24px_rgba(0,0,0,0.06)]"
-    : "border-[#0B1220]/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.06)]";
-
-  return (
-    <div
-      className={`w-full rounded-3xl bg-[#FAF8F4] border flex flex-col select-none overflow-hidden ${accent}`}
-      style={{ height: "clamp(280px, 52vw, 460px)" }}
-    >
-      <div className="p-5 sm:p-7">
-        <span className="inline-block px-2.5 py-1 rounded-full bg-[#B88A5A]/10 text-[#B88A5A] text-[9px] sm:text-[10px] font-bold tracking-[0.1em] uppercase">
-          {program.badge}
-        </span>
-      </div>
-
-      <div className="flex-1 flex flex-col justify-between px-5 sm:px-7 pb-5 sm:pb-7 min-h-0">
-        <div>
-          <h3 className="heading-serif text-[#0B1220] text-[17px] sm:text-2xl font-semibold leading-tight">
-            {program.name}
-          </h3>
-          <p className="text-[#B88A5A] text-[11px] sm:text-sm font-medium mt-1">{program.pitch}</p>
-          <p className="text-[#2B2F36]/50 text-[11px] sm:text-[13px] leading-snug sm:leading-relaxed mt-2 line-clamp-2">{program.desc}</p>
-        </div>
-
-        <div className="flex flex-col min-w-0 gap-1 pt-3 mt-2 border-t border-[#0B1220]/[0.05]">
-          <div className="flex items-center gap-1.5 text-[#2B2F36]/40 text-[10px] sm:text-xs">
-            <svg className="w-3.5 h-3.5 shrink-0 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span className="truncate">{program.format}</span>
-          </div>
-          <div className="flex items-center gap-1.5 text-[#2B2F36]/30 text-[10px] sm:text-xs">
-            <svg className="w-3.5 h-3.5 shrink-0 text-[#B88A5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.164-.584-7.447-1.632z" />
-            </svg>
-            <span className="truncate">{program.animator}</span>
-          </div>
-        </div>
-
-        <Link
-          href={href}
-          className="mt-4 inline-flex items-center justify-center gap-2 h-10 rounded-full bg-[#0B1220] text-white text-xs font-semibold tracking-wide hover:bg-[#B88A5A] transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B88A5A]"
-        >
-          {discoverLabel}
-          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
-        </Link>
-      </div>
-    </div>
-  );
-}
+const INDEX_FALLBACK = ["01", "02", "03", "04"];
 
 export default function ProgrammesSection() {
   const { t, locale } = useLocale();
   const programmes = getAllProgrammeCards(locale);
 
-  const [activeIdx, setActiveIdx] = useState(0);
-  const [direction, setDirection] = useState<1 | -1>(1);
-  const [isAnimating, setIsAnimating] = useState(false);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [containerWidth, setContainerWidth] = useState(0);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const measure = () => {
-      if (containerRef.current) {
-        setContainerWidth(containerRef.current.offsetWidth);
-      }
-    };
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, []);
-
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el || reducedMotion) return;
-    const ctx = gsap.context(() => {
-      gsap.fromTo(".pg-head", { opacity: 0, y: 20 }, {
-        opacity: 1, y: 0, duration: 0.6, ease: "power3.out",
-        scrollTrigger: { trigger: el, start: "top 88%", toggleActions: "play none none none" },
-      });
-    }, el);
-    return () => ctx.revert();
-  }, []);
-
-  const total = programmes.length;
-  const prevIdx = (activeIdx - 1 + total) % total;
-  const nextIdx = (activeIdx + 1) % total;
-
-  const navigate = useCallback((dir: 1 | -1) => {
-    if (isAnimating || total === 0) return;
-    setIsAnimating(true);
-    setDirection(dir);
-    setActiveIdx(prev => (prev + dir + total) % total);
-    setTimeout(() => setIsAnimating(false), 500);
-  }, [isAnimating, total]);
-
-  const edge = containerWidth < 640 ? EDGE_PX_MOBILE : EDGE_PX;
-
-  function getPosition(idx: number): "active" | "prev" | "next" | null {
-    if (idx === activeIdx) return "active";
-    if (idx === prevIdx) return "prev";
-    if (idx === nextIdx) return "next";
-    return null;
-  }
-
-  function getAnimate(position: string, cw: number) {
-    const gap = edge;
-    const cardW = cw - 2 * gap;
-    if (position === "active") return { x: gap, scale: 1, opacity: 1, rotate: 0 };
-    if (position === "prev") return { x: gap - cardW + edge, scale: SIDE_SCALE, opacity: SIDE_OPACITY, rotate: -6 };
-    return { x: cw - gap - edge, scale: SIDE_SCALE, opacity: SIDE_OPACITY, rotate: 6 };
-  }
-
-  if (!total) return null;
+  if (!programmes.length) return null;
 
   return (
-    <section ref={sectionRef} className="relative bg-[#F2EFE9] pt-4 sm:pt-8 pb-12 sm:pb-16 px-6 overflow-hidden">
-      <div className="max-w-6xl mx-auto">
-        <div className="pg-head max-w-2xl mb-10 sm:mb-12">
-          <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase mb-4">
-            <span className="w-8 h-px bg-[#B88A5A]/40" />
-            {t("entreprises.programmes.title")}
-          </span>
-          <h2 className="heading-serif text-[#0B1220] mt-4 leading-[1.06]" style={{ fontSize: "clamp(1.75rem, 3.15vw, 3rem)" }}>
-            {t("entreprises.programmes.subtitle")}
-          </h2>
-        </div>
-
-        <div className="flex items-center justify-center gap-4 sm:gap-6">
-          <button
-            onClick={() => navigate(-1)}
-            aria-label={t("entreprises.programmes.prevLabel")}
-            className="flex w-11 h-11 sm:w-10 sm:h-10 rounded-full border border-[#0B1220]/[0.15] items-center justify-center text-[#0B1220]/30 hover:border-[#B88A5A]/50 hover:text-[#B88A5A] transition-colors duration-200 shrink-0 z-10"
-          >
-            <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-
-          <div
-            ref={containerRef}
-            className="relative rounded-3xl w-full max-w-[600px] mx-auto"
-            style={{ height: "clamp(280px, 52vw, 460px)" }}
-          >
-            <AnimatePresence initial={false} custom={{ direction, cw: containerWidth }}>
-              {programmes.map((program, idx) => {
-                const position = getPosition(idx);
-                if (!position) return null;
-
-                const isActive = position === "active";
-
-                return (
-                  <motion.div
-                    key={idx}
-                    className="absolute top-0 left-0 will-change-transform"
-                    custom={{ direction, cw: containerWidth }}
-                    initial={{ x: direction > 0 ? containerWidth + 50 : -containerWidth - 50, opacity: 0, rotate: direction > 0 ? 6 : -6 }}
-                    animate={getAnimate(position, containerWidth)}
-                    exit={{ x: direction > 0 ? -containerWidth - 50 : containerWidth + 50, opacity: 0, rotate: direction > 0 ? -6 : 6 }}
-                    transition={SPRING}
-                    style={{
-                      width: containerWidth - 2 * edge,
-                      zIndex: position === "active" ? 3 : position === "next" ? 2 : 1,
-                    }}
-                    drag={isActive ? "x" : false}
-                    dragConstraints={{ left: -containerWidth * 0.35, right: containerWidth * 0.35 }}
-                    dragElastic={0.25}
-                    onDragEnd={(_: unknown, info: { offset: { x: number }; velocity: { x: number } }) => {
-                      if (!isActive) return;
-                      if (info.offset.x < -40 || info.velocity.x < -400) navigate(1);
-                      else if (info.offset.x > 40 || info.velocity.x > 400) navigate(-1);
-                    }}
-                  >
-                    <CardContent
-                      program={program}
-                      isActive={isActive}
-                      locale={locale}
-                      discoverLabel={t("entreprises.programmes.discoverLabel")}
-                    />
-                  </motion.div>
-                );
-              })}
-            </AnimatePresence>
+    <section className="relative bg-[#F2EFE9] py-16 sm:py-24 px-6 overflow-hidden">
+      <div className="max-w-[88rem] mx-auto">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-14 sm:mb-20">
+          <div className="max-w-2xl">
+            <span className="inline-flex items-center gap-3 whitespace-nowrap text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase mb-4">
+              <span className="w-8 h-px bg-[#B88A5A]/40" aria-hidden />
+              {t("entreprises.programmes.title")}
+            </span>
+            <h2 className="heading-serif text-[#0B1220] mt-4 leading-[1.06]" style={{ fontSize: "clamp(1.85rem, 3.4vw, 3.2rem)" }}>
+              {t("entreprises.programmes.subtitle")}
+            </h2>
           </div>
-
-          <button
-            onClick={() => navigate(1)}
-            aria-label={t("entreprises.programmes.nextLabel")}
-            className="flex w-11 h-11 sm:w-10 sm:h-10 rounded-full border border-[#0B1220]/[0.15] items-center justify-center text-[#0B1220]/30 hover:border-[#B88A5A]/50 hover:text-[#B88A5A] transition-colors duration-200 shrink-0 z-10"
-          >
-            <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
+          <p className="text-[#0B1220]/55 text-sm leading-relaxed max-w-sm lg:shrink-0">
+            {t("entreprises.programmes.ctaDesc")}
+          </p>
         </div>
 
-        <div className="flex items-center justify-center gap-6 mt-10">
-          <span className="text-[#0B1220]/25 text-sm font-medium tabular-nums">
-            {activeIdx + 1} <span className="text-[#0B1220]/15">/ {total}</span>
-          </span>
-          <span className="text-[#0B1220]/15 text-[10px] font-semibold tracking-[0.15em] uppercase">
-            {t("entreprises.programmes.swipeLabel")}
-          </span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 lg:gap-x-8 gap-y-12 lg:gap-y-10">
+          {programmes.map((program, i) => {
+            const image = PROGRAMME_IMAGES[program.slug];
+            return (
+              <article key={program.slug} className="flex flex-col h-full">
+                {image && (
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-t-[24px] bg-white/40">
+                    <Image
+                      src={image}
+                      alt={program.name}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      loading={i === 0 ? "eager" : "lazy"}
+                    />
+                  </div>
+                )}
+
+                <div className="flex flex-col flex-1 pt-6 lg:pt-7">
+                  <div className="flex items-start gap-4">
+                    <span
+                      aria-hidden
+                      className="font-heading font-bold leading-none select-none shrink-0 text-[#B88A5A]"
+                      style={{ fontSize: "clamp(1.7rem, 2.6vw, 2.4rem)", opacity: 0.9 }}
+                    >
+                      {i < INDEX_FALLBACK.length ? INDEX_FALLBACK[i] : String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="inline-flex items-center rounded-full bg-[#B88A5A]/10 px-3 py-1 text-[#B88A5A] text-[10px] font-bold tracking-[0.16em] uppercase">
+                      {program.badge}
+                    </span>
+                  </div>
+
+                  <h3 className="heading-serif text-[#0B1220] mt-4 leading-[1.08]" style={{ fontSize: "clamp(1.5rem, 2.6vw, 2.2rem)" }}>
+                    {program.name}
+                  </h3>
+
+                  <p className="mt-3 text-[#B88A5A] text-sm sm:text-[15px] font-medium leading-relaxed">{program.pitch}</p>
+
+                  {program.format ? (
+                    <span className="mt-5 inline-flex items-center gap-2 text-xs sm:text-sm text-[#0B1220]/60">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#B88A5A]" aria-hidden />
+                      {program.format}
+                    </span>
+                  ) : null}
+
+                  <Link
+                    href={getProgrammeHref(locale, program.slug)}
+                    className="mt-auto pt-7 inline-flex items-center gap-2 text-[#B88A5A] text-sm font-semibold group focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B88A5A]"
+                  >
+                    {t("entreprises.programmes.discoverLabel")}
+                    <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                  </Link>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>

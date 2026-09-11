@@ -25,7 +25,8 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
 
     const ctx = gsap.context(() => {
       gsap.timeline({ defaults: { ease: "power3.out" } })
-        .fromTo(".hero-line", { opacity: 0, y: 32 }, { opacity: 1, y: 0, duration: 0.75, stagger: 0.1 })
+        .fromTo(".hero-eyebrow", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5 })
+        .fromTo(".hero-line", { opacity: 0, y: 32 }, { opacity: 1, y: 0, duration: 0.75, stagger: 0.1 }, "-=0.3")
         .fromTo(".hero-sub", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5 }, "-=0.35")
         .fromTo(".hero-cta", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.45 }, "-=0.25")
         .fromTo(trustRef.current, { opacity: 0 }, { opacity: 1, duration: 0.5 }, "-=0.25");
@@ -45,7 +46,6 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
     { value: "35", label: t("hero.stats.therapeutes") },
     { value: "+2 000", label: t("hero.stats.patients") },
     { value: "99%", label: t("hero.stats.satisfaction") },
-    { value: "6", label: t("hero.stats.disciplines") },
   ];
 
   return (
@@ -94,50 +94,62 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pt-28 sm:pt-36 pb-16 sm:pb-20">
         <div className="max-w-2xl">
           <div>
+            {/* Eyebrow */}
+            <p className="hero-eyebrow flex items-center gap-2.5 mb-7">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#B88A5A]" aria-hidden="true" />
+              <span className="text-[#B88A5A] text-[11px] sm:text-xs font-semibold tracking-[0.24em] uppercase">
+                {content?.eyebrow ?? t("hero.eyebrow")}
+              </span>
+            </p>
+
             {/* Headline */}
             <h1
-              className="text-white leading-[1.04]"
+              className="text-white leading-[1.08]"
               style={{
                 fontFamily: "var(--font-manrope), 'Manrope', ui-sans-serif, system-ui, sans-serif",
-                fontSize: "clamp(3rem, 5.5vw, 5.2rem)",
+                fontSize: "clamp(2.2rem, 4vw, 3.9rem)",
                 fontWeight: 500,
                 letterSpacing: "-0.02em",
               }}
             >
-              <span className="hero-line block">{content?.heading1 ?? t("hero.vousMéritez")}</span>
+              <span className="hero-line block">{content?.heading1 ?? t("hero.heading1")}</span>
               <span className="hero-line block">
-                {t("hero.uneSante")}{" "}
                 <span
                   style={{
                     background: "linear-gradient(135deg, #D4A870 0%, #B88A5A 45%, #E8C99A 100%)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
-                    fontStyle: "italic",
                   }}
                 >
-                  {content?.heading2 ?? t("hero.complete")}
+                  {content?.heading2 ?? t("hero.heading2")}
                 </span>
               </span>
             </h1>
 
             {/* Sub */}
             <p
-              className="hero-sub mt-7 max-w-[480px] leading-[1.78]"
+              className="hero-sub mt-6 max-w-[560px] leading-[1.78]"
               style={{ color: "rgba(255,255,255,0.5)", fontSize: "clamp(0.93rem, 1.4vw, 1.05rem)" }}
             >
               {content?.sub ?? t("hero.sub")}
             </p>
 
             {/* CTAs */}
-            <div className="hero-cta flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-10">
-              <Link
-                href={h(locale, "/professional")}
-                className="inline-flex items-center justify-center h-11 px-7 rounded-xl text-white text-[13.5px] font-semibold transition-all duration-300 hover:-translate-y-px active:translate-y-0"
+            <div className="hero-cta flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-9">
+              <a
+                href="#configurator"
+                className="inline-flex items-center justify-center h-11 px-7 rounded-xl text-white text-[13.5px] font-semibold transition-all duration-300 hover:-translate-y-px hover:brightness-110 active:translate-y-0"
                 style={{
                   background: "#B88A5A",
                 }}
               >
                 {content?.ctaLabel ?? t("hero.cta")}
+              </a>
+              <Link
+                href={h(locale, "/contact-us") + "?type=booking"}
+                className="inline-flex items-center justify-center h-11 px-7 rounded-xl border border-white/25 text-[13.5px] font-semibold text-white/90 transition-all duration-300 hover:border-white/45 hover:bg-white/5"
+              >
+                {content?.ctaSecondary ?? t("hero.ctaSecondary")}
               </Link>
             </div>
           </div>
@@ -147,7 +159,7 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
         {/* Trust bar */}
         <div
           ref={trustRef}
-          className="mt-10 sm:mt-20 pt-8 grid grid-cols-2 sm:grid-cols-4 gap-x-8 gap-y-3 sm:gap-y-6"
+          className="mt-10 sm:mt-20 pt-8 grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-3 sm:gap-y-6"
           style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
         >
           {stats.map((s, i) => (

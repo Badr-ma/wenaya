@@ -24,8 +24,6 @@
   --color-warm-sand: #F2EFE9;
   --color-ivory: #FAF8F4;
   --color-graphite: #2B2F36;
-  --color-yolo-navy: #083241;
-  --color-yolo-orange: #AA412A;
 }
 
 /** CSS custom properties — default background (warm sand) and foreground (deep navy) */
@@ -110,50 +108,60 @@ body {
  * earlier font-family overrides were redundant and removed. The Corporate page
  * keeps its approved compact SIZE refinements so it stays close to its current
  * approved state (it should NOT grow again during the global migration):
- *   h1            → ~9% smaller
- *   h2 (major)    → ~11% smaller
- *   h3 (item)     → ~9% smaller
- *   decorative/stat numerals → ~12% smaller
+ *   h1            → ~13% smaller
+ *   h2 (major)    → ~15% smaller
+ *   h3 (item)     → ~13% smaller
+ *   decorative/stat numerals → ~16% smaller
+ *   KPI numerals  → ~12% smaller
  * Selectors match the exact inline clamp() values used by the Corporate components.
  */
 
 /* h1 — hero */
 .corp-typeset [style*="clamp(2.8rem"] {
-  font-size: clamp(2.55rem, 5vw, 4.73rem) !important;
+  font-size: clamp(2.45rem, 4.8vw, 4.55rem) !important;
 }
 
 /* h2 — major section headings */
 .corp-typeset [style*="clamp(1.75rem, 3.15vw, 3rem"] {
-  font-size: clamp(1.56rem, 2.8vw, 2.67rem) !important;
+  font-size: clamp(1.5rem, 2.68vw, 2.56rem) !important;
 }
 .corp-typeset [style*="clamp(1.65rem, 3.15vw, 2.7rem"] {
-  font-size: clamp(1.47rem, 2.8vw, 2.4rem) !important;
+  font-size: clamp(1.4rem, 2.68vw, 2.3rem) !important;
 }
 .corp-typeset [style*="clamp(2.1rem, 4.8vw, 3.9rem"] {
-  font-size: clamp(1.87rem, 4.27vw, 3.47rem) !important;
+  font-size: clamp(1.8rem, 4.1vw, 3.33rem) !important;
 }
 .corp-typeset [style*="clamp(1.75rem, 3.5vw, 3rem"] {
-  font-size: clamp(1.56rem, 3.11vw, 2.67rem) !important;
+  font-size: clamp(1.5rem, 2.98vw, 2.56rem) !important;
 }
 .corp-typeset [style*="clamp(1.5rem, 2.6vw, 2.3rem"] {
-  font-size: clamp(1.34rem, 2.31vw, 2.05rem) !important;
+  font-size: clamp(1.28rem, 2.2vw, 1.96rem) !important;
 }
 .corp-typeset [style*="clamp(1.75rem, 3.5vw, 2.8rem"] {
-  font-size: clamp(1.56rem, 3.11vw, 2.49rem) !important;
+  font-size: clamp(1.5rem, 2.98vw, 2.39rem) !important;
+}
+.corp-typeset [style*="clamp(1.85rem, 3.4vw, 3.1rem"] {
+  font-size: clamp(1.56rem, 2.9vw, 2.7rem) !important;
+}
+.corp-typeset [style*="clamp(1.85rem, 3.4vw, 3.2rem"] {
+  font-size: clamp(1.6rem, 2.95vw, 2.75rem) !important;
 }
 
 /* h3 — item headings */
 .corp-typeset [style*="clamp(1.8rem, 3.2vw, 2.85rem"] {
-  font-size: clamp(1.64rem, 2.91vw, 2.59rem) !important;
+  font-size: clamp(1.57rem, 2.78vw, 2.48rem) !important;
 }
 .corp-typeset [style*="clamp(1.75rem, 3.5vw, 2.85rem"] {
-  font-size: clamp(1.59rem, 3.18vw, 2.55rem) !important;
+  font-size: clamp(1.52rem, 3.05vw, 2.44rem) !important;
 }
 .corp-typeset [style*="clamp(1.6rem, 2.85vw, 2.5rem"] {
-  font-size: clamp(1.46rem, 2.59vw, 2.27rem) !important;
+  font-size: clamp(1.4rem, 2.48vw, 2.18rem) !important;
 }
 .corp-typeset [style*="clamp(2rem, 3.5vw, 2.85rem"] {
-  font-size: clamp(1.82rem, 3.18vw, 2.59rem) !important;
+  font-size: clamp(1.78rem, 3.05vw, 2.52rem) !important;
+}
+.corp-typeset [style*="clamp(1.5rem, 2.6vw, 2.2rem"] {
+  font-size: clamp(1.35rem, 2.4vw, 2rem) !important;
 }
 .corp-typeset h3.text-2xl {
   font-size: calc(1.5rem * 0.91) !important;
@@ -169,22 +177,31 @@ body {
 
 /* Oversized decorative numbers + stat numerals */
 .corp-typeset [style*="clamp(4.9rem, 9.8vw, 8.2rem"] {
-  font-size: clamp(4.31rem, 8.62vw, 7.22rem) !important;
+  font-size: clamp(4.1rem, 8.2vw, 6.9rem) !important;
 }
 .corp-typeset [style*="clamp(4.1rem, 8.2vw, 6.55rem"] {
-  font-size: clamp(3.61rem, 7.22vw, 5.76rem) !important;
+  font-size: clamp(3.45rem, 6.9vw, 5.5rem) !important;
 }
 .corp-typeset [style*="clamp(2.45rem, 4.1vw, 3.9rem"] {
-  font-size: clamp(2.16rem, 3.61vw, 3.43rem) !important;
+  font-size: clamp(2.06rem, 3.45vw, 3.28rem) !important;
 }
 .corp-typeset [style*="clamp(1.6rem, 4.1vw, 2rem"] {
-  font-size: clamp(1.41rem, 3.61vw, 1.76rem) !important;
+  font-size: clamp(1.35rem, 3.45vw, 1.68rem) !important;
 }
 .corp-typeset [style*="clamp(1.85rem, 3.8vw, 3.05rem"] {
-  font-size: clamp(1.63rem, 3.34vw, 2.68rem) !important;
+  font-size: clamp(1.56rem, 3.2vw, 2.56rem) !important;
 }
 .corp-typeset [style*="clamp(1.4rem, 2.5vw, 1.9rem"] {
-  font-size: clamp(1.23rem, 2.2vw, 1.67rem) !important;
+  font-size: clamp(1.2rem, 2.15vw, 1.62rem) !important;
+}
+.corp-typeset [style*="clamp(2.4rem, 4.4vw, 4rem"] {
+  font-size: clamp(2.1rem, 3.85vw, 3.5rem) !important;
+}
+.corp-typeset [style*="clamp(2.4rem, 4vw, 3.6rem"] {
+  font-size: clamp(2.05rem, 3.6vw, 3.25rem) !important;
+}
+.corp-typeset [style*="clamp(1.4rem, 2.5vw, 2.1rem"] {
+  font-size: clamp(1.28rem, 2.35vw, 2rem) !important;
 }
 .corp-typeset .text-\[2\.5rem\] {
   font-size: 2.2rem !important;
@@ -418,6 +435,51 @@ body {
   }
   .group:hover .cj-img {
     transform: none;
+  }
+}
+
+/* How it works / Méthode Wenaya — light editorial card visuals (homepage).
+ * Entrance is a scroll-linked reveal. `.mhm-armed` is added on client mount
+ * (so SSR / no-JS never hides content). An IntersectionObserver toggles
+ * `.mhm-visible` on every entry/exit: entering the viewport replays the
+ * animation from the hidden state, leaving resets it (so scrolling back
+ * down plays it again). Three light, card-native visuals: health-assessment
+ * bars filling left→right (COMPRENDRE), a flowing vertical pathway whose
+ * spine draws top→bottom while its nodes light one by one (AGIR), a rising
+ * progress line stroking left→right with milestone nodes appearing
+ * sequentially (PROGRESSER). Teal `#159AA9` is the primary motion accent,
+ * bronze `#B88A5A` the only secondary accent. ~3–3.5s staggered sequence,
+ * premium cubic-bezier. Under `prefers-reduced-motion` everything renders
+ * statically visible. */
+.mhm-armed .mhm-reveal { opacity: 0; transform: translateY(16px); transition: opacity 1.15s ease, transform 1.15s cubic-bezier(0.22, 1, 0.36, 1); }
+.mhm-armed.mhm-visible .mhm-reveal { opacity: 1; transform: translateY(0); }
+
+.mhm-armed .mhm-bar { transform: scaleX(0); transform-origin: left; transition: transform 1.9s cubic-bezier(0.22, 1, 0.36, 1); }
+.mhm-armed.mhm-visible .mhm-bar { transform: scaleX(1); }
+
+.mhm-armed .mhm-line-vert { transform: scaleY(0); transform-origin: top; transition: transform 1.8s cubic-bezier(0.22, 1, 0.36, 1); }
+.mhm-armed.mhm-visible .mhm-line-vert { transform: scaleY(1); }
+
+.mhm-armed .mhm-draw { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 2.5s cubic-bezier(0.22, 1, 0.36, 1); }
+.mhm-armed.mhm-visible .mhm-draw { stroke-dashoffset: 0; }
+
+.mhm-armed .mhm-node { opacity: 0; transform: scale(0.4); transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+.mhm-armed.mhm-visible .mhm-node { opacity: 1; transform: scale(1); }
+
+.mhm-armed .mhm-lbl { opacity: 0; transform: translateY(6px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+.mhm-armed.mhm-visible .mhm-lbl { opacity: 1; transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .mhm-armed .mhm-reveal,
+  .mhm-armed .mhm-bar,
+  .mhm-armed .mhm-line-vert,
+  .mhm-armed .mhm-draw,
+  .mhm-armed .mhm-node,
+  .mhm-armed .mhm-lbl {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    stroke-dashoffset: 0;
   }
 }
 

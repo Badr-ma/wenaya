@@ -1,20 +1,19 @@
 /**
  * Group Sessions List — "Nos séances de groupe".
- * Lists the real group sessions (shared content with the homepage Cours &
- * Ateliers section: yoga, sophrologie, nutrition, breathwork, JJB, pilates).
- * Rendered as compact, scannable cards — each links to its group-session
- * detail page. Data is resolved centrally via the group-sessions adapter.
+ * Lists the group sessions passed in by the server page (currently-active
+ * backend feed via `getActiveGroupSessions`, with local editorial fallback).
+ * Rendered as compact, scannable cards. Local sessions link to their detail
+ * page; backend-only sessions route to the contact flow.
  */
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
 import { useLocale } from "@/contexts/LanguageContext";
-import { getAllGroupSessions } from "@/lib/group-sessions";
+import type { GroupSession } from "@/lib/group-sessions";
 
-export default function GroupSessionsList(): React.JSX.Element {
-  const { t, locale } = useLocale();
-  const sessions = getAllGroupSessions(locale);
+export default function GroupSessionsList({ sessions }: { sessions: GroupSession[] }): React.JSX.Element {
+  const { t } = useLocale();
 
   return (
     <section className="relative bg-[#F2EFE9] px-6 pb-4 sm:pb-6">
@@ -28,7 +27,7 @@ export default function GroupSessionsList(): React.JSX.Element {
           </p>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
           {sessions.map((s, i) => (
             <Link
               key={s.id}

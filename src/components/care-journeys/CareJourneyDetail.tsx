@@ -4,8 +4,8 @@
  * Editorial composition (presentation only — every word comes from the
  * verbatim content adapter `care-journeys.ts`):
  *
- *  1. Cinematic full-bleed hero (navy, image-led, GSAP reveal) with a
- *     "Découvrir les recommandations" scroll CTA
+ *  1. Editorial header (compact, image-free) with the journey title, derived
+ *     dek and a "Découvrir les recommandations" scroll CTA
  *  2. Two-column article intro — lead statement left, ORIENTATION panel right
  *     (find the right support: view recommended practices / get guidance)
  *  3. "Sur cette page" sticky rail (xl+) + the editorial sections,
@@ -120,7 +120,6 @@ export default function CareJourneyDetail({ journey, locale }: Props) {
         title={journey.title}
         dekSource={journey.intro || journey.hubTeaser}
         eyebrow={t("careJourneys.detail.eyebrow")}
-        heroImage={presentation.heroImage}
         backHref={careerJourneyHubHref(locale)}
         backLabel={t("careJourneys.detail.backToHub")}
         ctaHref="#recommandations"

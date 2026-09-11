@@ -3,6 +3,10 @@
  * endpoint. Server-side only: consumed by SSR and the `/api/pratiques` proxy,
  * never by the browser directly.
  *
+ * Transport handled by the shared server read client (`./api/client.ts`);
+ * this module keeps the endpoint constant, the domain types, the Data Cache
+ * window and the envelope/paginator shape validation that owns the payload.
+ *
  * Endpoint: GET /api/v1/getAllPublicSpecialitiesWithPaginate (Laravel 11 back
  * end, `X-Powered-By: Yolo`). Verified behavior:
  *   - the server hardcodes per_page = 12 — `per_page`/`limit`/`page[size]`
@@ -13,8 +17,12 @@
  *   - POST is unsupported (405); search/category/filter params are ignored
  *   - response envelope: `{ error, message, data: Laravel paginator }`
  */
-export const PRACTICES_API_BASE =
-  process.env.PRACTICES_API_URL || "https://api.wenaya.com";
+import { wenayaApiGet, WENAYA_API_BASE } from "./api/client";
+import type { LaravelEnvelope } from "./api/types";
+
+/** Back-compat alias — the shared base now owns the env resolution. */
+export const PRACTICES_API_BASE = WENAYA_API_BASE;
+
 export const PRACTICES_API_ENDPOINT = "/api/v1/getAllPublicSpecialitiesWithPaginate";
 
 export interface ApiSpeciality {
@@ -66,11 +74,7 @@ export interface ApiSpecialitiesPaginator {
   total: number;
 }
 
-export interface ApiSpecialitiesResponse {
-  error: boolean;
-  message: string | null;
-  data: ApiSpecialitiesPaginator;
-}
+export type ApiSpecialitiesResponse = LaravelEnvelope<ApiSpecialitiesPaginator>;
 
 /** Data Cache revalidation window for the backend listing (1 hour). */
 export const PRACTICES_API_REVALIDATE = 3600;
@@ -102,19 +106,12 @@ function isValidResponse(value: unknown): value is ApiSpecialitiesResponse {
  */
 export async function fetchSpecialitiesPage(rawPage: number): Promise<ApiSpecialitiesResponse> {
   const page = Math.max(1, Math.trunc(rawPage) || 1);
-  const url = `${PRACTICES_API_BASE}${PRACTICES_API_ENDPOINT}?page=${page}`;
 
-  const response = await fetch(url, {
-    method: "GET",
-    headers: { Accept: "application/json" },
-    next: { revalidate: PRACTICES_API_REVALIDATE },
+  const json = await wenayaApiGet<unknown>(PRACTICES_API_ENDPOINT, {
+    query: { page },
+    revalidate: PRACTICES_API_REVALIDATE,
   });
 
-  if (!response.ok) {
-    throw new Error(`Wenaya practices API HTTP ${response.status}`);
-  }
-
-  const json: unknown = await response.json();
   if (!isValidResponse(json)) {
     throw new Error("Unexpected Wenaya practices API payload");
   }

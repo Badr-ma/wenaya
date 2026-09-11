@@ -3,13 +3,16 @@ import dynamic from "next/dynamic";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import EntreprisesHero from "@/components/entreprises/Hero";
-import HowItWorksSection from "@/components/entreprises/HowItWorksSection";
+import TrustLogosSection from "@/components/entreprises/TrustLogosSection";
+import StatsTestimonialsSection from "@/components/entreprises/StatsTestimonialsSection";
+import LevelsSection from "@/components/entreprises/LevelsSection";
 import ModularitySection from "@/components/entreprises/ModularitySection";
 import ProgrammesSection from "@/components/entreprises/ProgrammesSection";
 import RetreatSection from "@/components/entreprises/RetreatSection";
+import PacksSection from "@/components/entreprises/PacksSection";
+import HowItWorksSection from "@/components/entreprises/HowItWorksSection";
 import ThematiquesSection from "@/components/entreprises/ThematiquesSection";
 import ImageBreak from "@/components/entreprises/ImageBreak";
-import StatsTestimonialsSection from "@/components/entreprises/StatsTestimonialsSection";
 import ResourcesFaqSection from "@/components/entreprises/ResourcesFaqSection";
 import ContactSection from "@/components/entreprises/ContactSection";
 import StickyCta from "@/components/entreprises/StickyCta";
@@ -59,10 +62,13 @@ export default function EntreprisesPage() {
       <div className="corp-typeset flex flex-col min-h-dvh">
         <main>
           <EntreprisesHero />
+          <TrustLogosSection />
           <StatsTestimonialsSection />
+          <LevelsSection />
           <ModularitySection />
           <ProgrammesSection />
           <RetreatSection />
+          <PacksSection />
           <HowItWorksSection />
           <ThematiquesSection />
           <ImageBreak />

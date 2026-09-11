@@ -10,13 +10,10 @@ import type { PostWithAuthor } from "@/lib/blog-utils";
 const Banner = dynamic(() => import("@/components/Banner"), { ssr: true });
 const HeroSection = dynamic(() => import("@/components/HeroSection"), { ssr: true });
 const HowItWorks = dynamic(() => import("@/components/HowItWorks"), { ssr: true });
-const PracticesSection = dynamic(() => import("@/components/PracticesSection"), { ssr: true });
 const Biomarkers = dynamic(() => import("@/components/Biomarkers"), { ssr: true });
+const QuickAccessSection = dynamic(() => import("@/components/QuickAccessSection"), { ssr: true });
 const TestimonialsSection = dynamic(() => import("@/components/TestimonialsSection"), { ssr: true });
-const ComparisonTable = dynamic(() => import("@/components/ComparisonTable"), { ssr: true });
 const CoursAteliers = dynamic(() => import("@/components/CoursAteliers"), { ssr: true });
-const CtaSection = dynamic(() => import("@/components/CtaSection"), { ssr: true });
-const YoloSection = dynamic(() => import("@/components/YoloSection"), { ssr: true });
 const Footer = dynamic(() => import("@/components/Footer"), { ssr: true });
 const ExpertiseSection = dynamic(() => import("@/components/about/ExpertiseSection"), { ssr: true });
 const BlogSection = dynamic(() => import("@/components/blog/BlogSection"), { ssr: true });
@@ -99,15 +96,18 @@ function SectionComponent({ section }: { section: HomepageSection }) {
     case "how-it-works":
       return <HowItWorks content={section.content} />;
     case "disease-marquee":
-      return <PracticesSection content={section.content} />;
+      // Integrated into the testimonials section (practices text-link rows).
+      // Component, i18n, types and CMS schema keep their data intact — only the
+      // standalone public render of this section is suppressed.
+      return null;
     case "biomarkers":
       return <Biomarkers content={section.content} />;
+    case "quick-links":
+      return <QuickAccessSection content={section.content} />;
     case "testimonials":
       return <TestimonialsSection content={section.content} />;
     case "expertise":
       return <ExpertiseSection content={section.content} />;
-    case "comparison-table":
-      return <ComparisonTable content={section.content} />;
     case "pricing":
       // TEMPORARILY HIDDEN from the public homepage. Component, i18n, types,
       // CMS schema and editor support are all kept intact — only the public
@@ -115,10 +115,6 @@ function SectionComponent({ section }: { section: HomepageSection }) {
       return null;
     case "cours-ateliers":
       return <CoursAteliers content={section.content} />;
-    case "cta":
-      return <CtaSection content={section.content} />;
-    case "yolo":
-      return <YoloSection content={section.content} />;
     case "footer":
       return <Footer content={section.content} />;
     case "blog":

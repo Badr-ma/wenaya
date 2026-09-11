@@ -1,7 +1,6 @@
 /**
- * Biomarkers Section — interactive visualization showing 6 key health biomarkers.
- * Features: animated card grid with GSAP, hover effects, and a CTA button.
- * Displays biomarker categories (blood pressure, glucose, cholesterol, etc.)
+ * Bilans Wenaya Section — three-pillar assessment overview (Biologique / Physique / Cognitif).
+ * Content-driven via i18n biomarkers block. GSAP scroll-triggered card reveal.
  */
 "use client";
 
@@ -18,8 +17,8 @@ export default function Biomarkers({ content }: BiomarkersProps): React.JSX.Elem
   const { t, tRaw } = useLocale();
   const pillarKeys = ["prevention", "performance", "recuperation"];
   const pillars = pillarKeys.map((key, i) => {
-    const p = tRaw<{ title: string; services: string[] }>(`biomarkers.pillars.${key}`);
-    return { num: String(i + 1).padStart(2, "0"), name: p.title, services: p.services };
+    const p = tRaw<{ subheader: string; title: string; services: string[] }>(`biomarkers.pillars.${key}`);
+    return { num: String(i + 1).padStart(2, "0"), subheader: p.subheader, name: p.title, services: p.services };
   });
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -106,6 +105,16 @@ export default function Biomarkers({ content }: BiomarkersProps): React.JSX.Elem
                   {p.num}
                 </span>
 
+                {/* Per-pillar subheader — small gold, uppercase, tracked */}
+                <span
+                  className="relative text-[#B88A5A] text-[11px] font-semibold tracking-[0.22em] uppercase"
+                  style={{
+                    fontFamily: "var(--font-manrope), 'Manrope', ui-sans-serif, system-ui, sans-serif",
+                  }}
+                >
+                  {p.subheader}
+                </span>
+
                 {/* Category name — large Manrope heading */}
                 <h3
                   className="relative text-[#0B1220] leading-[1.05]"
@@ -119,23 +128,6 @@ export default function Biomarkers({ content }: BiomarkersProps): React.JSX.Elem
                 >
                   {p.name}
                 </h3>
-
-                {/* Count with bronze rule */}
-                <div className="flex items-center gap-3">
-                  <div className="w-5 h-px bg-[#B88A5A]" />
-                  <span
-                    className="text-[#B88A5A]"
-                    style={{
-                      fontFamily: "var(--font-manrope), 'Manrope', ui-sans-serif, system-ui, sans-serif",
-                      fontSize: "1rem",
-                      fontWeight: 600,
-                      letterSpacing: "0.18em",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    {content?.soins ?? t("biomarkers.soins")}
-                  </span>
-                </div>
 
                 {/* Service list */}
                 <ul className="space-y-2">

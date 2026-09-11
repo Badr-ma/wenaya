@@ -50,14 +50,11 @@ const homepageJsonLd = {
 };
 
 const HowItWorks = dynamic(() => import("@/components/HowItWorks"), { ssr: true });
-const PracticesSection = dynamic(() => import("@/components/PracticesSection"), { ssr: true });
 const Biomarkers = dynamic(() => import("@/components/Biomarkers"), { ssr: true });
+const QuickAccessSection = dynamic(() => import("@/components/QuickAccessSection"), { ssr: true });
 const TestimonialsSection = dynamic(() => import("@/components/TestimonialsSection"), { ssr: true });
-const ComparisonTable = dynamic(() => import("@/components/ComparisonTable"), { ssr: true });
 const CoursAteliers = dynamic(() => import("@/components/CoursAteliers"), { ssr: true });
-const CtaSection = dynamic(() => import("@/components/CtaSection"), { ssr: true });
 const Footer = dynamic(() => import("@/components/Footer"), { ssr: true });
-const YoloSection = dynamic(() => import("@/components/YoloSection"), { ssr: true });
 const BlogSection = dynamic(() => import("@/components/blog/BlogSection"), { ssr: true });
 const ExpertiseSection = dynamic(() => import("@/components/about/ExpertiseSection"), { ssr: true });
 
@@ -108,22 +105,18 @@ export default async function Home() {
           <SectionBreak />
           <div data-section-bg="light"><HowItWorks /></div>
           <Spacer />
-          <div data-section-bg="light"><PracticesSection /></div>
-          <Spacer />
           <div data-section-bg="light"><Biomarkers /></div>
+          <Spacer />
+          <div data-section-bg="light"><QuickAccessSection /></div>
           <Spacer />
           <div data-section-bg="light"><TestimonialsSection /></div>
           <SectionBreak />
           <div data-section-bg="light"><ExpertiseSection /></div>
           <Spacer />
-          <div data-section-bg="light"><ComparisonTable /></div>
           <Spacer />
           <div data-section-bg="dark"><CoursAteliers /></div>
-          <div data-section-bg="dark"><CtaSection /></div>
           <Spacer />
           <div data-section-bg="light"><BlogSection posts={enriched} /></div>
-          <Spacer />
-          <div data-section-bg="dark"><YoloSection /></div>
         </main>
         <div data-section-bg="dark"><Footer /></div>
       </div>

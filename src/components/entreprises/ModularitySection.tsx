@@ -1,8 +1,9 @@
 /**
  * Modularity Section — interactive, selection-driven modular approach.
- * Desktop: discipline list on the left (click to activate → bronze number +
- * extending line, right image reflects the active pillar). Mobile: stacked
- * accordion rows. GSAP scroll-triggered entrance only.
+ * Navy statement band: left selection list (bronze numbers + hairline
+ * `divide-white` rows) + sticky right image reflecting the active pillar.
+ * Desktop: list on the left, image right. Mobile: stacked accordion rows.
+ * GSAP scroll-triggered entrance only.
  */
 "use client";
 
@@ -50,30 +51,30 @@ export default function ModularitySection() {
   const numClass = (i: number) =>
     i === active
       ? "text-[#B88A5A]"
-      : "text-[#B88A5A]/25 group-hover:text-[#B88A5A]/60 transition-colors duration-300";
+      : "text-white/25 group-hover:text-white/60 transition-colors duration-300";
 
   const titleClass = (i: number) =>
     i === active
-      ? "text-[#0B1220]"
-      : "text-[#0B1220]/55 group-hover:text-[#0B1220]/80 transition-colors duration-300";
+      ? "text-[#FAF8F4]"
+      : "text-[#FAF8F4]/60 group-hover:text-[#FAF8F4]/85 transition-colors duration-300";
 
   return (
-    <section ref={sectionRef} className="relative bg-[#F2EFE9] py-12 sm:py-16 px-6 overflow-hidden scroll-mt-20">
+    <section ref={sectionRef} className="relative bg-[#0B1220] py-16 sm:py-24 px-6 overflow-hidden scroll-mt-20">
       <div className="max-w-7xl mx-auto">
-        <div className="mo-head max-w-2xl mb-10 sm:mb-12">
+        <div className="mo-head max-w-2xl mb-12 sm:mb-16">
           <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase mb-4">
             <span className="w-8 h-px bg-[#B88A5A]/40" />
             {t("entreprises.modularity.title")}
           </span>
-          <h2 className="heading-serif text-[#0B1220] mt-4 leading-[1.06]" style={{ fontSize: "clamp(1.75rem, 3.15vw, 3rem)" }}>
+          <h2 className="heading-serif text-[#FAF8F4] mt-4 leading-[1.06]" style={{ fontSize: "clamp(1.75rem, 3.15vw, 3rem)" }}>
             {t("entreprises.modularity.subtitle")}
           </h2>
         </div>
 
         {/* Desktop: selection-driven list + image */}
-        <div className="hidden lg:grid lg:grid-cols-5 gap-16 items-start">
-          <div className="lg:col-span-3">
-            <div className="divide-y divide-[#0B1220]/[0.06]">
+        <div className="hidden lg:grid lg:grid-cols-12 gap-16 items-start">
+          <div className="lg:col-span-7">
+            <div className="divide-y divide-white/[0.08]">
               {pillars.map((p, i) => (
                 <button
                   key={i}
@@ -87,11 +88,11 @@ export default function ModularitySection() {
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <div className="flex-1">
-                      <h3 className={`font-heading text-[#0B1220] text-xl sm:text-2xl font-semibold leading-tight transition-colors duration-300 ${titleClass(i)}`}>
+                      <h3 className={`font-heading text-[#FAF8F4] text-xl sm:text-2xl font-semibold leading-tight transition-colors duration-300 ${titleClass(i)}`}>
                         {p.title}
                       </h3>
                       <p
-                        className={`text-[#2B2F36]/55 text-sm sm:text-[15px] leading-relaxed mt-2 max-w-lg transition-all duration-300 overflow-hidden ${
+                        className={`text-[#FAF8F4]/55 text-sm sm:text-[15px] leading-relaxed mt-2 max-w-lg transition-all duration-300 overflow-hidden ${
                           i === active ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
                         } motion-reduce:max-h-40 motion-reduce:opacity-100`}
                       >
@@ -99,7 +100,7 @@ export default function ModularitySection() {
                       </p>
                     </div>
                   </div>
-                  <div className="mt-4 ml-[calc(1.5rem+2.25rem)] h-px bg-[#0B1220]/10">
+                  <div className="mt-4 ml-[calc(1.5rem+2.25rem)] h-px bg-white/[0.08]">
                     <div
                       className={`h-full bg-[#B88A5A] transition-all duration-500 motion-reduce:transition-none ${
                         i === active ? "w-full" : "w-0"
@@ -111,8 +112,8 @@ export default function ModularitySection() {
             </div>
           </div>
 
-          <div className="lg:col-span-2 lg:sticky lg:top-24">
-            <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-xl">
+          <div className="lg:col-span-5 lg:sticky lg:top-24">
+            <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden">
               <Image
                 src={pillarImages[active % pillarImages.length]}
                 alt={pillars[active]?.title ?? ""}
@@ -120,7 +121,7 @@ export default function ModularitySection() {
                 className="object-cover transition-all duration-500 motion-reduce:transition-none"
                 sizes="(max-width: 1280px) 40vw, 480px"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/60 via-[#0B1220]/10 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/80 via-[#0B1220]/10 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <p className="text-[#B88A5A] text-xs font-semibold tracking-[0.18em] uppercase mb-2">
                   {String(active + 1).padStart(2, "0")}
@@ -133,7 +134,7 @@ export default function ModularitySection() {
 
         {/* Mobile: stacked accordion + image */}
         <div className="lg:hidden">
-          <div className="divide-y divide-[#0B1220]/[0.06]">
+          <div className="divide-y divide-white/[0.08]">
             {pillars.map((p, i) => {
               const open = i === active;
               return (
@@ -150,7 +151,7 @@ export default function ModularitySection() {
                     </span>
                     <div className="flex-1">
                       <div className="flex items-center justify-between gap-3">
-                        <h3 className={`font-heading text-[#0B1220] text-lg font-semibold leading-tight transition-colors duration-300 ${titleClass(i)}`}>
+                        <h3 className={`font-heading text-[#FAF8F4] text-lg font-semibold leading-tight transition-colors duration-300 ${titleClass(i)}`}>
                           {p.title}
                         </h3>
                         <svg
@@ -167,7 +168,7 @@ export default function ModularitySection() {
                         </svg>
                       </div>
                       <p
-                        className={`text-[#2B2F36]/55 text-sm leading-relaxed mt-2 overflow-hidden transition-all duration-300 motion-reduce:max-h-none motion-reduce:opacity-100 ${
+                        className={`text-[#FAF8F4]/55 text-sm leading-relaxed mt-2 overflow-hidden transition-all duration-300 motion-reduce:max-h-none motion-reduce:opacity-100 ${
                           open ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
                         }`}
                       >
@@ -180,7 +181,7 @@ export default function ModularitySection() {
             })}
           </div>
 
-          <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-xl mt-6">
+          <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden mt-6">
             <Image
               src={pillarImages[active % pillarImages.length]}
               alt={pillars[active]?.title ?? ""}
@@ -188,7 +189,7 @@ export default function ModularitySection() {
               className="object-cover transition-all duration-500 motion-reduce:transition-none"
               sizes="100vw"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/60 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/70 via-transparent to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 p-5">
               <h3 className="text-white heading-serif text-xl leading-tight">{pillars[active]?.title}</h3>
             </div>

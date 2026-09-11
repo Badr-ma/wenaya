@@ -12,12 +12,17 @@ interface BannerProps {
 }
 
 export default function Banner({ content }: BannerProps): React.JSX.Element {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
+  // Locale-aware override: a CMS value only ever applies to its own locale,
+  // so a French page can never inherit an English-only bannerText. When no
+  // override exists for this locale, fall back to i18n (per-locale by design).
+  const bannerText =
+    locale === "en" ? content?.bannerTextEn : content?.bannerTextFr;
   return (
     <div className="bg-[#B88A5A] text-white text-center text-sm py-2.5 px-4 font-medium">
       <span className="inline-flex items-center gap-1.5">
         <span className="w-1.5 h-1.5 rounded-full bg-white inline-block" />
-        {content?.bannerText ?? t("banner.text")}
+        {bannerText ?? t("banner.text")}
       </span>
     </div>
   );

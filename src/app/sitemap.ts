@@ -55,11 +55,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...getAllProgrammeSlugs().flatMap((slug) =>
       dual(`/corporate/programmes/${slug}`, { changeFrequency: "monthly", priority: 0.8 })
     ),
-    {
-      url: `${SITE_URL}/soins-a-domicile`,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
+    /* HIDDEN — temporarily disabled; re-enable by uncommenting below */
+    // {
+    //   url: `${SITE_URL}/soins-a-domicile`,
+    //   changeFrequency: "monthly",
+    //   priority: 0.8,
+    // },
     ...dual("/produits", { changeFrequency: "weekly", priority: 0.9 }),
     ...dual("/pratiques", { changeFrequency: "monthly", priority: 0.8 }),
     ...dual("/parcours-de-soins", { changeFrequency: "monthly", priority: 0.8 }),

@@ -4,14 +4,12 @@ export type SectionType =
   | "how-it-works"
   | "disease-marquee"
   | "biomarkers"
+  | "quick-links"
   | "testimonials"
   | "expertise"
-  | "comparison-table"
   | "pricing"
   | "cours-ateliers"
-  | "cta"
   | "blog"
-  | "yolo"
   | "footer"
   | "statistics"
   | "image-text"
@@ -28,8 +26,18 @@ export type SectionType =
  * later step; i18n remains the fallback default.
  */
 
+/**
+ * Banner overrides, keyed per locale so a CMS value can never leak across
+ * languages. Every field is optional; i18n (`banner.text`) remains the
+ * per-locale fallback. A legacy flat `bannerText` key stored by older Redis
+ * configs is intentionally not read here (it was a single string applied to
+ * every locale — the source of the FR leak) and just round-trips harmlessly.
+ */
 export interface BannerContent {
-  bannerText?: string;
+  /** French override — falls back to fr:i18n `banner.text`. */
+  bannerTextFr?: string;
+  /** English override — falls back to en:i18n `banner.text`. */
+  bannerTextEn?: string;
 }
 
 export interface HeroContent {
@@ -38,9 +46,13 @@ export interface HeroContent {
   heading2?: string;
   sub?: string;
   ctaLabel?: string;
-  /** Stored but not yet consumed — the Hero component does not render a CTA link today. */
+  /** Secondary CTA label — reserved; the Hero renders it as an outline button
+   *  linking to the booking-request flow (`/contact-us?type=booking`). */
+  ctaSecondary?: string;
+  /** Stored but the Hero component does not consume it today — the primary CTA
+   *  scrolls to the future Configurator section (`#configurator`). */
   ctaUrl?: string;
-  /** Stored but not yet consumed — the Hero component has no video element today. */
+  /** Stored but not yet consumed — the Hero plays a local /videos/forest.mp4. */
   videoUrl?: string;
 }
 
@@ -49,8 +61,6 @@ export interface HowItWorksContent {
   heading1?: string;
   heading2?: string;
   sub?: string;
-  cta1?: string;
-  cta2?: string;
 }
 
 /**
@@ -70,14 +80,20 @@ export interface BiomarkersContent {
   heading1?: string;
   heading2?: string;
   sub?: string;
-  soins?: string;
   bottom?: string;
   cta?: string;
 }
 
 export interface TestimonialsContent {
+  eyebrow?: string;
   heading1?: string;
   heading2?: string;
+  sub?: string;
+}
+
+/** Quick-access navigation cards. Heading/sub overridable; card content lives in i18n. */
+export interface QuickLinksContent {
+  heading?: string;
   sub?: string;
 }
 
@@ -87,13 +103,6 @@ export interface ExpertiseContent {
   heading2?: string;
   p1?: string;
   cta?: string;
-}
-
-export interface ComparisonTableContent {
-  badge?: string;
-  heading1?: string;
-  heading2?: string;
-  sub?: string;
 }
 
 export interface PricingContent {
@@ -111,15 +120,6 @@ export interface CoursAteliersContent {
   swipe?: string;
 }
 
-export interface CtaContent {
-  heading1?: string;
-  heading2?: string;
-  sub?: string;
-  ctaLabel?: string;
-  /** Stored but not yet consumed — CtaSection renders a hardcoded CTA button without a link today. */
-  ctaUrl?: string;
-}
-
 /**
  * Posts are auto-fetched from /api/blog/posts (top 3 published MDX posts).
  * These fields only override the section's headline presentation.
@@ -129,13 +129,6 @@ export interface BlogContent {
   heading2?: string;
   sub?: string;
   voirTous?: string;
-}
-
-/** Reserved for future CMS-ification — YoloSection is currently fully hardcoded. */
-export interface YoloContent {
-  title?: string;
-  subtitle?: string;
-  desc?: string;
 }
 
 export interface FooterContent {
@@ -176,14 +169,12 @@ export type SectionContentMap = {
   "how-it-works": HowItWorksContent;
   "disease-marquee": DiseaseMarqueeContent;
   biomarkers: BiomarkersContent;
+  "quick-links": QuickLinksContent;
   testimonials: TestimonialsContent;
   expertise: ExpertiseContent;
-  "comparison-table": ComparisonTableContent;
   pricing: PricingContent;
   "cours-ateliers": CoursAteliersContent;
-  cta: CtaContent;
   blog: BlogContent;
-  yolo: YoloContent;
   footer: FooterContent;
   statistics: StatisticsContent;
   "image-text": ImageTextContent;
@@ -222,17 +213,15 @@ export interface HomepageState {
 export const SECTION_META: Record<SectionType, { label: string; description: string; theme: "dark" | "light"; hasSpacerBefore?: boolean; hasSectionBreak?: boolean }> = {
   banner: { label: "Banner", description: "Top promotional bar with bronze background", theme: "dark" },
   hero: { label: "Hero", theme: "dark", description: "Full-screen hero with video, headline, trust bar" },
-  "how-it-works": { label: "How It Works", theme: "light", description: "4-step process (Assess, Align, Activate, Sustain)" },
+  "how-it-works": { label: "How It Works", theme: "light", description: "3-step method (Comprendre, Agir, Progresser)" },
   "disease-marquee": { label: "Practices & Specialties", theme: "light", description: "5 editorial practice disciplines linking to /pratiques" },
   biomarkers: { label: "Biomarkers", theme: "light", description: "3-pillar biomarker visualization grid" },
+  "quick-links": { label: "Quick Access", theme: "light", description: "4 quick-access navigation cards (needs, pathologies, care, professionals)" },
   testimonials: { label: "Testimonials", theme: "light", description: "Stats + patient testimonials carousel" },
   expertise: { label: "Expertise", theme: "light", description: "Medical specialties linking to specialist profiles" },
-  "comparison-table": { label: "Comparison Table", theme: "light", description: "Wenaya vs traditional healthcare" },
   pricing: { label: "Pricing", theme: "light", description: "Pricing cards with features" },
   "cours-ateliers": { label: "Courses & Workshops", theme: "dark", description: "Courses carousel on dark background" },
-  cta: { label: "CTA Section", theme: "dark", description: "Final call-to-action with quote" },
   blog: { label: "Blog Posts", theme: "light", description: "Latest 3 blog posts preview" },
-  yolo: { label: "YOLO Section", theme: "dark", description: "Interactive longevity exploration widget" },
   footer: { label: "Footer", theme: "dark", description: "Site footer with nav, socials, contact" },
   statistics: { label: "Statistics", theme: "light", description: "Custom trust metrics / stats bar" },
   "image-text": { label: "Image + Text", theme: "light", description: "Side-by-side image and content block" },
@@ -245,13 +234,11 @@ export const DEFAULT_SECTIONS: HomepageSection[] = [
   { id: "sct_how_it_works", type: "how-it-works", order: 2, enabled: true, content: {} },
   { id: "sct_disease_marquee", type: "disease-marquee", order: 3, enabled: true, content: {} },
   { id: "sct_biomarkers", type: "biomarkers", order: 4, enabled: true, content: {} },
-  { id: "sct_testimonials", type: "testimonials", order: 5, enabled: true, content: {} },
-  { id: "sct_expertise", type: "expertise", order: 6, enabled: true, content: {} },
-  { id: "sct_comparison_table", type: "comparison-table", order: 7, enabled: true, content: {} },
+  { id: "sct_quick_access", type: "quick-links", order: 5, enabled: true, content: {} },
+  { id: "sct_testimonials", type: "testimonials", order: 6, enabled: true, content: {} },
+  { id: "sct_expertise", type: "expertise", order: 7, enabled: true, content: {} },
   { id: "sct_pricing", type: "pricing", order: 8, enabled: true, content: {} },
   { id: "sct_cours_ateliers", type: "cours-ateliers", order: 9, enabled: true, content: {} },
-  { id: "sct_cta", type: "cta", order: 10, enabled: true, content: {} },
   { id: "sct_blog", type: "blog", order: 11, enabled: true, content: {} },
-  { id: "sct_yolo", type: "yolo", order: 12, enabled: true, content: {} },
   { id: "sct_footer", type: "footer", order: 13, enabled: true, content: {} },
 ];

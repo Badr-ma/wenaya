@@ -114,7 +114,7 @@ export default function ProgrammesPage({ locale = "fr" }: { locale?: HrefLocale 
         </Link>
 
         <div className="max-w-3xl">
-          <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase mb-5">
+          <span className="inline-flex items-center gap-3 whitespace-nowrap text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase mb-5">
             <span className="w-8 h-px bg-[#B88A5A]/50" />
             {title}
           </span>

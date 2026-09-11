@@ -6,10 +6,9 @@
 import type { Metadata } from "next";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import GroupSessionsPage from "@/components/seance-de-groupe/GroupSessionsPage";
+import { getActiveGroupSessions } from "@/lib/group-sessions-active";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import en from "@/i18n/en";
-
-const sessionKeys = ["yoga", "sophrologie", "nutrition", "breathwork", "jjb", "pilates"] as const;
 
 const alternateLanguages = {
   "fr-MA": `${SITE_URL}/seance-de-groupe`,
@@ -20,7 +19,7 @@ const alternateLanguages = {
 export const metadata: Metadata = {
   title: "Group Sessions in Casablanca",
   description:
-    "Group health and wellbeing sessions in Casablanca: Prenatal Yoga, Sophrology, Nutrition, Breathwork, Brazilian Jiu-Jitsu and Pilates & Posture, led by our professionals.",
+    "Group sessions and workshops led by our professionals, in person at the Wenaya centre in Casablanca.",
   alternates: {
     canonical: `${SITE_URL}/en/seance-de-groupe`,
     languages: alternateLanguages,
@@ -41,17 +40,17 @@ export const metadata: Metadata = {
   },
 };
 
-function buildStructuredData() {
-  const { coursAteliers, seanceDeGroupe } = en;
+function buildJsonLd(sessions: { title: string; description?: string }[]) {
+  const { seanceDeGroupe } = en;
 
   const itemList = {
     "@type": "ItemList",
     name: seanceDeGroupe.list.title,
-    itemListElement: sessionKeys.map((key, i) => ({
+    itemListElement: sessions.map((session, i) => ({
       "@type": "ListItem",
       position: i + 1,
-      name: coursAteliers[key].title,
-      description: coursAteliers[key].desc,
+      name: session.title,
+      description: session.description || undefined,
     })),
   };
 
@@ -71,8 +70,11 @@ function buildStructuredData() {
   ];
 }
 
-export default function GroupSessionsEnPage() {
-  const jsonLd = buildStructuredData();
+export default async function GroupSessionsEnPage() {
+  const sessions = await getActiveGroupSessions("en");
+  const jsonLd = buildJsonLd(
+    sessions.map((s) => ({ title: s.title, description: s.description }))
+  );
   return (
     <ErrorBoundary>
       <div className="flex flex-col min-h-screen">
@@ -83,7 +85,7 @@ export default function GroupSessionsEnPage() {
             dangerouslySetInnerHTML={{ __html: JSON.stringify(block) }}
           />
         ))}
-        <GroupSessionsPage />
+        <GroupSessionsPage sessions={sessions} />
       </div>
     </ErrorBoundary>
   );

@@ -108,9 +108,6 @@ export default function HowItWorksSection() {
                     <h3 className="text-[#0B1220] heading-serif text-xl font-semibold leading-tight">
                       {step.title}
                     </h3>
-                    <p className="text-[#2B2F36]/55 text-sm leading-relaxed mt-3 max-w-[15rem]">
-                      {step.desc}
-                    </p>
                   </div>
                 </div>
               ))}
@@ -146,9 +143,6 @@ export default function HowItWorksSection() {
                     <h3 className="text-[#0B1220] heading-serif text-lg font-semibold leading-tight">
                       {step.title}
                     </h3>
-                    <p className="text-[#2B2F36]/55 text-sm leading-relaxed mt-2">
-                      {step.desc}
-                    </p>
                   </div>
                 </div>
               ))}

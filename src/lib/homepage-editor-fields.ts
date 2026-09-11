@@ -9,7 +9,7 @@
  *
  * The `i18nPath` points at the translation key that is the default source of
  * truth for that field (same key the section component falls back to). Fields
- * whose default lives as hardcoded component text instead of i18n (YOLO) use
+ * whose default lives as hardcoded component text instead of i18n use
  * `defaultText` instead.
  *
  * Arrays, pricing plans, comparison rows, footer navigation, cards and other
@@ -22,7 +22,7 @@ export interface HomepageFieldDef {
   label: string;
   /** Content key stored on the section's content object. */
   key: string;
-  /** i18n key used as the default fallback (e.g. "hero.vousMéritez"). */
+  /** i18n key used as the default fallback (e.g. "hero.heading1"). */
   i18nPath?: string;
   /** Literal fallback for fields whose default is hardcoded in the component. */
   defaultText?: string;
@@ -43,31 +43,34 @@ export interface HomepageSectionEditorDef {
  */
 export const SECTION_EDITOR_DEFS: Partial<Record<SectionType, HomepageSectionEditorDef>> = {
   banner: {
-    helper: "Text is managed through i18n translation files.",
-    fields: [{ label: "Banner text override", key: "bannerText", i18nPath: "banner.text" }],
+    helper: "Banner text is managed per language. Leave empty to use the i18n default for that locale.",
+    fields: [
+      { label: "Banner text override (FR)", key: "bannerTextFr", i18nPath: "banner.text" },
+      { label: "Banner text override (EN)", key: "bannerTextEn", i18nPath: "banner.text" },
+    ],
   },
 
   hero: {
     helper: "Default content is managed through i18n. Override fields below:",
     fields: [
-      { label: "Heading line 1", key: "heading1", i18nPath: "hero.vousMéritez" },
-      { label: "Heading line 2", key: "heading2", i18nPath: "hero.complete" },
+      { label: "Eyebrow", key: "eyebrow", i18nPath: "hero.eyebrow" },
+      { label: "Heading line 1", key: "heading1", i18nPath: "hero.heading1" },
+      { label: "Heading line 2", key: "heading2", i18nPath: "hero.heading2" },
       { label: "Description", key: "sub", i18nPath: "hero.sub", rows: 2 },
       { label: "Primary CTA label", key: "ctaLabel", i18nPath: "hero.cta" },
+      { label: "Secondary CTA label", key: "ctaSecondary", i18nPath: "hero.ctaSecondary" },
       { label: "Primary CTA URL", key: "ctaUrl" },
       { label: "Video URL", key: "videoUrl" },
     ],
   },
 
   "how-it-works": {
-    helper: "The 4 step cards are managed through i18n. Override fields below:",
+    helper: "The 3 step cards are managed through i18n. Override fields below:",
     fields: [
       { label: "Badge text", key: "badge", i18nPath: "howItWorks.badge" },
       { label: "Heading line 1", key: "heading1", i18nPath: "howItWorks.heading1" },
       { label: "Heading line 2", key: "heading2", i18nPath: "howItWorks.heading2" },
       { label: "Description", key: "sub", i18nPath: "howItWorks.sub", rows: 2 },
-      { label: "Primary CTA label", key: "cta1", i18nPath: "howItWorks.cta1" },
-      { label: "Secondary CTA label", key: "cta2", i18nPath: "howItWorks.cta2" },
     ],
   },
 
@@ -78,7 +81,6 @@ export const SECTION_EDITOR_DEFS: Partial<Record<SectionType, HomepageSectionEdi
       { label: "Heading line 1", key: "heading1", i18nPath: "biomarkers.heading1" },
       { label: "Heading line 2", key: "heading2", i18nPath: "biomarkers.heading2" },
       { label: "Description", key: "sub", i18nPath: "biomarkers.sub", rows: 2 },
-      { label: "Care count label", key: "soins", i18nPath: "biomarkers.soins" },
       { label: "Bottom description", key: "bottom", i18nPath: "biomarkers.bottom", rows: 2 },
       { label: "CTA label", key: "cta", i18nPath: "biomarkers.cta" },
     ],
@@ -87,9 +89,18 @@ export const SECTION_EDITOR_DEFS: Partial<Record<SectionType, HomepageSectionEdi
   testimonials: {
     helper: "Testimonial cards are managed through i18n. Override the heading fields below:",
     fields: [
+      { label: "Eyebrow", key: "eyebrow", i18nPath: "testimonialsSection.eyebrow" },
       { label: "Heading line 1", key: "heading1", i18nPath: "testimonialsSection.heading1" },
       { label: "Heading line 2", key: "heading2", i18nPath: "testimonialsSection.heading2" },
       { label: "Description", key: "sub", i18nPath: "testimonialsSection.sub", rows: 2 },
+    ],
+  },
+
+  "quick-links": {
+    helper: "The 4 quick-access cards are managed through i18n. Override the heading fields below:",
+    fields: [
+      { label: "Heading", key: "heading", i18nPath: "quickAccess.heading" },
+      { label: "Description", key: "sub", i18nPath: "quickAccess.sub", rows: 2 },
     ],
   },
 
@@ -101,16 +112,6 @@ export const SECTION_EDITOR_DEFS: Partial<Record<SectionType, HomepageSectionEdi
       { label: "Heading line 2", key: "heading2", i18nPath: "expertiseSection.heading2" },
       { label: "Description", key: "p1", i18nPath: "expertiseSection.p1", rows: 2 },
       { label: "CTA label", key: "cta", i18nPath: "expertiseSection.cta" },
-    ],
-  },
-
-  "comparison-table": {
-    helper: "Default content is managed through i18n. Override fields below:",
-    fields: [
-      { label: "Badge text", key: "badge", i18nPath: "comparisonTable.badge" },
-      { label: "Heading line 1", key: "heading1", i18nPath: "comparisonTable.heading1" },
-      { label: "Heading line 2", key: "heading2", i18nPath: "comparisonTable.heading2" },
-      { label: "Description", key: "sub", i18nPath: "comparisonTable.sub", rows: 2 },
     ],
   },
 
@@ -135,17 +136,6 @@ export const SECTION_EDITOR_DEFS: Partial<Record<SectionType, HomepageSectionEdi
     ],
   },
 
-  cta: {
-    helper: "Default content is managed through i18n.",
-    fields: [
-      { label: "Heading line 1 override", key: "heading1", i18nPath: "ctaSection.heading1" },
-      { label: "Heading line 2 override", key: "heading2", i18nPath: "ctaSection.heading2" },
-      { label: "Description override", key: "sub", i18nPath: "ctaSection.sub", rows: 2 },
-      { label: "CTA label", key: "ctaLabel", i18nPath: "ctaSection.cta" },
-      { label: "CTA URL", key: "ctaUrl" },
-    ],
-  },
-
   blog: {
     helper: "Blog section automatically shows the latest 3 posts.",
     fields: [
@@ -161,26 +151,6 @@ export const SECTION_EDITOR_DEFS: Partial<Record<SectionType, HomepageSectionEdi
     fields: [
       { label: "Description", key: "desc", i18nPath: "footer.desc", rows: 3 },
       { label: "Opening hours", key: "hours", i18nPath: "footer.hours" },
-    ],
-  },
-
-  yolo: {
-    helper:
-      "Defaults below are the hardcoded component text (no i18n fallback exists for this section yet).",
-    fields: [
-      { label: "Title", key: "title", defaultText: "YOLO" },
-      {
-        label: "Subtitle",
-        key: "subtitle",
-        defaultText: "The AI Agent Dedicated to Longevity.",
-      },
-      {
-        label: "Description",
-        key: "desc",
-        defaultText:
-          "A continuous intelligence layer designed to help individuals understand their health, anticipate risks, and make better decisions over time.",
-        rows: 3,
-      },
     ],
   },
 
