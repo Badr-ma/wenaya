@@ -8,6 +8,7 @@ import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
 import type { BiomarkersContent } from "@/lib/homepage-types";
+import SectionTitleAccent from "@/components/SectionTitleAccent";
 
 interface BiomarkersProps {
   content?: BiomarkersContent;
@@ -49,33 +50,18 @@ export default function Biomarkers({ content }: BiomarkersProps): React.JSX.Elem
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
-        <div className="bio-cell text-center mb-8 sm:mb-16 max-w-2xl mx-auto">
-          <div className="inline-flex items-center gap-2.5 mb-5">
-            <div className="w-1 h-1 rounded-full bg-[#B88A5A]" />
-            <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.22em] uppercase">
-              {content?.badge ?? t("biomarkers.badge")}
-            </span>
+        <div className="bio-cell mb-8 sm:mb-16 max-w-2xl mx-auto text-center">
+          <div className="flex items-center justify-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+            <SectionTitleAccent compact />
           </div>
-          <h2
-            className="text-[#0B1220] heading-serif"
-            style={{
-              fontFamily: "var(--font-manrope), 'Manrope', ui-sans-serif, system-ui, sans-serif",
-              fontSize: "clamp(2.2rem, 4vw, 3.8rem)",
-              fontWeight: 500,
-              lineHeight: 1.08,
-              letterSpacing: "-0.015em",
-            }}
-          >
-            {content?.heading1 ?? t("biomarkers.heading1")}<br />
-<span style={{
-  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
-  WebkitBackgroundClip: "text",
-  WebkitTextFillColor: "transparent",
-}}>
-  {content?.heading2 ?? t("biomarkers.heading2")}
-</span>
+          <h2 className="font-display-nunito font-bold uppercase tracking-[0.04em] text-[#B88A5A] leading-[1.1] text-[2.25rem] sm:text-[2.375rem] lg:text-[3.25rem]">
+            {content?.badge ?? t("biomarkers.badge")}
           </h2>
-          <p className="text-[#2B2F36]/50 text-[14px] leading-relaxed max-w-md mx-auto mt-4">
+          <p className="font-heading font-medium text-[#0B1220] leading-[1.2] tracking-[-0.01em] mt-4 sm:mt-5 text-[1.5rem] sm:text-[1.75rem] lg:text-[2rem]">
+            {content?.heading1 ?? t("biomarkers.heading1")}{" "}
+            {content?.heading2 ?? t("biomarkers.heading2")}
+          </p>
+          <p className="mt-3 sm:mt-4 text-[15px] sm:text-base lg:text-[17px] leading-relaxed text-[#2B2F36]/55 max-w-lg mx-auto">
             {content?.sub ?? t("biomarkers.sub")}
           </p>
         </div>

@@ -5,7 +5,7 @@
 > **Endpoints audited (live `https://api.wenaya.com/api/v1`):** the 6 documented group-appointment getters — `getAllAppointmentsGroup`, `getAppointmentsGroupsWithPagination`, `getAppointmentGroupBySlug`, `getAppointmentGroupByPracticeSlug`, `getAppointmentGroupByProfessionalSlug`, `getAppointmentGroupFilterAttributes` — plus support probes (`getAllPublicCares`, `getAllPublicSpecialities`, `getAllPublicTroubles`) to decode referential fields.
 > **Frontend files audited:** `src/lib/group-sessions.ts`, `src/components/seance-de-groupe/{GroupSessionsPage,GroupSessionsHero,GroupSessionsList,GroupSessionDetail}.tsx`, `src/components/clinic/{Courses,SessionsExplorer}.tsx`, `src/app/(fr)/seance-de-groupe/**`, `src/app/(en)/en/seance-de-groupe/**`, `src/app/sitemap.ts`, `src/components/contact/ContactForm.tsx`, `src/i18n/{fr,en}.ts` (`coursAteliers`, `seanceDeGroupe`, `contact.booking*`).
 
----
+--- 
 
 ## 1. Endpoint fact sheet (all 6 getters, verified live 2026-09-10)
 

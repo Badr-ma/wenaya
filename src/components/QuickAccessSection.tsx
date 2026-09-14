@@ -19,6 +19,7 @@ import { useLocale } from "@/contexts/LanguageContext";
 import { h } from "@/lib/href";
 import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 import type { QuickLinksContent } from "@/lib/homepage-types";
+import SectionTitleAccent from "@/components/SectionTitleAccent";
 
 interface QuickAccessProps {
   content?: QuickLinksContent;
@@ -73,29 +74,17 @@ export default function QuickAccessSection({ content }: QuickAccessProps): React
     <section ref={elRef} className="bg-[#FAF8F4] py-14 sm:py-20 px-6" id="acces-directs">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-10 sm:mb-14 max-w-2xl mx-auto">
-          <div className="inline-flex items-center gap-2.5 mb-5">
-            <div className="w-1 h-1 rounded-full bg-[#B88A5A]" />
-            <span
-              className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.22em] uppercase"
-              style={{ fontFamily: "var(--font-manrope), 'Manrope', ui-sans-serif, system-ui, sans-serif" }}
-            >
-              {t("quickAccess.badge")}
-            </span>
+        <div className="mb-10 sm:mb-14 max-w-2xl mx-auto text-center">
+          <div className="flex items-center justify-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+            <SectionTitleAccent compact />
           </div>
-          <h2
-            className="text-[#0B1220] heading-serif"
-            style={{
-              fontFamily: "var(--font-manrope), 'Manrope', ui-sans-serif, system-ui, sans-serif",
-              fontSize: "clamp(2.2rem, 4vw, 3.8rem)",
-              fontWeight: 500,
-              lineHeight: 1.08,
-              letterSpacing: "-0.015em",
-            }}
-          >
-            {content?.heading ?? t("quickAccess.heading")}
+          <h2 className="font-display-nunito font-bold uppercase tracking-[0.04em] text-[#B88A5A] leading-[1.1] text-[2.25rem] sm:text-[2.375rem] lg:text-[3.25rem]">
+            {t("quickAccess.badge")}
           </h2>
-          <p className="text-[#2B2F36]/50 text-[14px] leading-relaxed max-w-lg mx-auto mt-4">
+          <p className="font-heading font-medium text-[#0B1220] leading-[1.2] tracking-[-0.01em] mt-4 sm:mt-5 text-[1.5rem] sm:text-[1.75rem] lg:text-[2rem]">
+            {content?.heading ?? t("quickAccess.heading")}
+          </p>
+          <p className="mt-3 sm:mt-4 text-[15px] sm:text-base lg:text-[17px] leading-relaxed text-[#2B2F36]/55 max-w-lg mx-auto">
             {content?.sub ?? t("quickAccess.sub")}
           </p>
         </div>

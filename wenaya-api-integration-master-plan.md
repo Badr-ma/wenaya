@@ -10,7 +10,7 @@
 > Companion deliverables: `wenaya-practices-api-contract.md` (already-audited live specialities
 > contract), `wenaya-seo-migration-*` series (URL surface), AGENTS.md session log.
 
----
+--- 
 
 ## A. Frontend data-source matrix
 

@@ -13,7 +13,6 @@ const HowItWorks = dynamic(() => import("@/components/HowItWorks"), { ssr: true 
 const Biomarkers = dynamic(() => import("@/components/Biomarkers"), { ssr: true });
 const QuickAccessSection = dynamic(() => import("@/components/QuickAccessSection"), { ssr: true });
 const TestimonialsSection = dynamic(() => import("@/components/TestimonialsSection"), { ssr: true });
-const CoursAteliers = dynamic(() => import("@/components/CoursAteliers"), { ssr: true });
 const Footer = dynamic(() => import("@/components/Footer"), { ssr: true });
 const ExpertiseSection = dynamic(() => import("@/components/about/ExpertiseSection"), { ssr: true });
 const BlogSection = dynamic(() => import("@/components/blog/BlogSection"), { ssr: true });
@@ -114,7 +113,10 @@ function SectionComponent({ section }: { section: HomepageSection }) {
       // render of this section is suppressed.
       return null;
     case "cours-ateliers":
-      return <CoursAteliers content={section.content} />;
+      // Removed from public homepage structure. Component, i18n, types,
+      // CMS schema and editor support are all kept intact — only the public
+      // render of this section is suppressed.
+      return null;
     case "footer":
       return <Footer content={section.content} />;
     case "blog":

@@ -50,7 +50,7 @@ export interface HeroContent {
    *  linking to the booking-request flow (`/contact-us?type=booking`). */
   ctaSecondary?: string;
   /** Stored but the Hero component does not consume it today — the primary CTA
-   *  scrolls to the future Configurator section (`#configurator`). */
+   *  scrolls to the Quick Access section (`#acces-directs`). */
   ctaUrl?: string;
   /** Stored but not yet consumed — the Hero plays a local /videos/forest.mp4. */
   videoUrl?: string;
@@ -101,6 +101,7 @@ export interface ExpertiseContent {
   badge?: string;
   heading1?: string;
   heading2?: string;
+  subtitle?: string;
   p1?: string;
   cta?: string;
 }
@@ -232,13 +233,10 @@ export const DEFAULT_SECTIONS: HomepageSection[] = [
   { id: "sct_banner", type: "banner", order: 0, enabled: true, content: {} },
   { id: "sct_hero", type: "hero", order: 1, enabled: true, content: {} },
   { id: "sct_how_it_works", type: "how-it-works", order: 2, enabled: true, content: {} },
-  { id: "sct_disease_marquee", type: "disease-marquee", order: 3, enabled: true, content: {} },
-  { id: "sct_biomarkers", type: "biomarkers", order: 4, enabled: true, content: {} },
-  { id: "sct_quick_access", type: "quick-links", order: 5, enabled: true, content: {} },
+  { id: "sct_biomarkers", type: "biomarkers", order: 3, enabled: true, content: {} },
+  { id: "sct_quick_access", type: "quick-links", order: 4, enabled: true, content: {} },
+  { id: "sct_expertise", type: "expertise", order: 5, enabled: true, content: {} },
   { id: "sct_testimonials", type: "testimonials", order: 6, enabled: true, content: {} },
-  { id: "sct_expertise", type: "expertise", order: 7, enabled: true, content: {} },
-  { id: "sct_pricing", type: "pricing", order: 8, enabled: true, content: {} },
-  { id: "sct_cours_ateliers", type: "cours-ateliers", order: 9, enabled: true, content: {} },
-  { id: "sct_blog", type: "blog", order: 11, enabled: true, content: {} },
-  { id: "sct_footer", type: "footer", order: 13, enabled: true, content: {} },
+  { id: "sct_blog", type: "blog", order: 7, enabled: true, content: {} },
+  { id: "sct_footer", type: "footer", order: 8, enabled: true, content: {} },
 ];

@@ -106,7 +106,7 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
             <h1
               className="text-white leading-[1.08]"
               style={{
-                fontFamily: "var(--font-manrope), 'Manrope', ui-sans-serif, system-ui, sans-serif",
+                fontFamily: "var(--font-nunito), 'Nunito', ui-sans-serif, system-ui, sans-serif",
                 fontSize: "clamp(2.2rem, 4vw, 3.9rem)",
                 fontWeight: 500,
                 letterSpacing: "-0.02em",
@@ -137,7 +137,7 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
             {/* CTAs */}
             <div className="hero-cta flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-9">
               <a
-                href="#configurator"
+                href="#acces-directs"
                 className="inline-flex items-center justify-center h-11 px-7 rounded-xl text-white text-[13.5px] font-semibold transition-all duration-300 hover:-translate-y-px hover:brightness-110 active:translate-y-0"
                 style={{
                   background: "#B88A5A",

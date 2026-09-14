@@ -9,7 +9,7 @@ import { useRef, useEffect, useCallback, type ReactNode } from "react";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
 import type { TestimonialsContent } from "@/lib/homepage-types";
-import PracticesSection from "@/components/PracticesSection";
+import SectionTitleAccent from "@/components/SectionTitleAccent";
 
 type TestimonialItem = {
   type: "testimonial";
@@ -109,21 +109,18 @@ export default function TestimonialsSection({ content }: TestimonialsSectionProp
   return (
     <section ref={sectionRef} className="bg-[#F2EFE9] noise accent-top relative py-12 sm:py-24 px-6" id="avis-google">
       <div className="max-w-7xl mx-auto">
-        <div ref={headingRef} className="flex flex-col items-center text-center mb-8 sm:mb-16 lg:mb-24">
-          <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.22em] uppercase mb-6">
+        <div ref={headingRef} className="mb-8 sm:mb-16 lg:mb-24 max-w-3xl mx-auto text-center">
+          <div className="flex items-center justify-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+            <SectionTitleAccent compact />
+          </div>
+          <h2 className="font-display-nunito font-bold uppercase tracking-[0.04em] text-[#B88A5A] leading-[1.1] text-[2.25rem] sm:text-[2.375rem] lg:text-[3rem]">
             {content?.eyebrow ?? t("testimonialsSection.eyebrow")}
-          </span>
-          <h2 className="heading-serif text-3xl sm:text-4xl text-[#0B1220]">
-            {content?.heading1 ?? t("testimonialsSection.heading1")}{" "}
-<span style={{
-  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
-  WebkitBackgroundClip: "text",
-  WebkitTextFillColor: "transparent",
-}}>
-  {content?.heading2 ?? t("testimonialsSection.heading2")}
-</span>
           </h2>
-          <p className="text-[#2B2F36]/55 text-sm sm:text-base mt-4 max-w-lg leading-relaxed">
+          <p className="font-heading font-medium text-[#0B1220] leading-[1.2] tracking-[-0.01em] mt-4 sm:mt-5 text-[1.5rem] sm:text-[1.75rem] lg:text-[2rem]">
+            {content?.heading1 ?? t("testimonialsSection.heading1")}{" "}
+            {content?.heading2 ?? t("testimonialsSection.heading2")}
+          </p>
+          <p className="mt-3 sm:mt-4 text-[15px] sm:text-base lg:text-[17px] leading-relaxed text-[#2B2F36]/55 max-w-lg mx-auto">
             {content?.sub ?? t("testimonialsSection.sub")}
           </p>
         </div>
@@ -154,11 +151,6 @@ export default function TestimonialsSection({ content }: TestimonialsSectionProp
             </div>
           ))}
         </div>
-      </div>
-
-      {/* ── Pratiques gallery (verbatim PracticesSection embedded here) ── */}
-      <div className="-mx-6">
-        <PracticesSection />
       </div>
     </section>
   );

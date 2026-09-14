@@ -49,6 +49,7 @@ import { getSpecialistsForPractice } from "@/lib/pratique-specialists";
 import { getPratiqueBookingCta } from "@/lib/pratique-cta";
 import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 import type { DiseaseMarqueeContent } from "@/lib/homepage-types";
+import SectionTitleAccent from "@/components/SectionTitleAccent";
 
 /** Curated homepage selection — all must exist in the canonical dataset. */
 const GALLERY_SLUGS: string[] = [
@@ -99,11 +100,12 @@ function explorerTeaser(desc: string): string {
 
 const PANEL_SIZES = "(max-width: 767px) 85vw, (max-width: 1023px) 48vw, 33vw";
 
-/** Bronze-filled Wenaya primary button (matches the practice-page CTA). */
-const BOOK_LINK_CLASS =
-  "pointer-events-auto inline-flex h-10 sm:h-11 items-center justify-center rounded-lg px-4 sm:px-5 " +
-  "text-xs sm:text-[13px] font-semibold text-white transition-all duration-300 hover:-translate-y-px " +
-  "active:translate-y-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFF7EB]";
+/** Custom editorial CTA — attached bronze "Réserver →" block with an ivory Wenaya
+ *  "W" side-cap on the right (integrated, not floating). One clickable booking link;
+ *  CSS-only hover (arrow +28px, cap +?px outward), no JS, no layout shift. */
+const BOOK_TAB_CLASS =
+  "group pointer-events-auto inline-flex h-9 items-stretch rounded-lg border-[1.5px] border-[#C99B68] bg-[#B88A5A] " +
+  "cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFF7EB]";
 
 /** Secondary "Discover" editorial text-link (on dark imagery). */
 const EXPLORE_LINK_CLASS =
@@ -368,16 +370,18 @@ export default function PracticesSection({ content }: PracticesSectionProps): Re
       className="relative overflow-hidden px-4 sm:px-10 py-14 lg:py-20 bg-[#FAF8F4]"
     >
       <div className="max-w-7xl mx-auto">
-        {/* ── Editorial header: eyebrow + H2 left, one paragraph + CTA right ── */}
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-10 mb-10 lg:mb-14">
-          <div className="lg:max-w-xl">
-            <span className="hp-eyebrow block text-[#B88A5A] text-[11px] font-semibold tracking-[0.24em] uppercase mb-5">
-              {eyebrow}
-            </span>
+        {/* ── Editorial header: centered eyebrow + H2 + sub + CTA ── */}
+        <div className="mb-10 lg:mb-14">
+          <div className="max-w-2xl lg:max-w-3xl mx-auto text-center">
+            <div className="flex items-center justify-center gap-3 sm:gap-4">
+              <SectionTitleAccent compact />
+              <p className="hp-eyebrow text-[#B88A5A] font-heading font-semibold uppercase tracking-[0.22em] text-[11px] sm:text-xs">
+                {eyebrow}
+              </p>
+            </div>
             <h2
               id="home-practices-heading"
-              className="hp-head heading-serif text-[#0B1220] leading-[1.05]"
-              style={{ fontSize: "clamp(2rem, 3.6vw, 3rem)" }}
+              className="hp-head font-heading font-semibold text-[#0B1220] leading-[1.05] tracking-[-0.01em] text-[clamp(2rem,4vw,3rem)] mt-4"
             >
               {content?.heading1 ?? t("homePractices.heading1")}
               <br />
@@ -391,29 +395,29 @@ export default function PracticesSection({ content }: PracticesSectionProps): Re
                 {content?.heading2 ?? t("homePractices.heading2")}
               </span>
             </h2>
-          </div>
-          <div className="hp-text lg:max-w-xs lg:text-right lg:flex lg:flex-col lg:items-end">
-            <p className="text-[#0B1220]/55 text-[15px] sm:text-base leading-relaxed">
-              {content?.sub ?? t("homePractices.sub")}
-            </p>
-            <Link
-              href={h(locale, "/pratiques")}
-              className="group/link mt-5 lg:mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[#0B1220]"
-            >
-              <span className="underline underline-offset-8 decoration-[#B88A5A]/40 group-hover/link:decoration-[#B88A5A] transition-colors">
-                {content?.cta ?? t("homePractices.cta")}
-              </span>
-              <svg
-                className="w-4 h-4 text-[#B88A5A] transition-transform group-hover/link:translate-x-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-                aria-hidden="true"
+            <div className="hp-text mt-4 sm:mt-5 max-w-lg mx-auto">
+              <p className="text-[#0B1220]/55 text-[15px] sm:text-base leading-relaxed">
+                {content?.sub ?? t("homePractices.sub")}
+              </p>
+              <Link
+                href={h(locale, "/pratiques")}
+                className="group/link mt-5 inline-flex items-center justify-center gap-2 text-sm font-semibold text-[#0B1220]"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </Link>
+                <span className="underline underline-offset-8 decoration-[#B88A5A]/40 group-hover/link:decoration-[#B88A5A] transition-colors">
+                  {content?.cta ?? t("homePractices.cta")}
+                </span>
+                <svg
+                  className="w-4 h-4 text-[#B88A5A] transition-transform group-hover/link:translate-x-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  aria-hidden="true"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </Link>
+            </div>
           </div>
         </div>
 
@@ -466,14 +470,43 @@ export default function PracticesSection({ content }: PracticesSectionProps): Re
                       <Link
                         href={it.bookHref}
                         aria-label={`${bookNowAria} — ${it.title}`}
-                        className={BOOK_LINK_CLASS}
-                        style={{
-                          background: "linear-gradient(135deg, #B88A5A 0%, #9A7242 100%)",
-                          boxShadow:
-                            "0 1px 0 rgba(255,255,255,0.16) inset, 0 6px 24px rgba(184,138,90,0.28)",
-                        }}
+                        className={BOOK_TAB_CLASS}
                       >
-                        {bookNow}
+                        <span className="flex h-full items-center gap-2 pl-4 pr-3.5">
+                          <span
+                            className="text-[12px] font-semibold tracking-[0.02em] text-white"
+                            style={{ fontFamily: "var(--font-manrope), 'Manrope', ui-sans-serif, system-ui, sans-serif" }}
+                          >
+                            {bookNow}
+                          </span>
+                          <svg
+                            className="w-3.5 h-3.5 text-white transition-transform duration-300 group-hover:translate-x-0.5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                            aria-hidden="true"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                          </svg>
+                        </span>
+                        <span
+                          className="flex h-full w-8 shrink-0 items-center justify-center rounded-r-lg border-l-[1.5px] border-l-[#B88A5A] bg-[#FAF8F4] text-[#B88A5A] transition-transform duration-300 group-hover:translate-x-1"
+                          aria-hidden="true"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={2.4}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="w-[13px] h-[13px]"
+                            aria-hidden="true"
+                          >
+                            <path d="M19 5L15 17L12 5L9 17L5 5" />
+                          </svg>
+                        </span>
                       </Link>
                       <Link
                         href={it.href}

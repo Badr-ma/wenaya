@@ -25,7 +25,7 @@ hreflang, sitemap).
 - Verified both paths end-to-end: live-feed render (2 cards) and dead-backend
   fallback render (6 editorial cards) on clean builds.
 
-## B. Scope & out-of-scope
+## B. Scope & out-of-scope 
 
 **In scope:** API transport + validation, active-feed adapter, listing wiring
 (FR + EN), ItemList JSON-LD alignment, metadata description genericization,

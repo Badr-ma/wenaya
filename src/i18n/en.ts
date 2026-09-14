@@ -119,7 +119,7 @@ const en: Translations = {
     voirPlus: "See More",
   },
   biomarkers: {
-    badge: "The Wenaya Ecosystem",
+    badge: "Wenaya Assessments",
     heading1: "Discover what your health",
     heading2: "really says about you.",
     sub: "Wenaya Assessments combine biological, physical and cognitive data to better understand your health and define your priorities.",
@@ -527,9 +527,10 @@ courses: {
     step4: { label: "Evolve", desc: "Continuous follow-up, prevention and guidance help you maintain your results over the long term.", footer: "Step 4" },
   },
   expertiseSection: {
-    badge: "Our Team",
+    badge: "Our Experts",
     heading1: "A multidisciplinary",
     heading2: "team",
+    subtitle: "A team to support you.",
     p1: "Physiotherapy, osteopathy, psychology, nutrition, speech therapy and more — a multidisciplinary center in Casablanca for complete, coordinated care.",
     cta: "Meet our specialists",
   },

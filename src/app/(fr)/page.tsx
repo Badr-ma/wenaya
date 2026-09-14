@@ -53,14 +53,9 @@ const HowItWorks = dynamic(() => import("@/components/HowItWorks"), { ssr: true 
 const Biomarkers = dynamic(() => import("@/components/Biomarkers"), { ssr: true });
 const QuickAccessSection = dynamic(() => import("@/components/QuickAccessSection"), { ssr: true });
 const TestimonialsSection = dynamic(() => import("@/components/TestimonialsSection"), { ssr: true });
-const CoursAteliers = dynamic(() => import("@/components/CoursAteliers"), { ssr: true });
 const Footer = dynamic(() => import("@/components/Footer"), { ssr: true });
 const BlogSection = dynamic(() => import("@/components/blog/BlogSection"), { ssr: true });
 const ExpertiseSection = dynamic(() => import("@/components/about/ExpertiseSection"), { ssr: true });
-
-function Spacer() {
-  return <div className="h-4 sm:h-6" />;
-}
 
 async function getHomeConfig(): Promise<HomepageConfig | null> {
   try {
@@ -104,18 +99,10 @@ export default async function Home() {
           <div data-section-bg="dark"><HeroSection /></div>
           <SectionBreak />
           <div data-section-bg="light"><HowItWorks /></div>
-          <Spacer />
           <div data-section-bg="light"><Biomarkers /></div>
-          <Spacer />
           <div data-section-bg="light"><QuickAccessSection /></div>
-          <Spacer />
-          <div data-section-bg="light"><TestimonialsSection /></div>
-          <SectionBreak />
           <div data-section-bg="light"><ExpertiseSection /></div>
-          <Spacer />
-          <Spacer />
-          <div data-section-bg="dark"><CoursAteliers /></div>
-          <Spacer />
+          <div data-section-bg="light"><TestimonialsSection /></div>
           <div data-section-bg="light"><BlogSection posts={enriched} /></div>
         </main>
         <div data-section-bg="dark"><Footer /></div>

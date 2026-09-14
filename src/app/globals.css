@@ -12,7 +12,10 @@
     Global Wenaya web typography system:
       headings/display → Manrope (--font-heading + --font-serif are both Manrope)
       body/UI          → Inter   (--font-sans)
-      monospace        → JetBrains Mono */
+      monospace        → JetBrains Mono
+    A/B TEST (2026-09-14): Nunito (--font-nunito) applied ONLY to the homepage
+    H1 + the 6 major section-name H2s + their subtitles via .font-display-nunito.
+    Everything else stays Manrope/Inter. */
   --font-sans: var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-manrope), "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-manrope), "Manrope", ui-sans-serif, system-ui, sans-serif;
@@ -24,6 +27,14 @@
   --color-warm-sand: #F2EFE9;
   --color-ivory: #FAF8F4;
   --color-graphite: #2B2F36;
+}
+
+/** A/B TEST: Nunito display utility — homepage H1 + 6 major section-name H2s get .font-display-nunito;
+    the subtitle <p> immediately following each h2 picks it up via the adjacent-sibling rule below.
+    H1 uses the inline Nunito stack in HeroSection. */
+.font-display-nunito,
+.font-display-nunito + p {
+  font-family: var(--font-nunito), "Nunito", ui-sans-serif, system-ui, sans-serif;
 }
 
 /** CSS custom properties — default background (warm sand) and foreground (deep navy) */

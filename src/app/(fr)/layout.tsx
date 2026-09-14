@@ -5,7 +5,7 @@
  * Also injects the site-wide JSON-LD structured data and Content-Security-Policy.
  */
 import type { Metadata } from "next";
-import { JetBrains_Mono, Manrope, Inter } from "next/font/google";
+import { JetBrains_Mono, Manrope, Inter, Nunito } from "next/font/google";
 import Script from "next/script";
 import "../globals.css";
 import Nav from "@/components/Nav";
@@ -30,6 +30,14 @@ const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+/** Nunito — A/B TEST font for homepage H1 + major section-name H2s + subtitles via --font-nunito */
+const nunito = Nunito({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  variable: "--font-nunito",
   display: "swap",
 });
 
@@ -113,7 +121,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>): React.JSX.Element {
   return (
-    <html lang="fr" className={`${manrope.variable} ${inter.variable} ${jetbrains.variable}`}>
+    <html lang="fr" className={`${manrope.variable} ${inter.variable} ${jetbrains.variable} ${nunito.variable}`}>
       <head>
         <meta
           httpEquiv="Content-Security-Policy"

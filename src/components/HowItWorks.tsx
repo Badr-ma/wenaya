@@ -3,6 +3,7 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { useLocale } from "@/contexts/LanguageContext";
 import type { HowItWorksContent } from "@/lib/homepage-types";
+import SectionTitleAccent from "@/components/SectionTitleAccent";
 
 interface HowItWorksStep {
   title: string;
@@ -261,27 +262,18 @@ export default function HowItWorks({ content }: HowItWorksProps): React.JSX.Elem
       />
 
       <div className="relative mx-auto max-w-7xl px-6 sm:px-10">
-        <div className="mhm-reveal mx-auto mb-10 max-w-xl text-center sm:mb-14">
-          <div className="mb-5 inline-flex items-center gap-2">
-            <div className="h-px w-4 bg-[#B88A5A]/40" />
-            <span className="text-[10.5px] font-bold uppercase tracking-[0.22em] text-[#B88A5A]">
-              {content?.badge ?? t("howItWorks.badge")}
-            </span>
-            <div className="h-px w-4 bg-[#B88A5A]/40" />
+        <div className="mhm-reveal mb-10 max-w-2xl mx-auto text-center sm:mb-14">
+          <div className="flex items-center justify-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+            <SectionTitleAccent compact />
           </div>
-          <h2 className="heading-serif text-[#0B1220] text-[clamp(1.875rem,3.2vw,2.75rem)]">
-            {content?.heading1 ?? t("howItWorks.heading1")}{" "}
-            <span
-              style={{
-                background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              {content?.heading2 ?? t("howItWorks.heading2")}
-            </span>
+          <h2 className="font-display-nunito font-bold uppercase tracking-[0.04em] text-[#B88A5A] leading-[1.1] text-[2.25rem] sm:text-[2.375rem] lg:text-[3.25rem]">
+            {content?.badge ?? t("howItWorks.badge")}
           </h2>
-          <p className="mt-4 text-[14px] leading-relaxed text-[#2B2F36]/55 sm:text-[15px]">
+          <p className="font-heading font-medium text-[#0B1220] leading-[1.2] tracking-[-0.01em] mt-4 sm:mt-5 text-[1.5rem] sm:text-[1.75rem] lg:text-[2rem]">
+            {content?.heading1 ?? t("howItWorks.heading1")}{" "}
+            {content?.heading2 ?? t("howItWorks.heading2")}
+          </p>
+          <p className="mt-3 sm:mt-4 text-[15px] sm:text-base lg:text-[17px] leading-relaxed text-[#2B2F36]/55 max-w-lg mx-auto">
             {content?.sub ?? t("howItWorks.sub")}
           </p>
         </div>

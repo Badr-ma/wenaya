@@ -8,6 +8,7 @@ import { h } from "@/lib/href";
 import { specialists } from "@/lib/specialistes";
 import type { ExpertiseContent } from "@/lib/homepage-types";
 import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
+import SectionTitleAccent from "@/components/SectionTitleAccent";
 
 const featuredSpecialists = specialists.slice(0, 10);
 
@@ -44,28 +45,20 @@ export default function ExpertiseSection({ content }: ExpertiseSectionProps): Re
     <section ref={sectionRef} className="bg-[#F2EFE9] py-20 sm:py-24 px-6 relative">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col items-center gap-10 lg:gap-14">
-          <div className="max-w-xl text-center">
-            <div id="es-badge">
-              <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">
-                <span className="w-6 h-px bg-[#B88A5A]/40" />
-                {content?.badge ?? t("expertiseSection.badge")}
-              </span>
+          <div className="w-full max-w-2xl mx-auto text-center">
+            <div className="flex items-center justify-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+              <SectionTitleAccent compact />
             </div>
-
-            <h2 id="es-title" className="heading-serif text-[clamp(2rem,4vw,3.5rem)] text-[#0B1220] mt-5">
-              {content?.heading1 ?? t("expertiseSection.heading1")}{" "}
-              <span style={{
-                background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}>
-                {content?.heading2 ?? t("expertiseSection.heading2")}
-              </span>
+            <h2 id="es-title" className="font-display-nunito font-bold uppercase tracking-[0.04em] text-[#B88A5A] leading-[1.1] text-[2.25rem] sm:text-[2.375rem] lg:text-[3.25rem]">
+              {content?.badge ?? t("expertiseSection.badge")}
             </h2>
+            <p className="font-heading font-medium text-[#0B1220] leading-[1.2] tracking-[-0.01em] mt-4 sm:mt-5 text-[1.5rem] sm:text-[1.75rem] lg:text-[2rem]">
+              {content?.subtitle ?? t("expertiseSection.subtitle")}
+            </p>
 
-            <div id="es-text" className="text-[#2B2F36]/50 text-xs sm:text-sm leading-relaxed mt-5">
-              <p>{content?.p1 ?? t("expertiseSection.p1")}</p>
-            </div>
+            <p id="es-text" className="text-[#2B2F36]/55 text-[15px] sm:text-base lg:text-[17px] leading-relaxed max-w-lg mx-auto mt-3 sm:mt-4">
+              {content?.p1 ?? t("expertiseSection.p1")}
+            </p>
           </div>
 
           <div className="relative w-full">

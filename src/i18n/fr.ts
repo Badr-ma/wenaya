@@ -119,7 +119,7 @@ const fr = {
     voirPlus: "Voir Plus",
   },
   biomarkers: {
-    badge: "L'\u00e9cosyst\u00e8me Wenaya",
+    badge: "Bilans Wenaya",
     heading1: "D\u00e9couvrez ce que votre sant\u00e9",
     heading2: "dit vraiment de vous.",
     sub: "Les Bilans Wenaya combinent des donn\u00e9es biologiques, physiques et cognitives pour mieux comprendre votre sant\u00e9 et d\u00e9finir vos priorit\u00e9s.",
@@ -527,9 +527,10 @@ const fr = {
     step4: { label: "Évoluer", desc: "Un suivi continu, de la prévention et des conseils vous aident à maintenir vos résultats sur le long terme.", footer: "Étape 4" },
   },
   expertiseSection: {
-    badge: "Notre Équipe",
+    badge: "Nos experts",
     heading1: "Une équipe",
     heading2: "pluridisciplinaire",
+    subtitle: "Une équipe pour vous accompagner.",
     p1: "Kinésithérapie, ostéopathie, psychologie, nutrition, orthophonie et plus — un centre pluridisciplinaire à Casablanca pour un suivi complet et coordonné.",
     cta: "Rencontrer nos spécialistes",
   },
