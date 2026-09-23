@@ -5,7 +5,7 @@
  * Also injects the site-wide JSON-LD structured data and Content-Security-Policy.
  */
 import type { Metadata } from "next";
-import { JetBrains_Mono, Manrope, Inter, Nunito } from "next/font/google";
+import { JetBrains_Mono, Manrope, Inter } from "next/font/google";
 import Script from "next/script";
 import "../globals.css";
 import Nav from "@/components/Nav";
@@ -16,6 +16,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import CookieConsent from "@/components/CookieConsent";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { CartProvider } from "@/contexts/CartContext";
+import { ShopComingSoonProvider } from "@/contexts/ShopComingSoonContext";
 import { SITE_URL, SITE_NAME } from "@/lib/site-config";
 
 /** Manrope — Wenaya heading/display font via --font-heading & --font-serif */
@@ -30,14 +31,6 @@ const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-inter",
-  display: "swap",
-});
-
-/** Nunito — A/B TEST font for homepage H1 + major section-name H2s + subtitles via --font-nunito */
-const nunito = Nunito({
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  variable: "--font-nunito",
   display: "swap",
 });
 
@@ -121,7 +114,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>): React.JSX.Element {
   return (
-    <html lang="fr" className={`${manrope.variable} ${inter.variable} ${jetbrains.variable} ${nunito.variable}`}>
+    <html lang="fr" className={`${manrope.variable} ${inter.variable} ${jetbrains.variable}`}>
       <head>
         <meta
           httpEquiv="Content-Security-Policy"
@@ -217,11 +210,13 @@ gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', { page_path: window.location.
             <GsapInit /> {/* Registers GSAP plugins globally (ScrollTrigger, etc.) */}
             <Nav /> {/* Global navigation bar — fixed position, outside Lenis so position:fixed works correctly */}
             <CookieConsent /> {/* Cookie consent banner — fixed position at bottom, outside Lenis */}
-            <LenisProvider> {/* Enables Lenis smooth scrolling across the site */}
-              <ScrollToTop />
-              {children} {/* Page content rendered here */}
-              <CorporateConsultationWidget /> {/* Floating consultation pill on /corporate */}
-            </LenisProvider>
+            <ShopComingSoonProvider>
+              <LenisProvider> {/* Enables Lenis smooth scrolling across the site */}
+                <ScrollToTop />
+                {children} {/* Page content rendered here */}
+                <CorporateConsultationWidget /> {/* Floating consultation pill on /corporate */}
+              </LenisProvider>
+            </ShopComingSoonProvider>
           </CartProvider>
         </LanguageProvider>
       </body>

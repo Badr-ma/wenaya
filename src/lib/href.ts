@@ -24,6 +24,17 @@ export function groupSessionsHref(locale: HrefLocale): string {
 }
 
 /**
+ * Locale-aware href for the configurator coming-soon page.
+ * The EN route uses the English segment ("/en/configurator") while FR uses the
+ * French segment ("/configurateur") — a strict locale split, not just an /en prefix.
+ * (The homepage hero "Trouver mon parcours" CTA scrolls to an in-page #configurator
+ * anchor; these are the standalone routes the Quick Access "Needs & goals" card links to.)
+ */
+export function configuratorHref(locale: HrefLocale): string {
+  return locale === "en" ? "/en/configurator" : "/configurateur";
+}
+
+/**
  * Decode a percent-encoded URL segment; never throws (returns the input on
  * failure). Next.js may deliver a dynamic-segment param or the client router
  * pathname either raw (`grossesse-&-maternite`) or percent-encoded

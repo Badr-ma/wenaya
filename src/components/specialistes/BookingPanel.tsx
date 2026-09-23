@@ -1,19 +1,23 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useLocale } from "@/contexts/LanguageContext";
 import { h } from "@/lib/href";
+import { normalizeLegacyPrice } from "@/lib/format";
 import type { Specialist, SpecialistService } from "@/lib/specialistes";
 import {
   buildMonthAvailability,
+  buildMonthGrid,
   leadingBlanks,
   MONTHS_FR,
   formatDateCaption,
   formatDateCompact,
   weekdayShortLabels,
 } from "@/lib/availability";
+import { fetchClientUnavailableDates, fetchClientDay } from "@/lib/professional-availability-client";
+import type { ProfessionalAvailabilityReason, ProfessionalTimeSlot } from "@/lib/professional-availability";
 
 type BookingConfirmationData = {
   specialistName: string;
@@ -37,6 +41,37 @@ type BookingPanelProps = {
   onBookingConfirmed?: (data: BookingConfirmationData) => void;
 };
 
+function ApiDayState({
+  day,
+}: {
+  day: { reason: ProfessionalAvailabilityReason; nextDay: string | null };
+}) {
+  const { t, locale } = useLocale();
+  const bk = "specialistes.booking.";
+  if (day.reason === "unavailable" && day.nextDay) {
+    return (
+      <>
+        <p className="text-[12px] text-[#2B2F36]/45">{t(`${bk}closedDay`)}</p>
+        <p className="text-[12px] text-[#2B2F36]/45 mt-1.5">
+          {t(`${bk}nextDayHint`)}{" "}
+          <span className="font-semibold text-[#B88A5A]">{formatDateCaption(day.nextDay, locale)}</span>
+        </p>
+      </>
+    );
+  }
+  const key =
+    day.reason === "no-work-hours"
+      ? "noWorkHours"
+      : day.reason === "ghost-mode"
+        ? "ghostMode"
+        : day.reason === "home-care-restricted"
+          ? "homeCareRestricted"
+          : day.reason === "unavailable"
+            ? "closedDay"
+            : "requestFailure";
+  return <p className="text-[12px] text-[#2B2F36]/45">{t(`${bk}${key}`)}</p>;
+}
+
 export default function BookingPanel({
   isOpen,
   onClose,
@@ -59,18 +94,71 @@ export default function BookingPanel({
     return { year: now.getFullYear(), month: now.getMonth() };
   });
 
+  const apiConfig = specialist.availabilityApi ?? null;
+  const [apiDates, setApiDates] = useState<{ iso: string; closed: string[] }>({ iso: "", closed: [] });
+  const [apiDayLoading, setApiDayLoading] = useState<string | null>(null);
+  const [apiSlots, setApiSlots] = useState<Record<string, ProfessionalTimeSlot[]>>({});
+  const [apiDays, setApiDays] = useState<Record<string, { reason: ProfessionalAvailabilityReason; nextDay: string | null }>>({});
+  const dayRequestIsoRef = useRef<string | null>(null);
+
   const today = new Date();
   const todayKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
   const isCurrentMonth = viewMonth.year === today.getFullYear() && viewMonth.month === today.getMonth();
   const canGoNext = viewMonth.year * 12 + viewMonth.month < today.getFullYear() * 12 + today.getMonth() + 6;
 
+  // Live fully-unavailable dates for API-sourced professionals, anchored on
+  // the visible month. Legacy specialists keep the local weekly-schedule
+  // calendar (buildMonthAvailability) untouched.
+  useEffect(() => {
+    if (!apiConfig) return;
+    let cancelled = false;
+    const anchor = `${viewMonth.year}-${String(viewMonth.month + 1).padStart(2, "0")}-01`;
+    fetchClientUnavailableDates(apiConfig.userName, anchor).then((r) => {
+      if (cancelled) return;
+      setApiDates({ iso: anchor, closed: r.ok ? r.dates : [] });
+    });
+    return () => { cancelled = true; };
+  }, [apiConfig, viewMonth]);
+
   const monthDays = useMemo(
-    () => buildMonthAvailability(specialist, viewMonth.year, viewMonth.month),
-    [specialist, viewMonth]
+    () =>
+      apiConfig
+        ? buildMonthGrid(viewMonth.year, viewMonth.month, apiDates.closed, todayKey)
+        : buildMonthAvailability(specialist, viewMonth.year, viewMonth.month),
+    [specialist, apiConfig, viewMonth, apiDates.closed, todayKey]
   );
   const selectedDay = monthDays.find((d) => d.iso === selectedDateIso) ?? null;
   const canConfirm = Boolean(selectedSlot && selectedService);
   const weekdayLabels = useMemo(() => weekdayShortLabels(locale), [locale]);
+
+  const apiSelectedDay = apiConfig && selectedDay ? apiDays[selectedDay.iso] : undefined;
+  const apiSelectedSlots = apiConfig && selectedDay ? apiSlots[selectedDay.iso] : undefined;
+  const slotsToRender = !apiConfig
+    ? (selectedDay?.slots ?? []).map((s) => ({ key: s.time, label: s.time, disabled: !s.available }))
+    : (apiSelectedSlots ?? []).map((s) => ({ key: `${s.start}-${s.end}`, label: s.start, disabled: s.isReserved }));
+
+  const handleDaySelect = (iso: string) => {
+    setSelectedDateIso(iso);
+    setSelectedSlot(null);
+    if (!apiConfig) return;
+    if (apiSlots[iso] || apiDays[iso] || apiDayLoading === iso) return;
+    dayRequestIsoRef.current = iso;
+    setApiDayLoading(iso);
+    fetchClientDay(apiConfig.professionalId, iso).then((r) => {
+      if (dayRequestIsoRef.current !== iso) return;
+      dayRequestIsoRef.current = null;
+      setApiDayLoading(null);
+      if (!r.ok) {
+        setApiDays((p) => ({ ...p, [iso]: { reason: "api-error", nextDay: null } }));
+        return;
+      }
+      if (r.available) {
+        setApiSlots((p) => ({ ...p, [iso]: r.slots }));
+        return;
+      }
+      setApiDays((p) => ({ ...p, [iso]: { reason: r.reason, nextDay: r.nextDay } }));
+    });
+  };
 
   // Seed the panel from the initial (URL/query) values whenever it opens or
   // those values change while open. This uses React's documented "adjust state
@@ -102,6 +190,8 @@ export default function BookingPanel({
   }
 
   const changeMonth = (delta: number) => {
+    dayRequestIsoRef.current = null;
+    setApiDayLoading(null);
     setSelectedDateIso(null);
     setSelectedSlot(null);
     setViewMonth((prev) => {
@@ -232,11 +322,11 @@ export default function BookingPanel({
                           <button
                             key={d.iso}
                             disabled={d.closed}
-                            onClick={() => { setSelectedDateIso(d.iso); setSelectedSlot(null); }}
+                            onClick={() => handleDaySelect(d.iso)}
                             className={`relative flex items-center justify-center aspect-square rounded-md text-[12px] font-medium transition-all ${d.closed ? "text-[#2B2F36]/15 cursor-not-allowed" : isSelected ? "bg-[#0B1220] text-white" : "bg-[#B88A5A]/10 text-[#0B1220]/80 hover:bg-[#B88A5A]/20 hover:text-[#0B1220]"}`}
                           >
                             <span>{Number(d.date)}</span>
-                            {!d.closed && !isSelected && (
+                            {!d.closed && !isSelected && !apiConfig && (
                               <span className="absolute bottom-1 w-1 h-1 rounded-full bg-[#B88A5A]" />
                             )}
                             {isToday && !isSelected && <span className="absolute inset-0 rounded-md ring-1 ring-[#B88A5A]/50 pointer-events-none" />}
@@ -255,15 +345,27 @@ export default function BookingPanel({
                       </>
                     )}
                     <p className="text-[11px] font-mono text-[#B88A5A] uppercase tracking-[0.2em] mb-3">{t("specialistes.booking.availableSlots")}</p>
-                    {selectedDay && selectedDay.slots.length > 0 ? (
+                    {selectedDay && slotsToRender.length > 0 ? (
                       <div className="w-full rounded-lg border border-[#0B1220]/[0.10] divide-y divide-[#0B1220]/[0.06] overflow-hidden">
-                        {selectedDay.slots.map((slot) => (
-                          <button key={slot.time} disabled={!slot.available} onClick={() => setSelectedSlot(slot.time)}
-                            className={`w-full px-3.5 py-2.5 text-[13px] font-medium text-center transition-colors ${!slot.available ? "bg-[#0B1220]/[0.03] text-[#2B2F36]/25 line-through cursor-not-allowed" : selectedSlot === slot.time ? "bg-[#B88A5A] text-white" : "bg-white text-[#0B1220]/70 hover:bg-[#B88A5A]/10 hover:text-[#0B1220]"}`}>
-                            {slot.time}
+                        {slotsToRender.map((slot) => (
+                          <button key={slot.key} disabled={slot.disabled} onClick={() => setSelectedSlot(slot.label)}
+                            className={`w-full px-3.5 py-2.5 text-[13px] font-medium text-center transition-colors ${slot.disabled ? "bg-[#0B1220]/[0.03] text-[#2B2F36]/25 line-through cursor-not-allowed" : selectedSlot === slot.label ? "bg-[#B88A5A] text-white" : "bg-white text-[#0B1220]/70 hover:bg-[#B88A5A]/10 hover:text-[#0B1220]"}`}>
+                            {slot.label}
                           </button>
                         ))}
                       </div>
+                    ) : selectedDay && apiConfig ? (
+                      apiDayLoading === selectedDay.iso ? (
+                        <p className="text-[12px] text-[#2B2F36]/45">{t("specialistes.booking.loadingSlots")}</p>
+                      ) : apiSelectedDay ? (
+                        <ApiDayState day={apiSelectedDay} />
+                      ) : apiSelectedSlots ? (
+                        <p className="text-[12px] text-[#2B2F36]/45">{t("specialistes.booking.noSlotsDay")}</p>
+                      ) : (
+                        <div className="w-full h-[180px] sm:h-[210px] rounded-lg border border-dashed border-[#0B1220]/[0.10] flex items-center justify-center px-4">
+                          <p className="text-center text-[12px] text-[#2B2F36]/45">{t("specialistes.booking.selectDate")}</p>
+                        </div>
+                      )
                     ) : selectedDay ? (
                       <p className="text-[12px] text-[#2B2F36]/45">{t("specialistes.booking.noSlotsDay")}</p>
                     ) : (
@@ -284,7 +386,7 @@ export default function BookingPanel({
                           </div>
                           <div className="flex items-center gap-2">
                             {svc.type === "ligne" && <span className="text-[9px] px-1.5 py-0.5 rounded bg-[#0B1220]/[0.05] text-[#2B2F36]/65 uppercase">Online</span>}
-                            <span className="text-[13px] font-semibold text-[#B88A5A]">{svc.price}</span>
+                            <span className="text-[13px] font-semibold text-[#B88A5A]">{normalizeLegacyPrice(svc.price)}</span>
                           </div>
                         </button>
                       ))}

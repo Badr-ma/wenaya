@@ -2,7 +2,6 @@
 
 import { useState, useMemo } from "react";
 import SpecialistHero from "./SpecialistHero";
-import FeaturedSpecialists from "./FeaturedSpecialists";
 import SpecialistListItem from "./SpecialistListItem";
 import MapView from "./MapView";
 import { useLocale } from "@/contexts/LanguageContext";
@@ -17,14 +16,6 @@ export default function SpecialistsPage({ specialists }: { specialists: Speciali
   const [mapActiveSlug, setMapActiveSlug] = useState<string | null>(null);
 
   const activeSlug = hoveredSlug || mapActiveSlug;
-
-  const featured = useMemo(
-    () =>
-      specialists
-        .sort((a, b) => b.rating - a.rating)
-        .slice(0, 3),
-    [specialists]
-  );
 
   const allSpecialties = useMemo(
     () => [...new Set(specialists.map((s) => s.specialty))],
@@ -60,8 +51,6 @@ export default function SpecialistsPage({ specialists }: { specialists: Speciali
         onSearchChange={setSearchQuery}
         resultCount={filtered.length}
       />
-
-      <FeaturedSpecialists specialists={featured} />
 
       <div className="mx-auto max-w-7xl px-6 pb-4">
         <div className="flex items-center justify-between mb-4">
@@ -141,9 +130,9 @@ export default function SpecialistsPage({ specialists }: { specialists: Speciali
             </div>
           </div>
         ) : (
-          <div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {filtered.length === 0 ? (
-              <p className="text-sm text-[#2B2F36]/30 py-12 text-center">
+              <p className="text-sm text-[#2B2F36]/30 py-12 text-center col-span-full">
                 {t("specialistes.list.noResults")}
               </p>
             ) : (

@@ -1,16 +1,19 @@
 /**
  * CartActions — client component for product detail commerce area.
- * Handles: price display, availability, quantity selection, add-to-cart,
- * buy now (navigates to checkout), and external website links.
- * ProductDetail remains a Server Component; this is its interactive commerce child.
+ * Displays: price, availability, quantity selection, and external links.
+ *
+ * SHOP LAUNCH FREEZE: Commerce interactions are temporarily disabled. Add-to-cart,
+ * buy-now and the purchase link all open the shared "coming soon" dialog instead of
+ * mutating the cart or navigating to checkout. The underlying cart/checkout
+ * implementation (CartContext, PanierView, CheckoutView) stays intact for future
+ * activation — only the interaction layer is swapped.
+ * ProductDetail remains a Server Component; this is its interactive child.
  */
 "use client";
 
 import { useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
-import { useCart } from "@/contexts/CartContext";
 import { useLocale } from "@/contexts/LanguageContext";
-import { h } from "@/lib/href";
+import { useShopComingSoon } from "@/contexts/ShopComingSoonContext";
 import { formatPrice } from "@/lib/format";
 
 type Availability = "in_stock" | "out_of_stock" | "pre_order" | "limited";
@@ -30,42 +33,36 @@ interface CartActionsProps {
 }
 
 export default function CartActions({
-  productSlug,
-  productName,
-  image,
   unitPrice,
   currency = "MAD",
   availability,
   hasPrice,
   hasPurchaseUrl,
-  purchaseUrl,
   hasWebsiteUrl,
   websiteUrl,
 }: CartActionsProps) {
-  const { t } = useLocale();
-  const { addItem } = useCart();
-  const router = useRouter();
+  const { t, locale } = useLocale();
+  const { openShopComingSoon } = useShopComingSoon();
   const [quantity, setQuantity] = useState(1);
-  const [added, setAdded] = useState(false);
 
   const isOutOfStock = availability === "out_of_stock";
   const isPreOrder = availability === "pre_order";
   const isLimited = availability === "limited";
   const canAddToCart = hasPrice && !isOutOfStock;
-  const locale = useLocale().locale;
 
+  // SHOP LAUNCH FREEZE: Commerce interactions are temporarily disabled. These
+  // handlers only surface the "coming soon" dialog — they never mutate the cart,
+  // create an order, or navigate to checkout. Restore the original addItem /
+  // router.push behavior here when the shop reopens.
   const handleAddToCart = useCallback(() => {
-    if (!canAddToCart || unitPrice == null) return;
-    addItem({ productSlug, productName, image, unitPrice, currency }, quantity);
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
-  }, [canAddToCart, unitPrice, addItem, productSlug, productName, image, quantity, currency]);
+    if (!canAddToCart) return;
+    openShopComingSoon();
+  }, [canAddToCart, openShopComingSoon]);
 
   const handleBuyNow = useCallback(() => {
-    if (!canAddToCart || unitPrice == null) return;
-    addItem({ productSlug, productName, image, unitPrice, currency }, quantity);
-    router.push(h(locale, "/checkout"));
-  }, [canAddToCart, unitPrice, addItem, productSlug, productName, image, quantity, currency, router, locale]);
+    if (!canAddToCart) return;
+    openShopComingSoon();
+  }, [canAddToCart, openShopComingSoon]);
 
   const decrementQty = useCallback(() => setQuantity((q) => Math.max(1, q - 1)), []);
   const incrementQty = useCallback(() => setQuantity((q) => q + 1), []);
@@ -141,9 +138,9 @@ export default function CartActions({
             disabled={!canAddToCart}
             onClick={handleAddToCart}
             className="inline-flex items-center justify-center px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-[#B88A5A] text-white hover:bg-[#a07a4e] disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B88A5A] focus-visible:ring-offset-2"
-            aria-label={added ? t("produits.detail.addedToCart") : t("produits.detail.addToCart")}
+            aria-label={t("produits.detail.addToCart")}
           >
-            {added ? "✓ " + t("produits.detail.addedToCart") : t("produits.detail.addToCart")}
+            {t("produits.detail.addToCart")}
           </button>
 
           {/* Buy Now */}
@@ -162,15 +159,14 @@ export default function CartActions({
       {/* ── External links (secondary) ── */}
       {(hasPurchaseUrl || hasWebsiteUrl) && (
         <div className="flex flex-wrap gap-3 pt-1">
-          {hasPurchaseUrl && purchaseUrl && (
-            <a
-              href={purchaseUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+          {hasPurchaseUrl && (
+            <button
+              type="button"
+              onClick={openShopComingSoon}
               className="text-xs text-[#2B2F36]/40 hover:text-[#B88A5A] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B88A5A] focus-visible:ring-offset-2 rounded"
             >
               {t("produits.detail.externalLink")} →
-            </a>
+            </button>
           )}
           {hasWebsiteUrl && websiteUrl && (
             <a

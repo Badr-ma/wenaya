@@ -6,7 +6,6 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
 
@@ -38,30 +37,15 @@ function FaqItem({ q, a, isOpen, onClick, id }: { q: string; a: string; isOpen: 
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
         </svg>
       </button>
-      {reducedMotion ? (
-        isOpen && (
-          <div id={panelId} role="region">
-            <p className="text-[#2B2F36]/55 text-sm leading-relaxed pb-5">{a}</p>
-          </div>
-        )
-      ) : (
+      <div
+        id={panelId}
+        role="region"
+        className={`grid transition-[grid-template-rows] duration-300 ease-in-out motion-reduce:transition-none ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+      >
         <div className="overflow-hidden">
-          {isOpen && (
-            <motion.div
-              key="content"
-              id={panelId}
-              role="region"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.28, ease: "easeInOut" }}
-              className="overflow-hidden"
-            >
-              <p className="text-[#2B2F36]/55 text-sm leading-relaxed pb-5">{a}</p>
-            </motion.div>
-          )}
+          <p className="text-[#2B2F36]/55 text-sm leading-relaxed pb-5">{a}</p>
         </div>
-      )}
+      </div>
     </div>
   );
 }
@@ -90,27 +74,25 @@ export default function ResourcesFaqSection() {
   }, []);
 
   return (
-    <section id="downloads" ref={sectionRef} className="relative bg-[#F2EFE9] py-16 sm:py-24 px-6 overflow-hidden scroll-mt-20">
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="rf-head flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8 sm:mb-12">
-          <div className="max-w-xl">
-            <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase mb-4">
-              <span className="w-8 h-px bg-[#B88A5A]/40" />
-              {t("entreprises.downloads.title")}
-            </span>
-            <h2
-              className="heading-serif text-[#0B1220]"
-              style={{ fontSize: "clamp(1.5rem, 2.6vw, 2.3rem)", fontWeight: 500, lineHeight: 1.1, letterSpacing: "-0.015em" }}
-            >
-              {t("entreprises.downloads.subtitle")}
-            </h2>
-          </div>
-          <span className="sm:mb-1 text-[#0B1220]/30 text-xs font-semibold tracking-[0.14em] uppercase shrink-0">
+    <section id="downloads" ref={sectionRef} className="relative bg-white py-10 sm:py-14 lg:py-18 px-6 overflow-hidden scroll-mt-20">
+      <div className="max-w-5xl mx-auto relative z-10">
+        <div className="rf-head mx-auto max-w-2xl text-center mb-6 sm:mb-8">
+          <span className="inline-flex items-center justify-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase mb-4">
+            <span className="w-8 h-px bg-[#B88A5A]/40" />
+            {t("entreprises.downloads.title")}
+          </span>
+          <h2
+            className="heading-serif text-[#0B1220]"
+            style={{ fontSize: "clamp(1.75rem, 2.6vw, 2.2rem)", fontWeight: 500, lineHeight: 1.1, letterSpacing: "-0.015em" }}
+          >
+            {t("entreprises.downloads.subtitle")}
+          </h2>
+          <span className="mt-4 block text-[#0B1220]/30 text-xs font-semibold tracking-[0.14em] uppercase">
             PDF
           </span>
         </div>
 
-        <div className="grid lg:grid-cols-5 gap-10 lg:gap-16">
+        <div className="grid lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Resources (40%) — typography-first rows */}
           <div className="lg:col-span-2">
             <div className="divide-y divide-[#0B1220]/[0.08]">

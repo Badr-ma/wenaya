@@ -48,7 +48,7 @@ export default function ClinicCourses({
   return (
     <section className="relative bg-[#F2EFE9] px-6 sm:px-10">
       <div className="max-w-7xl mx-auto py-14 lg:py-20">
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-10 sm:pb-12 lg:pb-16">
           <div>
             <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.24em] uppercase block mb-6">
               {t("clinic.courses.badge")}

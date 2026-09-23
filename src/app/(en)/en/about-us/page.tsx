@@ -20,6 +20,7 @@ import ClinicParcoursDeSoins from "@/components/clinic/ParcoursDeSoins";
 import ClinicRecruitment from "@/components/clinic/Recruitment";
 import ClinicPractical from "@/components/clinic/Practical";
 import ClinicStructuredData from "@/components/clinic/StructuredData";
+import { getHomepageSpecialists } from "@/lib/professionals";
 import Footer from "@/components/Footer";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
@@ -56,9 +57,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function EnglishAboutPage() {
+export default async function EnglishAboutPage() {
   const lang = "en";
   const locale = lang;
+  const experts = (await getHomepageSpecialists(8)).slice(0, 8);
   return (
     <>
       <ErrorBoundary>
@@ -72,7 +74,7 @@ export default function EnglishAboutPage() {
             <ClinicPractices locale={locale} lang={lang} />
             <ClinicCourses locale={locale} lang={lang} />
             <ClinicPathologies locale={locale} lang={lang} />
-            <ClinicTeam />
+            <ClinicTeam specialists={experts} />
             <ClinicHealthNeeds />
             <ClinicParcoursDeSoins />
             <ClinicRecruitment />

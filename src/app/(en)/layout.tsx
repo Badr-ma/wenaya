@@ -5,7 +5,7 @@
  * JSON-LD (WebSite.inLanguage = "en").
  */
 import type { Metadata } from "next";
-import { JetBrains_Mono, Manrope, Inter, Nunito } from "next/font/google";
+import { JetBrains_Mono, Manrope, Inter } from "next/font/google";
 import Script from "next/script";
 import "../globals.css";
 import Nav from "@/components/Nav";
@@ -16,6 +16,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import CookieConsent from "@/components/CookieConsent";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { CartProvider } from "@/contexts/CartContext";
+import { ShopComingSoonProvider } from "@/contexts/ShopComingSoonContext";
 import { SITE_URL, SITE_NAME } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
@@ -33,14 +34,6 @@ const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-inter",
-  display: "swap",
-});
-
-/** Nunito — A/B TEST font for homepage H1 + major section-name H2s + subtitles via --font-nunito */
-const nunito = Nunito({
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  variable: "--font-nunito",
   display: "swap",
 });
 
@@ -122,7 +115,7 @@ export default function EnglishRootLayout({
   children: React.ReactNode;
 }>): React.JSX.Element {
   return (
-    <html lang="en" className={`${manrope.variable} ${inter.variable} ${jetbrains.variable} ${nunito.variable}`}>
+    <html lang="en" className={`${manrope.variable} ${inter.variable} ${jetbrains.variable}`}>
       <head>
         <meta
           httpEquiv="Content-Security-Policy"
@@ -217,11 +210,13 @@ gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', { page_path: window.location.
             <GsapInit />
             <Nav />
             <CookieConsent />
-            <LenisProvider>
-              <ScrollToTop />
-              {children}
-              <CorporateConsultationWidget />
-            </LenisProvider>
+            <ShopComingSoonProvider>
+              <LenisProvider>
+                <ScrollToTop />
+                {children}
+                <CorporateConsultationWidget />
+              </LenisProvider>
+            </ShopComingSoonProvider>
           </CartProvider>
         </LanguageProvider>
       </body>

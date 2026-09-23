@@ -37,8 +37,10 @@ import Banner from "@/components/Banner";
 import HeroSection from "@/components/HeroSection";
 import SectionBreak from "@/components/SectionBreak";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import { getPublishedPosts, authors, categories } from "@/lib/blog";
+import { getArticlesPage } from "@/lib/blog-articles-api";
+import { toFeedPost } from "@/lib/blog-mappers";
 import { getHomepagePublished } from "@/lib/homepage";
+import { getHomepageSpecialists } from "@/lib/professionals";
 import HomepageRenderer from "@/components/homepage/HomepageRenderer";
 import type { HomepageConfig } from "@/lib/homepage-types";
 
@@ -73,6 +75,7 @@ async function getHomeConfig(): Promise<HomepageConfig | null> {
 
 export default async function EnglishHome() {
   const published = await getHomeConfig();
+  const experts = await getHomepageSpecialists();
 
   if (published && published.sections.length > 0) {
     return (
@@ -81,17 +84,18 @@ export default async function EnglishHome() {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageJsonLd) }}
         />
-        <HomepageRenderer config={published} />
+        <HomepageRenderer config={published} experts={experts} />
       </ErrorBoundary>
     );
   }
 
-  const posts = getPublishedPosts();
-  const enriched = posts.slice(0, 3).map((p) => ({
-    ...p,
-    author: authors.find((a) => a.id === p.authorId),
-    category: categories.find((c) => c.id === p.categoryId),
-  }));
+  let posts: ReturnType<typeof toFeedPost>[] = [];
+  try {
+    const { articles } = await getArticlesPage(1);
+    posts = articles.slice(0, 3).map(toFeedPost);
+  } catch {
+    posts = [];
+  }
 
   return (
     <ErrorBoundary>
@@ -107,9 +111,9 @@ export default async function EnglishHome() {
           <div data-section-bg="light"><HowItWorks /></div>
           <div data-section-bg="light"><Biomarkers /></div>
           <div data-section-bg="light"><QuickAccessSection /></div>
-          <div data-section-bg="light"><ExpertiseSection /></div>
+          <div data-section-bg="light"><ExpertiseSection specialists={experts} /></div>
           <div data-section-bg="light"><TestimonialsSection /></div>
-          <div data-section-bg="light"><BlogSection posts={enriched} /></div>
+          <div data-section-bg="light"><BlogSection posts={posts} /></div>
         </main>
         <div data-section-bg="dark"><Footer /></div>
       </div>

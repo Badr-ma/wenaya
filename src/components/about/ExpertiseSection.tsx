@@ -2,21 +2,23 @@
 
 import { useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
+import SubtitleSplit from "@/components/SubtitleSplit";
 import { h } from "@/lib/href";
-import { specialists } from "@/lib/specialistes";
+import type { Specialist } from "@/lib/specialistes";
 import type { ExpertiseContent } from "@/lib/homepage-types";
 import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
-import SectionTitleAccent from "@/components/SectionTitleAccent";
-
-const featuredSpecialists = specialists.slice(0, 10);
 
 interface ExpertiseSectionProps {
   content?: ExpertiseContent;
+  /** Real specialists resolved server-side (see `getHomepageSpecialists`).
+   *  Empty = the section renders without member cards — never demo data. */
+  specialists?: Specialist[];
 }
 
-export default function ExpertiseSection({ content }: ExpertiseSectionProps): React.JSX.Element {
+export default function ExpertiseSection({ content, specialists = [] }: ExpertiseSectionProps): React.JSX.Element {
   const { t, locale } = useLocale();
   const { elRef: sectionRef, ready } = useIntersectionDeferred();
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -45,46 +47,53 @@ export default function ExpertiseSection({ content }: ExpertiseSectionProps): Re
     <section ref={sectionRef} className="bg-[#F2EFE9] py-20 sm:py-24 px-6 relative">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col items-center gap-10 lg:gap-14">
-          <div className="w-full max-w-2xl mx-auto text-center">
-            <div className="flex items-center justify-center gap-3 sm:gap-4 mb-3 sm:mb-4">
-              <SectionTitleAccent compact />
+          <div className="max-w-xl text-center">
+            <div id="es-badge" className="mb-5 inline-flex items-center gap-2">
+              <div className="h-px w-4 bg-[#B88A5A]/40" />
+              <span className="text-[10.5px] font-bold uppercase tracking-[0.22em] text-[#B88A5A]">
+                {content?.badge ?? t("expertiseSection.badge")}
+              </span>
+              <div className="h-px w-4 bg-[#B88A5A]/40" />
             </div>
-            <h2 id="es-title" className="font-display-nunito font-bold uppercase tracking-[0.04em] text-[#B88A5A] leading-[1.1] text-[2.25rem] sm:text-[2.375rem] lg:text-[3.25rem]">
-              {content?.badge ?? t("expertiseSection.badge")}
+
+            <h2 id="es-title" className="heading-serif text-[40px] sm:text-[50px] lg:text-[60px] leading-[1.02] text-[#0B1220]">
+              <SubtitleSplit text={content?.subtitle ?? t("expertiseSection.subtitle")} bronze={locale === "fr" ? "pour vous accompagner." : "to support you."} darkClass="text-[#0B1220]" />
             </h2>
-            <p className="font-heading font-medium text-[#0B1220] leading-[1.2] tracking-[-0.01em] mt-4 sm:mt-5 text-[1.5rem] sm:text-[1.75rem] lg:text-[2rem]">
-              {content?.subtitle ?? t("expertiseSection.subtitle")}
-            </p>
 
-            <p id="es-text" className="text-[#2B2F36]/55 text-[15px] sm:text-base lg:text-[17px] leading-relaxed max-w-lg mx-auto mt-3 sm:mt-4">
-              {content?.p1 ?? t("expertiseSection.p1")}
-            </p>
-          </div>
-
-          <div className="relative w-full">
-            <div ref={scrollRef} className="flex gap-4 overflow-x-auto pb-4 w-full snap-x snap-mandatory scrollbar-hide">
-              {featuredSpecialists.map((s) => (
-                <Link key={s.slug} href={h(locale, `/professional/${s.slug}`)} className="es-img group relative shrink-0 w-[280px] h-[280px] rounded-xl overflow-hidden block z-10 snap-center">
-                  <img
-                    src={s.image}
-                    alt={s.name}
-                    className="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105 pointer-events-none"
-                  />
-                  <div className="absolute inset-0 rounded-xl ring-1 ring-inset ring-black/[0.04] pointer-events-none" />
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#0B1220]/70 to-transparent p-3 sm:p-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
-                    <p className="text-white text-sm font-heading font-bold">{s.name}</p>
-                    <p className="text-white/60 text-xs">{locale === "en" ? (s.roleEn ?? s.role) : s.role}</p>
-                  </div>
-                </Link>
-              ))}
+            <div id="es-text" className="text-[#2B2F36]/50 text-[13px] sm:text-[14px] lg:text-[15px] leading-relaxed mt-5">
+              <p>{content?.p1 ?? t("expertiseSection.p1")}</p>
             </div>
-            <button onClick={() => scroll("left")} aria-label={locale === "en" ? "Previous" : "Précédent"} className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm shadow-md items-center justify-center hover:bg-white transition-colors z-20">
-              <svg className="w-4 h-4 text-[#0B1220]" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M10 4l-4 4 4 4" /></svg>
-            </button>
-            <button onClick={() => scroll("right")} aria-label={locale === "en" ? "Next" : "Suivant"} className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm shadow-md items-center justify-center hover:bg-white transition-colors z-20">
-              <svg className="w-4 h-4 text-[#0B1220]" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 4l4 4-4 4" /></svg>
-            </button>
           </div>
+
+          {specialists.length > 0 && (
+            <div className="relative w-full">
+              <div ref={scrollRef} className="flex gap-4 overflow-x-auto pb-4 w-full snap-x snap-mandatory scrollbar-hide">
+                {specialists.map((s, index) => (
+                  <Link key={s.slug} href={h(locale, `/professional/${s.slug}`)} className="es-img group relative shrink-0 w-[280px] h-[280px] rounded-xl overflow-hidden block z-10 snap-center">
+                    <Image
+                      src={s.image}
+                      alt={s.name}
+                      fill
+                      sizes="280px"
+                      priority={index === 0}
+                      className="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105 pointer-events-none"
+                    />
+                    <div className="absolute inset-0 rounded-xl ring-1 ring-inset ring-black/[0.04] pointer-events-none" />
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#0B1220]/70 to-transparent p-3 sm:p-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
+                      <p className="text-white text-sm font-heading font-bold">{s.name}</p>
+                      <p className="text-white/60 text-xs">{locale === "en" ? (s.roleEn ?? s.role) : s.role}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+              <button onClick={() => scroll("left")} aria-label={locale === "en" ? "Previous" : "Précédent"} className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm shadow-md items-center justify-center hover:bg-white transition-colors z-20">
+                <svg className="w-4 h-4 text-[#0B1220]" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M10 4l-4 4 4 4" /></svg>
+              </button>
+              <button onClick={() => scroll("right")} aria-label={locale === "en" ? "Next" : "Suivant"} className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm shadow-md items-center justify-center hover:bg-white transition-colors z-20">
+                <svg className="w-4 h-4 text-[#0B1220]" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 4l4 4-4 4" /></svg>
+              </button>
+            </div>
+          )}
 
           <div id="es-cta">
             <Link href={h(locale, "/professional")} className="group inline-flex items-center gap-3 bg-[#0B1220] text-white text-sm font-semibold h-[50px] px-8 rounded-full transition-all duration-300 hover:bg-[#B88A5A] hover:shadow-lg hover:shadow-[rgba(184,138,90,0.2)]">

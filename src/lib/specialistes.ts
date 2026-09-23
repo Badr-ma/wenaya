@@ -12,6 +12,16 @@ export interface SpecialistService {
   type: "presentiel" | "ligne";
 }
 
+/** Packaged offer (API field `packs[]` from
+ *  `getAllSpecialityWithCaresByProfessional`). Never synthesized — only
+ *  populated with values the backend actually carries. */
+export interface SpecialistPackage {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+}
+
 export interface SpecialistReview {
   id: string;
   name: string;
@@ -41,10 +51,35 @@ export interface Specialist {
   languages: string[];
   orderNumber: string;
   bio: string;
+  /** Paragraph-preserving rendering of the bio (API-sourced pros). When
+   *  absent the single `bio` string is shown as one paragraph. */
+  bioParagraphs?: string[];
+  /** Sanitized, paragraph-preserving appointment/scope info (API field
+   *  `professional.appointment_information`). Rendered only when non-empty. */
+  appointmentInfo?: string[];
+  /** Sanitized safe HTML preserving lists/emphasis from `about_profile`.
+   *  When present, rendered via `dangerouslySetInnerHTML` with the
+   *  `.bio-content` scoped CSS class. */
+  bioHtml?: string;
+  /** Sanitized safe HTML preserving lists/emphasis from
+   *  `appointment_information`. When present, rendered via
+   *  `dangerouslySetInnerHTML` with the `.bio-content` scoped CSS class. */
+  appointmentInfoHtml?: string;
+  /** Live availability read identity for API-sourced pros (see
+   *  `professional-availability.ts` + `/api/professionals/availability`).
+   *  Set ONLY for profiles resolved from the live dev API; legacy local
+   *  profiles keep their local `availability` source and never get this. */
+  availabilityApi?: { professionalId: number; userName: string } | null;
   approach: string;
   specialtyTags: string[];
   certifications: string[];
   services: SpecialistService[];
+  /** Backend package offers (API-sourced pros only; see `SpecialistPackage`). */
+  packages?: SpecialistPackage[];
+  /** True only for profiles resolved from the live dev API. Gates the
+   *  API-recovered Services & Packages sections so the legacy local profiles
+   *  (richer mock data) stay byte-identical. */
+  isApiSourced?: boolean;
   availability: SpecialistAvailability[];
   location: {
     lat: number;

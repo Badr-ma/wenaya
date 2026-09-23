@@ -1,6 +1,6 @@
 /**
- * Dynamic sitemap generator — combines static pages, blog posts, product pages,
- * and specialist pages for both French and English locales.
+ * Dynamic sitemap generator — combines static pages, blog posts, the products
+ * listing, and specialist pages for both French and English locales.
  *
  * Every indexable FR URL has its EN equivalent. The sitemap uses the `alternates`
  * field so search engines can discover the locale pairings directly from the sitemap.
@@ -8,7 +8,7 @@
  * Generated per request so Redis-backed specialists are always included.
  */
 import type { MetadataRoute } from "next";
-import { getPublishedPosts } from "@/lib/blog";
+import { fetchAllArticles } from "@/lib/blog-articles-api";
 import { getAllSpecialistsAsync } from "@/lib/specialistes";
 import { getAllPratiqueSlugs } from "@/lib/pratiques";
 import { getAllProgrammeSlugs } from "@/lib/corporate-programmes";
@@ -18,13 +18,6 @@ import { SITE_URL } from "@/lib/site-config";
 
 /** Regenerate the sitemap on every request so CMS/Redis additions appear immediately */
 export const dynamic = "force-dynamic";
-
-/** Dynamically imports the French translations to extract product slugs */
-async function getProductSlugs(): Promise<string[]> {
-  const { default: fr } = await import("@/i18n/fr");
-  const items = fr.produits.items as { slug: string }[];
-  return items.map((p) => p.slug);
-}
 
 type SitemapEntry = MetadataRoute.Sitemap[number];
 
@@ -39,8 +32,12 @@ function dual(frPath: string, opts: Partial<SitemapEntry> = {}): SitemapEntry[] 
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const posts = getPublishedPosts();
-  const productSlugs = await getProductSlugs();
+  let articles: Awaited<ReturnType<typeof fetchAllArticles>> = [];
+  try {
+    articles = await fetchAllArticles();
+  } catch {
+    articles = [];
+  }
   const specialists = await getAllSpecialistsAsync();
 
   /**
@@ -97,15 +94,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   /** Blog post URLs — shared slug set, both locales have the same posts */
-  const blogEntries = posts.flatMap((post) =>
-    dual(`/articles/${post.slug}`, { lastModified: new Date(post.publishedAt), changeFrequency: "monthly", priority: 0.8 })
-  );
+  const blogEntries = articles.flatMap((article) => {
+    const stamp = article.createdAt ?? article.updatedAt;
+    return dual(`/articles/${article.slug}`, {
+      lastModified: stamp ? new Date(stamp) : undefined,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    });
+  });
 
-  /** Product detail page URLs — shared slug set */
-  const productEntries = productSlugs.flatMap((slug) =>
-    dual(`/produits/${slug}`, { changeFrequency: "monthly", priority: 0.7 })
-  );
-
+  /**
+   * Product detail URLs — NOT emitted while the shop launch freeze is on:
+   * /produits/{slug} temporarily 307s to the /produits listing (see
+   * next.config.ts Category 6), and redirected URLs must not be advertised
+   * in the sitemap. The listing itself stays indexable via staticPages above.
+   */
   /** Specialist profile page URLs — Redis-backed, shared slug set */
   const specialistEntries = specialists.flatMap((s) =>
     dual(`/professional/${s.slug}`, { changeFrequency: "monthly", priority: 0.8 })
@@ -145,5 +148,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     dual(`/parcours-de-soins/${slug}`, { changeFrequency: "monthly", priority: 0.7 })
   );
 
-  return [...staticPages, ...blogEntries, ...productEntries, ...specialistEntries, ...practiceEntries, ...groupSessionEntries, ...careJourneyEntries];
+  return [...staticPages, ...blogEntries, ...specialistEntries, ...practiceEntries, ...groupSessionEntries, ...careJourneyEntries];
 }

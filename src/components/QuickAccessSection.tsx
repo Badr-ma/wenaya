@@ -16,10 +16,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
-import { h } from "@/lib/href";
+import { configuratorHref, h, type HrefLocale } from "@/lib/href";
 import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 import type { QuickLinksContent } from "@/lib/homepage-types";
-import SectionTitleAccent from "@/components/SectionTitleAccent";
+import SubtitleSplit from "@/components/SubtitleSplit";
 
 interface QuickAccessProps {
   content?: QuickLinksContent;
@@ -27,13 +27,16 @@ interface QuickAccessProps {
 
 /**
  * CTA routes — reuse existing valid project routes only, locale-aware via h().
- * Paired with a local Wenaya editorial image strip for the card visual.
+ * Card 0 (Needs & goals) links to the configurator coming-soon page; its EN
+ * segment differs (/en/configurator vs /configurateur), so it uses the
+ * dedicated configuratorHref resolver instead of the /en-prefix h() helper.
+ * Each entry is paired with a local Wenaya editorial image strip for the visual.
  */
-const LINKS = [
-  { path: "/pratiques", image: "/pratiques/sophrologie.jpg" },
-  { path: "/parcours-de-soins", image: "/pratiques/kinesitherapie.jpg" },
-  { path: "/pratiques", image: "/pratiques/nutrition.jpg" },
-  { path: "/professional", image: "/images/diverse-team.jpg" },
+const LINKS: { getHref: (locale: HrefLocale) => string; image: string }[] = [
+  { getHref: configuratorHref, image: "/pratiques/sophrologie.jpg" },
+  { getHref: (locale) => h(locale, "/about-us#pathologies"), image: "/pratiques/kinesitherapie.jpg" },
+  { getHref: (locale) => h(locale, "/pratiques"), image: "/pratiques/nutrition.jpg" },
+  { getHref: (locale) => h(locale, "/professional"), image: "/images/diverse-team.jpg" },
 ];
 
 export default function QuickAccessSection({ content }: QuickAccessProps): React.JSX.Element {
@@ -74,17 +77,25 @@ export default function QuickAccessSection({ content }: QuickAccessProps): React
     <section ref={elRef} className="bg-[#FAF8F4] py-14 sm:py-20 px-6" id="acces-directs">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-10 sm:mb-14 max-w-2xl mx-auto text-center">
-          <div className="flex items-center justify-center gap-3 sm:gap-4 mb-3 sm:mb-4">
-            <SectionTitleAccent compact />
+        <div className="text-center mb-10 sm:mb-14 max-w-2xl mx-auto">
+          <div className="mb-5 inline-flex items-center gap-2">
+            <div className="h-px w-4 bg-[#B88A5A]/40" />
+            <span className="text-[10.5px] font-bold uppercase tracking-[0.22em] text-[#B88A5A]">
+              {t("quickAccess.badge")}
+            </span>
+            <div className="h-px w-4 bg-[#B88A5A]/40" />
           </div>
-          <h2 className="font-display-nunito font-bold uppercase tracking-[0.04em] text-[#B88A5A] leading-[1.1] text-[2.25rem] sm:text-[2.375rem] lg:text-[3.25rem]">
-            {t("quickAccess.badge")}
+          <h2
+            className="text-[#0B1220] heading-serif text-[40px] sm:text-[50px] lg:text-[60px] leading-[1.02]"
+            style={{
+              fontFamily: "var(--font-manrope), 'Manrope', ui-sans-serif, system-ui, sans-serif",
+              fontWeight: 500,
+              letterSpacing: "-0.015em",
+            }}
+          >
+            <SubtitleSplit text={content?.heading ?? t("quickAccess.heading")} bronze={locale === "fr" ? "ce que vous cherchez ?" : "what you're looking for?"} darkClass="text-[#0B1220]" />
           </h2>
-          <p className="font-heading font-medium text-[#0B1220] leading-[1.2] tracking-[-0.01em] mt-4 sm:mt-5 text-[1.5rem] sm:text-[1.75rem] lg:text-[2rem]">
-            {content?.heading ?? t("quickAccess.heading")}
-          </p>
-          <p className="mt-3 sm:mt-4 text-[15px] sm:text-base lg:text-[17px] leading-relaxed text-[#2B2F36]/55 max-w-lg mx-auto">
+          <p className="text-[#2B2F36]/50 text-[13px] sm:text-[14px] lg:text-[15px] leading-relaxed max-w-lg mx-auto mt-4">
             {content?.sub ?? t("quickAccess.sub")}
           </p>
         </div>
@@ -94,7 +105,7 @@ export default function QuickAccessSection({ content }: QuickAccessProps): React
           {links.map((link, i) => (
             <Link
               key={i}
-              href={h(locale, LINKS[i].path)}
+              href={LINKS[i].getHref(locale)}
               className="qa-card group flex flex-col overflow-hidden rounded-2xl bg-white border border-[rgba(184,138,90,0.14)] shadow-[0_1px_2px_rgba(11,18,32,0.04)] transition-colors duration-500 hover:border-[rgba(184,138,90,0.3)] hover:shadow-[0_14px_34px_rgba(11,18,32,0.08)]"
             >
               {/* Image strip */}
@@ -142,10 +153,7 @@ export default function QuickAccessSection({ content }: QuickAccessProps): React
                         <path d="M19 5L15 17L12 5L9 17L5 5" />
                       </svg>
                     </span>
-                    <span
-                      className="text-[12px] font-semibold tracking-[0.02em] text-[#B88A5A]"
-                      style={{ fontFamily: "var(--font-manrope), 'Manrope', ui-sans-serif, system-ui, sans-serif" }}
-                    >
+                    <span className="text-[12px] font-semibold tracking-[0.02em] text-[#B88A5A]">
                       {link.cta}
                     </span>
                     <svg

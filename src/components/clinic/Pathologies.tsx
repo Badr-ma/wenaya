@@ -43,7 +43,7 @@ export default function ClinicPathologies({
   });
 
   return (
-    <section className="relative bg-[#0B1220] px-6 sm:px-10 overflow-hidden">
+    <section id="pathologies" className="relative bg-[#0B1220] px-6 sm:px-10 overflow-hidden scroll-mt-24">
       <div className="max-w-7xl mx-auto py-16 lg:py-24">
         {/* Section header */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">

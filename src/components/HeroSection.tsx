@@ -106,7 +106,7 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
             <h1
               className="text-white leading-[1.08]"
               style={{
-                fontFamily: "var(--font-nunito), 'Nunito', ui-sans-serif, system-ui, sans-serif",
+                fontFamily: "var(--font-manrope), 'Manrope', ui-sans-serif, system-ui, sans-serif",
                 fontSize: "clamp(2.2rem, 4vw, 3.9rem)",
                 fontWeight: 500,
                 letterSpacing: "-0.02em",

@@ -1,8 +1,47 @@
 /**
- * Blog utility helpers — formatting and display constants.
- * Used by blog components for consistent styling and date presentation.
+ * Blog utility helpers — formatting, display constants, and the shared
+ * presentation models consumed by blog components (client + server).
+ *
+ * `Post`/`Author`/`Category` were relocated here from `src/lib/blog.ts`
+ * (deleted) so the presentation layer keeps a single type home with no
+ * dependency on the removed local-MDX data layer. All blog UI reads these
+ * models only; live article rows are mapped into them by `./blog-mappers`.
  */
-import { Post, Author, Category } from "./blog";
+
+/** Author model — represents a blog post author with avatar and bio */
+export interface Author {
+  id: string;
+  name: string;
+  avatar: string;
+  role: string;
+  bio: string;
+}
+
+/** Category model — groups blog posts into topics (longevity, biomarkers, etc.) */
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+}
+
+/** Post model — a single blog post in its presentation form */
+export interface Post {
+  slug: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  featuredImage: string;
+  authorId: string;
+  categoryId: string;
+  tags: string[];
+  metaTitle: string;
+  metaDescription: string;
+  ogImage: string;
+  status: "draft" | "published";
+  publishedAt: string;
+  readingTime: number;
+}
 
 /** Convenience type — a Post with optional author/category references resolved */
 export type PostWithAuthor = Post & { author?: Author; category?: Category };

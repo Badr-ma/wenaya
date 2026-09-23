@@ -7,17 +7,18 @@ import dynamic from "next/dynamic";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import EntreprisesHero from "@/components/entreprises/Hero";
-import TrustLogosSection from "@/components/entreprises/TrustLogosSection";
-import StatsTestimonialsSection from "@/components/entreprises/StatsTestimonialsSection";
+import TrustBandSection from "@/components/entreprises/TrustBandSection";
+import ProblemSection from "@/components/entreprises/ProblemSection";
+import AdaptableApproachSection from "@/components/entreprises/AdaptableApproachSection";
 import LevelsSection from "@/components/entreprises/LevelsSection";
-import ModularitySection from "@/components/entreprises/ModularitySection";
-import ProgrammesSection from "@/components/entreprises/ProgrammesSection";
-import RetreatSection from "@/components/entreprises/RetreatSection";
 import PacksSection from "@/components/entreprises/PacksSection";
+import SecuritySection from "@/components/entreprises/SecuritySection";
 import HowItWorksSection from "@/components/entreprises/HowItWorksSection";
-import ThematiquesSection from "@/components/entreprises/ThematiquesSection";
-import ImageBreak from "@/components/entreprises/ImageBreak";
+import RoiSection from "@/components/entreprises/RoiSection";
+import TestimonialsSection from "@/components/entreprises/TestimonialsSection";
+import ProgrammesSection from "@/components/entreprises/ProgrammesSection";
 import ResourcesFaqSection from "@/components/entreprises/ResourcesFaqSection";
+import RetreatSection from "@/components/entreprises/RetreatSection";
 import ContactSection from "@/components/entreprises/ContactSection";
 import StickyCta from "@/components/entreprises/StickyCta";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
@@ -66,17 +67,18 @@ export default function EnglishEntreprisesPage() {
       <div className="corp-typeset flex flex-col min-h-dvh">
         <main>
           <EntreprisesHero />
-          <TrustLogosSection />
-          <StatsTestimonialsSection />
+          <TrustBandSection />
+          <ProblemSection />
+          <AdaptableApproachSection />
           <LevelsSection />
-          <ModularitySection />
-          <ProgrammesSection />
-          <RetreatSection />
           <PacksSection />
+          <ProgrammesSection />
+          <SecuritySection />
           <HowItWorksSection />
-          <ThematiquesSection />
-          <ImageBreak />
+          <RoiSection />
+          <TestimonialsSection />
           <ResourcesFaqSection />
+          <RetreatSection />
           <ContactSection />
         </main>
         <div className="mt-auto">

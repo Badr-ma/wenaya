@@ -13,7 +13,7 @@ import { formatDate, type PostWithAuthor } from "@/lib/blog-utils";
 import { useLocale } from "@/contexts/LanguageContext";
 import { h } from "@/lib/href";
 import type { BlogContent } from "@/lib/homepage-types";
-import SectionTitleAccent from "@/components/SectionTitleAccent";
+import SubtitleSplit from "@/components/SubtitleSplit";
 
 
 function BlogCard({ post }: { post: PostWithAuthor }): React.JSX.Element {
@@ -24,17 +24,21 @@ function BlogCard({ post }: { post: PostWithAuthor }): React.JSX.Element {
       className="group block bg-[#E8E2D9] rounded-2xl border border-[#0B1220]/[0.06] overflow-hidden transition-all duration-500 hover:shadow-[0_8px_32px_rgba(184,138,90,0.06)] hover:border-[#B88A5A]/25 hover:-translate-y-0.5"
     >
       <div className="relative overflow-hidden aspect-[16/10]">
-        <Image
-          src={post.featuredImage}
-          alt={post.title}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover transition-all duration-500 group-hover:scale-105"
-        />
+        {post.featuredImage ? (
+          <Image
+            src={post.featuredImage}
+            alt={post.title}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-all duration-500 group-hover:scale-105"
+          />
+        ) : null}
         <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
-        <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full px-2.5 py-0.5 text-[10px] font-medium text-[#2B2F36]/60 shadow-sm">
-          {post.readingTime} {t("blog.minLecture")}
-        </span>
+        {post.readingTime && (
+          <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full px-2.5 py-0.5 text-[10px] font-medium text-[#2B2F36]/60 shadow-sm">
+            {post.readingTime} {t("blog.minLecture")}
+          </span>
+        )}
         {post.category && (
           <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-[#B88A5A]/10 text-[#B88A5A] border border-[#B88A5A]/20">
             {post.category.name}
@@ -47,7 +51,7 @@ function BlogCard({ post }: { post: PostWithAuthor }): React.JSX.Element {
           {post.title}
         </h3>
         <p className="text-xs text-[#2B2F36]/50 mt-1.5 leading-relaxed line-clamp-2">{post.excerpt}</p>
-        {post.author && (
+        {post.author?.avatar ? (
           <div className="flex items-center gap-2.5 mt-3 pt-3 border-t border-[#0B1220]/[0.04]">
             <Image src={post.author.avatar} alt={post.author.name} width={24} height={24} className="w-6 h-6 rounded-full object-cover" unoptimized />
             <div>
@@ -55,7 +59,7 @@ function BlogCard({ post }: { post: PostWithAuthor }): React.JSX.Element {
               <span className="text-[10px] text-[#2B2F36]/40 ml-1.5">{post.author.role}</span>
             </div>
           </div>
-        )}
+        ) : null}
       </div>
     </Link>
   );
@@ -80,19 +84,22 @@ export default function BlogSection({ posts, content }: { posts: PostWithAuthor[
   return (
     <section ref={sectionRef} className="bg-[#F2EFE9] py-10 sm:py-20 px-6 relative overflow-hidden">
       <div className="max-w-7xl mx-auto relative">
-        <div ref={headingRef} className="mb-10 sm:mb-14 max-w-2xl mx-auto text-center">
-          <div className="flex items-center justify-center gap-3 sm:gap-4 mb-3 sm:mb-4">
-            <SectionTitleAccent compact />
+        <div ref={headingRef} className="text-center mb-10 sm:mb-14 max-w-xl mx-auto">
+          <div className="inline-flex items-center gap-2 mb-5">
+            <div className="w-4 h-px bg-[#B88A5A]/40" />
+            <span className="text-[#B88A5A] text-[10.5px] font-bold tracking-[0.22em] uppercase">{t("homeBlog.badge")}</span>
+            <div className="w-4 h-px bg-[#B88A5A]/40" />
           </div>
-          <h2 className="font-display-nunito font-bold uppercase tracking-[0.04em] text-[#B88A5A] leading-[1.1] text-[2.25rem] sm:text-[2.375rem] lg:text-[3.25rem]">
-            {t("homeBlog.badge")}
-          </h2>
-          <p className="font-heading font-medium text-[#0B1220] leading-[1.2] tracking-[-0.01em] mt-4 sm:mt-5 text-[1.5rem] sm:text-[1.75rem] lg:text-[2rem]">
-            {content?.heading1 ?? t("homeBlog.heading1")}{" "}
-            {content?.heading2 ?? t("homeBlog.heading2")}
-          </p>
-          <p className="mt-3 sm:mt-4 text-[15px] sm:text-base lg:text-[17px] leading-relaxed text-[#2B2F36]/55 max-w-lg mx-auto">
-            {content?.sub ?? t("homeBlog.sub")}
+          <h2 className="heading-serif text-[40px] sm:text-[50px] lg:text-[60px] leading-[1.02] text-[#0B1220]">{content?.heading1 ?? t("homeBlog.heading1")}{" "}
+            <span style={{
+              background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}>
+              {content?.heading2 ?? t("homeBlog.heading2")}
+            </span></h2>
+          <p className="text-[#2B2F36]/55 text-[13px] sm:text-[14px] lg:text-[15px] mt-4 leading-relaxed">
+            <SubtitleSplit text={content?.sub ?? t("homeBlog.sub")} bronze={locale === "fr" ? "et des problématiques de santé qui comptent au quotidien." : "and the health issues that matter in everyday life."} />
           </p>
           <Link href={h(locale, "/articles")}
             className="mt-6 inline-flex items-center gap-1.5 text-xs font-medium text-[#B88A5A] hover:text-[#B88A5A]/70 transition-colors">

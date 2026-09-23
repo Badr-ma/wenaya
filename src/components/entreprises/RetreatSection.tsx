@@ -1,162 +1,183 @@
 /**
- * Corporate Retreat — the 3 editorial chapters (Reset & Recharge, Team Health &
- * Cohesion, Active Wellness) as one row of equal-width cards on navy (2 + 1 on
- * tablet, single column on mobile), followed by the "Build Your Retreat"
- * progression and CTA → #contact. All chapters visible in the DOM for SEO/LLM
- * and accessibility. No slider, no arrows, no swipe, no autoplay, no stagger,
- * no animation.
+ * Retreat — compact interactive showcase (single active experience at a time).
+ *
+ * Centered eyebrow → H2 → one lead line → 3 text selectors (roving-tabindex
+ * tabs, bronze active underline) → ONE shared image (active chapter only,
+ * 4:3 mobile / 16:7 desktop, centered max-w) → 3 theme keywords + one short
+ * native line → the Objectif→Expertises→Format→Expérience build line → the
+ * unchanged contact CTA. Only one experience is visually expanded at a time;
+ * switching tabs swaps image + keywords. No repeated large images, no full
+ * cards, no Build-Your-Retreat blocks (labels live in i18n, tiny near CTA).
+ * Restrained once-only GSAP entrance, reduced-motion safe.
  */
 "use client";
 
+import { useRef, useEffect, useState, type KeyboardEvent } from "react";
+import { gsap } from "gsap";
 import Image from "next/image";
 import { useLocale } from "@/contexts/LanguageContext";
-
-interface Chapter {
-  number: string;
-  title: string;
-  theme: string;
-  desc: string;
-  capabilities: string[];
-}
-
-interface DesignStep {
-  number: string;
-  label: string;
-  desc: string;
-}
-
-const chapterImages = [
-  "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1600&q=100&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600&q=100&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1600&q=100&auto=format&fit=crop",
-];
 
 const reducedMotion =
   typeof window !== "undefined"
     ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
     : false;
 
-function scrollToContact(e: React.MouseEvent<HTMLAnchorElement>) {
-  if (reducedMotion) return;
-  e.preventDefault();
-  const el = document.querySelector("#contact");
-  if (el) el.scrollIntoView({ behavior: "smooth" });
-}
+type Chapter = { number: string; title: string; theme?: string; desc?: string; capabilities: string[] };
 
-export default function RetreatSection(): React.JSX.Element {
+const RETREAT_IMAGES = [
+  "/images/cours-ateliers/wellness.jpg",
+  "/images/business-meeting.jpg",
+  "/pratiques/coaching-sportif.jpg",
+];
+
+export default function RetreatSection() {
   const { t, tRaw } = useLocale();
   const chapters = tRaw<Chapter[]>("entreprises.retreat.chapters");
-  const steps = tRaw<DesignStep[]>("entreprises.retreat.design.steps");
+  const steps = tRaw<{ label: string }[]>("entreprises.retreat.design.steps");
+  const sectionRef = useRef<HTMLElement>(null);
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const [active, setActive] = useState(0);
+
+  const activeChapter = chapters[active] ?? chapters[0];
+
+  const onKeyDown = (i: number) => (e: KeyboardEvent<HTMLButtonElement>) => {
+    const n = chapters.length;
+    let next: number | null = null;
+    if (e.key === "ArrowRight") next = (i + 1) % n;
+    else if (e.key === "ArrowLeft") next = (i - 1 + n) % n;
+    else if (e.key === "Home") next = 0;
+    else if (e.key === "End") next = n - 1;
+    if (next !== null && next !== i) {
+      e.preventDefault();
+      setActive(next);
+      tabRefs.current[next]?.focus();
+    }
+  };
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el || reducedMotion) return;
+    const ctx = gsap.context(() => {
+      gsap.fromTo(".rf-head", { opacity: 0, y: 18 }, {
+        opacity: 1, y: 0, duration: 0.6, ease: "power3.out",
+        scrollTrigger: { trigger: el, start: "top 86%", toggleActions: "play none none none" },
+      });
+      gsap.fromTo(".rf-tabs", { opacity: 0, y: 12 }, {
+        opacity: 1, y: 0, duration: 0.5, ease: "power3.out",
+        scrollTrigger: { trigger: el, start: "top 88%", toggleActions: "play none none none" },
+      });
+      gsap.fromTo(".rf-photo", { opacity: 0, y: 16 }, {
+        opacity: 1, y: 0, duration: 0.65, ease: "power3.out",
+        scrollTrigger: { trigger: el, start: "top 82%", toggleActions: "play none none none" },
+      });
+      gsap.fromTo(".rf-footer", { opacity: 0, y: 12 }, {
+        opacity: 1, y: 0, duration: 0.5, ease: "power3.out",
+        scrollTrigger: { trigger: el, start: "top 90%", toggleActions: "play none none none" },
+      });
+    }, el);
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section className="relative bg-[#0B1220] py-20 sm:py-28 px-6 overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-[640px] h-[640px] rounded-full bg-[#B88A5A]/[0.06] blur-3xl translate-x-1/4 -translate-y-1/4" />
-      </div>
-
-      <div className="max-w-[88rem] mx-auto relative">
-        {/* Header */}
-        <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-end mb-14 sm:mb-20">
-          <div className="lg:col-span-9">
-            <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs sm:text-sm font-semibold tracking-[0.22em] uppercase mb-8">
-              <span className="w-10 h-px bg-[#B88A5A]/40" />
-              {t("entreprises.retreat.badge")}
-            </span>
-            <h2 className="heading-serif text-white" style={{ fontSize: "clamp(2.1rem, 4.8vw, 3.9rem)", fontWeight: 500, lineHeight: 1.02, letterSpacing: "-0.02em" }}>
-              {t("entreprises.retreat.heading1")}{" "}
-              <em className="not-italic text-transparent bg-clip-text" style={{ backgroundImage: "linear-gradient(135deg, #B88A5A 0%, #D4A574 55%, #B88A5A 100%)" }}>
-                {t("entreprises.retreat.heading2")}
-              </em>
-            </h2>
-            <p className="text-white/55 text-base sm:text-lg leading-relaxed mt-6 max-w-xl">
-              {t("entreprises.retreat.lead")}
-            </p>
-          </div>
+    <section ref={sectionRef} className="relative bg-[#F2EFE9] py-9 sm:py-10 lg:py-12 px-6 overflow-hidden scroll-mt-20">
+      <div className="max-w-3xl mx-auto text-center">
+        {/* Centered head */}
+        <div className="rf-head">
+          <span className="inline-flex items-center justify-center gap-3 text-[#B88A5A] text-xs font-semibold tracking-[0.2em] uppercase">
+            <span className="w-8 h-px bg-[#B88A5A]/40" aria-hidden />
+            {t("entreprises.retreat.badge")}
+            <span className="w-8 h-px bg-[#B88A5A]/40" aria-hidden />
+          </span>
+          <h2 className="heading-serif text-[#0B1220] leading-[1.06] mt-4" style={{ fontSize: "clamp(1.75rem, 2.6vw, 2.2rem)" }}>
+            {t("entreprises.retreat.heading1")} <span className="text-[#B88A5A]">{t("entreprises.retreat.heading2")}</span>
+          </h2>
+          <p className="mt-3.5 text-[#2B2F36]/55 leading-relaxed text-[15px] sm:text-base">{t("entreprises.retreat.lead")}</p>
         </div>
 
-        {/* One-row equal-width chapter cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-          {chapters.map((c, i) => (
-            <article key={i} className="flex flex-col h-full">
-              <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] overflow-hidden rounded-t-[24px]">
-                <Image
-                  src={chapterImages[i % chapterImages.length]}
-                  alt={c.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  loading={i === 0 ? "eager" : "lazy"}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/40 via-transparent to-transparent" aria-hidden />
-                <span aria-hidden className="hidden lg:block absolute -bottom-6 left-6 font-heading font-bold leading-none select-none" style={{ fontSize: "clamp(4.9rem, 9.8vw, 8.2rem)", color: "transparent", WebkitTextStroke: "1.5px rgba(184,138,90,0.3)" }}>
-                  {c.number}
-                </span>
-              </div>
-
-              <div className="flex flex-col flex-1 pt-6 lg:pt-7">
-                <span className="lg:hidden font-heading font-bold text-[#B88A5A] text-3xl leading-none block mb-4 tracking-tight">{c.number}</span>
-                <div className="w-12 h-px bg-[#B88A5A]/40 mb-6" aria-hidden />
-                <h3 className="heading-serif text-white font-semibold leading-[1.05]" style={{ fontSize: "clamp(1.8rem, 3.2vw, 2.85rem)" }}>{c.title}</h3>
-                <p className="mt-4 text-[#B88A5A] text-xs sm:text-sm font-semibold tracking-[0.22em] uppercase">{c.theme}</p>
-                <p className="mt-5 text-white/55 text-base sm:text-lg leading-relaxed max-w-xl">{c.desc}</p>
-                <div className="mt-8">
-                  {c.capabilities.map((cap, ci) => (
-                    <div key={ci}>
-                      <p className="py-3.5 text-white/80 text-sm font-medium tracking-[0.14em] uppercase">{cap}</p>
-                      {ci < c.capabilities.length - 1 && <div className="h-px bg-[#B88A5A]/15" aria-hidden />}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </article>
+        {/* Selectors — roving-tabindex tabs, bronze active underline */}
+        <div
+          role="tablist"
+          aria-label={t("entreprises.retreat.counter")}
+          className="rf-tabs mt-6 flex overflow-x-auto sm:justify-center gap-1 sm:gap-2 pb-1 -mx-1 px-1"
+        >
+          {chapters.map((ch, i) => (
+            <button
+              key={ch.number}
+              ref={(el) => { tabRefs.current[i] = el; }}
+              role="tab"
+              id={`rf-tab-${i}`}
+              aria-selected={active === i}
+              aria-controls="rf-panel"
+              tabIndex={active === i ? 0 : -1}
+              onClick={() => setActive(i)}
+              onFocus={() => setActive(i)}
+              onKeyDown={onKeyDown(i)}
+              className={`shrink-0 whitespace-nowrap inline-flex items-baseline gap-2 px-3 sm:px-4 pb-2.5 border-b-2 text-sm sm:text-base font-semibold transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B88A5A] ${
+                active === i
+                  ? "border-[#B88A5A] text-[#0B1220]"
+                  : "border-transparent text-[#2B2F36]/45 hover:text-[#0B1220]"
+              }`}
+            >
+              <span className="font-mono text-[#B88A5A] text-xs tracking-[0.1em]">{ch.number}</span>
+              <span>{ch.title}</span>
+            </button>
           ))}
         </div>
 
-        {/* Build Your Retreat */}
-        <div className="mt-20 sm:mt-28 border-t border-white/[0.06] pt-14 sm:pt-16">
-          <div className="max-w-3xl">
-            <span className="inline-flex items-center gap-3 text-[#B88A5A] text-xs sm:text-sm font-semibold tracking-[0.22em] uppercase mb-6">
-              <span className="w-10 h-px bg-[#B88A5A]/40" />
-              {t("entreprises.retreat.design.badge")}
-            </span>
-            <h3 className="heading-serif text-white" style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.8rem)", lineHeight: 1.05, letterSpacing: "-0.02em" }}>
-              {t("entreprises.retreat.design.title")}
-            </h3>
-          </div>
-
-          <div className="relative mt-10 sm:mt-12">
-            <div className="absolute hidden lg:block left-0 right-0 top-[0.375rem] h-px bg-[#B88A5A]/15" aria-hidden />
-            <div className="absolute lg:hidden left-[0.375rem] top-0 bottom-0 w-px bg-[#B88A5A]/15" aria-hidden />
-
-            <div className="relative grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-10 pl-10 lg:pl-0">
-              {steps.map((s) => (
-                <div key={s.number} className="relative">
-                  <span className="absolute -left-10 lg:-left-2.5 top-0 lg:top-[-0.09rem] w-2.5 h-2.5 rounded-full bg-[#B88A5A]" aria-hidden />
-                  <div className="flex items-baseline gap-4 lg:flex-col lg:items-start lg:gap-0">
-                    <span className="font-heading font-bold text-[#B88A5A] text-3xl leading-none tracking-tight">{s.number}</span>
-                    <span className="text-white text-base font-semibold tracking-wide uppercase lg:mt-3">{s.label}</span>
-                  </div>
-                </div>
-              ))}
+        {/* Active showcase — single experience */}
+        {activeChapter && (
+          <div
+            key={active}
+            id="rf-panel"
+            role="tabpanel"
+            aria-labelledby={`rf-tab-${active}`}
+            className="hn-fade mt-5 sm:mt-6"
+          >
+            <div className="rf-photo relative aspect-[4/3] sm:aspect-[16/7] max-w-[520px] mx-auto overflow-hidden rounded-[16px] bg-[#0B1220]">
+              <Image
+                src={RETREAT_IMAGES[active] ?? RETREAT_IMAGES[0]}
+                alt={`${activeChapter.title} — ${t("entreprises.retreat.badge")}`}
+                fill
+                priority
+                className="object-cover"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 45vw"
+              />
             </div>
-          </div>
-
-          <div className="mt-12 sm:mt-16 pt-10 border-t border-white/[0.06] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 sm:gap-8">
-            <p className="heading-serif text-white text-xl sm:text-2xl leading-tight" style={{ maxWidth: "32rem" }}>
-              {t("entreprises.retreat.preCta")}
+            <p className="mt-4 text-sm sm:text-base text-[#0B1220]/80 font-medium leading-relaxed">
+              {activeChapter.capabilities.map((k, i) => (
+                <span key={k} className="inline-flex items-center gap-2">
+                  {i > 0 && <span className="text-[#B88A5A]" aria-hidden>·</span>}
+                  {k}
+                </span>
+              ))}
             </p>
-            <a
-              href="#contact"
-              onClick={scrollToContact}
-              className="group inline-flex items-center justify-center gap-4 text-white px-9 h-14 rounded-full text-base font-semibold tracking-wide transition-all duration-300 hover:bg-[#A07848] sm:w-auto w-full shrink-0"
-              style={{ background: "#B88A5A", boxShadow: "0 12px 40px rgba(184,138,90,0.28)" }}
-            >
-              {t("entreprises.retreat.cta")}
-              <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-              </svg>
-            </a>
+            {activeChapter.desc && (
+              <p className="mt-1.5 text-[#2B2F36]/55 text-sm leading-relaxed">{activeChapter.desc}</p>
+            )}
           </div>
+        )}
+
+        {/* Build line + CTA */}
+        <div className="rf-footer mt-6 flex flex-col items-center gap-5">
+          {steps.length === 4 && (
+            <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#2B2F36]/45">
+              {steps.map((s, i) => (
+                <span key={i}>
+                  {i > 0 && <span className="text-[#B88A5A] mx-2" aria-hidden>·</span>}
+                  {s.label}
+                </span>
+              ))}
+            </p>
+          )}
+          <a
+            href="#contact"
+            className="inline-flex items-center gap-2 rounded-md bg-[#0B1220] px-7 h-12 text-sm font-semibold text-white transition-colors duration-300 hover:bg-[#B88A5A] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B88A5A] shrink-0"
+          >
+            {t("entreprises.retreat.cta")}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden>
+              <path d="M17 8l4 4-4 4M21 12H3" />
+            </svg>
+          </a>
         </div>
       </div>
     </section>

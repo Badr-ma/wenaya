@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "nbg1.your-objectstorage.com" },
       { protocol: "https", hostname: "api.wenaya.com" },
+      { protocol: "https", hostname: "dev-api.wenaya.com" },
     ],
     formats: ["image/avif", "image/webp"],
     deviceSizes: [480, 640, 768, 1024, 1280, 1536],
@@ -163,9 +164,12 @@ const nextConfig: NextConfig = {
       { source: "/en/professional/fatima-zahra-alami/booking",  destination: "/en/professional/fatima-zahra-alami",    permanent: true },
 
       /* Login: live wenaya aliases fold into our locale pages.
-         /en/user/sign-in → /en/login; /user/sign-in → /login. */
+         /en/user/sign-in → /en/login; /user/sign-in → /login.
+         Signup mirrors the same treatment (live /user/sign-up → /signup). */
       { source: "/user/sign-in",   destination: "/login", permanent: true },
       { source: "/en/user/sign-in", destination: "/en/login", permanent: true },
+      { source: "/user/sign-up",   destination: "/signup", permanent: true },
+      { source: "/en/user/sign-up", destination: "/en/signup", permanent: true },
 
       /* Practices: legacy accented slugs → normalized ASCII slugs (existing routes).
          Incoming paths are URL-encoded (e.g. é → %C3%A9), and Next.js matches redirect
@@ -187,6 +191,20 @@ const nextConfig: NextConfig = {
       { source: "/en/pratiques/psychoth%C3%A9rapie",        destination: "/en/pratiques/psychotherapie",       permanent: true },
       { source: "/en/pratiques/ost%C3%A9opathie",           destination: "/en/pratiques/osteopathie",          permanent: true },
       { source: "/en/pratiques/sono-th%C3%A9rapie",         destination: "/en/pratiques/sono-therapie",        permanent: true },
+
+      /* ── Category 6: Shop launch freeze (temporary — permanent: false) ──
+         The commerce frontend is paused. /produits and /en/produits render a
+         premium "coming soon" editorial page; product-detail deep links fold
+         onto the corresponding listing, and cart/checkout redirect to the
+         listing too. `:path+` (one+ segments) so `/produits` itself is NOT
+         matched (avoids a self-redirect loop). Existing shop code stays on
+         disk untouched — 307 so nothing is cached as gone while paused. */
+      { source: "/produits/:path+",     destination: "/produits",     permanent: false },
+      { source: "/en/produits/:path+",  destination: "/en/produits",  permanent: false },
+      { source: "/panier",              destination: "/produits",     permanent: false },
+      { source: "/en/panier",           destination: "/en/produits",  permanent: false },
+      { source: "/checkout",            destination: "/produits",     permanent: false },
+      { source: "/en/checkout",         destination: "/en/produits",  permanent: false },
     ];
   },
   /** Enables app/global-not-found.tsx — restores the custom French 404 for unmatched URLs (multi-root-layout app) */

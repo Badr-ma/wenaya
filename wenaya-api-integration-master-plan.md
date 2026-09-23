@@ -7,8 +7,8 @@
 > committed.** Response shapes are NOT invented: where the doc does not state a field list, the
 > integration is marked `NEEDS_BACKEND_CONFIRMATION`.
 >
-> Companion deliverables: `wenaya-practices-api-contract.md` (already-audited live specialities
-> contract), `wenaya-seo-migration-*` series (URL surface), AGENTS.md session log.
+> Companion deliverables: the AGENTS.md session log (SEP 2026 audit series, API contracts,
+> SEO migration maps, and QA reports were consolidated during the pre-GitHub hygiene pass).
 
 --- 
 
@@ -321,7 +321,7 @@ this audit, and never from the browser directly in the target design.**
 2. **Cookies pass-through:** Route handlers proxy the browser's cookie header to the backend, and
    copy `Set-Cookie` from Laravel responses back (with lane-safe attributes). This keeps the
    Sanctum session cookie in the same origin as the site.
-3. **CSRF strategy** (two consistent options, confirm choice with Jamal — see §J):
+3. **CSRF strategy** (two consistent options, confirm choice with the backend team — see §J):
    - **Option 1 (recommended): cookie-forwarding proxy.** The Next route handler reads the
      `XSRF-TOKEN` cookie the browser already holds and sets `X-XSRF-TOKEN` on each mutation; only
      needs `GET /sanctum/csrf-cookie` on session start or a 419.
@@ -377,7 +377,7 @@ src/app/api/<domain>/…    BFF route handlers for mutations that the browser mu
 - Candidates: `getAllSpecialities…` (no listing bootstrap endpoint is documented — the old listing
   page 404s on live!); per-pro `getProfessionalDetailsBySlug` + services/prices + availability +
   `getAvailableTimeByProfessionalId` + reviews + practice professionals.
-- **Design decision (needs Jamal):** there is NO documented "list all professionals" GET. Live
+- **Design decision (needs backend confirmation):** there is NO documented "list all professionals" GET. Live
   resolve: `/professional` listing is net-new already. For live data, decide the listing source —
   either (a) all practices × practice professionals union, or (b) new backend list endpoint to add.
   Until then the mock+Redis listing stays and is the correct behavior.
@@ -400,7 +400,7 @@ src/app/api/<domain>/…    BFF route handlers for mutations that the browser mu
 - Today: `care-journeys.ts` (live-verbatim, 7 journeys), `pathologies.ts` (7 topics), local indexes.
 - Candidates: `getAllPublicCares`/`getCareBySlug`, `getAllPublicTroubles`/`getTroubleBySlug`.
 - **Semantic mapping must be confirmed:** the live site's `/parcours-de-soins` journeys and the
-  clinic "Maux & Troubles" pathologies are different families; map only after Jamal confirms which
+  clinic "Maux & Troubles" pathologies are different families; map only after the backend confirms which
   backend resources back which (cares ≠ troubles ≠ parccours-de-soins). Do NOT assume.
 
 ### E.6 Blog (articles)
@@ -409,7 +409,7 @@ src/app/api/<domain>/…    BFF route handlers for mutations that the browser mu
 - Candidates: `GET {v}/public/articles?page=` / `GET {v}/public/articles/{slug}`.
 - The earlier missing-pages audit found **18 orphaned articles** in the live `/api/v1/public/articles`
   with zero public URLs — these become live immediately on integration. **Locale confirmation
-  required** (public/articles field set — FR/EN/AR?). Until Jamal confirms, EN articles stay local
+  required** (public/articles field set — FR/EN/AR?). Until the backend confirms, EN articles stay local
   mirror; match one existing article family so the handoff keeps SSR.
 
 ### E.7 Products / shop
@@ -456,7 +456,7 @@ src/app/api/<domain>/…    BFF route handlers for mutations that the browser mu
 
 - The doc's `NEXT_PUBLIC_BACKEND_URL` example. Needed for: WRITE and AUTH flows (real users,
   pending appointments, group join, profile, pack orders, NAPS sandbox callback).
-- **Requires Jamal:** is `dev-api.wenaya.com` currently running, is it a full mirror of prod tables,
+- **Requires backend confirmation:** is `dev-api.wenaya.com` currently running, is it a full mirror of prod tables,
   are its writes isolated/restorable, does it accept Vercel Preview origins in CORS
   (`ALLOWED_ORIGIN`…), are test patient/practitioner/practice/date fixtures available, and is the
   NAPS gateway on `gwapi.naps.ma:8085` sandbox-ready with test creds?
@@ -468,7 +468,7 @@ src/app/api/<domain>/…    BFF route handlers for mutations that the browser mu
 - New frontend runs on Vercel Preview + Production domains. The old app's middleware injected
   `ALLOWED_ORIGIN`/`ALLOWED_METHODS`/`ALLOWED_HEADERS`/`EXPOSED_HEADERS`/`MAX_AGE`/`CREDENTIALS`
   from env at the Next layer — we must confirm whether the **backend** CORS config already allows
-  the new origins (likely only localhost:3004/3005 today). → **Jamal gate.** For cookie
+  the new origins (likely only localhost:3004/3005 today). → **Backend gate.** For cookie
   flows (`withCredentials`), CORS-with-credentials must explicitly include the new origin.
 
 ---
@@ -522,7 +522,7 @@ PENDING (backend appointment status)
 | `company` header defaulting to `1` silently | MEDIUM | n/a | Keep default `1` until multi-tenant UI exists; revisit when company selector appears. |
 | `deleteUserAccount` (account destruction) | HIGH | Not implemented | Requires explicit destructive confirm (typed email+password) + irreversible-account banner; never behind a single click. |
 | CSRF omission on mutations | HIGH | No mutations exist yet | Enforce seed `GET /sanctum/csrf-cookie` + `X-XSRF-TOKEN` before any write (doc §8.1). |
-| CORS-with-credentials must list Vercel origins | HIGH | n/a yet | Jamal must whitelist new origins before cookie flows go live (Option F.3). |
+| CORS-with-credentials must list Vercel origins | HIGH | n/a yet | Backend team must whitelist new origins before cookie flows go live (Option F.3). |
 | `getShowPhoneNumber` reveals practitioner phone | MEDIUM | Not used | Keep POST body minimal and require an auth session; log calls. |
 | 419 auto-retry loop | LOW | n/a | Implement exactly the doc rule (re-seed CSRF + retry ONCE; bail on repeated 419). |
 | Legacy `isAuth` client cookie | LOW | Not used | If re-introduced as a hydration hint, never use it for authorization decisions. |
@@ -538,13 +538,13 @@ before dev-api, and everything is reversible.
   `csrf.ts` (server). Port practices onto it (keep fallback). Validate on prod-read
   `https://api.wenaya.com` from a Vercel Preview + localhost.
 - **Phase 2 — Public read adapters (SAFE_READ only).** In dependency order:
-  1. Professionals (E.3) — listing decision first (needs Jamal §J), then detail/services/prices/
+  1. Professionals (E.3) — listing decision first (needs backend confirmation §J), then detail/services/prices/
      availability/reviews.
   2. Group sessions (E.4) — listing/detail/filter/day-schedule reads.
   3. Articles (E.6) — after locale-field confirmation.
   4. Cares/troubles (E.5) — after semantic mapping confirmation.
   No auth, no writes, ISR-cacheable; every adapter keeps a local fallback.
-- **Phase 3 — Auth + session.** Dev-api (Jamal gate §J). Proxied login/logout/register/
+- **Phase 3 — Auth + session.** Dev-api (backend gate §J). Proxied login/logout/register/
   forgot/reset; CSRF per write; cookie pass-through; `/login` becomes functional (replaces the
   disabled submit). Register/verify-phone flows reuse the OTP endpoints (verification only).
 - **Phase 4 — Reversible writes (WRITE_LOW_RISK) + read-your-own (AUTH_READ).**
@@ -560,7 +560,7 @@ checks), and a CDP smoke of the changed pages. Current baseline: build 270/278 p
 
 ---
 
-## J. Jamal validation gate
+## J. Backend validation gate
 
 These MUST be answered by the backend owner before the corresponding phase:
 
@@ -591,7 +591,7 @@ These MUST be answered by the backend owner before the corresponding phase:
 
 ---
 
-## K. First step safe to begin WITHOUT Jamal
+## K. First step safe to begin WITHOUT backend confirmation
 
 1. **Extract `src/lib/api/client.ts` (server fetch) and `csrf.ts`**, and fold the existing
    practices client into it with the local fallback intact. Purely internal refactor; zero
@@ -604,7 +604,7 @@ These MUST be answered by the backend owner before the corresponding phase:
 5. **Unit "contract snapshot" tests** for the already-integrated practices endpoint (pinning the
    verified envelope/pagination/is_visible behavior) so later refactors can't silently regress it.
 
-## L. First step REQUIRING Jamal
+## L. First step REQUIRING backend confirmation
 
 1. **Dev API access** (F.2 / J.6) — no auth flow, no writes, no NAPS sandbox, no cookie/CORS
    validation can move forward without it.
@@ -628,17 +628,17 @@ These MUST be answered by the backend owner before the corresponding phase:
   pass-through + server-side NAPS.
 - **E. Adapters:** one-per-domain `src/lib/{domain}.ts`, fallback-always; practices is the template.
 - **F. Demo env:** Option A (read-only prod `api.wenaya.com`) is live and safe NOW; Option B
-  (dev-api `dev-api.wenaya.com`) is the required write/auth sandbox but needs Jamal sign-off.
+  (dev-api `dev-api.wenaya.com`) is the required write/auth sandbox but needs backend sign-off.
 - **G. Booking machine:** single state machine defined end-to-end (select → pending → paid/cancelled),
   with the guest waiting-list as the only unauthenticated write.
 - **H. Security:** 1 CRITICAL (old public NAPS creds — zero occurrences here), 2 HIGH
-  (iron-session key, destructive delete), CORS/CSRF gated on Jamal.
+  (iron-session key, destructive delete), CORS/CSRF gated on backend confirmation.
 - **I. Migration order:** 5 phases — plumbing → public reads → auth/session → reversible writes →
   payments; each phase is build-green + smoke-tested.
-- **J. Jamal gate:** 10 questions; Phases 3–5 are blocked on it; Phases 1–2 are not.
+- **J. Backend gate:** 10 questions; Phases 3–5 are blocked on it; Phases 1–2 are not.
 - **K. Safe-first step:** server fetch/csrf extraction + inert read adapters + security inventory
   + practices contract snapshot tests (zero backend dependency).
-- **L. Jamal-first step:** dev-api access, professionals-listing decision, cares/troubles mapping,
+- **L. Backend-first step:** dev-api access, professionals-listing decision, cares/troubles mapping,
   articles locale, NAPS sandbox.
 - **M. Overall:** the repository is far closer than the doc implied (one domain already live on
   the real API); the entire write/payment/auth surface is greenfield by design and must land only

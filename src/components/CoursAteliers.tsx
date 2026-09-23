@@ -14,7 +14,6 @@ import { getAllGroupSessions } from "@/lib/group-sessions";
 import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 import type { CoursAteliersContent } from "@/lib/homepage-types";
 import HiggsField from "./HiggsField";
-import SectionTitleAccent from "@/components/SectionTitleAccent";
 
 
 interface CoursAteliersProps {
@@ -82,7 +81,6 @@ export default function CoursAteliers({ content }: CoursAteliersProps): React.JS
         {/* Heading */}
         <div className="ca-head mb-8 sm:mb-10 max-w-2xl mx-auto text-center">
           <div className="flex items-center justify-center gap-3 sm:gap-4">
-          <SectionTitleAccent compact />
           <p className="text-[#B88A5A] font-heading font-semibold uppercase tracking-[0.22em] text-[11px] sm:text-xs">
             {content?.badge ?? t("coursAteliers.badge")}
           </p>

@@ -2,7 +2,9 @@
 
 import dynamic from "next/dynamic";
 import { useMemo, useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import type { HomepageConfig, HomepageSection, BlogContent } from "@/lib/homepage-types";
+import type { Specialist } from "@/lib/specialistes";
 import { SECTION_META } from "@/lib/homepage-types";
 import SectionBreak from "@/components/SectionBreak";
 import type { PostWithAuthor } from "@/lib/blog-utils";
@@ -27,7 +29,7 @@ function SectionWrapper({ section, children }: { section: HomepageSection; child
   return <div data-section-bg={theme}>{children}</div>;
 }
 
-export default function HomepageRenderer({ config }: { config: HomepageConfig }) {
+export default function HomepageRenderer({ config, experts }: { config: HomepageConfig; experts?: Specialist[] }) {
   const sections = useMemo(() => {
     return [...config.sections]
       .filter((s) => s.enabled)
@@ -71,7 +73,7 @@ export default function HomepageRenderer({ config }: { config: HomepageConfig })
     <span key={section.id}>
       {separator}
       <SectionWrapper section={section}>
-        <SectionComponent section={section} />
+        <SectionComponent section={section} experts={experts} />
       </SectionWrapper>
     </span>
   );
@@ -86,7 +88,7 @@ export default function HomepageRenderer({ config }: { config: HomepageConfig })
   );
 }
 
-function SectionComponent({ section }: { section: HomepageSection }) {
+function SectionComponent({ section, experts }: { section: HomepageSection; experts?: Specialist[] }) {
   switch (section.type) {
     case "banner":
       return <Banner content={section.content} />;
@@ -106,7 +108,7 @@ function SectionComponent({ section }: { section: HomepageSection }) {
     case "testimonials":
       return <TestimonialsSection content={section.content} />;
     case "expertise":
-      return <ExpertiseSection content={section.content} />;
+      return <ExpertiseSection content={section.content} specialists={experts} />;
     case "pricing":
       // TEMPORARILY HIDDEN from the public homepage. Component, i18n, types,
       // CMS schema and editor support are all kept intact — only the public
@@ -128,12 +130,14 @@ function SectionComponent({ section }: { section: HomepageSection }) {
 
 function BlogSectionWrapper({ content }: { content: BlogContent }) {
   const [posts, setPosts] = useState<PostWithAuthor[]>([]);
+  const pathname = usePathname();
+  const locale = pathname?.startsWith("/en") ? "en" : "fr";
   useEffect(() => {
-    fetch("/api/blog/posts")
+    fetch(`/api/blog/posts?locale=${locale}`)
       .then((r) => r.json())
       .then((d) => { if (d.data) setPosts(d.data); })
       .catch(() => {});
-  }, []);
+  }, [locale]);
   if (posts.length === 0) return null;
   return <BlogSection posts={posts} content={content} />;
 }

@@ -78,7 +78,9 @@ export default function BlogHero({ latest }: { latest: PostWithAuthor | null }) 
                       {latest.category.name}
                     </span>
                   )}
-                  <span className="text-xs text-gray-400 font-mono">{latest.readingTime} {t("blog.minLecture")}</span>
+                  {latest.readingTime && (
+                    <span className="text-xs text-gray-400 font-mono">{latest.readingTime} {t("blog.minLecture")}</span>
+                  )}
                 </div>
                 <span className="text-[10px] font-mono text-[#B88A5A]/60 tracking-wider uppercase mb-2">{t("blog.dernierArticle")}</span>
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-heading font-bold text-[#0B1220] leading-tight transition-colors duration-300 group-hover:text-[#B88A5A]">

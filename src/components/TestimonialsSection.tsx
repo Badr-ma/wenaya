@@ -8,8 +8,8 @@
 import { useRef, useEffect, useCallback, type ReactNode } from "react";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
+import SubtitleSplit from "@/components/SubtitleSplit";
 import type { TestimonialsContent } from "@/lib/homepage-types";
-import SectionTitleAccent from "@/components/SectionTitleAccent";
 
 type TestimonialItem = {
   type: "testimonial";
@@ -71,7 +71,7 @@ interface TestimonialsSectionProps {
 }
 
 export default function TestimonialsSection({ content }: TestimonialsSectionProps): React.JSX.Element {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -109,19 +109,26 @@ export default function TestimonialsSection({ content }: TestimonialsSectionProp
   return (
     <section ref={sectionRef} className="bg-[#F2EFE9] noise accent-top relative py-12 sm:py-24 px-6" id="avis-google">
       <div className="max-w-7xl mx-auto">
-        <div ref={headingRef} className="mb-8 sm:mb-16 lg:mb-24 max-w-3xl mx-auto text-center">
-          <div className="flex items-center justify-center gap-3 sm:gap-4 mb-3 sm:mb-4">
-            <SectionTitleAccent compact />
+        <div ref={headingRef} className="flex flex-col items-center text-center mb-8 sm:mb-16 lg:mb-24">
+          <div className="mb-5 inline-flex items-center gap-2">
+            <div className="h-px w-4 bg-[#B88A5A]/40" />
+            <span className="text-[10.5px] font-bold uppercase tracking-[0.22em] text-[#B88A5A]">
+              {content?.eyebrow ?? t("testimonialsSection.eyebrow")}
+            </span>
+            <div className="h-px w-4 bg-[#B88A5A]/40" />
           </div>
-          <h2 className="font-display-nunito font-bold uppercase tracking-[0.04em] text-[#B88A5A] leading-[1.1] text-[2.25rem] sm:text-[2.375rem] lg:text-[3rem]">
-            {content?.eyebrow ?? t("testimonialsSection.eyebrow")}
-          </h2>
-          <p className="font-heading font-medium text-[#0B1220] leading-[1.2] tracking-[-0.01em] mt-4 sm:mt-5 text-[1.5rem] sm:text-[1.75rem] lg:text-[2rem]">
+          <h2 className="heading-serif text-[40px] sm:text-[50px] lg:text-[60px] leading-[1.02] text-[#0B1220]">
             {content?.heading1 ?? t("testimonialsSection.heading1")}{" "}
-            {content?.heading2 ?? t("testimonialsSection.heading2")}
-          </p>
-          <p className="mt-3 sm:mt-4 text-[15px] sm:text-base lg:text-[17px] leading-relaxed text-[#2B2F36]/55 max-w-lg mx-auto">
-            {content?.sub ?? t("testimonialsSection.sub")}
+            <span style={{
+              background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}>
+              {content?.heading2 ?? t("testimonialsSection.heading2")}
+            </span>
+          </h2>
+          <p className="text-[#2B2F36]/55 text-[13px] sm:text-[14px] lg:text-[15px] mt-4 max-w-lg leading-relaxed">
+            <SubtitleSplit text={content?.sub ?? t("testimonialsSection.sub")} bronze={locale === "fr" ? "doivent refléter uniquement des expériences réelles, vérifiées et autorisées." : "must reflect only real, verified and authorized experiences."} />
           </p>
         </div>
 

@@ -22,6 +22,8 @@ function ContactFormInner({ isBooking = false }: { isBooking?: boolean }): React
   const service = searchParams.get("service");
   const type = searchParams.get("type");
   const subject = searchParams.get("subject");
+  const urlSource = searchParams.get("source");
+  const journey = searchParams.get("journey");
   const isRecruitment = subject === "recrutement" || subject === "recruitment";
   const requestedSession = service ? getGroupSessionForBooking(service, locale) : undefined;
   const bookingCategories = isBooking
@@ -37,7 +39,8 @@ function ContactFormInner({ isBooking = false }: { isBooking?: boolean }): React
   );
   const [message, setMessage] = useState(
     requestedSession ? `${t("contact.sessionPrefill")} ${requestedSession.title}.`
-    : isRecruitment ? t("contact.recruitmentPrefill") : "",
+    : isRecruitment ? t("contact.recruitmentPrefill")
+    : "",
   );
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -52,7 +55,7 @@ function ContactFormInner({ isBooking = false }: { isBooking?: boolean }): React
     }
     setLoading(true);
     try {
-      const res = await fetch("/api/contact", {
+const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -62,13 +65,15 @@ function ContactFormInner({ isBooking = false }: { isBooking?: boolean }): React
           phone,
           message,
           bookingCategory: isBooking ? bookingCategory : undefined,
-          source: isBooking ? "nav-booking" : isRecruitment ? "recrutement" : "contact",
+          source: urlSource ?? (isBooking ? "nav-booking" : isRecruitment ? "recrutement" : "contact"),
+          journey: journey ?? undefined,
           service: service ?? undefined,
           type: isBooking ? "booking" : (type ?? undefined),
           subject: subject ?? undefined,
         }),
       });
-      if (!res.ok) throw new Error(t("contact.errorServer"));
+      const data = (await res.json().catch(() => null)) as { success?: boolean } | null;
+      if (!res.ok || data?.success !== true) throw new Error(t("contact.errorGeneric"));
       setSubmitted(true);
     } catch {
       setError(t("contact.errorGeneric"));

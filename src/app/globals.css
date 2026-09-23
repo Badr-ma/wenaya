@@ -12,10 +12,7 @@
     Global Wenaya web typography system:
       headings/display → Manrope (--font-heading + --font-serif are both Manrope)
       body/UI          → Inter   (--font-sans)
-      monospace        → JetBrains Mono
-    A/B TEST (2026-09-14): Nunito (--font-nunito) applied ONLY to the homepage
-    H1 + the 6 major section-name H2s + their subtitles via .font-display-nunito.
-    Everything else stays Manrope/Inter. */
+      monospace        → JetBrains Mono */
   --font-sans: var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-manrope), "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-manrope), "Manrope", ui-sans-serif, system-ui, sans-serif;
@@ -27,14 +24,6 @@
   --color-warm-sand: #F2EFE9;
   --color-ivory: #FAF8F4;
   --color-graphite: #2B2F36;
-}
-
-/** A/B TEST: Nunito display utility — homepage H1 + 6 major section-name H2s get .font-display-nunito;
-    the subtitle <p> immediately following each h2 picks it up via the adjacent-sibling rule below.
-    H1 uses the inline Nunito stack in HeroSection. */
-.font-display-nunito,
-.font-display-nunito + p {
-  font-family: var(--font-nunito), "Nunito", ui-sans-serif, system-ui, sans-serif;
 }
 
 /** CSS custom properties — default background (warm sand) and foreground (deep navy) */
@@ -454,44 +443,60 @@ body {
  * (so SSR / no-JS never hides content). An IntersectionObserver toggles
  * `.mhm-visible` on every entry/exit: entering the viewport replays the
  * animation from the hidden state, leaving resets it (so scrolling back
- * down plays it again). Three light, card-native visuals: health-assessment
- * bars filling left→right (COMPRENDRE), a flowing vertical pathway whose
+ * down plays it again). Three card-native visuals: a health-score dial
+ * whose teal arc draws 0→71% while the center number counts in sync and the
+ * dimension pills rise (COMPRENDRE), a flowing vertical pathway whose
  * spine draws top→bottom while its nodes light one by one (AGIR), a rising
- * progress line stroking left→right with milestone nodes appearing
- * sequentially (PROGRESSER). Teal `#159AA9` is the primary motion accent,
- * bronze `#B88A5A` the only secondary accent. ~3–3.5s staggered sequence,
- * premium cubic-bezier. Under `prefers-reduced-motion` everything renders
- * statically visible. */
+ * progress line stroking left→right with a gradient area fading under it
+ * and a still 18px bronze end-ring fading to 0.35 once the line completes
+ * (PROGRESSER). Teal `#159AA9` is the primary motion accent, bronze `#B88A5A`
+ * the only secondary accent. Durations/easing/staggers restore the original
+ * GSAP timeline (power2.out, arc 1.5s, dots 0.65 stagger, 0.34 pills, 0.16
+ * milestones); total sequence ~2.6s. Under `prefers-reduced-motion`
+ * everything renders statically visible. */
 .mhm-armed .mhm-reveal { opacity: 0; transform: translateY(16px); transition: opacity 1.15s ease, transform 1.15s cubic-bezier(0.22, 1, 0.36, 1); }
 .mhm-armed.mhm-visible .mhm-reveal { opacity: 1; transform: translateY(0); }
 
-.mhm-armed .mhm-bar { transform: scaleX(0); transform-origin: left; transition: transform 1.9s cubic-bezier(0.22, 1, 0.36, 1); }
-.mhm-armed.mhm-visible .mhm-bar { transform: scaleX(1); }
-
-.mhm-armed .mhm-line-vert { transform: scaleY(0); transform-origin: top; transition: transform 1.8s cubic-bezier(0.22, 1, 0.36, 1); }
+.mhm-armed .mhm-line-vert { transform: scaleY(0); transform-origin: top; transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 .mhm-armed.mhm-visible .mhm-line-vert { transform: scaleY(1); }
 
-.mhm-armed .mhm-draw { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 2.5s cubic-bezier(0.22, 1, 0.36, 1); }
+/* 71% overall-ring at rest (matches ASSESS_SCORE); armed rules animate 0→71%. */
+.mhm-arc { stroke-dashoffset: 0.29; }
+
+.mhm-armed .mhm-arc { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.mhm-armed.mhm-visible .mhm-arc { stroke-dashoffset: 0.29; }
+
+.mhm-armed .mhm-draw { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 .mhm-armed.mhm-visible .mhm-draw { stroke-dashoffset: 0; }
 
-.mhm-armed .mhm-node { opacity: 0; transform: scale(0.4); transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+.mhm-armed .mhm-area { opacity: 0; transition: opacity 0.9s ease 0.5s; }
+.mhm-armed.mhm-visible .mhm-area { opacity: 1; }
+
+.mhm-armed .mhm-node { opacity: 0; transform: scale(0.4); transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 .mhm-armed.mhm-visible .mhm-node { opacity: 1; transform: scale(1); }
 
-.mhm-armed .mhm-lbl { opacity: 0; transform: translateY(6px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+.mhm-armed .mhm-lbl { opacity: 0; transform: translateY(6px); transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 .mhm-armed.mhm-visible .mhm-lbl { opacity: 1; transform: translateY(0); }
+
+.mhm-armed .mhm-pulse { opacity: 0; transition: opacity 0.5s ease 1.7s; }
+.mhm-armed.mhm-visible .mhm-pulse { opacity: 0.35; }
 
 @media (prefers-reduced-motion: reduce) {
   .mhm-armed .mhm-reveal,
-  .mhm-armed .mhm-bar,
   .mhm-armed .mhm-line-vert,
   .mhm-armed .mhm-draw,
+  .mhm-armed .mhm-area,
   .mhm-armed .mhm-node,
-  .mhm-armed .mhm-lbl {
+  .mhm-armed .mhm-lbl,
+  .mhm-armed .mhm-pulse,
+  .mhm-armed.mhm-visible .mhm-pulse {
     opacity: 1;
     transform: none;
     transition: none;
     stroke-dashoffset: 0;
+    animation: none;
   }
+  .mhm-armed .mhm-arc { stroke-dashoffset: 0.29; }
 }
 
 .scrollbar-hide::-webkit-scrollbar { display: none; }
@@ -579,5 +584,71 @@ body {
 }
 
 .pratique-article a:hover { color: #1ab0c0; }
+
+/**
+ * Professional detail "About" + "Appointment information" scoped class.
+ * Rendered via dangerouslySetInnerHTML after `sanitizeSafeHtml` (only
+ * p / ul / ol / li / strong / em / br survive), so every selector here
+ * refers to a whitelisted tag only.
+ *
+ * Comfortable editorial reading: ~680–760px body width (pages constrain
+ * the root container), 1.7–1.8 line-height, 16–18px desktop / 15px mobile,
+ * visible bullets with proper indentation, clear paragraph rhythm.
+ */
+.bio-content {
+  max-width: 760px;
+}
+
+.bio-content p {
+  font-family: var(--font-sans), sans-serif;
+  font-size: clamp(0.94rem, 1.2vw, 1.05rem);
+  line-height: 1.8;
+  color: rgba(43, 47, 54, 0.8);
+  margin: 0 0 1.3em;
+}
+
+.bio-content p:last-child,
+.bio-content ul:last-child,
+.bio-content ol:last-child {
+  margin-bottom: 0;
+}
+
+.bio-content ul,
+.bio-content ol {
+  margin: 0 0 1.4em;
+  padding-left: 1.4em;
+  list-style-position: outside;
+}
+
+.bio-content ul { list-style: disc; }
+.bio-content ol { list-style: decimal; }
+
+.bio-content li {
+  font-family: var(--font-sans), sans-serif;
+  font-size: clamp(0.94rem, 1.2vw, 1.05rem);
+  line-height: 1.8;
+  color: rgba(43, 47, 54, 0.8);
+  margin: 0.45em 0;
+}
+
+.bio-content li::marker {
+  color: #b88a5a;
+}
+
+.bio-content strong {
+  font-weight: 600;
+  color: #0b1220;
+}
+
+.bio-content em {
+  font-style: italic;
+  color: inherit;
+}
+
+.bio-content br {
+  display: block;
+  content: "";
+  margin-top: 1.2em;
+}
 
 

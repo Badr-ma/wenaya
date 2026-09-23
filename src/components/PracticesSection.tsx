@@ -49,7 +49,6 @@ import { getSpecialistsForPractice } from "@/lib/pratique-specialists";
 import { getPratiqueBookingCta } from "@/lib/pratique-cta";
 import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 import type { DiseaseMarqueeContent } from "@/lib/homepage-types";
-import SectionTitleAccent from "@/components/SectionTitleAccent";
 
 /** Curated homepage selection — all must exist in the canonical dataset. */
 const GALLERY_SLUGS: string[] = [
@@ -374,7 +373,6 @@ export default function PracticesSection({ content }: PracticesSectionProps): Re
         <div className="mb-10 lg:mb-14">
           <div className="max-w-2xl lg:max-w-3xl mx-auto text-center">
             <div className="flex items-center justify-center gap-3 sm:gap-4">
-              <SectionTitleAccent compact />
               <p className="hp-eyebrow text-[#B88A5A] font-heading font-semibold uppercase tracking-[0.22em] text-[11px] sm:text-xs">
                 {eyebrow}
               </p>

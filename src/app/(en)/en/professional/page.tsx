@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import SpecialistsPageBody from "@/components/specialistes/SpecialistsPage";
 import Footer from "@/components/Footer";
-import { getAllSpecialistsAsync } from "@/lib/specialistes";
+import { getLiveSpecialists } from "@/lib/professionals";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 };
 
 export default async function EnglishSpecialistsPage() {
-  const specialists = await getAllSpecialistsAsync();
+  const specialists = await getLiveSpecialists();
 
   const jsonLd = {
     "@context": "https://schema.org",

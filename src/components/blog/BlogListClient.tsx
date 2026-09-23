@@ -10,8 +10,7 @@ import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { formatDate, categoryColors, type PostWithAuthor } from "@/lib/blog-utils";
-import type { Category } from "@/lib/blog";
+import { formatDate, categoryColors, type PostWithAuthor, type Category } from "@/lib/blog-utils";
 import { useLocale } from "@/contexts/LanguageContext";
 import { h } from "@/lib/href";
 
@@ -50,12 +49,14 @@ function BlogCard({ post, index }: { post: PostWithAuthor; index: number }) {
               {post.category.name}
             </span>
           )}
-          <span className="absolute top-4 right-4 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 text-[11px] font-mono text-gray-600 shadow-sm">
-            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2" />
-            </svg>
-            {post.readingTime} min
-          </span>
+          {post.readingTime && (
+            <span className="absolute top-4 right-4 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 text-[11px] font-mono text-gray-600 shadow-sm">
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2" />
+              </svg>
+              {post.readingTime && <>{post.readingTime} min</>}
+            </span>
+          )}
         </div>
         <div className="relative p-6">
           <div className="flex items-center gap-3 mb-3 text-xs text-gray-400 font-mono">

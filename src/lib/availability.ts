@@ -79,6 +79,39 @@ export function leadingBlanks(year: number, monthIndex: number): number {
 }
 
 /**
+ * Calendar month grid for the live availability layer (API-sourced pros).
+ * A day is `closed` when it is in the past or listed in the professional's
+ * fully-unavailable set (`unavailable-dates` API). Day-level slots are NOT
+ * resolved here — they are fetched on selection (see `buildMonthAvailability`
+ * for the local weekly-schedule path).
+ */
+export function buildMonthGrid(
+  year: number,
+  monthIndex: number,
+  unavailableClosed: string[],
+  todayIso: string
+): AvailabilityDay[] {
+  const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+  const closedSet = new Set(unavailableClosed);
+
+  const days: AvailabilityDay[] = [];
+  for (let d = 1; d <= daysInMonth; d++) {
+    const iso = toIso(year, monthIndex, d);
+    const isPast = iso < todayIso;
+    days.push({
+      day: WEEKDAY_LABELS[new Date(year, monthIndex, d).getDay()],
+      date: String(d),
+      month: MONTHS_FR[monthIndex],
+      iso,
+      slots: [],
+      closed: isPast || closedSet.has(iso),
+      isPast,
+    });
+  }
+  return days;
+}
+
+/**
  * Human-readable date caption for a day in the current locale
  * (e.g. "jeudi 13 août" in French, "Thursday, August 13" in English).
  */

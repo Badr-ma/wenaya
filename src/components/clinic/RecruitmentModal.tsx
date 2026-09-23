@@ -158,7 +158,8 @@ export default function RecruitmentModal({ open, onClose }: RecruitmentModalProp
         ...form,
         source: "practitioner-recruitment",
       });
-      if (!res.ok) throw new Error();
+      const data = (await res.json().catch(() => null)) as { success?: boolean } | null;
+      if (!res.ok || data?.success !== true) throw new Error();
       setSubmitted(true);
     } catch {
       setError(l("errorGeneric"));
