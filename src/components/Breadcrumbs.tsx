@@ -17,7 +17,9 @@ interface BreadcrumbItem {
 
 const routeLabels: Record<string, Record<string, string>> = {
   fr: {
-    "about-us": "Cliniques",
+    "about-us": "À propos",
+    clinique: "Clinique",
+    "wenaya-casablanca": "Wenaya Casablanca",
     articles: "Blog",
     produits: "Boutique",
     pratiques: "Pratiques",
@@ -33,9 +35,12 @@ const routeLabels: Record<string, Record<string, string>> = {
     programmes: "Programmes",
     "seance-de-groupe": "Séances de groupe",
     "parcours-de-soins": "Parcours de soins",
+    "maux-troubles": "Maux & troubles",
   },
   en: {
-    "about-us": "Clinics",
+    "about-us": "About Us",
+    clinique: "Clinic",
+    "wenaya-casablanca": "Wenaya Casablanca",
     articles: "Blog",
     produits: "Products",
     pratiques: "Practices",
@@ -51,6 +56,7 @@ const routeLabels: Record<string, Record<string, string>> = {
     programmes: "Programs",
     "seance-de-groupe": "Group Sessions",
     "parcours-de-soins": "Care Pathways",
+    "health-needs": "Health Needs",
   },
 };
 

@@ -29,7 +29,7 @@ import { useState } from "react";
 import { useLocale } from "@/contexts/LanguageContext";
 import { getHealthNeeds } from "@/lib/health-needs";
 import { getAllPratiques } from "@/lib/pratiques";
-import { h } from "@/lib/href";
+import { h, healthNeedsHref } from "@/lib/href";
 
 interface RecommendedPractice {
   slug: string;
@@ -206,6 +206,28 @@ export default function ClinicHealthNeeds(): React.JSX.Element {
               ) : null}
             </div>
           </div>
+        </div>
+
+        {/* ── Global CTA → the full Maux-Troubles catalogue page ── */}
+        <div className="mt-12 lg:mt-14">
+          <Link
+            href={healthNeedsHref(locale as "fr" | "en")}
+            className="group/cta inline-flex items-center gap-2 text-sm font-semibold text-[#0B1220]"
+          >
+            <span className="underline underline-offset-8 decoration-[#B88A5A]/40 transition-colors group-hover/cta:decoration-[#B88A5A]">
+              {t("clinic.healthNeeds.viewAll")}
+            </span>
+            <svg
+              className="w-4 h-4 text-[#B88A5A] transition-transform group-hover/cta:translate-x-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+              aria-hidden="true"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </Link>
         </div>
       </div>
     </section>

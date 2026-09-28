@@ -10,7 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
-import { h, groupSessionsHref } from "@/lib/href";
+import { h, groupSessionsHref, clinicHref } from "@/lib/href";
 import type { FooterContent } from "@/lib/homepage-types";
 
 const socialPaths: Record<string, string> = {
@@ -27,7 +27,7 @@ const socialUrls: Record<string, string> = {
   TikTok: "https://www.tiktok.com/@wenaya_maroc",
 };
 
-const navUrls = ["/about-us", "/professional", "/seance-de-groupe", "/corporate", "/faq"];
+const navUrls = ["/clinique/wenaya-casablanca", "/search/all", "/seance-de-groupe", "/corporate", "/faq"];
 const legalUrls = ["/privacy-policy", "/terms-and-conditions"];
 
 interface FooterProps {
@@ -136,7 +136,7 @@ export default function Footer({ content }: FooterProps): React.JSX.Element {
                   <ul className="space-y-3">
                     {navLinks.map((label: string, i: number) => (
                       <li key={label}>
-                        <Link href={navUrls[i] === "/seance-de-groupe" ? groupSessionsHref(locale) : h(locale, navUrls[i] || "#")} className="text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed">
+                        <Link href={navUrls[i] === "/clinique/wenaya-casablanca" ? clinicHref(locale) : navUrls[i] === "/seance-de-groupe" ? groupSessionsHref(locale) : h(locale, navUrls[i] || "#")} className="text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed">
                           {label}
                         </Link>
                       </li>

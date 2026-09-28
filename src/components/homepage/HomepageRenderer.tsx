@@ -9,7 +9,6 @@ import { SECTION_META } from "@/lib/homepage-types";
 import SectionBreak from "@/components/SectionBreak";
 import type { PostWithAuthor } from "@/lib/blog-utils";
 
-const Banner = dynamic(() => import("@/components/Banner"), { ssr: true });
 const HeroSection = dynamic(() => import("@/components/HeroSection"), { ssr: true });
 const HowItWorks = dynamic(() => import("@/components/HowItWorks"), { ssr: true });
 const Biomarkers = dynamic(() => import("@/components/Biomarkers"), { ssr: true });
@@ -90,8 +89,6 @@ export default function HomepageRenderer({ config, experts }: { config: Homepage
 
 function SectionComponent({ section, experts }: { section: HomepageSection; experts?: Specialist[] }) {
   switch (section.type) {
-    case "banner":
-      return <Banner content={section.content} />;
     case "hero":
       return <HeroSection content={section.content} />;
     case "how-it-works":

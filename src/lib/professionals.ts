@@ -11,6 +11,7 @@
  *   image      ← avatar (full URL)
  *   specialty  ← speciality_names[0] || ""
  *   role       ← speciality_names[0] || "" (FR fallback for listing display)
+ *   specialtySlugs ← every speciality_names label, slugified (URL /search/<slug> filtering)
  *   All other fields get safe defaults (the listing UI degrades gracefully
  *   when rating/reviews/services/etc. are zero/empty).
  */
@@ -19,6 +20,7 @@ import type { Specialist } from "./specialistes";
 import type { ApiProfessional } from "./professionals-api";
 import { fetchProfessionals } from "./professionals-api";
 import { getAllSpecialistsAsync } from "./specialistes";
+import { filterSpecialists, specialtyDisplayToSlug } from "./specialist-filters";
 
 /** Dummy image used when the API avatar is missing or unreachable. */
 const DUMMY_IMAGE = "/images/dummy-man.png";
@@ -53,6 +55,9 @@ function toSpecialist(pro: ApiProfessional): Specialist {
     bio: "",
     approach: "",
     specialtyTags: pro.speciality_names,
+    specialtySlugs: pro.speciality_names
+      .map(specialtyDisplayToSlug)
+      .filter(Boolean),
     certifications: [],
     services: [],
     availability: [],
@@ -92,6 +97,33 @@ export async function getLiveSpecialists(): Promise<Specialist[]> {
   } catch (error) {
     console.error("[professionals] API fetch failed, falling back to local data:", error);
     return getAllSpecialistsAsync();
+  }
+}
+
+/**
+ * Practice-detail specialists — the SAME live professionals dataset the
+ * `/professional` listing uses, filtered to a practice's canonical specialty
+ * slug with the SHARED listing filter helpers (`filterSpecialists` +
+ * `specialtyDisplayToSlug` ancestry). One source of truth: the cards on a
+*  practice page are exactly the pros `/search/<slug>` shows.
+ *
+ * Deliberately does NOT fall back to the Redis/hardcoded demo dataset: on ANY
+ * failure it returns an empty list so the practice section renders without
+ * specialist cards instead of ever showing demo professionals. Mirrors
+ * `getHomepageSpecialists` policy.
+ */
+export async function getPracticeSpecialists(practiceSlug: string): Promise<Specialist[]> {
+  try {
+    const apiProfessionals = await fetchProfessionals();
+
+    const mapped = apiProfessionals
+      .filter((pro) => !HIDDEN_SLUGS.has(pro.slug))
+      .map(toSpecialist);
+
+    return filterSpecialists(mapped, { specialty: practiceSlug });
+  } catch (error) {
+    console.error("[professionals] practice specialists fetch failed, rendering without specialist rows:", error);
+    return [];
   }
 }
 

@@ -24,6 +24,36 @@ export function groupSessionsHref(locale: HrefLocale): string {
 }
 
 /**
+ * Locale-aware href for the Clinic page.
+ * The EN route uses the English segment ("/en/clinic/wenaya-casablanca") while
+ * FR uses the French segment ("/clinique/wenaya-casablanca") — a strict locale
+ * split, not just an /en prefix. (The generic `h()` would wrongly produce
+ * "/en/clinique/..." for EN, so a dedicated helper is required.)
+ */
+export function clinicHref(locale: HrefLocale): string {
+  return locale === "en" ? "/en/clinic/wenaya-casablanca" : "/clinique/wenaya-casablanca";
+}
+
+/**
+ * Locale-aware href for the Maux-Troubles orientation page.
+ * The EN route uses the English segment ("/en/health-needs") while FR uses the
+ * French segment ("/maux-troubles") — a strict locale split like the Clinic page.
+ * (The generic `h()` would wrongly produce "/en/maux-troubles".)
+ */
+export function healthNeedsHref(locale: HrefLocale): string {
+  return locale === "en" ? "/en/health-needs" : "/maux-troubles";
+}
+
+/**
+ * Locale-aware href for a single Maux-Troubles detail page.
+ * FR: /maux-troubles/{slug} · EN: /en/health-needs/{slug} — strict locale split
+ * (the generic `h()` would wrongly produce "/en/maux-troubles/{slug}").
+ */
+export function troubleDetailHref(locale: HrefLocale, slug: string): string {
+  return locale === "en" ? `/en/health-needs/${slug}` : `/maux-troubles/${slug}`;
+}
+
+/**
  * Locale-aware href for the configurator coming-soon page.
  * The EN route uses the English segment ("/en/configurator") while FR uses the
  * French segment ("/configurateur") — a strict locale split, not just an /en prefix.
@@ -32,6 +62,33 @@ export function groupSessionsHref(locale: HrefLocale): string {
  */
 export function configuratorHref(locale: HrefLocale): string {
   return locale === "en" ? "/en/configurator" : "/configurateur";
+}
+
+/**
+ * Convert a pathname in the current locale to the equivalent pathname in the
+ * other locale, for the language switcher. Routes whose slug differs between
+ * locales are mapped explicitly BEFORE the generic /en prefix rule so the
+ * switcher never fabricates a URL that 404s:
+ *   /configurateur        → /en/configurator
+ *   /en/configurator      → /configurateur
+ *   /clinique/wenaya-casablanca → /en/clinic/wenaya-casablanca
+ *   /en/clinic/wenaya-casablanca → /clinique/wenaya-casablanca
+ * Every other route keeps the historical behavior (add/remove the /en prefix,
+ * or return "/" when the path is "/en").
+ */
+export function switchLocalePathname(pathname: string, from: "fr" | "en"): string {
+  if (from === "en") {
+    if (pathname === "/en/clinic/wenaya-casablanca") return "/clinique/wenaya-casablanca";
+    if (pathname === "/en/configurator") return "/configurateur";
+    if (pathname === "/en/health-needs") return "/maux-troubles";
+    if (pathname.startsWith("/en/health-needs/")) return pathname.replace(/^\/en\/health-needs/, "/maux-troubles");
+    return pathname === "/en" ? "/" : pathname.replace(/^\/en/, "") || "/";
+  }
+  if (pathname === "/clinique/wenaya-casablanca") return "/en/clinic/wenaya-casablanca";
+  if (pathname === "/configurateur") return "/en/configurator";
+  if (pathname === "/maux-troubles") return "/en/health-needs";
+  if (pathname.startsWith("/maux-troubles/")) return pathname.replace(/^\/maux-troubles/, "/en/health-needs");
+  return `/en${pathname === "/" ? "" : pathname}`;
 }
 
 /**

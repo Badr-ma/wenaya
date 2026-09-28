@@ -8,9 +8,12 @@
  * Generated per request so Redis-backed specialists are always included.
  */
 import type { MetadataRoute } from "next";
-import { fetchAllArticles } from "@/lib/blog-articles-api";
+import { fetchAllArticles, blogApiErrorLabel } from "@/lib/blog-articles-api";
 import { getAllSpecialistsAsync } from "@/lib/specialistes";
+import { getLiveSpecialists } from "@/lib/professionals";
+import { getSpecialtyOptions } from "@/lib/specialist-filters";
 import { getAllPratiqueSlugs } from "@/lib/pratiques";
+import { getAllTroubleSlugs } from "@/lib/troubles";
 import { getAllProgrammeSlugs } from "@/lib/corporate-programmes";
 import { getAllGroupSessionSlugs } from "@/lib/group-sessions";
 import { getAllCareJourneySlugs } from "@/lib/care-journeys";
@@ -35,7 +38,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let articles: Awaited<ReturnType<typeof fetchAllArticles>> = [];
   try {
     articles = await fetchAllArticles();
-  } catch {
+  } catch (error) {
+    console.error(`[blog] sitemap article fetch failed: ${blogApiErrorLabel(error)}`);
     articles = [];
   }
   const specialists = await getAllSpecialistsAsync();
@@ -47,20 +51,67 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: SitemapEntry[] = [
     ...dual("/", { changeFrequency: "weekly", priority: 1.0 }),
     ...dual("/about-us", { changeFrequency: "monthly", priority: 0.9 }),
+    {
+      url: `${SITE_URL}/clinique/wenaya-casablanca`,
+      alternates: {
+        languages: {
+          "x-default": `${SITE_URL}/clinique/wenaya-casablanca`,
+          "fr-MA": `${SITE_URL}/clinique/wenaya-casablanca`,
+          "en-MA": `${SITE_URL}/en/clinic/wenaya-casablanca`,
+        },
+      },
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/en/clinic/wenaya-casablanca`,
+      alternates: {
+        languages: {
+          "x-default": `${SITE_URL}/clinique/wenaya-casablanca`,
+          "fr-MA": `${SITE_URL}/clinique/wenaya-casablanca`,
+          "en-MA": `${SITE_URL}/en/clinic/wenaya-casablanca`,
+        },
+      },
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
     ...dual("/corporate", { changeFrequency: "monthly", priority: 0.9 }),
     ...dual("/corporate/programmes", { changeFrequency: "monthly", priority: 0.8 }),
     ...getAllProgrammeSlugs().flatMap((slug) =>
       dual(`/corporate/programmes/${slug}`, { changeFrequency: "monthly", priority: 0.8 })
     ),
-    /* HIDDEN — temporarily disabled; re-enable by uncommenting below */
-    // {
-    //   url: `${SITE_URL}/soins-a-domicile`,
-    //   changeFrequency: "monthly",
-    //   priority: 0.8,
-    // },
+    {
+      url: `${SITE_URL}/soins-a-domicile`,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
     ...dual("/produits", { changeFrequency: "weekly", priority: 0.9 }),
     ...dual("/pratiques", { changeFrequency: "monthly", priority: 0.8 }),
     ...dual("/parcours-de-soins", { changeFrequency: "monthly", priority: 0.8 }),
+    {
+      url: `${SITE_URL}/maux-troubles`,
+      alternates: {
+        languages: {
+          "x-default": `${SITE_URL}/maux-troubles`,
+          "fr-MA": `${SITE_URL}/maux-troubles`,
+          "en-MA": `${SITE_URL}/en/health-needs`,
+        },
+      },
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/en/health-needs`,
+      alternates: {
+        languages: {
+          "x-default": `${SITE_URL}/maux-troubles`,
+          "fr-MA": `${SITE_URL}/maux-troubles`,
+          "en-MA": `${SITE_URL}/en/health-needs`,
+        },
+      },
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
     {
       url: `${SITE_URL}/seance-de-groupe`,
       alternates: {
@@ -85,7 +136,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.8,
     },
-    ...dual("/professional", { changeFrequency: "weekly", priority: 0.9 }),
+    ...dual("/search/all", { changeFrequency: "weekly", priority: 0.9 }),
     ...dual("/articles", { changeFrequency: "weekly", priority: 0.9 }),
     ...dual("/faq", { changeFrequency: "monthly", priority: 0.7 }),
     ...dual("/contact-us", { changeFrequency: "monthly", priority: 0.8 }),
@@ -112,6 +163,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   /** Specialist profile page URLs — Redis-backed, shared slug set */
   const specialistEntries = specialists.flatMap((s) =>
     dual(`/professional/${s.slug}`, { changeFrequency: "monthly", priority: 0.8 })
+  );
+
+  /**
+   * Professionals search pages — /search/all (in staticPages above) plus one
+   * pre-filtered /search/<specialty> URL per verified specialty slug, derived
+   * from the SAME live dataset the listing pages filter. Derived live so a new
+   * backend specialty automatically appears here.
+   */
+  const searchSlugs = getSpecialtyOptions(await getLiveSpecialists()).map((o) => o.slug);
+  const searchEntries = searchSlugs.flatMap((slug) =>
+    dual(`/search/${slug}`, { changeFrequency: "monthly", priority: 0.8 })
   );
 
   /** Practice detail page URLs — 19 FR + 19 EN */
@@ -148,5 +210,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     dual(`/parcours-de-soins/${slug}`, { changeFrequency: "monthly", priority: 0.7 })
   );
 
-  return [...staticPages, ...blogEntries, ...specialistEntries, ...practiceEntries, ...groupSessionEntries, ...careJourneyEntries];
+  /** Maux-troubles detail page URLs — live backend slugs; EN lives under /en/health-needs (strict segment split) */
+  const troubleSlugs = await getAllTroubleSlugs();
+  const troubleEntries: SitemapEntry[] = [];
+  troubleSlugs.forEach((slug) => {
+    const alt = {
+      "x-default": `${SITE_URL}/maux-troubles/${slug}`,
+      "fr-MA": `${SITE_URL}/maux-troubles/${slug}`,
+      "en-MA": `${SITE_URL}/en/health-needs/${slug}`,
+    };
+    troubleEntries.push({
+      url: `${SITE_URL}/maux-troubles/${slug}`,
+      alternates: { languages: alt },
+      changeFrequency: "monthly",
+      priority: 0.7,
+    });
+    troubleEntries.push({
+      url: `${SITE_URL}/en/health-needs/${slug}`,
+      alternates: { languages: alt },
+      changeFrequency: "monthly",
+      priority: 0.7,
+    });
+  });
+
+  return [...staticPages, ...blogEntries, ...specialistEntries, ...searchEntries, ...practiceEntries, ...groupSessionEntries, ...careJourneyEntries, ...troubleEntries];
 }

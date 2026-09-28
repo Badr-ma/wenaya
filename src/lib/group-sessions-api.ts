@@ -44,12 +44,20 @@ export interface ApiGroupProfessional {
   id?: number;
   slug?: string | null;
   name?: string | null;
+  /** User first name (verified present on the endpoint-2 programme records). */
+  first_name?: string | null;
+  /** User last name (verified present on the endpoint-2 programme records). */
+  last_name?: string | null;
+  /** User avatar URL when present (absolute storage URL). */
+  avatar?: string | null;
 }
 
 export interface ApiGroupProgramChild {
   id: number;
   title: string | null;
   description: string | null;
+  /** Program-event logo URL (children carry the same logo as their parent). */
+  logo: string | null;
   parent: number | null;
   nbr_of_participants: number | null;
   capacity: number | null;
@@ -99,6 +107,21 @@ function isValidResponse(value: unknown): value is ApiGroupProgramsResponse {
   return v.error === false && isValidPaginator(v.data);
 }
 
+/**
+ * Coerce a numeric field that may arrive as number OR numeric string, while
+ * PRESERVING a real `0` (a count of zero registered participants is
+ * meaningful). Returns null only for genuinely absent/unparseable values —
+ * unlike `Number(v) || null`, which collapsed `0` → null.
+ */
+function toIntOrNull(value: unknown): number | null {
+  if (typeof value === "number") return Number.isFinite(value) ? value : null;
+  if (typeof value === "string" && value.trim() !== "") {
+    const n = Number(value);
+    return Number.isFinite(n) ? n : null;
+  }
+  return null;
+}
+
 /** Coerce one raw program row to the typed shape (defensive unions). */
 function toProgram(value: Record<string, unknown>): ApiGroupProgram | null {
   if (typeof value.id !== "number" && typeof value.id !== "string") return null;
@@ -111,9 +134,10 @@ function toProgram(value: Record<string, unknown>): ApiGroupProgram | null {
     id: Number(c.id) || 0,
     title: typeof c.title === "string" ? c.title : null,
     description: typeof c.description === "string" ? c.description : null,
+    logo: typeof c.logo === "string" ? c.logo : null,
     parent: typeof c.parent === "number" || typeof c.parent === "string" ? Number(c.parent) || null : null,
-    nbr_of_participants: typeof c.nbr_of_participants === "number" || typeof c.nbr_of_participants === "string" ? Number(c.nbr_of_participants) || null : null,
-    capacity: typeof c.capacity === "number" || typeof c.capacity === "string" ? Number(c.capacity) || null : null,
+    nbr_of_participants: toIntOrNull(c.nbr_of_participants),
+    capacity: toIntOrNull(c.capacity),
     event_key: typeof c.event_key === "string" ? c.event_key : null,
     event_slug: typeof c.event_slug === "string" ? c.event_slug : null,
     event_date: typeof c.event_date === "string" ? c.event_date : null,
@@ -129,8 +153,8 @@ function toProgram(value: Record<string, unknown>): ApiGroupProgram | null {
     title: typeof value.title === "string" ? value.title : null,
     description: typeof value.description === "string" ? value.description : null,
     parent: typeof value.parent === "number" || typeof value.parent === "string" ? Number(value.parent) || null : null,
-    nbr_of_participants: typeof value.nbr_of_participants === "number" || typeof value.nbr_of_participants === "string" ? Number(value.nbr_of_participants) || null : null,
-    capacity: typeof value.capacity === "number" || typeof value.capacity === "string" ? Number(value.capacity) || null : null,
+    nbr_of_participants: toIntOrNull(value.nbr_of_participants),
+    capacity: toIntOrNull(value.capacity),
     event_key: typeof value.event_key === "string" ? value.event_key : null,
     event_slug: typeof value.event_slug === "string" ? value.event_slug : null,
     event_date: typeof value.event_date === "string" ? value.event_date : null,

@@ -4,14 +4,16 @@
  * experience is in preparation.
  *
  * Carries NO configurator logic, wizard, forms, fake progress, countdown,
- * newsletter signup, backend, auth, booking or payment — a calm, typographic,
- * editorial composition in Wenaya's design language (same system as the
- * ShopComingSoonLanding page). The Quick Access "Needs & goals" card links here.
+ * backend, auth, booking or payment — only the email waiting-list form
+ * (WaitingListForm) plus a calm, typographic, editorial composition in
+ * Wenaya's design language (same system as the ShopComingSoonLanding page).
+ * The Quick Access "Needs & goals" card links here.
  */
 import Image from "next/image";
 import Link from "next/link";
 import { getTranslations } from "@/i18n";
 import { h, type HrefLocale } from "@/lib/href";
+import WaitingListForm from "@/components/WaitingListForm";
 
 interface ConfiguratorComingSoonProps {
   locale: HrefLocale;
@@ -80,6 +82,7 @@ export default function ConfiguratorComingSoon({ locale }: ConfiguratorComingSoo
           </div>
         </div>
       </div>
+      <WaitingListForm source="configurator" />
     </section>
   );
 }

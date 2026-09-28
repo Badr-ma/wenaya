@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getArticlesPage } from "@/lib/blog-articles-api";
+import { getArticlesPage, blogApiErrorLabel } from "@/lib/blog-articles-api";
 import { toFeedPost } from "@/lib/blog-mappers";
 
 /**
@@ -10,7 +10,12 @@ import { toFeedPost } from "@/lib/blog-mappers";
  * section wrapper but is intentionally ignored — there is no separate EN feed.
  */
 export async function GET() {
-  const { articles } = await getArticlesPage(1);
-  const enriched = articles.slice(0, 3).map(toFeedPost);
-  return NextResponse.json({ data: enriched });
+  try {
+    const { articles } = await getArticlesPage(1);
+    const enriched = articles.slice(0, 3).map(toFeedPost);
+    return NextResponse.json({ data: enriched });
+  } catch (error) {
+    console.error(`[blog] feed fetch failed: ${blogApiErrorLabel(error)}`);
+    return NextResponse.json({ data: [] });
+  }
 }

@@ -7,6 +7,9 @@
  * When `isBooking` is set (server passes it when the URL carries `type=booking`,
  * the nav Réserver CTA target), the page renders in BOOKING mode:
  * booking-specific header, category select, details field and submit/success copy.
+ * `requestedSession` is the server-resolved session title (editorial slug OR
+ * `api-{id}` live program) forwarded to the form for the recognition notice +
+ * message prefill.
  */
 "use client";
 
@@ -16,7 +19,13 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import Footer from "@/components/Footer";
 import ContactForm from "./ContactForm";
 
-export default function ContactPage({ isBooking = false }: { isBooking?: boolean }) {
+export default function ContactPage({
+  isBooking = false,
+  requestedSession,
+}: {
+  isBooking?: boolean;
+  requestedSession?: { title: string } | null;
+}) {
   const { t } = useLocale();
 
   return (
@@ -68,7 +77,7 @@ export default function ContactPage({ isBooking = false }: { isBooking?: boolean
               </InfoCard>
             </div>
 
-            <ContactForm isBooking={isBooking} />
+            <ContactForm isBooking={isBooking} requestedSession={requestedSession} />
           </div>
 
           {/* Map placeholder */}

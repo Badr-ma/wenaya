@@ -9,7 +9,6 @@ import type { Specialist } from "@/lib/specialistes";
 import type { Pratique } from "@/lib/pratiques";
 import BookingPanel from "./BookingPanel";
 import SpecialistPractices from "./SpecialistPractices";
-import MapView from "./MapView";
 import { useLocale } from "@/contexts/LanguageContext";
 import { h } from "@/lib/href";
 import { normalizeLegacyPrice } from "@/lib/format";
@@ -53,13 +52,51 @@ export default function SpecialistDetail({ specialist, practices = [] }: { speci
   const [bookingOpen, setBookingOpen] = useState(false);
   const [showMobileBar, setShowMobileBar] = useState(false);
 
+  // Booking panel URL sync. The `?booking=true` query drives the panel on
+  // initial load (shared/pasted links) and is mirrored into the URL while the
+  // panel is open. pushState on open / replaceState on close keeps one history
+  // entry per open/close cycle, so browser Back closes the panel in place and
+  // Forward reopens it (selections persist — no full reload, no reset). Other
+  // query params and the hash are always preserved.
+  const BOOKING_QUERY = "booking";
+  const bookingInUrl = () =>
+    new URLSearchParams(window.location.search).get(BOOKING_QUERY) === "true";
+
+  const applyBookingToUrl = (open: boolean) => {
+    const url = new URL(window.location.href);
+    if (open) {
+      url.searchParams.set(BOOKING_QUERY, "true");
+      window.history.pushState(window.history.state ?? null, "", `${url.pathname}${url.search}${url.hash}`);
+    } else {
+      url.searchParams.delete(BOOKING_QUERY);
+      window.history.replaceState(window.history.state ?? null, "", `${url.pathname}${url.search}${url.hash}`);
+    }
+  };
+
+  const openBooking = () => {
+    setBookingOpen(true);
+    applyBookingToUrl(true);
+  };
+
+  const closeBooking = () => {
+    setBookingOpen(false);
+    applyBookingToUrl(false);
+  };
+
+  // Sync panel visibility with the URL on mount (pasted/shared ?booking=true)
+  // and on browser Back/Forward while staying on this profile.
+  useEffect(() => {
+    const syncFromUrl = () => setBookingOpen(bookingInUrl());
+    syncFromUrl();
+    window.addEventListener("popstate", syncFromUrl);
+    return () => window.removeEventListener("popstate", syncFromUrl);
+  }, []);
+
   // The booking CTA opens the existing in-page BookingPanel for every
   // professional profile (legacy and API-sourced alike). Profiles without
   // availability/services simply land on the panel's existing empty state.
   const bookingLabel = t("specialistes.detail.mobileBook");
 
-  const { lat, lng } = specialist.location;
-  const hasCoordinates = Number.isFinite(lat) && Number.isFinite(lng) && lat !== 0 && lng !== 0;
   const tags = [...new Set(specialist.specialtyTags)];
 
   // Sections render only when the profile actually carries content — API
@@ -71,8 +108,7 @@ export default function SpecialistDetail({ specialist, practices = [] }: { speci
       specialist.approach
   );
   const hasLocation = Boolean(
-    hasCoordinates ||
-      specialist.location.address ||
+    specialist.location.address ||
       specialist.location.city ||
       specialist.location.parking ||
       specialist.location.access ||
@@ -110,7 +146,7 @@ export default function SpecialistDetail({ specialist, practices = [] }: { speci
       {/* ── PROFILE HERO ── */}
       <section className="pt-28 sm:pt-36 pb-12 sm:pb-16">
         <div className="max-w-7xl mx-auto px-6 sm:px-10">
-          <Link href={h(locale, "/professional")} className="inline-flex items-center text-[11px] font-mono text-[#2B2F36]/55 hover:text-[#2B2F36]/65 transition-colors mb-8">
+          <Link href={h(locale, "/search/all")} className="inline-flex items-center text-[11px] font-mono text-[#2B2F36]/55 hover:text-[#2B2F36]/65 transition-colors mb-8">
             <span className="mr-2">←</span> {t("specialistes.detail.backLink")}
           </Link>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
@@ -210,7 +246,7 @@ export default function SpecialistDetail({ specialist, practices = [] }: { speci
               <div className="w-full lg:w-auto">
                 <button
                   type="button"
-                  onClick={() => setBookingOpen(true)}
+                  onClick={openBooking}
                   aria-haspopup="dialog"
                   className={`${BOOKING_CTA_BASE} w-full lg:w-auto px-7`}
                   style={BOOKING_CTA_STYLE}
@@ -340,10 +376,10 @@ export default function SpecialistDetail({ specialist, practices = [] }: { speci
 
       {/* ── LOCATION ── */}
       {hasLocation && (
-      <section className={`py-12 sm:py-16 border-t border-[#0B1220]/[0.06]${hasCoordinates ? "" : " pb-16 sm:pb-20"}`}>
+      <section className="py-12 sm:py-16 pb-16 sm:pb-20 border-t border-[#0B1220]/[0.06]">
         <div className="max-w-7xl mx-auto px-6 sm:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-            <div className={hasCoordinates ? "lg:col-span-5" : "lg:col-span-7"}>
+            <div className="lg:col-span-7">
               <div className="sp-reveal">
                 {locationLabel}
                 {specialist.location.address && (
@@ -374,24 +410,6 @@ export default function SpecialistDetail({ specialist, practices = [] }: { speci
                 </div>
               </div>
             </div>
-            {hasCoordinates && (
-              <div className="lg:col-span-7 sp-reveal">
-                <div className="relative h-[320px] rounded-[20px] overflow-hidden">
-                  <MapView
-                    specialists={[{
-                      slug: specialist.slug,
-                      name: specialist.name,
-                      role: specialist.role,
-                      specialty: tags[0] ?? specialist.role ?? "",
-                      image: specialist.image,
-                      location: { lat, lng, city: specialist.location.city, address: specialist.location.address },
-                    }]}
-                    activeSpecialistSlug={specialist.slug}
-                    onPinClick={() => {}}
-                  />
-                </div>
-              </div>
-            )}
           </div>
           {specialist.clinicPhotos.length > 0 && (
             <div className="sp-reveal mt-10 flex gap-3 overflow-x-auto pb-2">
@@ -423,7 +441,7 @@ export default function SpecialistDetail({ specialist, practices = [] }: { speci
               <span className="text-[11px] text-[#2B2F36]/65">{tRaw<(n: number) => string>("specialistes.detail.reviews")(specialist.reviewCount)}</span>
             </div>
           </div>
-          <button onClick={() => setBookingOpen(true)} className={`${BOOKING_CTA_BASE} shrink-0 px-5`} style={BOOKING_CTA_STYLE}>
+          <button onClick={openBooking} className={`${BOOKING_CTA_BASE} shrink-0 px-5`} style={BOOKING_CTA_STYLE}>
             {bookingLabel}
           </button>
         </div>
@@ -432,7 +450,7 @@ export default function SpecialistDetail({ specialist, practices = [] }: { speci
       {/* ── BOOKING PANEL ── */}
       <BookingPanel
         isOpen={bookingOpen}
-        onClose={() => setBookingOpen(false)}
+        onClose={closeBooking}
         specialist={specialist}
         initialDayIso={null}
         initialSlot={null}

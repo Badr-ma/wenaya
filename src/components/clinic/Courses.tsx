@@ -9,7 +9,8 @@
  * session names and their links are present in the initial HTML (SEO intact).
  */
 import Link from "next/link";
-import { getAllGroupSessions, type GroupSessionLocale } from "@/lib/group-sessions";
+import { getActiveGroupSessions } from "@/lib/group-sessions-active";
+import { type GroupSessionLocale } from "@/lib/group-sessions";
 import { groupSessionsHref, type HrefLocale } from "@/lib/href";
 import { getTranslations } from "@/i18n";
 import SessionsExplorer, { type SessionItem } from "./SessionsExplorer";
@@ -24,15 +25,15 @@ function explorerTeaser(desc: string): string {
   return one;
 }
 
-export default function ClinicCourses({
+export default async function ClinicCourses({
   locale,
   lang,
 }: {
   locale: HrefLocale;
   lang: string;
-}): React.JSX.Element {
+}): Promise<React.JSX.Element> {
   const { t } = getTranslations(lang);
-  const all = getAllGroupSessions(locale as GroupSessionLocale);
+  const all = await getActiveGroupSessions(locale as GroupSessionLocale, { fallback: false });
 
   const items: SessionItem[] = all.map((s) => ({
     slug: s.slug,
@@ -82,16 +83,24 @@ export default function ClinicCourses({
           </Link>
         </div>
 
-        <SessionsExplorer
-          sessions={items}
-          ctaDetail={t("clinic.courses.ctaDetail")}
-          bookNow={t("clinic.courses.bookNow")}
-          bookNowAria={t("clinic.courses.bookNowAria")}
-          exploreAria={t("clinic.courses.exploreAria")}
-          galleryLabel={t("clinic.courses.galleryLabel")}
-          prevLabel={t("clinic.courses.prev")}
-          nextLabel={t("clinic.courses.next")}
-        />
+        {items.length === 0 ? (
+          <div className="py-12 sm:py-14">
+            <p className="max-w-xl text-sm sm:text-[15px] leading-relaxed text-[#2B2F36]/60">
+              {t("clinic.courses.empty")}
+            </p>
+          </div>
+        ) : (
+          <SessionsExplorer
+            sessions={items}
+            ctaDetail={t("clinic.courses.ctaDetail")}
+            bookNow={t("clinic.courses.bookNow")}
+            bookNowAria={t("clinic.courses.bookNowAria")}
+            exploreAria={t("clinic.courses.exploreAria")}
+            galleryLabel={t("clinic.courses.galleryLabel")}
+            prevLabel={t("clinic.courses.prev")}
+            nextLabel={t("clinic.courses.next")}
+          />
+        )}
       </div>
     </section>
   );

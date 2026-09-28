@@ -72,13 +72,13 @@ export default function EnglishEntreprisesPage() {
           <AdaptableApproachSection />
           <LevelsSection />
           <PacksSection />
+          <RetreatSection />
           <ProgrammesSection />
           <SecuritySection />
           <HowItWorksSection />
           <RoiSection />
           <TestimonialsSection />
           <ResourcesFaqSection />
-          <RetreatSection />
           <ContactSection />
         </main>
         <div className="mt-auto">

@@ -43,6 +43,14 @@ export interface GroupSession {
   title: string;
   /** Locale-resolved short description */
   description: string;
+  /**
+   * Short editorial one-line "dek" for hero / visual-band placements, derived
+   * from the FIRST PARAGRAPH of the full body (live programs) — the complete
+   * `description` is rendered ONCE in the "About this session" section so the
+   * same generic copy is never repeated across sections. Falls back to
+   * `description` when absent (editorial sessions).
+   */
+  dek?: string;
   /** Card / hero image */
   image: string;
   /** Bronze accent used in card visuals */
@@ -57,6 +65,68 @@ export interface GroupSession {
   location: { title: string; desc: string };
   /** Contact-flow href that preserves which session was selected */
   bookingHref: string;
+  /**
+   * Verified backend facts (present ONLY on live-feed-normalized sessions —
+   * `group-sessions-active.ts`). Local editorial sessions never carry this.
+   * Each field comes from the endpoint-2 programme record (`children[]` for
+   * the next-slot facts); see the adapter header for the verification notes.
+   */
+  live?: GroupSessionLiveFacts;
+}
+
+/**
+ * Verified facts exposed from the ACTIVE group-appointment backend feed for a
+ * programme with ≥1 active today-or-future slot. Deliberately minimal and
+ * field-verified only — no room is exposed because endpoint-2 carries NO room
+ * field (the flat feed does); no "available places" number is computed because
+ * capacity semantics were never confirmed against the booking backend.
+ */
+export interface GroupSessionLiveFacts {
+  /** Backend programme id (numeric) — stable identity, never `event_slug`. */
+  programId: number;
+  /** Backend programme title, verbatim (e.g. "Jiu Jitsu Kids (7-12 ans)"). */
+  programTitle: string;
+  /** Coach display name from `professional.first_name + last_name`, or null. */
+  coach: string | null;
+  /** Coach avatar URL from `professional.avatar`, or null. */
+  coachAvatar: string | null;
+  /** Cheapest active-child price (MAD, backend string format, e.g. "200"). */
+  price: string | null;
+  /** First-use price when the parent declares one > 0 (e.g. "150"), else null. */
+  priceFirstUse: string | null;
+  /** Session duration in minutes (verified "60"). */
+  durationMinutes: number | null;
+  /** Capacity of the NEXT upcoming active slot (per-slot, not programme-wide). */
+  nextCapacity: number | null;
+  /** Registered participants of the NEXT upcoming active slot (0 is valid). */
+  nextParticipants: number | null;
+  /** Next upcoming active slot date (ISO `YYYY-MM-DD`). */
+  nextDate: string | null;
+  /** Next upcoming active slot time (`HH:mm:ss`). */
+  nextTime: string | null;
+  /** Count of active, today-or-future slots in the programme. */
+  slotCount: number;
+  /** All active, today-or-future slots sorted by date then time (booking-panel source). */
+  slots: LiveGroupSessionSlot[];
+}
+
+/**
+ * One bookable slot of a live group programme — verified backend fields only.
+ * `nbr_of_participants` is deliberately excluded (children serialize a `0`,
+ * and no invented "available places" figure is exposed — capacity semantics
+ * are unconfirmed against the booking backend).
+ */
+export interface LiveGroupSessionSlot {
+  /** Backend child-slot id (numeric, stable) — forwarded as `slot` on the contact flow. */
+  id: number;
+  /** ISO slot date (`YYYY-MM-DD`). */
+  date: string | null;
+  /** Slot time (`HH:mm:ss`; display slices to `HH:mm`). */
+  time: string | null;
+  /** Slot price (MAD, backend string format, e.g. "200"). */
+  price: string | null;
+  /** Verified per-slot capacity, or null when unknown. */
+  capacity: number | null;
 }
 
 export interface GroupSessionDetailLabels {
@@ -70,6 +140,12 @@ export interface GroupSessionDetailLabels {
   audienceTitle: string;
   formatTitle: string;
   locationTitle: string;
+  coachTitle: string;
+  nextTitle: string;
+  durationTitle: string;
+  priceTitle: string;
+  priceFirstUsePrefix: string;
+  slotCountLabel: string;
   relatedTitle: string;
   relatedSub: string;
   /** Eyebrow label shown above the final booking heading */
@@ -78,6 +154,32 @@ export interface GroupSessionDetailLabels {
   ctaHeading: string;
   /** "View all sessions" link label */
   viewAll: string;
+  /** Booking panel eyebrow label */
+  panelEyebrow: string;
+  /** Booking panel supporting copy */
+  panelSub: string;
+  /** Booking panel step-1 label (dates) */
+  dateLabel: string;
+  /** Booking panel step-2 label (times) */
+  timeLabel: string;
+  /** Hint shown before a time is chosen */
+  timeHint: string;
+  /** Booking panel date-carousel previous-dates button aria-label */
+  datePrevAria: string;
+  /** Booking panel date-carousel next-dates button aria-label */
+  dateNextAria: string;
+  /** Booking panel hint above the action buttons */
+  selectionHint: string;
+  /** Pay-later CTA (supported seam → participation-request contact flow) */
+  payLaterCta: string;
+  /** Pay-later supporting hint */
+  payLaterHint: string;
+  /** Pay-online CTA (labelled preview — payments backend not wired) */
+  payOnlineCta: string;
+  /** Pay-online supporting note */
+  payOnlineNote: string;
+  /** Empty state when the programme has no selectable slots */
+  noAvailability: string;
 }
 
 // ─── Canonical data (non-translatable) ─────────────────────────
@@ -250,11 +352,30 @@ export function getGroupSessionLabels(locale: GroupSessionLocale = "fr"): GroupS
     audienceTitle: detail.audienceTitle ?? "",
     formatTitle: detail.formatTitle ?? "",
     locationTitle: detail.locationTitle ?? "",
+    coachTitle: detail.coachTitle ?? "",
+    nextTitle: detail.nextTitle ?? "",
+    durationTitle: detail.durationTitle ?? "",
+    priceTitle: detail.priceTitle ?? "",
+    priceFirstUsePrefix: detail.priceFirstUsePrefix ?? "",
+    slotCountLabel: detail.slotCountLabel ?? "",
     relatedTitle: detail.relatedTitle ?? "",
     relatedSub: detail.relatedSub ?? "",
     ctaEyebrow: detail.ctaEyebrow ?? "",
     ctaHeading: detail.ctaHeading ?? "",
     viewAll: detail.viewAll ?? "",
+    panelEyebrow: detail.panelEyebrow ?? "",
+    panelSub: detail.panelSub ?? "",
+    dateLabel: detail.dateLabel ?? "",
+    timeLabel: detail.timeLabel ?? "",
+    timeHint: detail.timeHint ?? "",
+    datePrevAria: detail.datePrevAria ?? "",
+    dateNextAria: detail.dateNextAria ?? "",
+    selectionHint: detail.selectionHint ?? "",
+    payLaterCta: detail.payLaterCta ?? "",
+    payLaterHint: detail.payLaterHint ?? "",
+    payOnlineCta: detail.payOnlineCta ?? "",
+    payOnlineNote: detail.payOnlineNote ?? "",
+    noAvailability: detail.noAvailability ?? "",
   };
 }
 

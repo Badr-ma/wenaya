@@ -11,7 +11,8 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import PratiqueDetail from "@/components/pratiques/PratiqueDetail";
 import Footer from "@/components/Footer";
 import { getPratiqueBySlug, getAllPratiqueSlugs, getRelatedPratiques } from "@/lib/pratiques";
-import { getSpecialistsForPractice } from "@/lib/pratique-specialists";
+import { getPracticeSpecialists } from "@/lib/professionals";
+import { resolvePracticeProfessionalsHref } from "@/lib/practice-professionals-link";
 import { getTranslations } from "@/i18n";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
@@ -61,12 +62,15 @@ export default async function EnglishPratiquePage({ params }: Props) {
 
   const { t } = getTranslations("en");
   const related = getRelatedPratiques(slug, "en", 6);
-  const specialists = getSpecialistsForPractice(slug);
+  const specialists = await getPracticeSpecialists(slug);
+  const professionalHref = resolvePracticeProfessionalsHref("en", slug, specialists);
   const labels = {
     eyebrow: t("pratiques.detail.eyebrow"),
     back: t("pratiques.detail.back"),
     specialistsOverline: t("pratiques.detail.specialistsOverline"),
     specialistsTitle: t("pratiques.detail.specialistsTitle"),
+    professionalsLabel: t("pratiques.detail.professionalsLabel"),
+    professionalsAnchor: t("pratiques.detail.professionalsAnchor"),
     bookingTitle: t("pratiques.detail.bookingTitle"),
     bookingSub: t("pratiques.detail.bookingSub"),
     bookingCta: t("pratiques.detail.bookingCta"),
@@ -118,6 +122,7 @@ export default async function EnglishPratiquePage({ params }: Props) {
             pratique={pratique}
             related={related}
             specialists={specialists}
+            professionalHref={professionalHref}
             locale="en"
             listingHref="/en/pratiques"
             labels={labels}

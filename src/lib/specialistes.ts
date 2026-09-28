@@ -72,6 +72,11 @@ export interface Specialist {
   availabilityApi?: { professionalId: number; userName: string } | null;
   approach: string;
   specialtyTags: string[];
+  /** Canonical practice slugs derived from the professional's specialty labels
+   *  (API pros: every `speciality_names` entry slugified; legacy pros: their
+   *  single `specialty` label). Drives URL `/search/<slug>` filtering. Absent for
+   *  legacy records, where the filter falls back to the `specialty` label. */
+  specialtySlugs?: string[];
   certifications: string[];
   services: SpecialistService[];
   /** Backend package offers (API-sourced pros only; see `SpecialistPackage`). */

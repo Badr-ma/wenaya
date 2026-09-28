@@ -23,6 +23,8 @@ export interface PratiqueDetailLabels {
   back: string;
   specialistsOverline: string;
   specialistsTitle: string;
+  professionalsLabel: string;
+  professionalsAnchor: string;
   bookingTitle: string;
   bookingSub: string;
   bookingCta: string;
@@ -40,6 +42,9 @@ interface PratiqueDetailProps {
   locale: HrefLocale;
   listingHref: string;
   labels: PratiqueDetailLabels;
+  /** Locale-aware professionals-listing href pre-filtered on this practice's
+   *  specialty, or null when the specialty has no verified professional. */
+  professionalHref?: string | null;
 }
 
 export default function PratiqueDetail({
@@ -49,6 +54,7 @@ export default function PratiqueDetail({
   locale,
   listingHref,
   labels,
+  professionalHref = null,
 }: PratiqueDetailProps): React.JSX.Element {
   const seanceHref = groupSessionsHref(locale);
 
@@ -176,6 +182,20 @@ export default function PratiqueDetail({
                 </svg>
               </Link>
             </div>
+            {professionalHref && (
+              <div className="mt-9">
+                <span className="block text-[11px] font-semibold tracking-[0.18em] uppercase text-[#2B2F36]/45 mb-2">
+                  {labels.professionalsLabel}
+                </span>
+                <Link
+                  href={professionalHref}
+                  className="inline-flex items-center gap-2 text-[13px] font-medium text-[#B88A5A] hover:text-[#9A7242] transition-colors"
+                >
+                  {labels.professionalsAnchor.replace("{title}", pratique.title)}
+                  <span aria-hidden="true">→</span>
+                </Link>
+              </div>
+            )}
             <div className="mt-9">
               <Link
                 href={seanceHref}

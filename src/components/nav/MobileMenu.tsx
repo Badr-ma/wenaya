@@ -12,6 +12,7 @@ interface MobileMenuProps {
   onClose: () => void;
   isActive: (href: string) => boolean;
   h: (path: string) => string;
+  clinicHref: string;
   t: (key: string) => string;
 }
 
@@ -20,6 +21,7 @@ export default function MobileMenu({
   onClose,
   isActive,
   h,
+  clinicHref,
   t,
 }: MobileMenuProps) {
   return (
@@ -56,6 +58,7 @@ export default function MobileMenu({
             </li>
 
             {[
+              { label: t("nav.clinique"), href: clinicHref },
               { label: t("nav.aPropos"), href: h("/about-us") },
               { label: t("nav.produits"), href: h("/produits") },
               { label: t("nav.solutions"), href: h("/corporate") },
@@ -68,7 +71,7 @@ export default function MobileMenu({
                     isActive(href) ? "text-white" : "text-white/38 hover:text-white/75"
                   }`}
                 >
-                  {isActive(href) && <span className="w-1.5 h-1.5 rounded-full bg-[#B88A5A] shrink-0" />}
+                  {isActive(href) ? <span className="w-1.5 h-1.5 rounded-full bg-[#B88A5A] shrink-0" /> : null}
                   {label}
                 </Link>
               </li>

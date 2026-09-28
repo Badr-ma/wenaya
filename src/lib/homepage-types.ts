@@ -1,5 +1,4 @@
 export type SectionType =
-  | "banner"
   | "hero"
   | "how-it-works"
   | "disease-marquee"
@@ -25,20 +24,6 @@ export type SectionType =
  * Components consume overrides via `content?.field ?? t("i18n.key")` in a
  * later step; i18n remains the fallback default.
  */
-
-/**
- * Banner overrides, keyed per locale so a CMS value can never leak across
- * languages. Every field is optional; i18n (`banner.text`) remains the
- * per-locale fallback. A legacy flat `bannerText` key stored by older Redis
- * configs is intentionally not read here (it was a single string applied to
- * every locale — the source of the FR leak) and just round-trips harmlessly.
- */
-export interface BannerContent {
-  /** French override — falls back to fr:i18n `banner.text`. */
-  bannerTextFr?: string;
-  /** English override — falls back to en:i18n `banner.text`. */
-  bannerTextEn?: string;
-}
 
 export interface HeroContent {
   eyebrow?: string;
@@ -165,7 +150,6 @@ export interface FullWidthCtaContent {
  * per-case in a later step.
  */
 export type SectionContentMap = {
-  banner: BannerContent;
   hero: HeroContent;
   "how-it-works": HowItWorksContent;
   "disease-marquee": DiseaseMarqueeContent;
@@ -212,7 +196,6 @@ export interface HomepageState {
 }
 
 export const SECTION_META: Record<SectionType, { label: string; description: string; theme: "dark" | "light"; hasSpacerBefore?: boolean; hasSectionBreak?: boolean }> = {
-  banner: { label: "Banner", description: "Top promotional bar with bronze background", theme: "dark" },
   hero: { label: "Hero", theme: "dark", description: "Full-screen hero with video, headline, trust bar" },
   "how-it-works": { label: "How It Works", theme: "light", description: "3-step method (Comprendre, Agir, Progresser)" },
   "disease-marquee": { label: "Practices & Specialties", theme: "light", description: "5 editorial practice disciplines linking to /pratiques" },
@@ -230,7 +213,6 @@ export const SECTION_META: Record<SectionType, { label: string; description: str
 };
 
 export const DEFAULT_SECTIONS: HomepageSection[] = [
-  { id: "sct_banner", type: "banner", order: 0, enabled: true, content: {} },
   { id: "sct_hero", type: "hero", order: 1, enabled: true, content: {} },
   { id: "sct_how_it_works", type: "how-it-works", order: 2, enabled: true, content: {} },
   { id: "sct_biomarkers", type: "biomarkers", order: 3, enabled: true, content: {} },

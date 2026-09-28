@@ -2,8 +2,10 @@
  * Group Sessions List — "Nos séances de groupe".
  * Lists the group sessions passed in by the server page (currently-active
  * backend feed via `getActiveGroupSessions`, with local editorial fallback).
- * Rendered as compact, scannable cards. Local sessions link to their detail
- * page; backend-only sessions route to the contact flow.
+ * Rendered as compact, scannable cards. Every card links to its DEDICATED
+ * detail route (`s.path`): local sessions to the editorial detail pages,
+ * backend-only programs to their live detail pages (STEP 3) whose CTAs then
+ * hand off to the contact flow.
  */
 "use client";
 
@@ -57,7 +59,7 @@ export default function GroupSessionsList({ sessions }: { sessions: GroupSession
                 <h3 className="font-heading font-semibold text-white text-[15px] leading-snug">
                   {s.title}
                 </h3>
-                <p className="text-white/60 text-[12.5px] leading-relaxed mt-1.5">{s.description}</p>
+                <p className="text-white/60 text-[12.5px] leading-relaxed mt-1.5 line-clamp-2">{s.description}</p>
               </div>
             </Link>
           ))}

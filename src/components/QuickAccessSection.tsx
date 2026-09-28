@@ -16,7 +16,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
-import { configuratorHref, h, type HrefLocale } from "@/lib/href";
+import { clinicHref, configuratorHref, h, type HrefLocale } from "@/lib/href";
 import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 import type { QuickLinksContent } from "@/lib/homepage-types";
 import SubtitleSplit from "@/components/SubtitleSplit";
@@ -34,9 +34,9 @@ interface QuickAccessProps {
  */
 const LINKS: { getHref: (locale: HrefLocale) => string; image: string }[] = [
   { getHref: configuratorHref, image: "/pratiques/sophrologie.jpg" },
-  { getHref: (locale) => h(locale, "/about-us#pathologies"), image: "/pratiques/kinesitherapie.jpg" },
+  { getHref: (locale) => `${clinicHref(locale)}#pathologies`, image: "/pratiques/kinesitherapie.jpg" },
   { getHref: (locale) => h(locale, "/pratiques"), image: "/pratiques/nutrition.jpg" },
-  { getHref: (locale) => h(locale, "/professional"), image: "/images/diverse-team.jpg" },
+  { getHref: (locale) => h(locale, "/search/all"), image: "/images/diverse-team.jpg" },
 ];
 
 export default function QuickAccessSection({ content }: QuickAccessProps): React.JSX.Element {
@@ -106,7 +106,7 @@ export default function QuickAccessSection({ content }: QuickAccessProps): React
             <Link
               key={i}
               href={LINKS[i].getHref(locale)}
-              className="qa-card group flex flex-col overflow-hidden rounded-2xl bg-white border border-[rgba(184,138,90,0.14)] shadow-[0_1px_2px_rgba(11,18,32,0.04)] transition-colors duration-500 hover:border-[rgba(184,138,90,0.3)] hover:shadow-[0_14px_34px_rgba(11,18,32,0.08)]"
+              className="qa-card group flex flex-col overflow-hidden rounded-2xl bg-white border border-[rgba(184,138,90,0.14)] shadow-[0_1px_2px_rgba(11,18,32,0.04)] transition-colors duration-500 hover:border-[rgba(184,138,90,0.3)] hover:shadow-[0_14px_34px_rgba(11,18,32,0.08)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B88A5A]"
             >
               {/* Image strip */}
               <div className="relative aspect-[16/8] overflow-hidden bg-[#0B1220]">
@@ -115,7 +115,7 @@ export default function QuickAccessSection({ content }: QuickAccessProps): React
                   alt=""
                   fill
                   sizes="(max-width: 639px) 92vw, (max-width: 1023px) 46vw, 23vw"
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                  className="object-cover"
                 />
                 <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-[#0B1220]/20 to-transparent" aria-hidden="true" />
               </div>
@@ -135,7 +135,7 @@ export default function QuickAccessSection({ content }: QuickAccessProps): React
 
                 {/* Custom editorial CTA tab — bottom-right, outlined, offset block */}
                 <div className="mt-auto pt-5 sm:pt-6 flex justify-end">
-                  <span className="qa-tab relative inline-flex h-9 items-center gap-2 rounded-lg border-[1.5px] border-[#B88A5A]/80 bg-white pl-4 pr-3.5 -rotate-2 transition-all duration-300 group-hover:rotate-0 group-hover:bg-[#B88A5A]/5 group-hover:border-[#B88A5A]">
+                  <span className="qa-tab relative inline-flex h-9 items-center gap-2 rounded-lg border-[1.5px] border-[#B88A5A]/80 bg-white pl-4 pr-3.5 transition-colors duration-300 group-hover:bg-[#B88A5A]/5 group-hover:border-[#B88A5A]">
                     <span
                       className="absolute -top-[11.5px] -right-[11.5px] flex h-5 w-5 items-center justify-center rounded-full border-[1.5px] border-[#B88A5A] bg-[#FAF8F4] text-[#B88A5A] transition-colors duration-300 group-hover:border-[#B88A5A] group-hover:bg-[#B88A5A] group-hover:text-white"
                       aria-hidden="true"
@@ -157,7 +157,7 @@ export default function QuickAccessSection({ content }: QuickAccessProps): React
                       {link.cta}
                     </span>
                     <svg
-                      className="w-3.5 h-3.5 text-[#B88A5A] transition-transform duration-300 group-hover:translate-x-0.5"
+                      className="w-3.5 h-3.5 text-[#B88A5A]"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"

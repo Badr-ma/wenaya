@@ -514,22 +514,6 @@ body {
   .pratique-card--entering { animation: none; }
 }
 
-/* Leaflet map custom marker */
-.custom-marker {
-  background: transparent !important;
-  border: none !important;
-}
-
-.leaflet-popup-content-wrapper {
-  border-radius: 12px !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12) !important;
-}
-
-.leaflet-popup-content {
-  margin: 12px !important;
-  font-family: var(--font-inter), "Inter", sans-serif !important;
-}
-
 /**
  * Editorial article — long-form practice content (backend `details`).
  * Constrained, calm typographic rhythm for the practice detail pages.

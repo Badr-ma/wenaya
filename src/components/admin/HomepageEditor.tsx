@@ -295,7 +295,7 @@ export default function HomepageEditor({ token }: Props) {
                   </button>
 
                   {/* Delete */}
-                  {!["banner", "hero", "footer"].includes(section.type) && (
+                  {!["hero", "footer"].includes(section.type) && (
                     <button
                       onClick={() => removeSection(section.id)}
                       className="text-[#2B2F36]/20 hover:text-red-500 transition-colors text-xs"
@@ -337,7 +337,7 @@ export default function HomepageEditor({ token }: Props) {
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
                 {Object.entries(SECTION_META)
-                  .filter(([type]) => !["banner", "footer"].includes(type))
+                  .filter(([type]) => !["footer"].includes(type))
                   .map(([type, meta]) => {
                     const alreadyExists = config?.sections.some((s) => s.type === type);
                     return (

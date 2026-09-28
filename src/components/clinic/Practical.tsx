@@ -102,7 +102,7 @@ export default function ClinicPractical(): React.JSX.Element {
                 </svg>
               </Link>
               <Link
-                href={h(locale, "/professional")}
+                href={h(locale, "/search/all")}
                 className="inline-flex items-center justify-center gap-2 h-13 px-6 text-[#0B1220] text-sm font-medium border border-[#0B1220]/[0.16] transition-all duration-300 hover:border-[#0B1220]/[0.35]"
               >
                 {t("clinic.hero.ctaBook")}

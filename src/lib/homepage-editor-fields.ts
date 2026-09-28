@@ -42,14 +42,6 @@ export interface HomepageSectionEditorDef {
  * Sections without an entry (disease-marquee) keep their specialized note.
  */
 export const SECTION_EDITOR_DEFS: Partial<Record<SectionType, HomepageSectionEditorDef>> = {
-  banner: {
-    helper: "Banner text is managed per language. Leave empty to use the i18n default for that locale.",
-    fields: [
-      { label: "Banner text override (FR)", key: "bannerTextFr", i18nPath: "banner.text" },
-      { label: "Banner text override (EN)", key: "bannerTextEn", i18nPath: "banner.text" },
-    ],
-  },
-
   hero: {
     helper: "Default content is managed through i18n. Override fields below:",
     fields: [

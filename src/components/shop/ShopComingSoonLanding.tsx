@@ -6,13 +6,15 @@
  * product-detail, cart and checkout routes redirect here via next.config.ts.
  * All existing shop code (products data, cards, grid, detail pages, cart,
  * checkout, API) stays on disk untouched for future activation. This page
- * carries no fake products, prices, countdown or newsletter form — a calm,
- * typographic, editorial composition in Wenaya's design language.
+ * carries no fake products, prices or countdown — only the email waiting-list
+ * form (WaitingListForm) plus a calm, typographic, editorial composition in
+ * Wenaya's design language.
  */
 import Image from "next/image";
 import Link from "next/link";
 import { getTranslations } from "@/i18n";
 import { h, type HrefLocale } from "@/lib/href";
+import WaitingListForm from "@/components/WaitingListForm";
 
 interface ShopComingSoonLandingProps {
   locale: HrefLocale;
@@ -81,6 +83,7 @@ export default function ShopComingSoonLanding({ locale }: ShopComingSoonLandingP
           </div>
         </div>
       </div>
+      <WaitingListForm source="shop" />
     </section>
   );
 }

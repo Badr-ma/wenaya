@@ -25,6 +25,11 @@ import type { LaravelEnvelope } from "./types";
  * (future domains), then the existing Practices-only override
  * `PRACTICES_API_URL` (kept for backwards compatibility with the current
  * Practices fallback path), then the production API.
+ *
+ * NOTE: this is the DEFAULT base. A domain adapter that must target a
+ * DIFFERENT backend (e.g. Blog → dev API) passes its own `baseUrl` per
+ * request (see `WenayaApiRequestOptions.baseUrl`) — it must never inherit
+ * this practices-oriented default.
  */
 export const WENAYA_API_BASE =
   process.env.WENAYA_API_URL || process.env.PRACTICES_API_URL || "https://api.wenaya.com";
@@ -38,6 +43,12 @@ export const WENAYA_API_DEFAULT_TIMEOUT_MS = 15_000;
 export interface WenayaApiRequestOptions {
   /** Query params to serialize (null/undefined entries are skipped). */
   query?: Record<string, string | number | boolean | null | undefined>;
+  /**
+   * Target base URL for THIS request, overriding `WENAYA_API_BASE`.
+   * Domain adapters that resolve to a different backend (e.g. Blog → DEV)
+   * set it explicitly so the shared practices-oriented default is never used.
+   */
+  baseUrl?: string;
   /** Per-request timeout in ms (default `WENAYA_API_DEFAULT_TIMEOUT_MS`). */
   timeoutMs?: number;
   /** Next.js Data Cache revalidation window in seconds, when set. */
@@ -128,7 +139,8 @@ export async function wenayaApiGet<T = unknown>(
   }
 
   try {
-    const response = await fetch(`${WENAYA_API_BASE}${path}${toQueryString(options.query)}`, init);
+    const base = options.baseUrl?.replace(/\/+$/, "") ?? WENAYA_API_BASE;
+    const response = await fetch(`${base}${path}${toQueryString(options.query)}`, init);
 
     if (!response.ok) {
       throw new WenayaApiError(`Wenaya API HTTP ${response.status} for ${path}`, response.status);

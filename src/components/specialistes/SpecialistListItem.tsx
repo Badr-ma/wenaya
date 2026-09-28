@@ -8,14 +8,12 @@ import type { Specialist } from "@/lib/specialistes";
 
 export default function SpecialistListItem({
   specialist,
-  index,
   isActive,
   onHover,
   onLeave,
   onClick,
 }: {
   specialist: Specialist;
-  index: number;
   isActive: boolean;
   onHover: (slug: string | null) => void;
   onLeave: () => void;
@@ -44,9 +42,6 @@ export default function SpecialistListItem({
           className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
         />
-        <span className="absolute top-3 left-3 text-[10px] font-mono text-white/60 tabular-nums bg-[#0B1220]/55 px-1.5 py-0.5 rounded-[4px] backdrop-blur-sm">
-          {String(index + 1).padStart(2, "0")}
-        </span>
       </div>
 
       <div className="flex flex-col px-4 sm:px-5 py-3 sm:py-4 flex-1 min-w-0">

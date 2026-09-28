@@ -1,9 +1,10 @@
 /**
  * Group Session Detail Page (EN) — /en/seance-de-groupe/[slug]
  * English detail pages use the same (French) slugs as live wenaya.com.
- * Static generation via generateStaticParams; dynamic SEO metadata, WebPage +
- * Service structured data, breadcrumbs, and the GroupSessionDetail component.
- * Unknown slugs render proper 404 via notFound().
+ * The 6 local editorial slugs are statically generated; LIVE program slugs
+ * render on-demand from the backend active feed with matching SEO.
+ * Resolution is editorial-first (deterministic), then live; unknown slugs
+ * render proper 404 via notFound(). ISR revalidate 600s mirrors the Data-Cache.
  */
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -13,13 +14,19 @@ import GroupSessionDetail from "@/components/seance-de-groupe/GroupSessionDetail
 import Footer from "@/components/Footer";
 import {
   getAllGroupSessionSlugs,
-  getGroupSessionBySlug,
   getCanonicalGroupSession,
   getRelatedGroupSessions,
   getGroupSessionLabels,
   getGroupSessionAlternateUrls,
 } from "@/lib/group-sessions";
+import {
+  resolveDetailSession,
+  getLiveGroupSessionAlternateUrls,
+  getLiveRelatedSessions,
+} from "@/lib/group-sessions-active";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
+
+export const revalidate = 600;
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -31,19 +38,22 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const session = getGroupSessionBySlug(slug, "en");
+  const session = await resolveDetailSession(slug, "en");
   if (!session) return {};
-
-  const canonical = getCanonicalGroupSession(slug);
-  if (!canonical) return {};
 
   const url = `${SITE_URL}${session.path}`;
   const title = `${session.title} in Casablanca`;
+  const languages = session.live
+    ? getLiveGroupSessionAlternateUrls(session.slug)
+    : (() => {
+        const canonical = getCanonicalGroupSession(slug);
+        return canonical ? getGroupSessionAlternateUrls(canonical) : {};
+      })();
 
   return {
     title,
     description: session.description,
-    alternates: { canonical: url, languages: getGroupSessionAlternateUrls(canonical) },
+    alternates: { canonical: url, languages },
     openGraph: {
       ...OG_DEFAULTS,
       locale: "en_MA",
@@ -63,11 +73,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function GroupSessionDetailEnPage({ params }: Props) {
   const { slug } = await params;
-  const session = getGroupSessionBySlug(slug, "en");
+  const session = await resolveDetailSession(slug, "en");
   if (!session) notFound();
 
-  const canonical = getCanonicalGroupSession(slug)!;
-  const related = getRelatedGroupSessions(session.id, "en", 3);
+  const related = session.live
+    ? await getLiveRelatedSessions(session.id, "en", 3)
+    : getRelatedGroupSessions(session.id, "en", 3);
   const labels = getGroupSessionLabels("en");
 
   const pageUrl = `${SITE_URL}${session.path}`;
@@ -94,6 +105,15 @@ export default async function GroupSessionDetailEnPage({ params }: Props) {
       provider: { "@type": "Organization", name: "Wenaya", url: SITE_URL },
       areaServed: { "@type": "City", name: "Casablanca" },
       availableLanguage: ["fr", "en"],
+      ...(session.live?.price
+        ? {
+            offers: {
+              "@type": "Offer",
+              price: session.live.price,
+              priceCurrency: "MAD",
+            },
+          }
+        : {}),
       location: {
         "@type": "Place",
         name: "Wenaya Clinic",
@@ -124,6 +144,7 @@ export default async function GroupSessionDetailEnPage({ params }: Props) {
             related={related}
             labels={labels}
             listingHref="/en/seance-de-groupe"
+            locale="en"
           />
         </main>
         <Footer />

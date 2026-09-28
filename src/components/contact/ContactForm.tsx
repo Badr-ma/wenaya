@@ -1,10 +1,18 @@
 /**
  * Contact Form — the contact form card (previously inline in ContactPage).
- * Reads the `service`, `type`, and `subject` query params so a group-session
- * booking CTA can prefill and visibly pre-select the activity the user came
- * from. When rendered with `isBooking` (the nav Réserver CTA target
- * `?type=booking`), the card becomes a booking-request form: identity fields,
- * booking-category select, details field and booking submit/success copy.
+ * Reads the `service`, `type`, `subject`, `source`, `journey`, `slot`,
+ * `date`, and `time` query params so a group-session booking CTA can prefill
+ * and visibly pre-select the activity (and, for live sessions, the chosen
+ * slot) the user came from. When rendered with `isBooking` (the nav Réserver
+ * CTA target `?type=booking`), the card becomes a booking-request form:
+ * identity fields, booking-category select, details field and booking
+ * submit/success copy. Slot params are forwarded unchanged on submit.
+ *
+ * The `requestedSession` prop carries the recognised session title resolved
+ * SERVER-side (handles `api-{id}` live-program keys the client cannot know).
+ * When the prop is absent, the client falls back to the local editorial
+ * resolution so any non-server-wired render keeps today's behaviour. The
+ * exact `service` query value is always forwarded unchanged on submit.
  * Wrapped in a Suspense boundary by ContactPage because it uses useSearchParams.
  */
 "use client";
@@ -16,7 +24,13 @@ import { getGroupSessionForBooking } from "@/lib/group-sessions";
 
 type BookingCategory = { value: string; label: string };
 
-function ContactFormInner({ isBooking = false }: { isBooking?: boolean }): React.JSX.Element {
+type ContactFormProps = {
+  isBooking?: boolean;
+  /** Session title resolved server-side (editorial slug OR `api-{id}` live program). */
+  requestedSession?: { title: string } | null;
+};
+
+function ContactFormInner({ isBooking = false, requestedSession }: ContactFormProps): React.JSX.Element {
   const { t, tRaw, locale } = useLocale();
   const searchParams = useSearchParams();
   const service = searchParams.get("service");
@@ -24,8 +38,20 @@ function ContactFormInner({ isBooking = false }: { isBooking?: boolean }): React
   const subject = searchParams.get("subject");
   const urlSource = searchParams.get("source");
   const journey = searchParams.get("journey");
+  const slotId = searchParams.get("slot");
+  const slotDate = searchParams.get("date");
+  const slotTime = searchParams.get("time");
+  const hasSlot = Boolean(slotId && slotDate && slotTime);
   const isRecruitment = subject === "recrutement" || subject === "recruitment";
-  const requestedSession = service ? getGroupSessionForBooking(service, locale) : undefined;
+  // The server passes the recognised session title (editorial slug OR `api-{id}`
+  // live program). When the prop is absent we fall back to the local editorial
+  // resolution so any other render path keeps today's behaviour.
+  const requestedSessionTitle =
+    requestedSession?.title ??
+    (service ? getGroupSessionForBooking(service, locale)?.title : undefined);
+  const slotLine = hasSlot
+    ? `\n${t("contact.slotNotice")} ${formatSlotDate(slotDate, locale)} — ${slotTime}.`
+    : "";
   const bookingCategories = isBooking
     ? tRaw<BookingCategory[]>("contact.bookingCategories")
     : [];
@@ -35,10 +61,10 @@ function ContactFormInner({ isBooking = false }: { isBooking?: boolean }): React
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [bookingCategory, setBookingCategory] = useState(
-    isBooking && requestedSession ? "group-session" : "",
+    isBooking && requestedSessionTitle ? "group-session" : "",
   );
   const [message, setMessage] = useState(
-    requestedSession ? `${t("contact.sessionPrefill")} ${requestedSession.title}.`
+    requestedSessionTitle ? `${t("contact.sessionPrefill")} ${requestedSessionTitle}.${slotLine}`
     : isRecruitment ? t("contact.recruitmentPrefill")
     : "",
   );
@@ -70,6 +96,9 @@ const res = await fetch("/api/contact", {
           service: service ?? undefined,
           type: isBooking ? "booking" : (type ?? undefined),
           subject: subject ?? undefined,
+          slot: slotId ?? undefined,
+          slotDate: slotDate ?? undefined,
+          slotTime: slotTime ?? undefined,
         }),
       });
       const data = (await res.json().catch(() => null)) as { success?: boolean } | null;
@@ -98,7 +127,7 @@ const res = await fetch("/api/contact", {
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
-          {requestedSession && (
+          {requestedSessionTitle && (
             <div
               className="flex items-start gap-3 rounded-xl border px-4 py-3"
               style={{ background: "#B88A5A0D", borderColor: "#B88A5A30" }}
@@ -109,12 +138,28 @@ const res = await fetch("/api/contact", {
               />
               <p className="text-[#0B1220]/70 text-xs leading-relaxed">
                 <span className="font-semibold text-[#0B1220]">{t("contact.sessionNotice")} :</span>{" "}
-                {requestedSession.title}
+                {requestedSessionTitle}
               </p>
             </div>
           )}
 
-          {isRecruitment && !requestedSession && (
+          {hasSlot && (
+            <div
+              className="flex items-start gap-3 rounded-xl border px-4 py-3"
+              style={{ background: "#B88A5A0D", borderColor: "#B88A5A30" }}
+            >
+              <span
+                className="mt-0.5 w-1.5 h-1.5 shrink-0 rounded-full"
+                style={{ background: "linear-gradient(135deg, #B88A5A 0%, #9A7242 100%)" }}
+              />
+              <p className="text-[#0B1220]/70 text-xs leading-relaxed">
+                <span className="font-semibold text-[#0B1220]">{t("contact.slotNotice")}</span>{" "}
+                {formatSlotDate(slotDate, locale)} — {slotTime}
+              </p>
+            </div>
+          )}
+
+          {isRecruitment && !requestedSessionTitle && (
             <div
               className="flex items-start gap-3 rounded-xl border px-4 py-3"
               style={{ background: "#B88A5A0D", borderColor: "#B88A5A30" }}
@@ -189,10 +234,10 @@ const res = await fetch("/api/contact", {
   );
 }
 
-export default function ContactForm({ isBooking = false }: { isBooking?: boolean }): React.JSX.Element {
+export default function ContactForm({ isBooking = false, requestedSession }: ContactFormProps): React.JSX.Element {
   return (
     <Suspense fallback={<div className="bg-white/60 rounded-2xl p-6 sm:p-8 border border-[#0B1220]/[0.06] min-h-[480px]" />}>
-      <ContactFormInner isBooking={isBooking} />
+      <ContactFormInner isBooking={isBooking} requestedSession={requestedSession} />
     </Suspense>
   );
 }
@@ -206,4 +251,24 @@ function Input({ id, label, type = "text", placeholder, value, onChange, require
       />
     </div>
   );
+}
+
+/** ISO date (YYYY-MM-DD) → short weekday+date in the page locale (UTC-safe); raw fallback. */
+function formatSlotDate(
+  isoDate: string | null,
+  locale: "fr" | "en" | string
+): string {
+  if (!isoDate) return "";
+  try {
+    const date = new Date(`${isoDate}T00:00:00Z`);
+    if (Number.isNaN(date.getTime())) return isoDate;
+    return new Intl.DateTimeFormat(locale === "fr" ? "fr-FR" : "en-GB", {
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+      timeZone: "UTC",
+    }).format(date);
+  } catch {
+    return isoDate;
+  }
 }

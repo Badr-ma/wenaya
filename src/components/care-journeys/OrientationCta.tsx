@@ -94,7 +94,7 @@ export default function OrientationCta({
                   </svg>
                 </a>
                 <a
-                  href={h(locale, "/professional")}
+                  href={h(locale, "/search/all")}
                   className="inline-flex h-13 items-center justify-center rounded-xl border border-white/25 px-6 text-sm font-medium text-white transition-colors hover:border-white/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B88A5A]"
                 >
                   {labels.findSpecialist}

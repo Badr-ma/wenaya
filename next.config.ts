@@ -48,14 +48,9 @@ const nextConfig: NextConfig = {
 
       /* ── Category 2: Semantic mappings (permanent for renamed, temporary for removed) ── */
       { source: "/soins",             destination: "/pratiques",   permanent: true },
-      { source: "/maux-troubles",     destination: "/pratiques",   permanent: true },
-      /* Old trouble detail: pluridisciplinary by nature (yoga/massothérapie/
-         nutrition/psychologie) — folds to the practices listing, no single practice.
-         Only VERIFIED live canonical slugs are wired (the SPA served any slug);
-         remaining /maux-troubles/* slugs stay 404 pending content sign-off. */
-      { source: "/maux-troubles/grossesse", destination: "/pratiques", permanent: true },
-      { source: "/maux-troubles/grossesse-maternite", destination: "/pratiques", permanent: true },
-      { source: "/maux-troubles/vertiges", destination: "/pratiques", permanent: true },
+      /* /maux-troubles is now a first-class page (API-backed orientation
+         catalogue) — no redirect to /pratiques anymore. Unmapped
+         /maux-troubles/* deep slugs stay 404 pending content sign-off. */
       { source: "/blog",              destination: "/articles",    permanent: true },
       { source: "/blog/:path*",       destination: "/articles/:path*", permanent: true },
       { source: "/evenements",        destination: "/seance-de-groupe", permanent: false },
@@ -69,7 +64,8 @@ const nextConfig: NextConfig = {
       { source: "/pratiques/therapies-complementaires", destination: "/pratiques",              permanent: true },
       /* EN equivalents */
       { source: "/en/soins",             destination: "/en/pratiques",   permanent: true },
-      { source: "/en/maux-troubles",     destination: "/en/pratiques",   permanent: true },
+      /* /en/maux-troubles now folds to the real EN health-needs page. */
+      { source: "/en/maux-troubles",     destination: "/en/health-needs", permanent: true },
       { source: "/en/blog",           destination: "/en/articles", permanent: true },
       { source: "/en/blog/:path*",    destination: "/en/articles/:path*", permanent: true },
       { source: "/en/evenements",        destination: "/en/seance-de-groupe", permanent: false },
@@ -130,12 +126,98 @@ const nextConfig: NextConfig = {
          URLs are documented in the parity report and deliberately NOT redirected
          here, to avoid leading traffic to a second 404. */
 
-      /* Specialists: old alias /specialistes → canonical /professional.
-         A wildcard detail redirect is used so every specialist profile slug maps
-         to the canonical route regardless of the dataset being local or Redis-backed. */
-      { source: "/specialistes",                    destination: "/professional",               permanent: true },
+      /* Specialists: the professionals LISTING migrated from /professional to the
+         /search route family (FR /search/all + /search/<specialty>, EN /en/search/...).
+         Filtered bookmarks (/professional?specialty=<slug>) 308 onto the matching
+         /search/<slug> page (Next preserves non-has params, so ?q= survives). Bare
+         listing URLs retarget to /search/all. Detail pages remain at
+         /professional/[slug], so both detail wildcards below still hit them.
+         The 20 per-slug slugs = verified live specialty slugs from the API. */
+      { source: "/professional",                    destination: "/search/osteopathie",          permanent: true, has: [{ type: "query", key: "specialty", value: "osteopathie" }] },
+      { source: "/professional",                    destination: "/search/sophrologie",         permanent: true, has: [{ type: "query", key: "specialty", value: "sophrologie" }] },
+      { source: "/professional",                    destination: "/search/naturopathie",        permanent: true, has: [{ type: "query", key: "specialty", value: "naturopathie" }] },
+      { source: "/professional",                    destination: "/search/psychotherapie",      permanent: true, has: [{ type: "query", key: "specialty", value: "psychotherapie" }] },
+      { source: "/professional",                    destination: "/search/kinesitherapie",      permanent: true, has: [{ type: "query", key: "specialty", value: "kinesitherapie" }] },
+      { source: "/professional",                    destination: "/search/massotherapie",       permanent: true, has: [{ type: "query", key: "specialty", value: "massotherapie" }] },
+      { source: "/professional",                    destination: "/search/nutrition",           permanent: true, has: [{ type: "query", key: "specialty", value: "nutrition" }] },
+      { source: "/professional",                    destination: "/search/coaching-sportif",    permanent: true, has: [{ type: "query", key: "specialty", value: "coaching-sportif" }] },
+      { source: "/professional",                    destination: "/search/cupping-therapy-hijama", permanent: true, has: [{ type: "query", key: "specialty", value: "cupping-therapy-hijama" }] },
+      { source: "/professional",                    destination: "/search/psychologie",         permanent: true, has: [{ type: "query", key: "specialty", value: "psychologie" }] },
+      { source: "/professional",                    destination: "/search/orthophonie",         permanent: true, has: [{ type: "query", key: "specialty", value: "orthophonie" }] },
+      { source: "/professional",                    destination: "/search/sexologie",           permanent: true, has: [{ type: "query", key: "specialty", value: "sexologie" }] },
+      { source: "/professional",                    destination: "/search/psychomotricite",     permanent: true, has: [{ type: "query", key: "specialty", value: "psychomotricite" }] },
+      { source: "/professional",                    destination: "/search/neuropsychologie",    permanent: true, has: [{ type: "query", key: "specialty", value: "neuropsychologie" }] },
+      { source: "/professional",                    destination: "/search/jiu-jitsu",           permanent: true, has: [{ type: "query", key: "specialty", value: "jiu-jitsu" }] },
+      { source: "/professional",                    destination: "/search/art-martial-therapie", permanent: true, has: [{ type: "query", key: "specialty", value: "art-martial-therapie" }] },
+      { source: "/professional",                    destination: "/search/yoga",                permanent: true, has: [{ type: "query", key: "specialty", value: "yoga" }] },
+      { source: "/professional",                    destination: "/search/meditation",          permanent: true, has: [{ type: "query", key: "specialty", value: "meditation" }] },
+      { source: "/professional",                    destination: "/search/sono-therapie",       permanent: true, has: [{ type: "query", key: "specialty", value: "sono-therapie" }] },
+      { source: "/professional",                    destination: "/search/infirmerie",          permanent: true, has: [{ type: "query", key: "specialty", value: "infirmerie" }] },
+      { source: "/en/professional",                 destination: "/en/search/osteopathie",      permanent: true, has: [{ type: "query", key: "specialty", value: "osteopathie" }] },
+      { source: "/en/professional",                 destination: "/en/search/sophrologie",      permanent: true, has: [{ type: "query", key: "specialty", value: "sophrologie" }] },
+      { source: "/en/professional",                 destination: "/en/search/naturopathie",     permanent: true, has: [{ type: "query", key: "specialty", value: "naturopathie" }] },
+      { source: "/en/professional",                 destination: "/en/search/psychotherapie",   permanent: true, has: [{ type: "query", key: "specialty", value: "psychotherapie" }] },
+      { source: "/en/professional",                 destination: "/en/search/kinesitherapie",   permanent: true, has: [{ type: "query", key: "specialty", value: "kinesitherapie" }] },
+      { source: "/en/professional",                 destination: "/en/search/massotherapie",    permanent: true, has: [{ type: "query", key: "specialty", value: "massotherapie" }] },
+      { source: "/en/professional",                 destination: "/en/search/nutrition",        permanent: true, has: [{ type: "query", key: "specialty", value: "nutrition" }] },
+      { source: "/en/professional",                 destination: "/en/search/coaching-sportif", permanent: true, has: [{ type: "query", key: "specialty", value: "coaching-sportif" }] },
+      { source: "/en/professional",                 destination: "/en/search/cupping-therapy-hijama", permanent: true, has: [{ type: "query", key: "specialty", value: "cupping-therapy-hijama" }] },
+      { source: "/en/professional",                 destination: "/en/search/psychologie",      permanent: true, has: [{ type: "query", key: "specialty", value: "psychologie" }] },
+      { source: "/en/professional",                 destination: "/en/search/orthophonie",      permanent: true, has: [{ type: "query", key: "specialty", value: "orthophonie" }] },
+      { source: "/en/professional",                 destination: "/en/search/sexologie",        permanent: true, has: [{ type: "query", key: "specialty", value: "sexologie" }] },
+      { source: "/en/professional",                 destination: "/en/search/psychomotricite",  permanent: true, has: [{ type: "query", key: "specialty", value: "psychomotricite" }] },
+      { source: "/en/professional",                 destination: "/en/search/neuropsychologie", permanent: true, has: [{ type: "query", key: "specialty", value: "neuropsychologie" }] },
+      { source: "/en/professional",                 destination: "/en/search/jiu-jitsu",        permanent: true, has: [{ type: "query", key: "specialty", value: "jiu-jitsu" }] },
+      { source: "/en/professional",                 destination: "/en/search/art-martial-therapie", permanent: true, has: [{ type: "query", key: "specialty", value: "art-martial-therapie" }] },
+      { source: "/en/professional",                 destination: "/en/search/yoga",             permanent: true, has: [{ type: "query", key: "specialty", value: "yoga" }] },
+      { source: "/en/professional",                 destination: "/en/search/meditation",       permanent: true, has: [{ type: "query", key: "specialty", value: "meditation" }] },
+      { source: "/en/professional",                 destination: "/en/search/sono-therapie",    permanent: true, has: [{ type: "query", key: "specialty", value: "sono-therapie" }] },
+      { source: "/en/professional",                 destination: "/en/search/infirmerie",       permanent: true, has: [{ type: "query", key: "specialty", value: "infirmerie" }] },
+      { source: "/specialistes",                    destination: "/search/osteopathie",          permanent: true, has: [{ type: "query", key: "specialty", value: "osteopathie" }] },
+      { source: "/specialistes",                    destination: "/search/sophrologie",         permanent: true, has: [{ type: "query", key: "specialty", value: "sophrologie" }] },
+      { source: "/specialistes",                    destination: "/search/naturopathie",        permanent: true, has: [{ type: "query", key: "specialty", value: "naturopathie" }] },
+      { source: "/specialistes",                    destination: "/search/psychotherapie",      permanent: true, has: [{ type: "query", key: "specialty", value: "psychotherapie" }] },
+      { source: "/specialistes",                    destination: "/search/kinesitherapie",      permanent: true, has: [{ type: "query", key: "specialty", value: "kinesitherapie" }] },
+      { source: "/specialistes",                    destination: "/search/massotherapie",       permanent: true, has: [{ type: "query", key: "specialty", value: "massotherapie" }] },
+      { source: "/specialistes",                    destination: "/search/nutrition",           permanent: true, has: [{ type: "query", key: "specialty", value: "nutrition" }] },
+      { source: "/specialistes",                    destination: "/search/coaching-sportif",    permanent: true, has: [{ type: "query", key: "specialty", value: "coaching-sportif" }] },
+      { source: "/specialistes",                    destination: "/search/cupping-therapy-hijama", permanent: true, has: [{ type: "query", key: "specialty", value: "cupping-therapy-hijama" }] },
+      { source: "/specialistes",                    destination: "/search/psychologie",         permanent: true, has: [{ type: "query", key: "specialty", value: "psychologie" }] },
+      { source: "/specialistes",                    destination: "/search/orthophonie",         permanent: true, has: [{ type: "query", key: "specialty", value: "orthophonie" }] },
+      { source: "/specialistes",                    destination: "/search/sexologie",           permanent: true, has: [{ type: "query", key: "specialty", value: "sexologie" }] },
+      { source: "/specialistes",                    destination: "/search/psychomotricite",     permanent: true, has: [{ type: "query", key: "specialty", value: "psychomotricite" }] },
+      { source: "/specialistes",                    destination: "/search/neuropsychologie",    permanent: true, has: [{ type: "query", key: "specialty", value: "neuropsychologie" }] },
+      { source: "/specialistes",                    destination: "/search/jiu-jitsu",           permanent: true, has: [{ type: "query", key: "specialty", value: "jiu-jitsu" }] },
+      { source: "/specialistes",                    destination: "/search/art-martial-therapie", permanent: true, has: [{ type: "query", key: "specialty", value: "art-martial-therapie" }] },
+      { source: "/specialistes",                    destination: "/search/yoga",                permanent: true, has: [{ type: "query", key: "specialty", value: "yoga" }] },
+      { source: "/specialistes",                    destination: "/search/meditation",          permanent: true, has: [{ type: "query", key: "specialty", value: "meditation" }] },
+      { source: "/specialistes",                    destination: "/search/sono-therapie",       permanent: true, has: [{ type: "query", key: "specialty", value: "sono-therapie" }] },
+      { source: "/specialistes",                    destination: "/search/infirmerie",          permanent: true, has: [{ type: "query", key: "specialty", value: "infirmerie" }] },
+      { source: "/en/specialistes",                 destination: "/en/search/osteopathie",      permanent: true, has: [{ type: "query", key: "specialty", value: "osteopathie" }] },
+      { source: "/en/specialistes",                 destination: "/en/search/sophrologie",      permanent: true, has: [{ type: "query", key: "specialty", value: "sophrologie" }] },
+      { source: "/en/specialistes",                 destination: "/en/search/naturopathie",     permanent: true, has: [{ type: "query", key: "specialty", value: "naturopathie" }] },
+      { source: "/en/specialistes",                 destination: "/en/search/psychotherapie",   permanent: true, has: [{ type: "query", key: "specialty", value: "psychotherapie" }] },
+      { source: "/en/specialistes",                 destination: "/en/search/kinesitherapie",   permanent: true, has: [{ type: "query", key: "specialty", value: "kinesitherapie" }] },
+      { source: "/en/specialistes",                 destination: "/en/search/massotherapie",    permanent: true, has: [{ type: "query", key: "specialty", value: "massotherapie" }] },
+      { source: "/en/specialistes",                 destination: "/en/search/nutrition",        permanent: true, has: [{ type: "query", key: "specialty", value: "nutrition" }] },
+      { source: "/en/specialistes",                 destination: "/en/search/coaching-sportif", permanent: true, has: [{ type: "query", key: "specialty", value: "coaching-sportif" }] },
+      { source: "/en/specialistes",                 destination: "/en/search/cupping-therapy-hijama", permanent: true, has: [{ type: "query", key: "specialty", value: "cupping-therapy-hijama" }] },
+      { source: "/en/specialistes",                 destination: "/en/search/psychologie",      permanent: true, has: [{ type: "query", key: "specialty", value: "psychologie" }] },
+      { source: "/en/specialistes",                 destination: "/en/search/orthophonie",      permanent: true, has: [{ type: "query", key: "specialty", value: "orthophonie" }] },
+      { source: "/en/specialistes",                 destination: "/en/search/sexologie",        permanent: true, has: [{ type: "query", key: "specialty", value: "sexologie" }] },
+      { source: "/en/specialistes",                 destination: "/en/search/psychomotricite",  permanent: true, has: [{ type: "query", key: "specialty", value: "psychomotricite" }] },
+      { source: "/en/specialistes",                 destination: "/en/search/neuropsychologie", permanent: true, has: [{ type: "query", key: "specialty", value: "neuropsychologie" }] },
+      { source: "/en/specialistes",                 destination: "/en/search/jiu-jitsu",        permanent: true, has: [{ type: "query", key: "specialty", value: "jiu-jitsu" }] },
+      { source: "/en/specialistes",                 destination: "/en/search/art-martial-therapie", permanent: true, has: [{ type: "query", key: "specialty", value: "art-martial-therapie" }] },
+      { source: "/en/specialistes",                 destination: "/en/search/yoga",             permanent: true, has: [{ type: "query", key: "specialty", value: "yoga" }] },
+      { source: "/en/specialistes",                 destination: "/en/search/meditation",       permanent: true, has: [{ type: "query", key: "specialty", value: "meditation" }] },
+      { source: "/en/specialistes",                 destination: "/en/search/sono-therapie",    permanent: true, has: [{ type: "query", key: "specialty", value: "sono-therapie" }] },
+      { source: "/en/specialistes",                 destination: "/en/search/infirmerie",       permanent: true, has: [{ type: "query", key: "specialty", value: "infirmerie" }] },
+      { source: "/professional",                    destination: "/search/all",                 permanent: true },
+      { source: "/en/professional",                 destination: "/en/search/all",              permanent: true },
+      { source: "/specialistes",                    destination: "/search/all",                 permanent: true },
+      { source: "/en/specialistes",                 destination: "/en/search/all",              permanent: true },
       { source: "/specialistes/:path*",             destination: "/professional/:path*",        permanent: true },
-      { source: "/en/specialistes",                 destination: "/en/professional",            permanent: true },
       { source: "/en/specialistes/:path*",          destination: "/en/professional/:path*",     permanent: true },
 
       /* Old per-profile booking sub-page → the same specialist's profile

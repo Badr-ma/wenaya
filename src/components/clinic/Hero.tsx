@@ -179,7 +179,7 @@ export default function ClinicHero(): React.JSX.Element {
             {/* CTAs — primary bronze, secondary outline; same row on desktop */}
             <div className="ch-cta ch-fade mt-8 sm:mt-9 flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <Link
-                href={h(locale, "/professional")}
+                href={h(locale, "/search/all")}
                 className="inline-flex items-center gap-2.5 h-13 px-8 py-3.5 text-white text-sm font-semibold transition-all duration-300 hover:-translate-y-px"
                 style={{
                   background: "linear-gradient(135deg, #B88A5A 0%, #9A7242 100%)",

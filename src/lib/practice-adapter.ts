@@ -22,8 +22,10 @@ import { EN_ARTICLE_DEMO } from "./en-translations";
 import type { ApiSpeciality } from "./practices-api";
 import type { Pratique } from "./pratiques";
 
-/** backend id → canonical frontend slug (mirrors local `liveId`, practice-content.ts). */
-const SLUG_BY_LIVE_ID: Record<number, string> = {
+/** backend id → canonical frontend slug (mirrors local `liveId`, practice-content.ts).
+ *  Exported for the Troubles adapter — its `specialties[]` embed full speciality
+ *  records keyed by the same backend id. */
+export const SLUG_BY_LIVE_ID: Record<number, string> = {
   2: "psychomotricite",
   3: "orthophonie",
   4: "kinesitherapie",

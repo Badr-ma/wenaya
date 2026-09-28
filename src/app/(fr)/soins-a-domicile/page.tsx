@@ -12,7 +12,6 @@
  * ivory #FAF8F4. Varied editorial composition, no generic card grids.
  */
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import HomecareHero from "@/components/domicile/Hero";
@@ -76,8 +75,6 @@ const structuredData = {
 };
 
 export default function SoinsADomicilePage() {
-  /* HIDDEN — temporarily disabled; re-enable by removing the next line */
-  notFound();
   return (
     <ErrorBoundary>
       <script

@@ -33,11 +33,10 @@ export const metadata: Metadata = {
 };
 
 import dynamic from "next/dynamic";
-import Banner from "@/components/Banner";
 import HeroSection from "@/components/HeroSection";
 import SectionBreak from "@/components/SectionBreak";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import { getArticlesPage } from "@/lib/blog-articles-api";
+import { getArticlesPage, blogApiErrorLabel } from "@/lib/blog-articles-api";
 import { toFeedPost } from "@/lib/blog-mappers";
 import { getHomepagePublished } from "@/lib/homepage";
 import { getHomepageSpecialists } from "@/lib/professionals";
@@ -93,7 +92,8 @@ export default async function EnglishHome() {
   try {
     const { articles } = await getArticlesPage(1);
     posts = articles.slice(0, 3).map(toFeedPost);
-  } catch {
+  } catch (error) {
+    console.error(`[blog] homepage feed fetch failed: ${blogApiErrorLabel(error)}`);
     posts = [];
   }
 
@@ -105,7 +105,6 @@ export default async function EnglishHome() {
       />
       <div className="flex flex-col min-h-screen">
         <main>
-          <div data-section-bg="dark"><Banner /></div>
           <div data-section-bg="dark"><HeroSection /></div>
           <SectionBreak />
           <div data-section-bg="light"><HowItWorks /></div>

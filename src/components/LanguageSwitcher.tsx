@@ -7,13 +7,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useLocale } from "@/contexts/LanguageContext";
-
-function switchLocalePathname(pathname: string, from: "fr" | "en"): string {
-  if (from === "en") {
-    return pathname === "/en" ? "/" : pathname.replace(/^\/en/, "") || "/";
-  }
-  return `/en${pathname === "/" ? "" : pathname}`;
-}
+import { switchLocalePathname } from "@/lib/href";
 
 export default function LanguageSwitcher() {
   const { locale, setLocale } = useLocale();

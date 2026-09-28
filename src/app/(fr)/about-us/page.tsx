@@ -1,87 +1,77 @@
 /**
- * About Page — server component assembling all Clinic/B2C page sections.
- * Rebuilt to an editorial, no-card design using live wenaya.com content.
- * Sections: Hero, Trust, Intro, Practices, Courses, Pathologies, Team,
- * HealthNeeds, Recruitment, Practical, and Footer.
- * Includes MedicalClinic structured data for SEO.
+ * About Page ("Qui sommes nous") — server component.
+ * Concise editorial company-mission page. No clinic sections: the CTAs point
+ * toward the Clinic page, the practices catalogue and the booking request flow.
+ * Includes WebPage structured data for SEO.
  */
 import type { Metadata } from "next";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import ClinicHero from "@/components/clinic/Hero";
-import ClinicTrust from "@/components/clinic/Trust";
-import ClinicIntro from "@/components/clinic/Intro";
-import ClinicPractices from "@/components/clinic/Practices";
-import ClinicCourses from "@/components/clinic/Courses";
-import ClinicPathologies from "@/components/clinic/Pathologies";
-import ClinicTeam from "@/components/clinic/Team";
-import ClinicHealthNeeds from "@/components/clinic/HealthNeeds";
-import ClinicParcoursDeSoins from "@/components/clinic/ParcoursDeSoins";
-/* HIDDEN — temporarily disabled; re-enable by uncommenting import + render below */
-// import ClinicHomecareBanner from "@/components/clinic/HomecareBanner";
-import ClinicRecruitment from "@/components/clinic/Recruitment";
-import ClinicPractical from "@/components/clinic/Practical";
-import ClinicStructuredData from "@/components/clinic/StructuredData";
-import { getHomepageSpecialists } from "@/lib/professionals";
+import AboutUs from "@/components/about/AboutUs";
 import Footer from "@/components/Footer";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
+const ABOUT_PATH = "/about-us";
+
 export const metadata: Metadata = {
-  title: "Wenaya Clinic — Centre de Santé Intégrée à Casablanca",
+  title: "Qui sommes nous | Wenaya",
   description:
-    "Wenaya Clinic, un écosystème de santé intégrée à Casablanca : kinésithérapie, ostéopathie, psychologie, neuropsychologie, nutrition, orthophonie et thérapies complémentaires — pour un accompagnement global et personnalisé.",
+    "Chez Wenaya, notre mission est d'accompagner chaque individu dans son chemin vers une santé optimale et un bien-être global. Découvrez qui sommes nous et notre vision de la santé intégrée à Casablanca.",
   keywords: [
-    "Wenaya Clinic Casablanca",
-    "centre santé intégrée Casablanca",
-    "clinique pluridisciplinaire Casablanca",
-    "kinésithérapie Casablanca",
-    "ostéopathie Casablanca",
-    "santé intégrée Maroc",
+    "à propos de Wenaya",
+    "qui sommes nous",
+    "mission Wenaya",
+    "santé intégrée",
+    "bien-être global",
+    "Wenaya Casablanca",
   ],
   alternates: {
-    canonical: `${SITE_URL}/about-us`,
-    languages: languageAlternates("/about-us"),
+    canonical: `${SITE_URL}${ABOUT_PATH}`,
+    languages: languageAlternates(ABOUT_PATH),
   },
   openGraph: {
     ...OG_DEFAULTS,
-    title: "Wenaya Clinic — Centre de Santé Intégrée à Casablanca",
+    title: "Qui sommes nous | Wenaya",
     description:
-      "Un écosystème de santé intégrée réunissant des spécialistes pluridisciplinaires à Casablanca pour un accompagnement global et personnalisé.",
-    url: `${SITE_URL}/about-us`,
+      "Notre mission : accompagner chaque individu vers une santé optimale et un bien-être global.",
+    url: `${SITE_URL}${ABOUT_PATH}`,
   },
   twitter: {
     ...TWITTER_DEFAULTS,
-    title: "Wenaya Clinic — Centre de Santé Intégrée à Casablanca",
+    title: "Qui sommes nous | Wenaya",
     description:
-      "Un écosystème de santé intégrée réunissant des spécialistes pluridisciplinaires à Casablanca pour un accompagnement global et personnalisé.",
+      "Notre mission : accompagner chaque individu vers une santé optimale et un bien-être global.",
   },
 };
 
-export default async function AboutPage() {
-  const lang = "fr";
-  const locale = lang;
-  const experts = (await getHomepageSpecialists(8)).slice(0, 8);
+function aboutWebPageJsonLd(): React.ReactElement {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "Qui sommes nous | Wenaya",
+    description:
+      "Chez Wenaya, notre mission est d'accompagner chaque individu dans son chemin vers une santé optimale et un bien-être global.",
+    url: `${SITE_URL}${ABOUT_PATH}`,
+    inLanguage: "fr-MA",
+    isPartOf: { "@id": `${SITE_URL}/#organization` },
+  };
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  );
+}
+
+export default function AboutPage() {
   return (
     <>
+      {aboutWebPageJsonLd()}
       <ErrorBoundary>
         <main>
-          <ClinicStructuredData lang="fr" canonicalPath="/about-us" />
           <Breadcrumbs />
-          <div className="flex flex-col">
-            <ClinicHero />
-            <ClinicTrust />
-            <ClinicIntro />
-            <ClinicPractices locale={locale} lang={lang} />
-            <ClinicCourses locale={locale} lang={lang} />
-            <ClinicPathologies locale={locale} lang={lang} />
-            <ClinicTeam specialists={experts} />
-            <ClinicHealthNeeds />
-            <ClinicParcoursDeSoins />
-            {/* <ClinicHomecareBanner /> — HIDDEN temporarily */}
-            <ClinicRecruitment />
-            <ClinicPractical />
-          </div>
+          <AboutUs lang="fr" />
         </main>
         <Footer />
       </ErrorBoundary>

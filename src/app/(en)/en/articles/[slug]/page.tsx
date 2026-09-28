@@ -13,7 +13,7 @@ import BlogPostClientEditorial from "@/components/blog/BlogPostClientEditorial";
 import { getBlogPractitioner } from "@/lib/blog-practitioner";
 import { SITE_URL, OG_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
-import { getArticleBySlug, fetchAllArticles } from "@/lib/blog-articles-api";
+import { getArticleBySlug, fetchAllArticles, blogApiErrorLabel } from "@/lib/blog-articles-api";
 import { toDetailPost, toPostSummary, BLOG_IMAGE_FALLBACK } from "@/lib/blog-mappers";
 
 interface Props {
@@ -24,14 +24,21 @@ export async function generateStaticParams() {
   try {
     const articles = await fetchAllArticles();
     return articles.map((a) => ({ slug: a.slug }));
-  } catch {
+  } catch (error) {
+    console.error(`[blog] article params fetch failed: ${blogApiErrorLabel(error)}`);
     return [];
   }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const article = await getArticleBySlug(slug);
+  let article: Awaited<ReturnType<typeof getArticleBySlug>>;
+  try {
+    article = await getArticleBySlug(slug);
+  } catch (error) {
+    console.error(`[blog] article detail fetch failed for "${slug}": ${blogApiErrorLabel(error)}`);
+    article = null;
+  }
   if (!article) return {};
 
   const author = article.creator
@@ -64,7 +71,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function EnglishBlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const article = await getArticleBySlug(slug);
+  let article: Awaited<ReturnType<typeof getArticleBySlug>>;
+  try {
+    article = await getArticleBySlug(slug);
+  } catch (error) {
+    console.error(`[blog] article detail fetch failed for "${slug}": ${blogApiErrorLabel(error)}`);
+    article = null;
+  }
   if (!article) notFound();
 
   let allArticles: Awaited<ReturnType<typeof fetchAllArticles>> = [];

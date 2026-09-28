@@ -10,7 +10,7 @@
  * Only uses verified clinic data: name, Casablanca address, phone, opening hours.
  *
  * @param lang — "fr" | "en" for `inLanguage` on the WebPage node.
- * @param canonicalPath — e.g. "/about-us" (FR) or "/en/about-us" (EN).
+ * @param canonicalPath — e.g. "/clinique/wenaya-casablanca" (FR) or "/en/clinic/wenaya-casablanca" (EN).
  */
 import { SITE_URL } from "@/lib/site-config";
 
@@ -59,7 +59,7 @@ export default function ClinicStructuredData({
       "@type": "MedicalClinic",
       "@id": medicalClinicId,
       "name": "Wenaya Clinic",
-      "url": `${SITE_URL}/about-us`,
+      "url": `${SITE_URL}${canonicalPath}`,
       "parentOrganization": { "@id": `${SITE_URL}/#organization` },
       "brand": { "@id": `${SITE_URL}/#organization` },
       "address": {

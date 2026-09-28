@@ -9,6 +9,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import Image from "next/image";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
 
@@ -22,7 +23,7 @@ type ProgrammeLevel = { value: string; label: string };
 
 function Chevron() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="text-[#B88A5A] shrink-0">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="text-[#B88A5A] shrink-0">
       <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
@@ -73,15 +74,16 @@ export default function AdaptableApproachSection() {
           <p className="mx-auto mt-4 max-w-[600px] text-[15px] sm:text-base text-[#2B2F36]/55 leading-relaxed">{t("entreprises.programs.sub")}</p>
         </div>
 
-        {/* Hub — center Wenaya node */}
+        {/* Hub — Wenaya Corporate Programs logo */}
         <div className="aa-hub flex justify-center">
-          <div className="relative w-36 h-36 sm:w-40 sm:h-40" role="img" aria-label="Wenaya">
-            <span className="absolute inset-0 rounded-full border border-[#B88A5A]/30" aria-hidden />
-            <span className="absolute inset-4 rounded-full border border-[#B88A5A]/50" aria-hidden />
-            <span className="absolute inset-8 rounded-full bg-[#B88A5A] text-white flex items-center justify-center heading-serif text-base sm:text-lg font-semibold tracking-wide">
-              Wenaya
-            </span>
-          </div>
+          <Image
+            src="/images/wenaya-corporate-programs.png"
+            alt="Wenaya Corporate Programs"
+            width={1441}
+            height={1092}
+            sizes="(max-width: 640px) 68vw, (max-width: 1024px) 40vw, 30vw"
+            className="h-auto w-full max-w-[340px] sm:max-w-[400px] lg:max-w-[460px]"
+          />
         </div>
 
         {/* Stem */}

@@ -4,9 +4,10 @@
  * browser directly (the backend host must not reach client bundles).
  *
  * Transport handled by the shared server read client (`./api/client.ts`);
- * this module owns the endpoint constants, the domain types, the envelope
- * validation and the normalization (creator PII projection + safe-HTML
- * pipeline).
+ * this module owns the base URL (BLOG API — DEV by default, independently
+ * overridable, NEVER the shared practices-oriented PROD default), the
+ * endpoint constants, the domain types, the envelope validation and the
+ * normalization (creator PII projection + safe-HTML pipeline).
  *
  * Endpoints (verified 2026-09-15, see
  * `wenaya-blog-articles-contract-phase2-report.md` §A/§B):
@@ -31,11 +32,40 @@
  * double-decoded) — the body keeps sanitized HTML while summaries never
  * render literal tags.
  */
-import { wenayaApiGet, WenayaApiError, WENAYA_API_BASE } from "./api/client";
+import { wenayaApiGet, WenayaApiError } from "./api/client";
 import { sanitizeSafeHtml, htmlToText } from "./sanitize-html";
 
-/** Back-compat alias — the shared base owns env resolution (see client.ts). */
-export const BLOG_ARTICLES_API_BASE = WENAYA_API_BASE;
+/**
+ * BLOG/ARTICLES backend base URL — DEV by design, never the shared
+ * practices-oriented PROD default. Resolution order:
+ *   1. `BLOG_API_URL` env override (server-side only, not NEXT_PUBLIC_),
+ *   2. `https://dev-api.wenaya.com` (the approved DEV API).
+ * It intentionally does NOT fall back to `api.wenaya.com`; if the DEV API is
+ * unreachable the adapter throws and build-time consumers degrade to their
+ * empty state (see the build-safety contract) rather than silently reading
+ * production content.
+ */
+const DEV_BLOG_API_URL = "https://dev-api.wenaya.com";
+
+export const BLOG_ARTICLES_API_BASE: string =
+  process.env.BLOG_API_URL?.replace(/\/+$/, "") || DEV_BLOG_API_URL;
+
+/**
+ * Concise, secrets-safe diagnostic label for a caught blog-API failure —
+ * only the HTTP status when known, never the base URL, path or stack.
+ * Build-time consumers use it for a one-line server log on transient
+ * backend errors (e.g. a Cloudflare 403 on the build origin) instead of
+ * throwing and failing the Next build.
+ */
+export function blogApiErrorLabel(error: unknown): string {
+  if (error instanceof WenayaApiError && typeof error.status === "number") {
+    return `HTTP ${error.status}`;
+  }
+  if (error instanceof Error && error.name === "AbortError") {
+    return "timeout";
+  }
+  return "transport error";
+}
 
 /** Listing endpoint (full path incl. version prefix; flat paginator). */
 export const BLOG_ARTICLES_LISTING_ENDPOINT = "/api/v1/public/articles";
@@ -200,6 +230,7 @@ export async function getArticlesPage(rawPage: number = 1): Promise<ArticlePage>
 
   const json = await wenayaApiGet<unknown>(BLOG_ARTICLES_LISTING_ENDPOINT, {
     query: { page },
+    baseUrl: BLOG_ARTICLES_API_BASE,
     revalidate: BLOG_ARTICLES_API_REVALIDATE,
   });
 
@@ -253,7 +284,7 @@ export async function getArticleBySlug(slug: string): Promise<ArticleDetail | nu
   try {
     json = await wenayaApiGet<unknown>(
       `${BLOG_ARTICLES_DETAIL_PREFIX}${encodeURIComponent(trimmed)}`,
-      { revalidate: BLOG_ARTICLES_API_REVALIDATE }
+      { baseUrl: BLOG_ARTICLES_API_BASE, revalidate: BLOG_ARTICLES_API_REVALIDATE }
     );
   } catch (error) {
     if (error instanceof WenayaApiError && error.status === 404) return null;

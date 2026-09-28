@@ -6,7 +6,7 @@ import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 import BlogHero from "@/components/blog/BlogHero";
 import BlogListClient from "@/components/blog/BlogListClient";
-import { getArticlesPage } from "@/lib/blog-articles-api";
+import { getArticlesPage, blogApiErrorLabel } from "@/lib/blog-articles-api";
 import { toClientPost } from "@/lib/blog-mappers";
 
 export const metadata: Metadata = {
@@ -43,9 +43,15 @@ export const metadata: Metadata = {
 };
 
 export default async function EnglishBlogPage() {
-  const { articles } = await getArticlesPage(1);
-  const posts = articles.map(toClientPost);
-  const latest = posts[0];
+  let posts: ReturnType<typeof toClientPost>[] = [];
+  try {
+    const { articles } = await getArticlesPage(1);
+    posts = articles.map(toClientPost);
+  } catch (error) {
+    console.error(`[blog] article listing fetch failed: ${blogApiErrorLabel(error)}`);
+    posts = [];
+  }
+  const latest = posts[0] ?? null;
 
   return (
     <ErrorBoundary>

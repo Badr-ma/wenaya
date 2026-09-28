@@ -11,7 +11,7 @@ import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { useLocale } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
-import { h } from "@/lib/href";
+import { h, clinicHref } from "@/lib/href";
 import LanguageSwitcher from "./LanguageSwitcher";
 import Logo from "./Logo";
 import MobileMenu from "./nav/MobileMenu";
@@ -191,7 +191,7 @@ export default function Nav(): React.JSX.Element {
 
   return (
     <>
-    <header className={`fixed left-0 right-0 z-[100] flex justify-center px-4 sm:px-8 transition-transform duration-300 ease-in-out will-change-transform ${hidden ? "-translate-y-[calc(100%+40px)]" : "translate-y-0"} ${(pathname === "/" || pathname === "/en") ? "top-[40px] pt-2 sm:pt-4" : "top-0 pt-2 sm:pt-4"}`}>
+    <header className={`fixed left-0 right-0 z-[100] flex justify-center px-4 sm:px-8 transition-transform duration-300 ease-in-out will-change-transform ${hidden ? "-translate-y-full" : "translate-y-0"} top-0 pt-2 sm:pt-4`}>
       {/* ── Main bar ── */}
       <div
         className={`flex-1 max-w-7xl flex items-center justify-between h-[52px] sm:h-[64px] px-4 sm:px-5 rounded-full shadow-sm transition-all duration-500 ${barBg}`}
@@ -229,6 +229,7 @@ export default function Nav(): React.JSX.Element {
               <ul className="flex items-center gap-0">
                 {[
                   { label: t("nav.accueil"), href: h(locale, "/") },
+                  { label: t("nav.clinique"), href: clinicHref(locale) },
                   { label: t("nav.aPropos"), href: h(locale, "/about-us") },
                   { label: t("nav.solutions"), href: h(locale, "/corporate") },
                   { label: t("nav.produits"), href: h(locale, "/produits") },
@@ -324,6 +325,7 @@ export default function Nav(): React.JSX.Element {
       onClose={closeMobile}
       isActive={isActive}
       h={(p) => h(locale, p)}
+      clinicHref={clinicHref(locale)}
       t={t}
     />
     </>

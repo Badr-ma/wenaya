@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import Image from "next/image";
@@ -89,6 +89,11 @@ export default function BookingPanel({
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", message: "" });
+  const [errors, setErrors] = useState<{ name?: string; email?: string; phone?: string }>({});
+  const [submitAttempted, setSubmitAttempted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const submittingRef = useRef(false);
+  const contentRef = useRef<HTMLDivElement | null>(null);
   const [viewMonth, setViewMonth] = useState(() => {
     const now = new Date();
     return { year: now.getFullYear(), month: now.getMonth() };
@@ -119,6 +124,33 @@ export default function BookingPanel({
     });
     return () => { cancelled = true; };
   }, [apiConfig, viewMonth]);
+
+  const onCloseRef = useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
+  // Close on Escape; lock body scroll while the panel is open; reset the
+  // content scroll position whenever the step changes (fresh view per step).
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onCloseRef.current();
+    };
+    document.addEventListener("keydown", onKey);
+
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (contentRef.current) contentRef.current.scrollTop = 0;
+  }, [step]);
 
   const monthDays = useMemo(
     () =>
@@ -164,9 +196,7 @@ export default function BookingPanel({
   // those values change while open. This uses React's documented "adjust state
   // during render" pattern (track the previous seed, re-seed when it changes)
   // instead of an effect, so no synchronous setState runs from an effect body.
-  const seedKey = isOpen
-    ? `${initialDayIso ?? ""}|${initialSlot ?? ""}|${initialService ?? ""}`
-    : "closed";
+  const seedKey = `${initialDayIso ?? ""}|${initialSlot ?? ""}|${initialService ?? ""}`;
   const [prevSeedKey, setPrevSeedKey] = useState(seedKey);
   if (prevSeedKey !== seedKey) {
     setPrevSeedKey(seedKey);
@@ -200,21 +230,65 @@ export default function BookingPanel({
     });
   };
 
+  const validateBooking = (data: { name: string; email: string; phone: string }): { name?: string; email?: string; phone?: string } => {
+    const name = data.name.trim();
+    const email = data.email.trim();
+    const phone = data.phone.trim();
+    const errors: { name?: string; email?: string; phone?: string } = {};
+    if (!name) errors.name = t("specialistes.booking.errorNameRequired");
+    if (!email) errors.email = t("specialistes.booking.errorEmailRequired");
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = t("specialistes.booking.errorEmailInvalid");
+    if (!phone) errors.phone = t("specialistes.booking.errorPhoneRequired");
+    else {
+      const digits = phone.replace(/\D/g, "").length;
+      if (digits < 8 || digits > 15) errors.phone = t("specialistes.booking.errorPhoneInvalid");
+    }
+    return errors;
+  };
+
+  const handleFieldChange = (key: "name" | "email" | "phone", value: string) => {
+    const next = { ...formData, [key]: value };
+    setFormData(next);
+    if (submitAttempted) setErrors(validateBooking(next));
+  };
+
   const handleConfirm = () => {
-    if (!canConfirm) return;
-    const bookingData: BookingConfirmationData = {
-      specialistName: specialist.name,
-      day: selectedDay?.day,
-      date: selectedDay?.date,
-      month: selectedDay?.month,
-      iso: selectedDay?.iso,
-      time: selectedSlot,
-      service: specialist.services.find((s) => s.id === selectedService),
-      hours: specialist.hours,
-      formData,
-    };
-    onBookingConfirmed?.(bookingData);
-    setStep(3);
+    if (submittingRef.current) return;
+    const errs = validateBooking(formData);
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      setSubmitAttempted(true);
+      const firstInvalid = (["name", "email", "phone"] as const).find((k) => errs[k]);
+      if (firstInvalid) document.getElementById(`bk-${firstInvalid}`)?.focus();
+      return;
+    }
+    submittingRef.current = true;
+    setSubmitting(true);
+    try {
+      const bookingData: BookingConfirmationData = {
+        specialistName: specialist.name,
+        day: selectedDay?.day,
+        date: selectedDay?.date,
+        month: selectedDay?.month,
+        iso: selectedDay?.iso,
+        time: selectedSlot,
+        service: specialist.services.find((s) => s.id === selectedService),
+        hours: specialist.hours,
+        formData: {
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
+          message: formData.message.trim(),
+        },
+      };
+      onBookingConfirmed?.(bookingData);
+      setErrors({});
+      setSubmitAttempted(false);
+      setStep(3);
+    } finally {
+      submittingRef.current = false;
+      setSubmitting(false);
+    }
   };
 
   const blanks = leadingBlanks(viewMonth.year, viewMonth.month);
@@ -227,7 +301,7 @@ export default function BookingPanel({
         className={`fixed inset-0 z-50 flex flex-col justify-end sm:flex sm:items-center sm:justify-center bg-[#0B1220]/30 backdrop-blur-sm transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
         onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
       >
-        <div className={`w-full sm:w-[1000px] sm:max-w-[calc(100vw-2rem)] h-[85vh] sm:h-auto sm:max-h-[calc(100dvh-2rem)] bg-white sm:border border-[#0B1220]/[0.08] rounded-t-2xl sm:rounded-2xl shadow-[0_2px_16px_rgba(11,18,32,0.06)] flex flex-col overflow-hidden transition-transform duration-400 ease-out ${isOpen ? "translate-y-0" : "translate-y-full"}`}>
+        <div className={`w-full sm:w-[1000px] sm:max-w-[calc(100vw-2rem)] h-[85dvh] sm:h-auto sm:max-h-[calc(100dvh-2rem)] bg-white sm:border border-[#0B1220]/[0.08] rounded-t-2xl sm:rounded-2xl shadow-[0_2px_16px_rgba(11,18,32,0.06)] flex flex-col overflow-hidden transition-transform duration-400 ease-out ${isOpen ? "translate-y-0" : "translate-y-full"}`}>
           {/* Header */}
           <div className="flex items-center justify-between px-6 py-5 sm:px-8 border-b border-[#0B1220]/[0.06]">
             <div>
@@ -255,7 +329,7 @@ export default function BookingPanel({
           </div>
 
           {/* Content */}
-          <div className="flex-1 overflow-y-auto min-h-0 px-6 py-4 sm:px-8 sm:py-6">
+          <div ref={contentRef} className="flex-1 overflow-y-auto overscroll-contain min-h-0 px-6 py-4 sm:px-8 sm:py-6">
             {step === 1 && (
               <>
                 {/* Three-column booking card */}
@@ -432,18 +506,32 @@ export default function BookingPanel({
                     { key: "name", label: t("specialistes.booking.nameLabel"), placeholder: t("specialistes.booking.namePlaceholder") },
                     { key: "email", label: t("specialistes.booking.emailLabel"), placeholder: t("specialistes.booking.emailPlaceholder"), type: "email" },
                     { key: "phone", label: t("specialistes.booking.phoneLabel"), placeholder: t("specialistes.booking.phonePlaceholder"), type: "tel" },
-                  ].map((field) => (
-                    <div key={field.key}>
-                      <label className="block text-[11px] text-[#2B2F36]/35 mb-1">{field.label}</label>
-                      <input
-                        type={field.type || "text"}
-                        placeholder={field.placeholder}
-                        value={(formData as Record<string, string>)[field.key]}
-                        onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
-                        className="w-full px-3.5 py-2.5 bg-white rounded-lg border border-[#0B1220]/[0.06] text-[13px] text-[#0B1220] placeholder:text-[#2B2F36]/20 focus:outline-none focus:border-[#B88A5A]/50 transition-colors"
-                      />
-                    </div>
-                  ))}
+                  ].map((field) => {
+                    const key = field.key as "name" | "email" | "phone";
+                    const err = errors[key];
+                    const inputId = `bk-${key}`;
+                    return (
+                      <div key={key}>
+                        <label htmlFor={inputId} className="block text-[11px] text-[#2B2F36]/35 mb-1">{field.label}</label>
+                        <input
+                          id={inputId}
+                          type={field.type || "text"}
+                          placeholder={field.placeholder}
+                          value={formData[key]}
+                          onChange={(e) => handleFieldChange(key, e.target.value)}
+                          required
+                          aria-required="true"
+                          autoComplete={key === "name" ? "name" : key === "email" ? "email" : "tel"}
+                          aria-invalid={err ? true : undefined}
+                          aria-describedby={err ? `${inputId}-error` : undefined}
+                          className={`w-full px-3.5 py-2.5 bg-white rounded-lg border text-[13px] text-[#0B1220] placeholder:text-[#2B2F36]/20 focus:outline-none transition-colors ${err ? "border-red-400/70 focus:border-red-400" : "border-[#0B1220]/[0.06] focus:border-[#B88A5A]/50"}`}
+                        />
+                        {err && (
+                          <p id={`${inputId}-error`} role="alert" className="text-[11px] text-red-500/80 mt-1">{err}</p>
+                        )}
+                      </div>
+                    );
+                  })}
                   <div>
                     <label className="block text-[11px] text-[#2B2F36]/35 mb-1">{t("specialistes.booking.messageLabel")}</label>
                     <textarea
@@ -507,9 +595,10 @@ export default function BookingPanel({
                   </button>
                   <button
                     onClick={handleConfirm}
-                    className="flex-1 py-3.5 rounded-full text-[13px] font-medium bg-[#B88A5A] text-white hover:bg-[#B88A5A]/90 transition-colors"
+                    disabled={submitting || (submitAttempted && Object.keys(validateBooking(formData)).length > 0)}
+                    className={`flex-1 py-3.5 rounded-full text-[13px] font-medium transition-colors ${submitting || (submitAttempted && Object.keys(validateBooking(formData)).length > 0) ? "bg-[#B88A5A]/40 text-white/70 cursor-not-allowed" : "bg-[#B88A5A] text-white hover:bg-[#B88A5A]/90"}`}
                   >
-                    {t("specialistes.booking.confirm")}
+                    {submitting ? t("specialistes.booking.submitting") : t("specialistes.booking.confirm")}
                   </button>
                 </div>
               )}
