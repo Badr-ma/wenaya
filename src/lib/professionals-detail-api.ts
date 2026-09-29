@@ -31,7 +31,7 @@
  *   safe empty defaults — never invented.
  */
 
-import { PROFESSIONALS_API_BASE } from "./professionals/config";
+import { getProfessionalsApiBase } from "./professionals/config";
 
 const PROFESSIONALS_DETAIL_PATH = "/api/v1/getProfessionalBySlug";
 
@@ -216,7 +216,7 @@ export async function fetchProfessionalDetail(slug: string): Promise<ApiProfessi
   const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
   try {
-    const url = `${PROFESSIONALS_API_BASE}${PROFESSIONALS_DETAIL_PATH}/${encodeURIComponent(slug)}`;
+    const url = `${getProfessionalsApiBase()}${PROFESSIONALS_DETAIL_PATH}/${encodeURIComponent(slug)}`;
     const res = await fetch(url, {
       method: "GET",
       headers: { Accept: "application/json" },
@@ -257,7 +257,7 @@ export async function fetchProfessionalCaresAndPacks(
   const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
   try {
-    const url = `${PROFESSIONALS_API_BASE}${CARES_PACKS_PATH}/${userId}`;
+    const url = `${getProfessionalsApiBase()}${CARES_PACKS_PATH}/${userId}`;
     const res = await fetch(url, {
       method: "GET",
       headers: { Accept: "application/json" },
@@ -389,7 +389,7 @@ async function fetchAvailabilityJson(
   const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
   try {
-    const url = `${PROFESSIONALS_API_BASE}${path}/${encodeURIComponent(slugOrId)}/${dateIso}`;
+    const url = `${getProfessionalsApiBase()}${path}/${encodeURIComponent(slugOrId)}/${dateIso}`;
     const res = await fetch(url, {
       method: "GET",
       headers: { Accept: "application/json", ...COMPANY_HEADER },

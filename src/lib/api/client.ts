@@ -18,19 +18,23 @@
  *     (see `./types.ts`); shape *validation* stays in the domain adapter that
  *     owns the payload (e.g. `practice-adapter.ts` / `practices-api.ts`).
  */
-import { API_BASE_URL } from "../api-base";
+import { getApiBaseUrl } from "../api-base";
 import type { LaravelEnvelope } from "./types";
 
 /**
- * Backend base URL — the ONE shared `WENAYA_API_URL` environment variable
- * (via `@/lib/api-base`).
+ * Backend base URL — lazily resolved from the ONE shared `WENAYA_API_URL`
+ * environment variable (via `../api-base`). Lazy so client bundles that
+ * transitively import this module never evaluate the env var at module load.
  *
  * NOTE: this is the DEFAULT base. A domain adapter that must target a
  * DIFFERENT backend (e.g. Blog → dev API) passes its own `baseUrl` per
  * request (see `WenayaApiRequestOptions.baseUrl`) — it must never inherit
  * this practices-oriented default.
  */
-export const WENAYA_API_BASE = API_BASE_URL;
+/** Lazily-resolved backend base URL (memoized in `../api-base`). */
+export function getWenayaApiBase(): string {
+  return getApiBaseUrl();
+}
 
 /** Every public endpoint is versioned under /api/v1. */
 export const WENAYA_API_VERSION_PREFIX = "/api/v1";
@@ -42,7 +46,7 @@ export interface WenayaApiRequestOptions {
   /** Query params to serialize (null/undefined entries are skipped). */
   query?: Record<string, string | number | boolean | null | undefined>;
   /**
-   * Target base URL for THIS request, overriding `WENAYA_API_BASE`.
+   * Target base URL for THIS request, overriding `getWenayaApiBase()`.
    * Domain adapters that resolve to a different backend (e.g. Blog → DEV)
    * set it explicitly so the shared practices-oriented default is never used.
    */
@@ -137,7 +141,7 @@ export async function wenayaApiGet<T = unknown>(
   }
 
   try {
-    const base = options.baseUrl?.replace(/\/+$/, "") ?? WENAYA_API_BASE;
+    const base = options.baseUrl?.replace(/\/+$/, "") ?? getWenayaApiBase();
     const response = await fetch(`${base}${path}${toQueryString(options.query)}`, init);
 
     if (!response.ok) {

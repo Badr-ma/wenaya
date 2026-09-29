@@ -10,10 +10,12 @@
  * hardcoded; QA can point it at a stub endpoint (or a dead port) without
  * ever reaching the real backend.
  */
-import { API_BASE_URL } from "../api-base";
+import { getApiBaseUrl } from "../api-base";
 
-/** Contact API base (shared backend base URL). */
-export const CONTACT_API_BASE: string = API_BASE_URL;
+/** Contact API base — lazily resolved (safe for client-bundle imports). */
+export function getContactApiBase(): string {
+  return getApiBaseUrl();
+}
 
 /** Backend contact-us route path (relative to the base above). */
 export const CONTACT_API_PATH = "/api/v1/contact-us";

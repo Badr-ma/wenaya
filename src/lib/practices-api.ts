@@ -17,11 +17,10 @@
  *   - POST is unsupported (405); search/category/filter params are ignored
  *   - response envelope: `{ error, message, data: Laravel paginator }`
  */
-import { wenayaApiGet, WENAYA_API_BASE } from "./api/client";
+import { wenayaApiGet } from "./api/client";
 import type { LaravelEnvelope } from "./api/types";
 
 /** Back-compat alias — the shared base now owns the env resolution. */
-export const PRACTICES_API_BASE = WENAYA_API_BASE;
 
 export const PRACTICES_API_ENDPOINT = "/api/v1/getAllPublicSpecialitiesWithPaginate";
 

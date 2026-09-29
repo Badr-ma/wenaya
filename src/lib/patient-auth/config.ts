@@ -12,10 +12,12 @@
  * the contact convention in `src/lib/contact/config.ts`).
  */
 
-import { API_BASE_URL } from "../api-base";
+import { getApiBaseUrl } from "../api-base";
 
-/** Patient auth API base (shared backend base URL). */
-export const PATIENT_API_BASE: string = API_BASE_URL;
+/** Patient auth API base — lazily resolved (safe for client-bundle imports). */
+export function getPatientApiBase(): string {
+  return getApiBaseUrl();
+}
 
 /** Laravel Sanctum cookie (re)seed endpoint. GET → 204 + sets we_session (and XSRF-TOKEN on later responses). */
 export const PATIENT_CSRF_PATH = "/sanctum/csrf-cookie";

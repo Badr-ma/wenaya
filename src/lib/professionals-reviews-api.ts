@@ -26,7 +26,7 @@
  *     is `createReview { rate, comment, professional }`).
  */
 
-import { PROFESSIONALS_API_BASE } from "./professionals/config";
+import { getProfessionalsApiBase } from "./professionals/config";
 
 const REVIEWS_API_PATH = "/api/v1/getReviewsByProfessionalSlug";
 
@@ -109,7 +109,7 @@ export async function fetchProfessionalReviewsApi(
 
   try {
     const encoded = encodeURIComponent(userName);
-    const url = `${PROFESSIONALS_API_BASE}${REVIEWS_API_PATH}/${encoded}?page=1`;
+    const url = `${getProfessionalsApiBase()}${REVIEWS_API_PATH}/${encoded}?page=1`;
     const res = await fetch(url, {
       method: "GET",
       headers: { Accept: "application/json", company: "1" },

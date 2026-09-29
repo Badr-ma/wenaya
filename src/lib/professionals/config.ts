@@ -9,7 +9,9 @@
  *   - `../professionals-api.ts`        (listing)
  *   - `../professionals-detail-api.ts` (detail / cares + packs)
  */
-import { API_BASE_URL } from "../api-base";
+import { getApiBaseUrl } from "../api-base";
 
-/** Professional API base (shared backend base URL). */
-export const PROFESSIONALS_API_BASE: string = API_BASE_URL;
+/** Professional API base — lazily resolved (safe for client-bundle imports). */
+export function getProfessionalsApiBase(): string {
+  return getApiBaseUrl();
+}

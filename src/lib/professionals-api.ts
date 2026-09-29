@@ -16,7 +16,7 @@
  *   - no Authorization header required
  */
 
-import { PROFESSIONALS_API_BASE } from "./professionals/config";
+import { getProfessionalsApiBase } from "./professionals/config";
 
 const PROFESSIONALS_API_PATH = "/api/v1/getProfessionals/1";
 
@@ -76,7 +76,7 @@ export async function fetchProfessionals(): Promise<ApiProfessional[]> {
   const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
   try {
-    const url = `${PROFESSIONALS_API_BASE}${PROFESSIONALS_API_PATH}`;
+    const url = `${getProfessionalsApiBase()}${PROFESSIONALS_API_PATH}`;
     const res = await fetch(url, {
       method: "GET",
       headers: { Accept: "application/json" },

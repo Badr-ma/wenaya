@@ -20,11 +20,10 @@
  *     byPracticeSlug is keyed by *company* slug; the flat feed
  *     (`getAllAppointmentsGroup`) is the alternate / validation source.
  */
-import { wenayaApiGet, WENAYA_API_BASE } from "./api/client";
+import { wenayaApiGet } from "./api/client";
 import type { LaravelEnvelope } from "./api/types";
 
 /** Back-compat alias — the shared base owns env resolution (see client.ts). */
-export const GROUP_SESSIONS_API_BASE = WENAYA_API_BASE;
 
 export const GROUP_SESSIONS_API_ENDPOINT = "/api/v1/getAppointmentsGroupsWithPagination";
 

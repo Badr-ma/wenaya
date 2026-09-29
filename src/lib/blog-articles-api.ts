@@ -43,9 +43,11 @@ import { sanitizeSafeHtml, htmlToText } from "./sanitize-html";
  * consumers degrade to their empty state (see the build-safety contract)
  * rather than silently reading production content.
  */
-import { API_BASE_URL } from "./api-base";
+import { getApiBaseUrl } from "./api-base";
 
-export const BLOG_ARTICLES_API_BASE: string = API_BASE_URL;
+export function getBlogApiBase(): string {
+  return getApiBaseUrl();
+}
 
 /**
  * Concise, secrets-safe diagnostic label for a caught blog-API failure —
@@ -227,7 +229,7 @@ export async function getArticlesPage(rawPage: number = 1): Promise<ArticlePage>
 
   const json = await wenayaApiGet<unknown>(BLOG_ARTICLES_LISTING_ENDPOINT, {
     query: { page },
-    baseUrl: BLOG_ARTICLES_API_BASE,
+    baseUrl: getBlogApiBase(),
     revalidate: BLOG_ARTICLES_API_REVALIDATE,
   });
 
@@ -281,7 +283,7 @@ export async function getArticleBySlug(slug: string): Promise<ArticleDetail | nu
   try {
     json = await wenayaApiGet<unknown>(
       `${BLOG_ARTICLES_DETAIL_PREFIX}${encodeURIComponent(trimmed)}`,
-      { baseUrl: BLOG_ARTICLES_API_BASE, revalidate: BLOG_ARTICLES_API_REVALIDATE }
+      { baseUrl: getBlogApiBase(), revalidate: BLOG_ARTICLES_API_REVALIDATE }
     );
   } catch (error) {
     if (error instanceof WenayaApiError && error.status === 404) return null;

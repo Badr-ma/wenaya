@@ -14,7 +14,7 @@
  *   - timeout           fetch aborted by the AbortController timer
  *   - network-error     fetch threw without aborting
  */
-import { CONTACT_API_BASE, CONTACT_API_PATH, CONTACT_TIMEOUT_MS } from "./config";
+import { getContactApiBase, CONTACT_API_PATH, CONTACT_TIMEOUT_MS } from "./config";
 
 export type ContactSubmitResult =
   | { kind: "success" }
@@ -115,7 +115,7 @@ async function forward(payload: {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), CONTACT_TIMEOUT_MS);
   try {
-    const res = await fetch(`${CONTACT_API_BASE}${CONTACT_API_PATH}`, {
+    const res = await fetch(`${getContactApiBase()}${CONTACT_API_PATH}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

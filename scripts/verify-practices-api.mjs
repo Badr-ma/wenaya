@@ -272,7 +272,7 @@ after(async () => {
 // ─── Shared client ─────────────────────────────────────────────
 
 test("shared client: WENAYA_API_BASE reflects the env override", () => {
-  assert.equal(client.WENAYA_API_BASE, baseUrl, "must read WENAYA_API_URL");
+  assert.equal(client.getWenayaApiBase(), baseUrl, "must read WENAYA_API_URL");
   assert.equal(client.WENAYA_API_VERSION_PREFIX, "/api/v1");
 });
 

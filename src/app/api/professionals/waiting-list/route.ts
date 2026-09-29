@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { PROFESSIONALS_API_BASE } from "@/lib/professionals/config";
+import { getProfessionalsApiBase } from "@/lib/professionals/config";
 
 /**
  * BFF proxy for the professional booking submission (waiting list).
@@ -98,7 +98,7 @@ export async function POST(request: Request) {
   };
 
   try {
-    const upstream = await fetch(`${PROFESSIONALS_API_BASE}/api/v1/waiting-lists`, {
+    const upstream = await fetch(`${getProfessionalsApiBase()}/api/v1/waiting-lists`, {
       method: "POST",
       headers: {
         Accept: "application/json",
