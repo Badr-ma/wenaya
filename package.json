@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3006",
     "lint": "eslint",
     "verify:api": "node scripts/verify-practices-api.mjs",
     "verify:price": "node --experimental-strip-types scripts/verify-price-normalization.mjs"
