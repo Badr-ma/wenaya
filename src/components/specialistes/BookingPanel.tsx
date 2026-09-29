@@ -17,6 +17,7 @@ import {
   weekdayShortLabels,
 } from "@/lib/availability";
 import { fetchClientUnavailableDates, fetchClientDay } from "@/lib/professional-availability-client";
+import { submitWaitingListRequest } from "@/lib/professional-booking-client";
 import type { ProfessionalAvailabilityReason, ProfessionalTimeSlot } from "@/lib/professional-availability";
 
 type BookingConfirmationData = {
@@ -92,6 +93,7 @@ export default function BookingPanel({
   const [errors, setErrors] = useState<{ name?: string; email?: string; phone?: string }>({});
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
   const submittingRef = useRef(false);
   const contentRef = useRef<HTMLDivElement | null>(null);
   const [viewMonth, setViewMonth] = useState(() => {
@@ -252,7 +254,7 @@ export default function BookingPanel({
     if (submitAttempted) setErrors(validateBooking(next));
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (submittingRef.current) return;
     const errs = validateBooking(formData);
     if (Object.keys(errs).length > 0) {
@@ -262,25 +264,61 @@ export default function BookingPanel({
       if (firstInvalid) document.getElementById(`bk-${firstInvalid}`)?.focus();
       return;
     }
+
+    const bookingData: BookingConfirmationData = {
+      specialistName: specialist.name,
+      day: selectedDay?.day,
+      date: selectedDay?.date,
+      month: selectedDay?.month,
+      iso: selectedDay?.iso,
+      time: selectedSlot,
+      service: specialist.services.find((s) => s.id === selectedService),
+      hours: specialist.hours,
+      formData: {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        message: formData.message.trim(),
+      },
+    };
+
     submittingRef.current = true;
     setSubmitting(true);
+    setSubmitError(false);
     try {
-      const bookingData: BookingConfirmationData = {
-        specialistName: specialist.name,
-        day: selectedDay?.day,
-        date: selectedDay?.date,
-        month: selectedDay?.month,
-        iso: selectedDay?.iso,
-        time: selectedSlot,
-        service: specialist.services.find((s) => s.id === selectedService),
-        hours: specialist.hours,
-        formData: {
-          name: formData.name.trim(),
-          email: formData.email.trim(),
-          phone: formData.phone.trim(),
-          message: formData.message.trim(),
-        },
-      };
+      // Legacy/local profiles have no backend user id: keep the demo
+      // (local-only) confirmation exactly as before.
+      if (!apiConfig) {
+        onBookingConfirmed?.(bookingData);
+        setErrors({});
+        setSubmitAttempted(false);
+        setStep(3);
+        return;
+      }
+
+      // API-sourced professional: real submission to the waiting list
+      // (POST api/v1/waiting-lists via the same-origin BFF — same backend
+      // contract as the legacy wenaya-front booking flow).
+      const service = bookingData.service;
+      const notesParts: string[] = [];
+      if (formData.message.trim()) notesParts.push(formData.message.trim());
+      if (service) notesParts.push(`${t("specialistes.booking.serviceNotePrefix")} : ${service.title}`);
+
+      const result = await submitWaitingListRequest({
+        customer_name: formData.name.trim(),
+        customer_email: formData.email.trim(),
+        customer_phone: formData.phone.trim(),
+        user_id: apiConfig.professionalId,
+        booking_date: selectedDay?.iso ?? "",
+        booking_time: selectedSlot ?? "",
+        notes: notesParts.join("\n"),
+      });
+
+      if (!result.ok) {
+        setSubmitError(true);
+        return;
+      }
+
       onBookingConfirmed?.(bookingData);
       setErrors({});
       setSubmitAttempted(false);
@@ -544,6 +582,21 @@ export default function BookingPanel({
                   </div>
                 </div>
 
+                {/* Submission error (API professionals only) */}
+                {submitError && !submitting && (
+                  <div role="alert" className="flex items-center justify-between gap-3 rounded-lg border border-red-400/40 bg-red-50/70 px-3.5 py-2.5">
+                    <p className="text-[12px] text-red-600/90">{t("specialistes.booking.submitError")}</p>
+                    <button
+                      type="button"
+                      onClick={handleConfirm}
+                      disabled={submitting}
+                      className="shrink-0 text-[12px] font-semibold text-[#B88A5A] underline underline-offset-2 disabled:opacity-40"
+                    >
+                      {t("specialistes.booking.retry")}
+                    </button>
+                  </div>
+                )}
+
                 {/* Summary */}
                 <div className="mt-6 bg-white rounded-lg p-4 border border-[#0B1220]/[0.04]">
                   <p className="text-[11px] text-[#2B2F36]/30 mb-2">{t("specialistes.booking.summary")}</p>
@@ -580,7 +633,9 @@ export default function BookingPanel({
                   <p className="text-[12px] text-[#2B2F36]/55">{selectedDay ? `${formatDateCaption(selectedDay.iso, locale)} · ${selectedSlot}` : selectedSlot}</p>
                   <p className="text-[12px] text-[#2B2F36]/55">{selectedServiceTitle}</p>
                 </div>
-                <p className="text-[11px] text-[#2B2F36]/40 italic">{t("specialistes.booking.pendingLocalOnly")}</p>
+                <p className="text-[11px] text-[#2B2F36]/40 italic">
+                  {t(apiConfig ? "specialistes.booking.pendingSuccess" : "specialistes.booking.pendingLocalOnly")}
+                </p>
               </div>
             )}
           </div>

@@ -1666,6 +1666,10 @@ bookingSuccessMsg: "Votre demande a bien été envoyée. Notre équipe vous cont
       errorPhoneRequired: "Votre numéro de téléphone est requis.",
       errorPhoneInvalid: "Numéro de téléphone invalide.",
       submitting: "Envoi…",
+      submitError: "Une erreur est survenue lors de l'envoi de votre demande. Merci de réessayer.",
+      retry: "Réessayer",
+      pendingSuccess: "Votre demande a bien été envoyée. Vous allez recevoir un message avec tous les détails.",
+      serviceNotePrefix: "Prestation",
     },
   },
 };

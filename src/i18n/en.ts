@@ -1666,6 +1666,10 @@ bookingSuccessMsg: "Your request has been sent. Our team will contact you to gui
       errorPhoneRequired: "Your phone number is required.",
       errorPhoneInvalid: "Invalid phone number.",
       submitting: "Sending…",
+      submitError: "Something went wrong while sending your request. Please try again.",
+      retry: "Retry",
+      pendingSuccess: "Your request has been sent successfully. You will receive a message with all the details.",
+      serviceNotePrefix: "Service",
     },
   },
 };
