@@ -239,7 +239,7 @@ before(async () => {
 
   await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
   baseUrl = `http://127.0.0.1:${server.address().port}`;
-  process.env.PRACTICES_API_URL = baseUrl;
+  process.env.WENAYA_API_URL = baseUrl;
 
   // Fresh module instances (cache-busted via query) reading the mock base.
   const stamp = `?live=${Date.now()}`;
@@ -265,14 +265,14 @@ before(async () => {
 });
 
 after(async () => {
-  delete process.env.PRACTICES_API_URL;
+  delete process.env.WENAYA_API_URL;
   if (server) await new Promise((resolve) => server.close(resolve));
 });
 
 // ─── Shared client ─────────────────────────────────────────────
 
 test("shared client: WENAYA_API_BASE reflects the env override", () => {
-  assert.equal(client.WENAYA_API_BASE, baseUrl, "must read PRACTICES_API_URL");
+  assert.equal(client.WENAYA_API_BASE, baseUrl, "must read WENAYA_API_URL");
   assert.equal(client.WENAYA_API_VERSION_PREFIX, "/api/v1");
 });
 
@@ -445,7 +445,7 @@ test("fallback: backend down → local fallback, same query answered", async () 
     ["-e", FALLBACK_CHILD_SRC],
     {
       cwd: ROOT,
-      env: { ...process.env, PRACTICES_API_URL: "http://127.0.0.1:9" },
+      env: { ...process.env, WENAYA_API_URL: "http://127.0.0.1:9" },
       encoding: "utf8",
     }
   );

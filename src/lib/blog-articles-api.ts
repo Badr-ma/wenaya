@@ -36,19 +36,16 @@ import { wenayaApiGet, WenayaApiError } from "./api/client";
 import { sanitizeSafeHtml, htmlToText } from "./sanitize-html";
 
 /**
- * BLOG/ARTICLES backend base URL — DEV by design, never the shared
- * practices-oriented PROD default. Resolution order:
- *   1. `BLOG_API_URL` env override (server-side only, not NEXT_PUBLIC_),
- *   2. `https://dev-api.wenaya.com` (the approved DEV API).
- * It intentionally does NOT fall back to `api.wenaya.com`; if the DEV API is
- * unreachable the adapter throws and build-time consumers degrade to their
- * empty state (see the build-safety contract) rather than silently reading
- * production content.
+ * BLOG/ARTICLES backend base URL — comes from the ONE shared environment
+ * variable (`WENAYA_API_URL`, server-side only, see `.env.example`) via
+ * `@/lib/api-base` — never hardcoded. It intentionally has no per-domain
+ * override; if the backend is unreachable the adapter throws and build-time
+ * consumers degrade to their empty state (see the build-safety contract)
+ * rather than silently reading production content.
  */
-const DEV_BLOG_API_URL = "https://dev-api.wenaya.com";
+import { API_BASE_URL } from "./api-base";
 
-export const BLOG_ARTICLES_API_BASE: string =
-  process.env.BLOG_API_URL?.replace(/\/+$/, "") || DEV_BLOG_API_URL;
+export const BLOG_ARTICLES_API_BASE: string = API_BASE_URL;
 
 /**
  * Concise, secrets-safe diagnostic label for a caught blog-API failure —

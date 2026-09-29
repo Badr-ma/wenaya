@@ -6,14 +6,16 @@
  * never shipped to the client bundles. The backend base URL must never leak into
  * the browser: do not import this module from any "use client" file.
  *
- * `PATIENT_API_URL` exists so QA/environments can point the BFF at a stub
- * endpoint (mirrors the `CONTACT_API_URL` convention in `src/lib/contact/config.ts`).
+ * The base URL comes from the ONE shared environment variable
+ * (`WENAYA_API_URL`, see `.env.example`) via `@/lib/api-base` — never
+ * hardcoded; QA/environments can point the BFF at a stub endpoint (mirrors
+ * the contact convention in `src/lib/contact/config.ts`).
  */
 
-const DEV_PATIENT_API_URL = "https://dev-api.wenaya.com";
+import { API_BASE_URL } from "../api-base";
 
-export const PATIENT_API_BASE: string =
-  process.env.PATIENT_API_URL?.replace(/\/+$/, "") || DEV_PATIENT_API_URL;
+/** Patient auth API base (shared backend base URL). */
+export const PATIENT_API_BASE: string = API_BASE_URL;
 
 /** Laravel Sanctum cookie (re)seed endpoint. GET → 204 + sets we_session (and XSRF-TOKEN on later responses). */
 export const PATIENT_CSRF_PATH = "/sanctum/csrf-cookie";

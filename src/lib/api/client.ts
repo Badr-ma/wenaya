@@ -9,8 +9,8 @@
  *   - resolved ONLY on the server — imported by SSR/prerender code and the
  *     `/api/*` BFF proxies, never by "use client" components. Keep it that way:
  *     a client bundle must not contain the backend host.
- *   - base URL from env; production fallback ONLY because it matches the
- *     existing Practices behavior (default `https://api.wenaya.com`).
+ *   - base URL from env (`WENAYA_API_URL`, see `.env.example`); no hardcoded
+ *     fallback — the app fails fast when the variable is missing.
  *   - public read endpoints carry NO Authorization header and NO credentials;
  *     auth is out of scope for this module (the admin Bearer client lives in
  *     `./api-http.ts` and must stay isolated).
@@ -18,21 +18,19 @@
  *     (see `./types.ts`); shape *validation* stays in the domain adapter that
  *     owns the payload (e.g. `practice-adapter.ts` / `practices-api.ts`).
  */
+import { API_BASE_URL } from "../api-base";
 import type { LaravelEnvelope } from "./types";
 
 /**
- * Backend base URL. The shared generic var `WENAYA_API_URL` is honored first
- * (future domains), then the existing Practices-only override
- * `PRACTICES_API_URL` (kept for backwards compatibility with the current
- * Practices fallback path), then the production API.
+ * Backend base URL — the ONE shared `WENAYA_API_URL` environment variable
+ * (via `@/lib/api-base`).
  *
  * NOTE: this is the DEFAULT base. A domain adapter that must target a
  * DIFFERENT backend (e.g. Blog → dev API) passes its own `baseUrl` per
  * request (see `WenayaApiRequestOptions.baseUrl`) — it must never inherit
  * this practices-oriented default.
  */
-export const WENAYA_API_BASE =
-  process.env.WENAYA_API_URL || process.env.PRACTICES_API_URL || "https://api.wenaya.com";
+export const WENAYA_API_BASE = API_BASE_URL;
 
 /** Every public endpoint is versioned under /api/v1. */
 export const WENAYA_API_VERSION_PREFIX = "/api/v1";

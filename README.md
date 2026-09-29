@@ -34,6 +34,10 @@ Required for production:
 
 - `ADMIN_SECRET` — HMAC secret used to sign/verify the admin auth token. **Required**; admin auth fails loudly when missing (no fallback value).
 
+Required backend API base URL (server-only; **no hardcoded fallbacks** — the app fails fast at startup when missing; see `.env.example`):
+
+- `WENAYA_API_URL` — the ONE shared backend base URL; drives every server-side API consumer (professionals, contact, blog, patient auth, practices)
+
 Required for CMS/admin data persistence (`getRedis`):
 
 - `UPSTASH_REDIS_REST_URL`
