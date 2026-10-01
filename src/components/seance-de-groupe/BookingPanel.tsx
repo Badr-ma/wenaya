@@ -11,32 +11,67 @@
  * NOT all at once) · 7 Time selection (no capacity) · 8 Pay-later button ·
  * 9 Pay-online button.
  *
- * Pay-later is the supported seam: a real <Link> to the participation-request
- * contact flow carrying the chosen slot — {bookingHref}&slot=..&date=..&time=..
- * Until a time is picked it stays a disabled span (aria-disabled) — no dead nav.
- * Pay-online is a clearly-labelled preview (disabled, no navigation): the
+ * PAY-LATER is the supported, COMPLETED seam — a real authenticated booking
+ * REQUEST, not a contact form and not a payment:
+ *
+ *   1. The visitor picks a real slot from the live feed.
+ *   2. Pay-later checks the patient session (`GET /api/auth/me`).
+ *      - Signed in  → submit directly.
+ *      - Anonymous  → redirect to the localized login carrying the chosen slot in
+ *                     `?returnTo=`. LoginClient returns the visitor to this exact
+ *                     URL on success, the panel restores the slot and finishes
+ *                     the request automatically.
+ *   3. The submission goes to the same-origin `/api/group-sessions/booking` BFF,
+ *      which requires a patient session, takes the customer identity from the
+ *      AUTHENTICATED profile and re-validates the slot against the live feed
+ *      before creating a `status: "pending"` request upstream.
+ *   4. The panel shows submitting → confirmation (or a retryable error).
+ *
+ * The selection is mirrored into the URL query (`slot`/`date`/`time`) with
+ * `history.replaceState` so the login round-trip can carry it, and those params
+ * are stripped once the request is sent so a refresh can never resubmit. No
+ * `useSearchParams` is used: the panel is server-prerendered, so reading the
+ * query on mount keeps the route static instead of forcing a Suspense boundary.
+ *
+ * Pay-online stays a clearly-labelled preview (disabled, no navigation): the
  * payments backend is not wired, so no fake reservation/confirmation is shown.
  */
 "use client";
 
-import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type {
   GroupSessionDetailLabels,
   GroupSessionLocale,
   LiveGroupSessionSlot,
 } from "@/lib/group-sessions";
+import { h } from "@/lib/href";
+import { getCurrentPatient } from "@/lib/patient-auth-client";
+import {
+  submitGroupSessionBooking,
+  type GroupSessionBookingResult,
+} from "@/lib/group-session-booking-client";
 
 const BRONZE = "#B88A5A";
 const BRONZE_DARK = "#9A7242";
 const VISIBLE_DATES = 5;
 
+/** Query params carrying the selected slot through the login round-trip. */
+const PARAM_SLOT = "slot";
+const PARAM_DATE = "date";
+const PARAM_TIME = "time";
+/** Marker set when leaving for login, so the panel resumes exactly once. */
+const PARAM_RESUME = "gs";
+
+type PanelStatus = "idle" | "checking" | "submitting" | "done";
+type FailureReason = NonNullable<GroupSessionBookingResult["reason"]>;
+
 interface BookingPanelProps {
   slots: LiveGroupSessionSlot[];
-  /** Locale used for date formatting; defaults to "fr". */
+  /** Locale used for date formatting and the login route; defaults to "fr". */
   locale?: GroupSessionLocale;
-  /** Base participation-request href (already carries service=&type=). */
-  bookingHref: string;
+  /** Backend programme id (`session.live.programId`) — stable identity. */
+  sessionId: number;
   /** Session title (panel heading, item 1). */
   sessionTitle: string;
   /** Verified live facts shown in order coach → duration → price → location. */
@@ -68,17 +103,28 @@ interface BookingPanelProps {
     | "payOnlineCta"
     | "payOnlineNote"
     | "noAvailability"
+    | "bookingChecking"
+    | "bookingSubmitting"
+    | "bookingRetry"
+    | "bookingErrorTitle"
+    | "bookingErrorSession"
+    | "bookingErrorSlot"
+    | "bookingErrorFeed"
+    | "bookingErrorGeneric"
+    | "bookingDoneTitle"
+    | "bookingDoneText"
   >;
 }
 
 export default function BookingPanel({
   slots,
   locale = "fr",
-  bookingHref,
+  sessionId,
   sessionTitle,
   facts,
   labels,
 }: BookingPanelProps): React.JSX.Element {
+  const router = useRouter();
   const dates = useMemo<string[]>(
     () => Array.from(new Set(slots.map((s) => s.date).filter((d): d is string => Boolean(d)))),
     [slots]
@@ -87,6 +133,10 @@ export default function BookingPanel({
   const [win, setWin] = useState(0);
   const [selectedDate, setSelectedDate] = useState<string | null>(dates.length > 0 ? dates[0] : null);
   const [selectedSlotId, setSelectedSlotId] = useState<number | null>(null);
+  const [status, setStatus] = useState<PanelStatus>("idle");
+  const [errorReason, setErrorReason] = useState<FailureReason | null>(null);
+  /** Single in-flight guard — a click (or a resumed mount) can submit only once. */
+  const submittingRef = useRef(false);
 
   const windowedDates = dates.slice(win, win + VISIBLE_DATES);
   const canPrevious = win > 0;
@@ -103,9 +153,107 @@ export default function BookingPanel({
   );
 
   const canContinue = selectedSlot !== null;
-  const continueHref = canContinue
-    ? `${bookingHref}&slot=${encodeURIComponent(String(selectedSlot.id))}&date=${encodeURIComponent(selectedSlot.date ?? "")}&time=${encodeURIComponent(selectedSlot.time?.slice(0, 5) ?? "")}`
-    : bookingHref;
+  const busy = status === "checking" || status === "submitting";
+  const busyLabel = status === "checking" ? labels.bookingChecking : labels.bookingSubmitting;
+  const errorCopy =
+    errorReason === "unauthenticated"
+      ? labels.bookingErrorSession
+      : errorReason === "validation"
+        ? labels.bookingErrorSlot
+        : errorReason === "feed-unavailable"
+          ? labels.bookingErrorFeed
+          : labels.bookingErrorGeneric;
+
+  /** Create the booking request for a validated slot. */
+  async function submitSlot(slot: LiveGroupSessionSlot): Promise<void> {
+    if (submittingRef.current) return;
+    submittingRef.current = true;
+    setErrorReason(null);
+    setStatus("submitting");
+    try {
+      const result = await submitGroupSessionBooking({
+        sessionId,
+        slotId: slot.id,
+        date: slot.date ?? "",
+        time: (slot.time ?? "").slice(0, 5),
+      });
+      if (result.ok) {
+        setSelectedDate(slot.date ?? null);
+        setSelectedSlotId(slot.id);
+        setStatus("done");
+        clearSlotParams();
+        return;
+      }
+      // A rejected slot must not stay selected: the visitor re-picks.
+      if (result.reason === "validation") {
+        setSelectedSlotId(null);
+        clearSlotParams();
+      }
+      setStatus("idle");
+      setErrorReason(result.reason ?? "api-error");
+    } catch {
+      setStatus("idle");
+      setErrorReason("api-error");
+    } finally {
+      submittingRef.current = false;
+    }
+  }
+
+  /** Pay-later: verify the patient session, then submit or send them to login. */
+  async function handlePayLater(): Promise<void> {
+    if (!selectedSlot || busy || submittingRef.current) return;
+    setErrorReason(null);
+    setStatus("checking");
+    try {
+      const me = await getCurrentPatient();
+      if (!me.success) {
+        // Hand the choice to login, then come back to this exact URL.
+        const params = new URLSearchParams(window.location.search);
+        writeSlotParams(params, selectedSlot);
+        params.set(PARAM_RESUME, "1");
+        replaceSearch(params);
+        const returnTo = `${window.location.pathname}${window.location.search}`;
+        setStatus("idle");
+        router.push(`${h(locale, "/login")}?returnTo=${encodeURIComponent(returnTo)}`);
+        return;
+      }
+      await submitSlot(selectedSlot);
+    } catch {
+      setStatus("idle");
+      setErrorReason("api-error");
+    }
+  }
+
+  /**
+   * Restore a slot carried through the login round-trip and, when the `gs`
+   * resume marker is present, finish the booking request exactly once.
+   *
+   * Mount-only by design: the URL is the login handoff channel, not a live
+   * source. The state writes synchronise this component with an EXTERNAL system
+   * (the query string), which is the documented reason to allow them here — the
+   * panel is server-prerendered, so the URL cannot be read during render.
+   */
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const resume = params.get(PARAM_RESUME) === "1";
+    if (resume) {
+      params.delete(PARAM_RESUME);
+      replaceSearch(params);
+    }
+    const restored = readSlotFromUrl(slots, params);
+    if (!restored) {
+      if (params.get(PARAM_SLOT) !== null) clearSlotParams();
+      return;
+    }
+    /* eslint-disable react-hooks/set-state-in-effect */
+    setSelectedDate(restored.date ?? null);
+    setSelectedSlotId(restored.id);
+    setWin(windowStartFor(dates, restored.date ?? ""));
+    /* eslint-enable react-hooks/set-state-in-effect */
+    if (resume) void submitSlot(restored);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /** Step the visible date window; keep the selected date in view. */
   function stepDate(delta: -1 | 1): void {
@@ -115,8 +263,43 @@ export default function BookingPanel({
     const inWindow = dates.slice(nextWin, nextWin + VISIBLE_DATES);
     if (!inWindow.includes(selectedDate ?? "")) {
       setSelectedDate(inWindow[0] ?? null);
-      setSelectedSlotId(null);
+      clearSelection();
     }
+  }
+
+  /** Apply a time choice and mirror it into the URL query. */
+  function chooseSlot(slot: LiveGroupSessionSlot | null): void {
+    setSelectedSlotId(slot?.id ?? null);
+    if (slot === null) {
+      clearSlotParams();
+    } else {
+      const params = new URLSearchParams(window.location.search);
+      writeSlotParams(params, slot);
+      replaceSearch(params);
+    }
+  }
+
+  /** Clear the current choice and drop it from the URL. */
+  function clearSelection(): void {
+    setSelectedSlotId(null);
+    clearSlotParams();
+  }
+
+  /** Rewrite the query without touching the Next.js router (no re-render round-trip). */
+  function replaceSearch(params: URLSearchParams): void {
+    const query = params.toString();
+    const next = `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`;
+    window.history.replaceState(null, "", next);
+  }
+
+  /** Strip the transient booking params so a refresh can never resubmit. */
+  function clearSlotParams(): void {
+    const params = new URLSearchParams(window.location.search);
+    params.delete(PARAM_SLOT);
+    params.delete(PARAM_DATE);
+    params.delete(PARAM_TIME);
+    params.delete(PARAM_RESUME);
+    replaceSearch(params);
   }
 
   return (
@@ -223,7 +406,7 @@ export default function BookingPanel({
                     aria-label={p.full}
                     onClick={() => {
                       setSelectedDate(date);
-                      setSelectedSlotId(null);
+                      clearSelection();
                     }}
                     className={`gs-date-chip flex flex-col items-center justify-center flex-1 min-w-0 h-[64px] rounded-xl border px-1 transition-all duration-200 ${
                       active
@@ -293,7 +476,7 @@ export default function BookingPanel({
                     type="button"
                     aria-pressed={active}
                     aria-label={`${timeLabel}${priceLabel ? ` · ${priceLabel}` : ""}`}
-                    onClick={() => setSelectedSlotId(slot.id)}
+                    onClick={() => chooseSlot(slot)}
                     className={`gs-time-chip flex items-center justify-between gap-3 rounded-xl border px-3.5 py-2.5 text-left transition-all duration-200 ${
                       active
                         ? "border-[#B88A5A] bg-[#B88A5A]/[0.06]"
@@ -318,57 +501,103 @@ export default function BookingPanel({
         </div>
       )}
 
-      {/* Pay-later (8) + Pay-online (9) */}
+      {/* Pay-later (8) — authenticated booking request · or its confirmation */}
       {dates.length > 0 && (
         <div className="mt-4 border-t border-[#0B1220]/[0.08] px-5 sm:px-6 pt-4 pb-5 sm:pb-6">
-          <div aria-live="polite" className="gs-selection min-h-[16px]">
-            {selectedSlot ? (
-              <p className="text-[12.5px] font-semibold text-[#0B1220] tabular-nums">
-                {dateParts(selectedSlot.date ?? "", locale).full} ·{" "}
-                {selectedSlot.time ? selectedSlot.time.slice(0, 5) : ""}
-              </p>
-            ) : (
-              <p className="text-[11.5px] text-[#2B2F36]/45">{labels.selectionHint}</p>
-            )}
-          </div>
-
-          <div className="mt-2.5 space-y-2.5">
-            {canContinue ? (
-              <Link
-                href={continueHref}
-                className="gs-paylater inline-flex items-center justify-center gap-3 h-12 w-full rounded-xl px-8 text-white text-sm font-semibold transition-all duration-300 hover:-translate-y-px"
-                style={{
-                  background: `linear-gradient(135deg, ${BRONZE} 0%, ${BRONZE_DARK} 100%)`,
-                  boxShadow: "0 1px 0 rgba(255,255,255,0.14) inset, 0 6px 24px rgba(184,138,90,0.3)",
-                }}
-              >
-                {labels.payLaterCta}
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </Link>
-            ) : (
-              <span
-                className="gs-paylater inline-flex items-center justify-center gap-3 h-12 w-full rounded-xl px-8 text-white/70 text-sm font-semibold select-none cursor-not-allowed"
-                aria-disabled="true"
-              >
-                {labels.payLaterCta}
-              </span>
-            )}
-            <p className="text-[11px] leading-relaxed text-[#2B2F36]/45 text-center">
-              {labels.payLaterHint}
-            </p>
-            <span
-              className="gs-payonline inline-flex items-center justify-center gap-2.5 h-10 w-full rounded-xl border border-[#0B1220]/[0.12] bg-[#F2EFE9]/70 px-6 text-[12.5px] font-semibold text-[#2B2F36]/45 select-none"
-              aria-disabled="true"
+          {status === "done" ? (
+            <div
+              role="status"
+              className="gs-booking-done rounded-xl border border-[#B88A5A]/40 bg-[#B88A5A]/[0.07] px-4 py-4"
             >
-              {labels.payOnlineCta}
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
-            </span>
-            <p className="text-[11px] text-[#2B2F36]/40 text-center">{labels.payOnlineNote}</p>
-          </div>
+              <p className="flex items-center justify-center gap-2 text-sm font-semibold text-[#0B1220]">
+                <svg
+                  className="w-4 h-4 shrink-0 text-[#B88A5A]"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+                {labels.bookingDoneTitle}
+              </p>
+              <p className="mt-1.5 text-[12.5px] leading-relaxed text-[#2B2F36]/70 text-center">
+                {labels.bookingDoneText}
+              </p>
+              {selectedSlot && (
+                <p className="mt-2 text-[12px] font-semibold text-[#0B1220] tabular-nums text-center">
+                  {dateParts(selectedSlot.date ?? "", locale).full} ·{" "}
+                  {selectedSlot.time ? selectedSlot.time.slice(0, 5) : ""}
+                </p>
+              )}
+            </div>
+          ) : (
+            <>
+              <div aria-live="polite" className="gs-selection min-h-[16px]">
+                {selectedSlot ? (
+                  <p className="text-[12.5px] font-semibold text-[#0B1220] tabular-nums">
+                    {dateParts(selectedSlot.date ?? "", locale).full} ·{" "}
+                    {selectedSlot.time ? selectedSlot.time.slice(0, 5) : ""}
+                  </p>
+                ) : (
+                  <p className="text-[11.5px] text-[#2B2F36]/45">{labels.selectionHint}</p>
+                )}
+              </div>
+
+              <div className="mt-2.5 space-y-2.5">
+                {errorReason && (
+                  <div
+                    role="alert"
+                    className="gs-booking-error rounded-xl border border-red-500/25 bg-red-500/[0.06] px-4 py-3 text-center"
+                  >
+                    <p className="text-[12.5px] font-semibold text-red-600/90">
+                      {labels.bookingErrorTitle}
+                    </p>
+                    <p className="mt-1 text-[12px] leading-relaxed text-red-500/80">{errorCopy}</p>
+                  </div>
+                )}
+                {canContinue ? (
+                  <button
+                    type="button"
+                    onClick={handlePayLater}
+                    disabled={busy}
+                    className="gs-paylater inline-flex items-center justify-center gap-3 h-12 w-full rounded-xl px-8 text-white text-sm font-semibold transition-all duration-300 hover:-translate-y-px disabled:opacity-70 disabled:cursor-wait disabled:hover:translate-y-0"
+                    style={{
+                      background: `linear-gradient(135deg, ${BRONZE} 0%, ${BRONZE_DARK} 100%)`,
+                      boxShadow: "0 1px 0 rgba(255,255,255,0.14) inset, 0 6px 24px rgba(184,138,90,0.3)",
+                    }}
+                  >
+                    {busy ? busyLabel : errorReason ? labels.bookingRetry : labels.payLaterCta}
+                    {!busy && (
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    )}
+                  </button>
+                ) : (
+                  <span
+                    className="gs-paylater inline-flex items-center justify-center gap-3 h-12 w-full rounded-xl px-8 text-white/70 text-sm font-semibold select-none cursor-not-allowed"
+                    aria-disabled="true"
+                  >
+                    {labels.payLaterCta}
+                  </span>
+                )}
+                <p className="text-[11px] leading-relaxed text-[#2B2F36]/45 text-center">
+                  {labels.payLaterHint}
+                </p>
+                <span
+                  className="gs-payonline inline-flex items-center justify-center gap-2.5 h-10 w-full rounded-xl border border-[#0B1220]/[0.12] bg-[#F2EFE9]/70 px-6 text-[12.5px] font-semibold text-[#2B2F36]/45 select-none"
+                  aria-disabled="true"
+                >
+                  {labels.payOnlineCta}
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </span>
+                <p className="text-[11px] text-[#2B2F36]/40 text-center">{labels.payOnlineNote}</p>
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>
@@ -402,4 +631,41 @@ function dateParts(isoDate: string, locale: GroupSessionLocale): DateParts {
   } catch {
     return { weekday: "", day: isoDate, month: "", full: isoDate };
   }
+}
+
+/** Serialize a chosen slot into the handoff query params. */
+function writeSlotParams(params: URLSearchParams, slot: LiveGroupSessionSlot): void {
+  params.set(PARAM_SLOT, String(slot.id));
+  params.set(PARAM_DATE, slot.date ?? "");
+  params.set(PARAM_TIME, (slot.time ?? "").slice(0, 5));
+}
+
+/**
+ * Resolve the slot carried in the query against the LIVE slots.
+ * A stale or tampered `slot`/`date`/`time` triple resolves to `null`, so nothing
+ * is ever restored (or submitted) for a slot that is not actually available.
+ */
+function readSlotFromUrl(
+  slots: LiveGroupSessionSlot[],
+  params: URLSearchParams
+): LiveGroupSessionSlot | null {
+  const rawSlot = params.get("slot");
+  const rawDate = params.get("date");
+  const rawTime = params.get("time");
+  if (!rawSlot || !rawDate || !rawTime) return null;
+  const id = Number(rawSlot);
+  if (!Number.isInteger(id)) return null;
+  return (
+    slots.find(
+      (s) => s.id === id && s.date === rawDate && (s.time ?? "").slice(0, 5) === rawTime
+    ) ?? null
+  );
+}
+
+/** Window offset that brings `date` into the visible carousel. */
+function windowStartFor(dates: string[], date: string): number {
+  const index = dates.indexOf(date);
+  if (index < 0) return 0;
+  const start = Math.floor(index / VISIBLE_DATES) * VISIBLE_DATES;
+  return Math.max(0, Math.min(start, Math.max(0, dates.length - VISIBLE_DATES)));
 }

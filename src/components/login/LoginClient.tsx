@@ -9,18 +9,28 @@
  * lands on a signed-in state with a CTA home (no patient dashboard route exists
  * yet — product decision pending; home is the established destination).
  * Shared by the French (/login) and English (/en/login) routes.
+ *
+ * `returnTo` (optional, same-origin only) resumes an interrupted flow — e.g. the
+ * group-session booking panel redirects anonymous visitors here carrying their
+ * chosen slot in the query, and on success the client returns to that exact URL
+ * so the selection is restored. `safeReturnPath` rejects anything that is not a
+ * root-relative internal path (external, protocol-relative or backslash tricks)
+ * and never bounces back to a login route, so the param cannot be used as an
+ * open redirect. Without a usable `returnTo` the original success card is shown.
  */
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Logo from "@/components/Logo";
 import { useLocale } from "@/contexts/LanguageContext";
 import { h } from "@/lib/href";
 import { getCurrentPatient, loginPatient, type PatientAuthResult } from "@/lib/patient-auth-client";
 
-export default function LoginClient() {
+export default function LoginClient({ returnTo }: { returnTo?: string }) {
   const { locale, t } = useLocale();
+  const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
   const [notEnabled, setNotEnabled] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -50,6 +60,14 @@ export default function LoginClient() {
     }
 
     if (res.success) {
+      const back = safeReturnPath(returnTo, locale);
+      if (back) {
+        // Resume the interrupted flow (booking panel restores its slot from the
+        // very same URL). No success card: the user already knows they signed in.
+        setSubmitting(false);
+        router.replace(back);
+        return;
+      }
       const me = await getCurrentPatient();
       if (me.success) setSuccessName(me.user?.name);
       setSuccess(true);
@@ -205,4 +223,23 @@ export default function LoginClient() {
       </main>
     </div>
   );
+}
+
+/**
+ * Validate a `returnTo` value before navigating to it.
+ *
+ * Only a root-relative internal path is accepted. Rejected: absolute URLs,
+ * protocol-relative (`//evil.tld`), backslash variants (`/\evil.tld` — some
+ * browsers normalise it to `//`), and the login routes themselves (a loop).
+ * Returns `null` when the caller must fall back to the default success card.
+ */
+function safeReturnPath(value: string | undefined, locale: string): string | null {
+  if (typeof value !== "string" || value === "") return null;
+  if (!value.startsWith("/")) return null;
+  if (value.startsWith("//") || value.startsWith("/\\")) return null;
+  if (/[\r\n]/.test(value)) return null;
+  const path = value.split(/[?#]/, 1)[0];
+  const loginPath = h(locale as "fr" | "en", "/login");
+  if (path === loginPath || path === `${loginPath}/`) return null;
+  return value;
 }

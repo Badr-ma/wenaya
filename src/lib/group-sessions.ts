@@ -117,7 +117,7 @@ export interface GroupSessionLiveFacts {
  * are unconfirmed against the booking backend).
  */
 export interface LiveGroupSessionSlot {
-  /** Backend child-slot id (numeric, stable) — forwarded as `slot` on the contact flow. */
+  /** Backend child-slot id (numeric, stable) - submitted with the booking request. */
   id: number;
   /** ISO slot date (`YYYY-MM-DD`). */
   date: string | null;
@@ -170,7 +170,7 @@ export interface GroupSessionDetailLabels {
   dateNextAria: string;
   /** Booking panel hint above the action buttons */
   selectionHint: string;
-  /** Pay-later CTA (supported seam → participation-request contact flow) */
+  /** Pay-later CTA (supported seam) - submits a real authenticated booking request */
   payLaterCta: string;
   /** Pay-later supporting hint */
   payLaterHint: string;
@@ -180,6 +180,26 @@ export interface GroupSessionDetailLabels {
   payOnlineNote: string;
   /** Empty state when the programme has no selectable slots */
   noAvailability: string;
+  /** Pay-later button label while the patient session is being verified */
+  bookingChecking: string;
+  /** Pay-later button label while the booking request is being submitted */
+  bookingSubmitting: string;
+  /** Retry CTA shown after a failed booking request */
+  bookingRetry: string;
+  /** Error block heading after a failed booking request */
+  bookingErrorTitle: string;
+  /** Error copy when the patient session is no longer valid */
+  bookingErrorSession: string;
+  /** Error copy when the chosen slot was rejected as unavailable */
+  bookingErrorSlot: string;
+  /** Error copy when the live slot feed could not be reached */
+  bookingErrorFeed: string;
+  /** Error copy for any other failure */
+  bookingErrorGeneric: string;
+  /** Confirmation block heading after a booking request was submitted */
+  bookingDoneTitle: string;
+  /** Confirmation block body after a booking request was submitted */
+  bookingDoneText: string;
 }
 
 // ─── Canonical data (non-translatable) ─────────────────────────
@@ -376,6 +396,16 @@ export function getGroupSessionLabels(locale: GroupSessionLocale = "fr"): GroupS
     payOnlineCta: detail.payOnlineCta ?? "",
     payOnlineNote: detail.payOnlineNote ?? "",
     noAvailability: detail.noAvailability ?? "",
+    bookingChecking: detail.bookingChecking ?? "",
+    bookingSubmitting: detail.bookingSubmitting ?? "",
+    bookingRetry: detail.bookingRetry ?? "",
+    bookingErrorTitle: detail.bookingErrorTitle ?? "",
+    bookingErrorSession: detail.bookingErrorSession ?? "",
+    bookingErrorSlot: detail.bookingErrorSlot ?? "",
+    bookingErrorFeed: detail.bookingErrorFeed ?? "",
+    bookingErrorGeneric: detail.bookingErrorGeneric ?? "",
+    bookingDoneTitle: detail.bookingDoneTitle ?? "",
+    bookingDoneText: detail.bookingDoneText ?? "",
   };
 }
 

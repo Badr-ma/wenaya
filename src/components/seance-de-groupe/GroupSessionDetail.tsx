@@ -134,7 +134,7 @@ export default function GroupSessionDetail({
                 <BookingPanel
                   slots={session.live.slots}
                   locale={locale}
-                  bookingHref={session.bookingHref}
+                  sessionId={session.live.programId}
                   sessionTitle={session.title}
                   facts={{
                     coach: session.live.coach,
@@ -163,6 +163,16 @@ export default function GroupSessionDetail({
                     payOnlineCta: labels.payOnlineCta,
                     payOnlineNote: labels.payOnlineNote,
                     noAvailability: labels.noAvailability,
+                    bookingChecking: labels.bookingChecking,
+                    bookingSubmitting: labels.bookingSubmitting,
+                    bookingRetry: labels.bookingRetry,
+                    bookingErrorTitle: labels.bookingErrorTitle,
+                    bookingErrorSession: labels.bookingErrorSession,
+                    bookingErrorSlot: labels.bookingErrorSlot,
+                    bookingErrorFeed: labels.bookingErrorFeed,
+                    bookingErrorGeneric: labels.bookingErrorGeneric,
+                    bookingDoneTitle: labels.bookingDoneTitle,
+                    bookingDoneText: labels.bookingDoneText,
                   }}
                 />
               </div>
