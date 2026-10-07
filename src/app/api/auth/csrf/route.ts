@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { browserCookieHeader } from "@/lib/patient-auth/cookies";
+import { browserCookieHeader, isSecureRequest, relayableSetCookies } from "@/lib/patient-auth/cookies";
 import { seedPatientCsrf } from "@/lib/patient-auth/transport";
 
 /**
@@ -7,7 +7,8 @@ import { seedPatientCsrf } from "@/lib/patient-auth/transport";
  *
  * Seeds the Laravel Sanctum session for the browser: forwards to
  * `GET /sanctum/csrf-cookie` and relays every upstream `Set-Cookie`
- * (`we_session`, and on rotation `XSRF-TOKEN`) back unchanged. The browser
+ * (`we_session`, and on rotation `XSRF-TOKEN`) back, repaired so the browser
+ * can store it on THIS origin (see `relayableSetCookie`). The browser
  * therefore holds the Sanctum session cookies directly — the BFF keeps no
  * session state. Read-only: no state is changed on this box and no write is
  * made against the backend.
@@ -37,7 +38,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   }
 
   const res = NextResponse.json({ success: true, type: "success" });
-  for (const sc of result.setCookies) {
+  for (const sc of relayableSetCookies(result.setCookies, isSecureRequest(request))) {
     res.headers.append("Set-Cookie", sc);
   }
   return res;

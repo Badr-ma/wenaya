@@ -15,6 +15,8 @@ import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
 import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 
+const STAT_SLOTS = ["order-1", "order-1", "order-3", "order-3"];
+
 export default function Hero(): React.JSX.Element {
   const { t, tRaw } = useLocale();
   const bullets = tRaw<string[]>("entreprises.hero.bullets");
@@ -59,11 +61,15 @@ export default function Hero(): React.JSX.Element {
           { opacity: 1, y: 0, duration: 0.6 },
           "-=0.4",
         )
+.fromTo(
+          ".ch-logo",
+          { opacity: 0, y: 14 },
+          { opacity: 1, y: 0, duration: 0.5 },
+        )
         .fromTo(
           ".ch-stats",
           { opacity: 0, y: 16 },
           { opacity: 1, y: 0, duration: 0.6 },
-          "-=0.35",
         )
         .fromTo(
           ".ch-photo",
@@ -146,17 +152,6 @@ export default function Hero(): React.JSX.Element {
               </li>
             ))}
           </ul>
-
-          <div className="ch-stats mt-10 grid grid-cols-2 gap-x-8 gap-y-6 border-t border-white/15 pt-7 sm:grid-cols-4">
-            {metrics.map((m, i) => (
-              <div key={`${i}-${m.label}`}>
-                <span className="font-serif text-2xl leading-none text-[#D4A56A] sm:text-[1.7rem]">
-                  {m.number}
-                </span>
-                <p className="mt-2 text-xs leading-snug text-white/60 sm:text-[13px]">{m.label}</p>
-              </div>
-            ))}
-          </div>
         </div>
 
         {/* ── Photograph (5 cols ≈ 45%) ───────────────────────── */}
@@ -171,6 +166,31 @@ export default function Hero(): React.JSX.Element {
               className="object-cover"
             />
           </div>
+        </div>
+
+        {/* ── Statistics — full container width ─────────────── */}
+        <div className="ch-stats order-3 col-span-full mt-2 grid grid-cols-2 gap-x-8 gap-y-6 border-t border-white/15 pt-7 lg:mt-4 lg:grid-cols-[1fr_1fr_auto_1fr_1fr] lg:gap-x-6 lg:items-start">
+          {metrics.map((m, i) => (
+            <div key={`${i}-${m.label}`} className={STAT_SLOTS[i % STAT_SLOTS.length]}>
+              <span className="font-serif text-2xl leading-none text-[#D4A56A] sm:text-[1.7rem]">
+                {m.number}
+              </span>
+              <p className="mt-2 text-xs leading-snug text-white/60 sm:text-[13px]">{m.label}</p>
+            </div>
+          ))}
+
+          <span className="ch-logo order-2 col-span-2 flex justify-center py-1 lg:col-span-1 lg:ml-6 lg:mr-[72px] lg:self-center">
+            <span className="relative block aspect-[1204/293] w-[104px] sm:w-[132px] lg:w-[190px]">
+              <Image
+                src="/images/Logo%20Corpo%2023%20sept.%202026%2C%2010_15_58.png"
+                alt={t("entreprises.hero.logoAlt")}
+                fill
+                priority
+                sizes="(min-width: 1024px) 190px, (min-width: 640px) 132px, 104px"
+                className="object-cover object-[50%_52.5%] brightness-0 invert"
+              />
+            </span>
+          </span>
         </div>
       </div>
     </section>

@@ -13,7 +13,7 @@ import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
 export const metadata: Metadata = {
-  title: "FAQ — Frequently Asked Questions about Wenaya",
+  title: { absolute: "FAQ — Frequently Asked Questions about Wenaya" },
   description:
     "Everything you need to know about Wenaya: physiotherapy, psychology, nutrition and corporate wellness in Casablanca, Morocco.",
   keywords: [

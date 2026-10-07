@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/site-config";
 
 export const metadata: Metadata = {
-  title: "Admin — Wenaya",
+  title: "Admin",
   robots: { index: false, follow: false },
   alternates: {
     canonical: `${SITE_URL}/admin`,

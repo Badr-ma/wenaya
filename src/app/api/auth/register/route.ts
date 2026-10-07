@@ -3,7 +3,7 @@ import {
   PATIENT_BODY_MAX_CHARS,
   PATIENT_REGISTER_ENABLED,
 } from "@/lib/patient-auth/config";
-import { browserCookieHeader } from "@/lib/patient-auth/cookies";
+import { browserCookieHeader, isSecureRequest, relayableSetCookies } from "@/lib/patient-auth/cookies";
 import { readXsrfHeaderFromCookie } from "@/lib/patient-auth/csrf";
 import { buildRegisterBody } from "@/lib/patient-auth/register";
 import { submitPatientRegister } from "@/lib/patient-auth/transport";
@@ -69,7 +69,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   const built = mapRegisterOutcome(result.outcome);
 
   const res = NextResponse.json(built.body, { status: built.status });
-  for (const sc of result.setCookies) {
+  for (const sc of relayableSetCookies(result.setCookies, isSecureRequest(request))) {
     res.headers.append("Set-Cookie", sc);
   }
   return res;

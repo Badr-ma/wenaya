@@ -33,7 +33,7 @@ export default async function ClinicCourses({
   lang: string;
 }): Promise<React.JSX.Element> {
   const { t } = getTranslations(lang);
-  const all = await getActiveGroupSessions(locale as GroupSessionLocale, { fallback: false });
+  const all = await getActiveGroupSessions(locale as GroupSessionLocale);
 
   const items: SessionItem[] = all.map((s) => ({
     slug: s.slug,

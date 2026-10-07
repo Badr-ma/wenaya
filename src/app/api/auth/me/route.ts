@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { browserCookieHeader } from "@/lib/patient-auth/cookies";
+import { browserCookieHeader, isSecureRequest, relayableSetCookies } from "@/lib/patient-auth/cookies";
 import { fetchPatientMe } from "@/lib/patient-auth/transport";
 import { mapPatientOutcome } from "@/lib/patient-auth/response";
 
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   const built = mapPatientOutcome(result.outcome);
 
   const res = NextResponse.json(built.body, { status: built.status });
-  for (const sc of result.setCookies) {
+  for (const sc of relayableSetCookies(result.setCookies, isSecureRequest(request))) {
     res.headers.append("Set-Cookie", sc);
   }
   return res;

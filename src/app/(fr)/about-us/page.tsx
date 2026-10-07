@@ -15,7 +15,7 @@ import { languageAlternates } from "@/lib/hreflang";
 const ABOUT_PATH = "/about-us";
 
 export const metadata: Metadata = {
-  title: "Qui sommes nous | Wenaya",
+  title: "Qui sommes nous",
   description:
     "Chez Wenaya, notre mission est d'accompagner chaque individu dans son chemin vers une santé optimale et un bien-être global. Découvrez qui sommes nous et notre vision de la santé intégrée à Casablanca.",
   keywords: [

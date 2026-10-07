@@ -16,7 +16,7 @@ import { getArticlesPage, blogApiErrorLabel } from "@/lib/blog-articles-api";
 import { toClientPost } from "@/lib/blog-mappers";
 
 export const metadata: Metadata = {
-  title: "Blog Santé & Bien-être — Conseils, Études et Guides | Wenaya",
+  title: "Blog Santé & Bien-être — Conseils, Études et Guides",
   description:
     "Articles, guides et conseils santé par les experts de Wenaya Casablanca. Kinésithérapie, nutrition, psychologie, prévention et bien-être — inspirez-vous pour une vie plus saine.",
   keywords: [

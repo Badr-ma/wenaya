@@ -188,13 +188,6 @@ export interface HomepageConfig {
   sections: HomepageSection[];
 }
 
-export interface HomepageState {
-  draft: HomepageConfig;
-  published: HomepageConfig;
-  updatedAt: string;
-  publishedAt: string | null;
-}
-
 export const SECTION_META: Record<SectionType, { label: string; description: string; theme: "dark" | "light"; hasSpacerBefore?: boolean; hasSectionBreak?: boolean }> = {
   hero: { label: "Hero", theme: "dark", description: "Full-screen hero with video, headline, trust bar" },
   "how-it-works": { label: "How It Works", theme: "light", description: "3-step method (Comprendre, Agir, Progresser)" },

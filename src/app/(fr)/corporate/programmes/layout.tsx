@@ -8,7 +8,7 @@ import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
 export const metadata: Metadata = {
-  title: "Programmes Bien-être Labellisés pour Entreprises | Wenaya Corporate",
+  title: "Programmes Bien-être Labellisés pour Entreprises",
   description:
     "Découvrez nos 4 programmes certifiés pour entreprises : PCM (Process Communication Model), Leadership 360°, L'Art des Priorités et People Model Canvas. Des méthodes éprouvées pour améliorer la communication, le leadership, la gestion du stress et la stratégie RH de vos équipes.",
   keywords: [

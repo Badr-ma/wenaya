@@ -1,11 +1,11 @@
 /**
  * Contact — final conversion section for the corporate pages.
  * Two-column on desktop: LEFT = heading + contact details + external Google
- * Calendar booking CTA; RIGHT = quote-request form (team size + programme
- * level selectors) posting to /api/contact. Flat warm sand, no card panel —
- * the form sits directly on the light surface. The form carries the backend-
- * required identity fields (firstName, lastName, email) plus the stable
- * field names teamSize, programmeLevel and source="corporate-quote".
+ * Calendar booking CTA; RIGHT = the quote-request card posting to /api/contact.
+ * The form sits on a white 16px-radius card over the warm sand surface.
+ * Field order: company, firstName + lastName, email, phone, teamSize,
+ * programmeLevel, project description, submit. The backend-required identity
+ * fields (firstName, lastName, email) stay required; the rest are optional.
  * Keeps id="contact" and data-contact for anchor/scroll targets.
  */
 "use client";
@@ -22,11 +22,14 @@ export default function ContactSection() {
   const { t, tRaw } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const [status, setStatus] = useState<FormStatus>("idle");
+  const [companyName, setCompanyName] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [teamSize, setTeamSize] = useState("");
   const [programmeLevel, setProgrammeLevel] = useState("");
+  const [description, setDescription] = useState("");
 
   const teamSizeOptions: SelectOption[] = tRaw<SelectOption[]>("entreprises.contactSection.teamSizeOptions") ?? [];
   const programmeLevelOptions: SelectOption[] = tRaw<SelectOption[]>("entreprises.contactSection.programmeLevelOptions") ?? [];
@@ -53,9 +56,12 @@ export default function ContactSection() {
     const res = await fetch("/api/contact", {
       method: "POST",
       body: JSON.stringify({
+        companyName,
         firstName,
         lastName,
         email,
+        phone,
+        message: description,
         teamSize,
         programmeLevel,
         source: "corporate-quote",
@@ -65,11 +71,14 @@ export default function ContactSection() {
     const data = (await res.json().catch(() => null)) as { success?: boolean } | null;
     if (res.ok && data?.success === true) {
       setStatus("success");
+      setCompanyName("");
       setFirstName("");
       setLastName("");
       setEmail("");
+      setPhone("");
       setTeamSize("");
       setProgrammeLevel("");
+      setDescription("");
     } else {
       setStatus("error");
     }
@@ -94,7 +103,7 @@ export default function ContactSection() {
           name={name}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={`w-full appearance-none bg-white border border-[#0B1220]/[0.12] rounded-lg px-4 py-3 pr-10 text-sm outline-none transition-all duration-200 focus:border-[#B88A5A]/70 focus:bg-white focus-visible:ring-2 focus-visible:ring-[#B88A5A]/25 text-[#0B1220] ${value === "" ? "opacity-60" : ""}`}
+          className={`w-full h-[44px] appearance-none bg-white border border-[#0B1220]/[0.12] rounded-[10px] px-4 pr-10 text-sm outline-none transition-all duration-200 focus:border-[#B88A5A]/70 focus:bg-white focus-visible:ring-2 focus-visible:ring-[#B88A5A]/25 text-[#0B1220] ${value === "" ? "opacity-60" : ""}`}
         >
           <option value="" disabled className="text-[#0B1220]">
             {placeholder}
@@ -119,13 +128,15 @@ export default function ContactSection() {
   );
 
   const inputClass =
-    "w-full bg-white border border-[#0B1220]/[0.12] rounded-lg px-4 py-3 text-[#0B1220] text-sm placeholder:text-[#0B1220]/30 outline-none focus:border-[#B88A5A]/70 focus:bg-white transition-all duration-200";
+    "w-full h-[44px] bg-white border border-[#0B1220]/[0.12] rounded-[10px] px-4 text-[#0B1220] text-sm placeholder:text-[#0B1220]/30 outline-none focus:border-[#B88A5A]/70 focus:bg-white transition-all duration-200";
+  const textareaClass =
+    "w-full h-[72px] bg-white border border-[#0B1220]/[0.12] rounded-[10px] px-4 py-2.5 text-[#0B1220] text-sm leading-relaxed placeholder:text-[#0B1220]/30 outline-none focus:border-[#B88A5A]/70 focus:bg-white transition-all duration-200";
   const fieldLabelClass =
-    "block text-[#0B1220]/45 text-xs font-semibold tracking-[0.05em] uppercase mb-2";
+    "block text-[#0B1220]/45 text-xs font-semibold tracking-[0.05em] uppercase mb-1";
 
   return (
     <section id="contact" data-contact ref={sectionRef} className="relative bg-[#F2EDE4] py-10 sm:py-14 lg:py-18 px-4 sm:px-6 overflow-hidden scroll-mt-20">
-      <div className="max-w-5xl mx-auto relative">
+      <div className="max-w-7xl mx-auto relative">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           {/* Left: heading + contact details + booking CTA */}
           <div className="ct-head">
@@ -201,16 +212,31 @@ export default function ContactSection() {
           </div>
 
           {/* Right: quote request form */}
-          <div className="ct-form lg:sticky lg:top-24">
-            <h3 className="text-[#0B1220] font-semibold text-xl sm:text-2xl leading-snug tracking-[-0.01em]">
+          <div className="ct-form lg:sticky lg:top-24 bg-white rounded-2xl shadow-[0_18px_50px_rgba(11,18,32,0.08)] p-4 sm:p-5">
+            <h3 className="text-[#0B1220] font-semibold text-xl leading-snug tracking-[-0.01em]">
               {t("entreprises.contactSection.quoteHeading")}
             </h3>
-            <p className="text-[#2B2F36]/60 text-sm leading-relaxed mt-2">
+            <p className="text-[#2B2F36]/60 text-base leading-relaxed mt-1.5">
               {t("entreprises.contactSection.quoteSub")}
             </p>
 
-            <form onSubmit={handleSubmit} className="space-y-6 mt-7">
-              <div className="grid sm:grid-cols-2 gap-4">
+            <form onSubmit={handleSubmit} className="space-y-2 mt-4">
+              <div>
+                <label htmlFor="ct-company" className={fieldLabelClass}>
+                  {t("entreprises.contactSection.companyNameLabel")}
+                </label>
+                <input
+                  id="ct-company"
+                  type="text"
+                  autoComplete="organization"
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  className={inputClass}
+                  placeholder={t("entreprises.contactSection.companyNamePlaceholder")}
+                />
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-3">
                 <div>
                   <label htmlFor="ct-firstname" className={fieldLabelClass}>
                     {t("entreprises.contactSection.firstNameLabel")}
@@ -259,6 +285,21 @@ export default function ContactSection() {
                 />
               </div>
 
+              <div>
+                <label htmlFor="ct-phone" className={fieldLabelClass}>
+                  {t("entreprises.contactSection.phoneFieldLabel")}
+                </label>
+                <input
+                  id="ct-phone"
+                  type="tel"
+                  autoComplete="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className={inputClass}
+                  placeholder={t("entreprises.contactSection.phonePlaceholder")}
+                />
+              </div>
+
               {renderSelect(
                 "ct-team-size",
                 "teamSize",
@@ -279,11 +320,25 @@ export default function ContactSection() {
                 setProgrammeLevel,
               )}
 
-              <div className="pt-1">
+              <div>
+                <label htmlFor="ct-description" className={fieldLabelClass}>
+                  {t("entreprises.contactSection.descriptionLabel")}
+                </label>
+                <textarea
+                  id="ct-description"
+                  rows={4}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className={textareaClass}
+                  placeholder={t("entreprises.contactSection.descriptionPlaceholder")}
+                />
+              </div>
+
+              <div>
                 <button
                   type="submit"
                   disabled={status === "sending"}
-                  className="inline-flex items-center justify-center gap-2.5 w-full h-13 px-8 rounded-lg text-[#0B1220] text-sm font-semibold tracking-wide bg-[#B88A5A] transition-all duration-300 hover:bg-[#D4A56A] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B88A5A] disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="inline-flex items-center justify-center gap-2.5 w-full h-[44px] px-8 rounded-[10px] text-white text-sm font-semibold tracking-wide bg-[#0B1220] transition-all duration-300 hover:bg-[#0B1220]/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B88A5A] disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {status === "sending" ? t("entreprises.contactSection.fetching") : t("entreprises.contactSection.submit")}
                 </button>

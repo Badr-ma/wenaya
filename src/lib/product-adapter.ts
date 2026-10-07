@@ -6,7 +6,7 @@
 import { canonicalProducts, type CanonicalProduct } from "@/data/products/canonical";
 import { frProducts, type LocaleProductData } from "@/data/products/fr";
 import { enProducts } from "@/data/products/en";
-import type { Product, ProductListItem } from "@/types/product";
+import type { Product } from "@/types/product";
 
 const localeMap: Record<string, Record<string, LocaleProductData>> = {
   fr: frProducts,
@@ -44,34 +44,6 @@ function normalizeProduct(
     availability: canonical.availability,
     purchaseUrl: canonical.purchaseUrl,
     websiteUrl: canonical.websiteUrl,
-  };
-}
-
-function toListItem(
-  canonical: CanonicalProduct,
-  locale: string,
-): ProductListItem {
-  const loc = getLocaleData(locale);
-  const translated = loc[canonical.slug];
-
-  return {
-    id: canonical.slug,
-    slug: canonical.slug,
-    name: translated?.name || canonical.slug,
-    description: translated?.desc || "",
-    brand: canonical.brand,
-    brandSlug: canonical.brandSlug,
-    category: canonical.category,
-    goals: canonical.goals,
-    topics: canonical.topics,
-    images: [{ src: canonical.image, alt: translated?.name || canonical.slug }],
-    thumbnail: canonical.image,
-    rating: canonical.rating,
-    reviewCount: canonical.reviews,
-    featured: canonical.featured,
-    price: canonical.price,
-    currency: canonical.currency,
-    availability: canonical.availability,
   };
 }
 
@@ -137,17 +109,3 @@ export function getLegacyProducts(locale: string = "fr"): LegacyProductItem[] {
   return canonicalProducts.map((c) => toLegacyItem(c, locale));
 }
 
-/** Get a legacy-shaped item by slug */
-export function getLegacyProductBySlug(
-  slug: string,
-  locale: string = "fr",
-): LegacyProductItem | undefined {
-  const canonical = canonicalProducts.find((c) => c.slug === slug);
-  if (!canonical) return undefined;
-  return toLegacyItem(canonical, locale);
-}
-
-/** Get product list items (lightweight for cards) */
-export function getProductListItems(locale: string = "fr"): ProductListItem[] {
-  return canonicalProducts.map((c) => toListItem(c, locale));
-}

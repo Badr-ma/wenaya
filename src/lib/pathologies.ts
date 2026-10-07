@@ -6,6 +6,17 @@
  * Localized: FR uses the live wenaya.com content; EN is an equivalent translation.
  *
  * Future: replace with API fetch. Components consume this adapter.
+ *
+ * DESTINATION POLICY (`careJourneySlug`): a pathology is a health SITUATION, so
+ * its page must be the care-journey page that explains that situation
+ * (`src/lib/care-journeys.ts`) — NOT a discipline page picked out of
+ * `relatedPracticeSlugs`. The two datasets describe the same seven conditions
+ * and each journey's `hubLabel` is identical to the pathology `title`, so the
+ * mapping is a 1:1 key into verified local data, never an invented URL.
+ * `careJourneySlug` is a CANDIDATE: the consumer must verify it against
+ * `getAllCareJourneySlugs()` before linking, so a future dataset change can
+ * never produce a 404. `relatedPracticeSlugs` is retained as a secondary
+ * tier only (a discipline page that does mention the condition).
  */
 
 export interface PathologyTopic {
@@ -14,6 +25,8 @@ export interface PathologyTopic {
   summary: string;
   image: string;
   relatedPracticeSlugs?: string[];
+  /** Candidate canonical care-journey slug; verify before linking. */
+  careJourneySlug?: string;
 }
 
 /** Raw bilingual source entry (dev-traceable, never rendered directly) */
@@ -21,6 +34,8 @@ interface PathologySource {
   slug: string;
   image: string;
   relatedPracticeSlugs?: string[];
+  /** Canonical `CARE_JOURNEYS[].slug` for this condition (1:1 with the journey set). */
+  careJourneySlug: string;
   fr: { title: string; summary: string };
   en: { title: string; summary: string };
 }
@@ -30,6 +45,7 @@ const pathologySources: PathologySource[] = [
     slug: "grossesse-maternite",
     image: "/pratiques/kinesitherapie.jpg",
     relatedPracticeSlugs: ["kinesitherapie", "osteopathie", "nutrition", "psychologie"],
+    careJourneySlug: "grossesse-&-maternite",
     fr: {
       title: "Grossesse & Maternité",
       summary: "Accompagnement complet avant et après la naissance.",
@@ -43,6 +59,7 @@ const pathologySources: PathologySource[] = [
     slug: "troubles-apprentissage",
     image: "/pratiques/orthophonie.jpg",
     relatedPracticeSlugs: ["orthophonie", "psychomotricite", "neuropsychologie"],
+    careJourneySlug: "les-troubles-de-l-apprentissage",
     fr: {
       title: "Troubles de l'apprentissage",
       summary: "Bilan et prise en charge des troubles dys et de l'attention.",
@@ -56,6 +73,7 @@ const pathologySources: PathologySource[] = [
     slug: "vertiges",
     image: "/pratiques/osteopathie.jpg",
     relatedPracticeSlugs: ["kinesitherapie", "osteopathie"],
+    careJourneySlug: "le-vertige-positionnel",
     fr: {
       title: "Vertiges",
       summary: "Rééducation des vertiges et de l'équilibre.",
@@ -69,6 +87,7 @@ const pathologySources: PathologySource[] = [
     slug: "alzheimer",
     image: "/pratiques/neuropsychologie.png",
     relatedPracticeSlugs: ["neuropsychologie", "psychologie", "psychomotricite"],
+    careJourneySlug: "la-maladie-d-alzheimer",
     fr: {
       title: "Maladie d'Alzheimer",
       summary: "Stimulation cognitive et soutien aux proches.",
@@ -82,6 +101,7 @@ const pathologySources: PathologySource[] = [
     slug: "sante-holistique",
     image: "/pratiques/sophrologie.jpg",
     relatedPracticeSlugs: ["naturopathie", "sophrologie", "meditation", "yoga"],
+    careJourneySlug: "sante-holistique",
     fr: {
       title: "Santé holistique",
       summary: "Une approche globale pour votre bien-être.",
@@ -95,6 +115,7 @@ const pathologySources: PathologySource[] = [
     slug: "tecar-therapie",
     image: "/pratiques/massotherapie.jpg",
     relatedPracticeSlugs: ["kinesitherapie"],
+    careJourneySlug: "tecar-therapie",
     fr: {
       title: "TECAR Thérapie",
       summary: "Radiofréquence pour soulager douleurs et inflammations.",
@@ -108,6 +129,7 @@ const pathologySources: PathologySource[] = [
     slug: "kinesitherapie-avc",
     image: "/pratiques/psychomotricite.png",
     relatedPracticeSlugs: ["kinesitherapie", "neuropsychologie", "psychomotricite"],
+    careJourneySlug: "kinesitherapie-&-avc",
     fr: {
       title: "Kinésithérapie & AVC",
       summary: "Rééducation motrice après un AVC.",
@@ -129,6 +151,7 @@ function normalize(s: PathologySource, locale: Locale): PathologyTopic {
     summary: copy.summary,
     image: s.image,
     relatedPracticeSlugs: s.relatedPracticeSlugs,
+    careJourneySlug: s.careJourneySlug,
   };
 }
 
@@ -136,13 +159,4 @@ export const pathologies: PathologyTopic[] = pathologySources.map((s) => normali
 
 export function getPathologies(locale: Locale = "fr"): PathologyTopic[] {
   return pathologySources.map((s) => normalize(s, locale));
-}
-
-export function getPathologyBySlug(slug: string, locale: Locale = "fr"): PathologyTopic | undefined {
-  const s = pathologySources.find((p) => p.slug === slug);
-  return s ? normalize(s, locale) : undefined;
-}
-
-export function getAllPathologySlugs(): string[] {
-  return pathologySources.map((p) => p.slug);
 }

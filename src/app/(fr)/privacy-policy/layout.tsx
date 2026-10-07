@@ -7,7 +7,7 @@ import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
 export const metadata: Metadata = {
-  title: "Politique de Confidentialité — Wenaya",
+  title: { absolute: "Politique de Confidentialité — Wenaya" },
   description:
     "Politique de confidentialité de Wenaya Clinic Casablanca. Protection des données personnelles, cookies, droits des patients — conforme au RGPD et à la loi 09-08 marocaine.",
   alternates: {

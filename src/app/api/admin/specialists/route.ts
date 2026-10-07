@@ -1,7 +1,11 @@
 /**
- * Admin Specialists API — CRUD for specialist data.
- * GET falls back to hardcoded mock data when Redis is empty or unavailable.
- * PUT requires a valid admin token.
+ * Admin Specialists API — CRUD for the editor's local specialist overrides.
+ * GET requires a valid admin token (as PUT/DELETE already do).
+ *
+ * The mock dataset is EDITOR SEED data only. It is never served on a public
+ * page (professionals are live-API only) and must not be readable without a
+ * token, otherwise the unauthenticated route would republish the mock
+ * professionals as if they were real listings.
  */
 import { NextRequest, NextResponse } from "next/server";
 import { getRedis } from "@/lib/redis";
@@ -10,7 +14,12 @@ import { specialists as defaults, type Specialist } from "@/lib/specialistes";
 
 const KEY = "admin:specialists";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const token = getTokenFromRequest(req);
+  if (!token || !verifyToken(token).valid) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const redis = getRedis();
   if (!redis) {
     return NextResponse.json({ data: defaults, source: "defaults" });

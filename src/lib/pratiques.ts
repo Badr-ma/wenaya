@@ -12,17 +12,23 @@
  *   getPratiqueBySlug(slug, locale)  → Pratique | undefined
  *   getAllPratiqueSlugs()            → string[]
  *   getRelatedPratiques(slug, loc)   → Pratique[]
- *   getPracticesPage(query)          → PaginatedPratiques   (filter → paginate, local sync)
  *   getPracticesPageAsync(query)     → Promise<PaginatedPratiques>  (UI entry point)
  *
  * Pagination model mirrors the established `/api/produits` contract
  * (items / total / page / totalPages / hasMore / dataSource).
  *
- * Data source: the async accessor reads the real Wenaya listing endpoint
- * (see `./practices-api.ts` + `./practice-adapter.ts`);
- * `getPracticesPage` is the pure-local sync path used as fallback when the
- * backend is unreachable. List order for the default listing follows the
- * backend's priority ordering; canonical slugs are preserved via the id map.
+ * Data source — the live backend is the ONLY source for the LISTING:
+ * `getPracticesPageAsync` reads the real Wenaya listing endpoint (see
+ * `./practices-api.ts` + `./practice-adapter.ts`). There is deliberately no
+ * local dataset to fall back to: when the backend cannot answer, the accessor
+ * returns an empty window so the caller renders its honest empty state. List
+ * order for the default listing follows the backend's priority ordering;
+ * canonical slugs are preserved via the id map.
+ *
+ * `practice-content.ts` still backs the SYNCHRONOUS editorial helpers above
+ * (`getAllPratiques` / `getPratiqueBySlug` / `getAllPratiqueSlugs`), which are
+ * NOT a fallback: they supply the canonical slug universe and the FR article
+ * body, neither of which the backend provides.
  */
 import { practicesContent, type PracticeSection } from "./practice-content";
 import { EN_ARTICLE_DEMO } from "./en-translations";
@@ -123,8 +129,6 @@ export const PRACTICE_FILTER_KEYS = [
   "soins",
 ] as const;
 
-export type PracticeFilterKey = (typeof PRACTICE_FILTER_KEYS)[number];
-
 /** filter key → allowed practice categories. Kept in one place so the grid and the
  *  pagination layer never diverge on the dataset the filter applies to. */
 export const PRACTICE_CATEGORY_MAP: Record<string, string[]> = {
@@ -147,11 +151,11 @@ export interface PaginatedPratiques {
   pageSize: number;
   totalPages: number;
   hasMore: boolean;
-  /** Where the batch came from — "api" (live backend) or "local-fallback". */
+  /** The live Wenaya backend is the ONLY source — there is no local dataset. */
   dataSource: PratiquesDataSource;
 }
 
-export type PratiquesDataSource = "api" | "local-fallback";
+export type PratiquesDataSource = "api";
 
 export interface PratiquesQuery {
   locale?: string;
@@ -170,40 +174,22 @@ export interface PratiquesQuery {
 // visible batch is a window over the total match set — never a filter
 // applied after pagination.
 
-export function getPracticesPage(query: PratiquesQuery = {}): PaginatedPratiques {
-  const locale = query.locale ?? "fr";
-  const page = Math.max(1, query.page ?? 1);
-  const pageSize = Math.min(50, Math.max(1, query.pageSize ?? PRATIQUES_PAGE_SIZE));
-  const category = query.category && query.category !== "all" ? query.category : null;
-  const search = (query.search ?? "").trim();
-
-  let items = getAllPratiques(locale);
-
-  if (category) {
-    const allowed = PRACTICE_CATEGORY_MAP[category] ?? [];
-    items = items.filter((p) => allowed.includes(p.category));
-  }
-
-  if (search) {
-    const q = search.toLowerCase();
-    items = items.filter(
-      (p) => p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q)
-    );
-  }
-
-  const total = items.length;
-  const totalPages = Math.ceil(total / pageSize);
-  const start = (page - 1) * pageSize;
-  const paged = items.slice(start, start + pageSize);
-
+/**
+ * Honest empty page — the single response used when the backend cannot answer.
+ *
+ * Returning an empty window (rather than substituting local editorial records)
+ * is deliberate: a practice that the live feed cannot confirm must NOT be shown
+ * to a visitor as if it were bookable. Callers render their existing empty state.
+ */
+function emptyPracticesPage(page: number, pageSize: number): PaginatedPratiques {
   return {
-    items: paged,
-    total,
+    items: [],
+    total: 0,
     page,
     pageSize,
-    totalPages,
-    hasMore: page < totalPages,
-    dataSource: "local-fallback",
+    totalPages: 0,
+    hasMore: false,
+    dataSource: "api",
   };
 }
 
@@ -217,8 +203,8 @@ export function getPracticesPage(query: PratiquesQuery = {}): PaginatedPratiques
  *   FILTERED/SHARED → fetch the FULL remote dataset, merge + normalize,
  *                     then filter/search and paginate locally — filters never
  *                     run over a single loaded page.
- *   FAILURE         → same query answered from local content
- *                     (`getPracticesPage`), flagged `local-fallback`.
+ *   FAILURE         → empty window (no local dataset is substituted);
+ *                     the caller renders its honest empty state.
  */
 export async function getPracticesPageAsync(query: PratiquesQuery = {}): Promise<PaginatedPratiques> {
   const locale = query.locale ?? "fr";
@@ -285,8 +271,10 @@ export async function getPracticesPageAsync(query: PratiquesQuery = {}): Promise
       dataSource: "api",
     };
   } catch (error) {
-    console.warn("[pratiques] backend unavailable, serving local fallback:", error);
-    return { ...getPracticesPage({ locale, page, pageSize, category, search }), dataSource: "local-fallback" };
+    // API-ONLY: no local editorial dataset may be substituted for the live feed.
+    // The caller renders its honest empty state instead of a fabricated listing.
+    console.warn("[pratiques] backend unavailable, returning empty page:", error);
+    return emptyPracticesPage(page, pageSize);
   }
 }
 

@@ -48,13 +48,15 @@ export default function PratiqueSpecialists({
                 className="group grid grid-cols-[76px_1fr] sm:grid-cols-[92px_1fr_auto] items-center gap-6 sm:gap-10 py-7 sm:py-9 border-b border-[#0B1220]/[0.08]"
               >
                 <div className="relative w-[76px] h-[76px] sm:w-[92px] sm:h-[92px] rounded-full overflow-hidden bg-[#0B1220]/5 shrink-0">
-                  <Image
-                    src={s.image}
-                    alt={`${s.name}, ${role}`}
-                    fill
-                    sizes="92px"
-                    className="object-cover"
-                  />
+                  {s.image && (
+                    <Image
+                      src={s.image}
+                      alt={`${s.name}, ${role}`}
+                      fill
+                      sizes="92px"
+                      className="object-cover"
+                    />
+                  )}
                 </div>
 
                 <div className="min-w-0">

@@ -19,7 +19,7 @@
  *   - DETAIL  `GET /api/v1/public/articles/{slug}` — HTTP 200, returns the
  *     bare record (13 keys: id, title, description, details, image, slug,
  *     created_at, updated_at, creator_id, company_id, thumbnail, locked,
- *     creator); unknown slug → 404 (adapter → null).
+ *     creator); unknown slug → 404 (adapter → `not-found`). A transport failure, 5xx or malformed payload resolves to `unavailable` — never `not-found`.
  *
  * `creator` is a FULL Laravel User object (~50 keys incl. email/phone/PII).
  * This adapter projects it down to `{id, firstName, lastName, avatar}` at the
@@ -272,12 +272,34 @@ export async function fetchAllArticles(): Promise<ArticleSummary[]> {
 }
 
 /**
- * Fetch one article by slug. Returns the fully normalized detail, or null on
- * a backend 404 (so callers can `notFound()`).
+ * Outcome of a single-article lookup — the three backend realities stay
+ * DISTINCT so a transient outage can never be turned into a 404:
+ *
+ *   - `found`       the backend returned a usable article record.
+ *   - `not-found`   the backend EXPLICITLY reported 404 for this slug (or
+ *                   returned an empty body), so the caller may `notFound()`.
+ *   - `unavailable` network/timeout failure, 5xx, non-JSON body or an
+ *                   unexpected payload shape — the article may well exist, so
+ *                   the caller must render an unavailable state, NOT 404.
+ *
+ * `label` is the secrets-safe one-word diagnostic from `blogApiErrorLabel`
+ * (server logs only — never rendered).
  */
-export async function getArticleBySlug(slug: string): Promise<ArticleDetail | null> {
+export type ArticleLookup =
+  | { status: "found"; article: ArticleDetail }
+  | { status: "not-found" }
+  | { status: "unavailable"; label: string };
+
+/**
+ * Fetch one article by slug and classify the outcome (see `ArticleLookup`).
+ *
+ * Never throws for a backend-level failure: an outage resolves to
+ * `{ status: "unavailable" }` rather than rejecting, so detail routes can
+ * tell "does not exist" (404) apart from "cannot tell right now".
+ */
+export async function lookupArticleBySlug(slug: string): Promise<ArticleLookup> {
   const trimmed = typeof slug === "string" ? slug.trim() : "";
-  if (!trimmed) return null;
+  if (!trimmed) return { status: "not-found" };
 
   let json: unknown;
   try {
@@ -286,14 +308,20 @@ export async function getArticleBySlug(slug: string): Promise<ArticleDetail | nu
       { baseUrl: getBlogApiBase(), revalidate: BLOG_ARTICLES_API_REVALIDATE }
     );
   } catch (error) {
-    if (error instanceof WenayaApiError && error.status === 404) return null;
-    throw error;
+    if (error instanceof WenayaApiError && error.status === 404) {
+      return { status: "not-found" };
+    }
+    return { status: "unavailable", label: blogApiErrorLabel(error) };
   }
 
-  if (json === null || json === undefined) return null; // backend 404
+  // A 2xx body we cannot interpret tells us nothing about existence, so it is
+  // "unavailable" — only an explicit HTTP 404 may answer "not-found".
+  if (json === null || json === undefined) {
+    return { status: "unavailable", label: "empty payload" };
+  }
   if (!isValidRawRow(json)) {
-    throw new Error("Unexpected Wenaya article detail payload");
+    return { status: "unavailable", label: "unexpected payload" };
   }
 
-  return toDetail(json);
+  return { status: "found", article: toDetail(json) };
 }

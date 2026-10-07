@@ -11,6 +11,11 @@
  * (rootMargin 400px), skeleton/spinner loading, "Load more" fallback button,
  * retry on failure, end-of-list state, and the existing GSAP entrance for the
  * initial batch (appended batches use a lightweight CSS fade-in).
+ *
+ * Images are STRICTLY API-ONLY. A card shows the API image when the API supplied
+ * one and it loads. When the API supplied no image, or the URL fails to load
+ * (404/500), the card renders an empty media area — the local `practice-content`
+ * asset and any demo/mock image are never substituted here.
  */
 "use client";
 
@@ -48,8 +53,9 @@ interface ProxyQuery {
 /**
  * Load a practices batch through the `/api/pratiques` proxy (the browser never
  * calls the Wenaya backend directly). The proxy answers with the same paginated
- * contract the SSR seam produces — including the `X-Data-Source` header which
- * tells QA whether the batch came from the live API or the local fallback.
+ * contract the SSR seam produces — including the `X-Data-Source` header, which
+ * confirms the batch came from the live API (an empty body means the backend
+ * could not answer and the grid falls back to its empty state).
  */
 async function fetchPracticesProxy(query: ProxyQuery): Promise<PaginatedPratiques> {
   const params = new URLSearchParams();
@@ -112,6 +118,12 @@ export default function PratiquesGrid({
   // Batch #1 of a freshly loaded set starts animating from index 0. Appended
   // batches start at the previous list length. Reset with each new dataset.
   const [batchStart, setBatchStart] = useState(initialItems.length);
+
+  // API-only image rule: a practice whose API image URL fails to load (404/500)
+  // must render an EMPTY image area — never a local or demo substitute. Tracked by
+  // slug so re-renders (filter/search, appended batches) cannot resurrect a
+  // broken <img>. Successful images are untouched.
+  const [failedImages, setFailedImages] = useState<Record<string, true>>({});
 
   const filterKeys = PRACTICE_FILTER_KEYS;
 
@@ -309,6 +321,9 @@ export default function PratiquesGrid({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {items.map((pratique, idx) => {
             const categoryKey = filterKeys.find((fk) => (PRACTICE_CATEGORY_MAP[fk] || []).includes(pratique.category)) || "all";
+            // Empty when the API gave no image, or when this slug's image failed to
+            // load — the card keeps its layout and simply shows an empty media area.
+            const imageSrc = failedImages[pratique.slug] ? "" : pratique.image.trim();
 
             return (
               <Link
@@ -327,13 +342,20 @@ export default function PratiquesGrid({
                 <div className="relative w-full aspect-[4/3] overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/50 via-[#0B1220]/5 to-transparent z-[1]" />
 
-                  <Image
-                    src={pratique.image}
-                    alt={pratique.title}
-                    fill
-                    className="object-cover transition-all duration-700 group-hover:scale-[1.04]"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
+                  {imageSrc ? (
+                    <Image
+                      src={imageSrc}
+                      alt={pratique.title}
+                      fill
+                      className="object-cover transition-all duration-700 group-hover:scale-[1.04]"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      onError={() =>
+                        setFailedImages((prev) =>
+                          prev[pratique.slug] ? prev : { ...prev, [pratique.slug]: true }
+                        )
+                      }
+                    />
+                  ) : null}
 
                   {/* Ghost number */}
                   <span

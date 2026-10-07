@@ -13,7 +13,7 @@ import { languageAlternates } from "@/lib/hreflang";
 import { getPracticesPageAsync, PRATIQUES_PAGE_SIZE } from "@/lib/pratiques";
 
 export const metadata: Metadata = {
-  title: "Nos Pratiques — Kinésithérapie, Ostéopathie, Psychologie & Nutrition | Wenaya",
+  title: "Nos Pratiques — Kinésithérapie, Ostéopathie, Psychologie & Nutrition",
   description:
     "Découvrez toutes les pratiques Wenaya : kinésithérapie, ostéopathie, psychologie clinique, neuropsychologie, nutrition, orthophonie, naturopathie, psychomotricité et thérapies complémentaires à Casablanca.",
   alternates: {

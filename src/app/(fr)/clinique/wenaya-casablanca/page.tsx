@@ -16,13 +16,13 @@ import ClinicCourses from "@/components/clinic/Courses";
 import ClinicPathologies from "@/components/clinic/Pathologies";
 import ClinicTeam from "@/components/clinic/Team";
 import ClinicHealthNeeds from "@/components/clinic/HealthNeeds";
-import ClinicParcoursDeSoins from "@/components/clinic/ParcoursDeSoins";
 /* HIDDEN — temporarily disabled; re-enable by uncommenting import + render below */
 // import ClinicHomecareBanner from "@/components/clinic/HomecareBanner";
 import ClinicRecruitment from "@/components/clinic/Recruitment";
 import ClinicPractical from "@/components/clinic/Practical";
 import ClinicStructuredData from "@/components/clinic/StructuredData";
 import { getHomepageSpecialists } from "@/lib/professionals";
+import { getClinicTroubleCards } from "@/lib/troubles-hub";
 import Footer from "@/components/Footer";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
@@ -64,6 +64,10 @@ export default async function ClinicPage() {
   const lang = "fr";
   const locale = lang;
   const experts = (await getHomepageSpecialists(8)).slice(0, 8);
+  // Live Maux-troubles catalogue — the SAME records + order as the hub page,
+  // each with its own localized detail route. Resolved server-side so the
+  // client component never fetches and can never invent a destination.
+  const { items: troubleCards } = await getClinicTroubleCards(locale);
   return (
     <>
       <ErrorBoundary>
@@ -78,8 +82,7 @@ export default async function ClinicPage() {
             <ClinicCourses locale={locale} lang={lang} />
             <ClinicPathologies locale={locale} lang={lang} />
             <ClinicTeam specialists={experts} />
-            <ClinicHealthNeeds />
-            <ClinicParcoursDeSoins />
+            <ClinicHealthNeeds troubleCards={troubleCards} />
             {/* <ClinicHomecareBanner /> — HIDDEN temporarily */}
             <ClinicRecruitment />
             <ClinicPractical />

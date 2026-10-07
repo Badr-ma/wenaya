@@ -31,7 +31,7 @@ import { getAllPratiques } from "./pratiques";
 import { getLiveSpecialists } from "./professionals";
 import { getSpecialtyOptions } from "./specialist-filters";
 import { getTroubles, getTroubleBySlug, type Trouble } from "./troubles";
-import { h, troubleDetailHref } from "./href";
+import { h, troubleDetailHref, type HrefLocale } from "./href";
 
 export interface TroubleHubPractice {
   slug: string;
@@ -145,5 +145,60 @@ export async function getTroubleDetail(
   } catch (error) {
     console.error(`[troubles-hub] failed to resolve trouble detail "${slug}":`, error);
     return null;
+  }
+}
+
+/**
+ * CLINIC CARDS (`getClinicTroubleCards`): the projection the Clinic "Maux-troubles"
+ * section renders. SAME live catalogue as the hub (`getTroubles()`), in the SAME
+ * backend order — no second fetch path, no static demo dataset, no fallback.
+ *
+ * Navigation contract: each card links ONLY to its own localized trouble detail
+ * route (`troubleDetailHref`). `specialties` carries localized practice TITLES as
+ * plain labels (canonical slugs from `Trouble.specialtySlugs`, verified against
+ * `getAllPratiques(locale)`) and deliberately has NO href field: the section shows
+ * them as non-linked text, so a discipline can never be presented as a link here.
+ */
+export interface ClinicTroubleSpecialty {
+  slug: string;
+  title: string;
+}
+
+export interface ClinicTroubleCard {
+  id: number;
+  slug: string;
+  name: string;
+  description: string;
+  href: string;
+  specialties: ClinicTroubleSpecialty[];
+}
+
+export interface ClinicTroubleCardsResult {
+  status: TroublesHubStatus;
+  items: ClinicTroubleCard[];
+}
+
+export async function getClinicTroubleCards(
+  locale: HrefLocale
+): Promise<ClinicTroubleCardsResult> {
+  try {
+    const troubles = await getTroubles();
+    const practiceBySlug = new Map(getAllPratiques(locale).map((p) => [p.slug, p.title]));
+
+    const items = troubles.map((trouble) => ({
+      id: trouble.id,
+      slug: trouble.slug,
+      name: trouble.name,
+      description: trouble.description,
+      href: troubleDetailHref(locale, trouble.slug),
+      specialties: trouble.specialtySlugs
+        .filter((slug) => practiceBySlug.has(slug))
+        .map((slug) => ({ slug, title: practiceBySlug.get(slug) as string })),
+    }));
+
+    return { status: items.length === 0 ? "empty" : "ok", items };
+  } catch (error) {
+    console.error("[troubles-hub] failed to load clinic trouble cards:", error);
+    return { status: "error", items: [] };
   }
 }

@@ -8,23 +8,37 @@
  * bronze and slides in an arrow. No selection state, no cards, distinct from
  * the numbered practice explorer and the session gallery above.
  *
- * Server component: data comes from `getPathologies`; each row resolves its
- * first confirmed `relatedPracticeSlug` into a real practice-detail link (or
- * stays a plain text row when no destination exists) — no invented routes,
- * no fake `#`. All titles and links are present in the initial HTML.
+ * Server component: data comes from `getPathologies`; each row links to the
+ * verified care-journey page for that condition, or stays a plain text row if
+ * that page is missing — no invented routes, no fake `#`. All titles and links
+ * are present in the initial HTML.
+ *
+ * DESTINATION RULE: a row is a health SITUATION ("Vertiges", "Grossesse &
+ * Maternité"), so it must point at the care journey that explains it, NOT at a
+ * discipline page taken from the first entry of an arbitrary
+ * `relatedPracticeSlugs` array. That sent 5 of 7 rows to
+ * `/pratiques/kinesitherapie` — URLs that return HTTP 200 while being
+ * semantically wrong, i.e. a silent, invisible bug.
+ *
+ * DELIBERATELY NO PRACTICE FALLBACK: a missing/invalid `careJourneySlug` yields
+ * `href: null` (an honest, visibly unlinked row) rather than a plausible-looking
+ * but unrelated practice page. Degrading to a practice link would reintroduce
+ * exactly the failure mode documented above, so validation failure must fail
+ * loudly in the markup instead. To add a condition, give it a `careJourneySlug`
+ * that exists in `care-journeys.ts`.
  */
 import Link from "next/link";
 import { getPathologies, type PathologyTopic } from "@/lib/pathologies";
-import { getAllPratiqueSlugs } from "@/lib/pratiques";
-import { h, type HrefLocale } from "@/lib/href";
+import { careerJourneyHref, getAllCareJourneySlugs } from "@/lib/care-journeys";
+import type { HrefLocale } from "@/lib/href";
 import { getTranslations } from "@/i18n";
 
 interface PathologyItem extends PathologyTopic {
-  /** Real practice-detail destination (canonical slug), or null when none exists. */
+  /** Verified care-journey destination, or null when the slug is missing/invalid. */
   href: string | null;
 }
 
-const VALID_SLUGS = new Set(getAllPratiqueSlugs());
+const VALID_JOURNEY_SLUGS = new Set(getAllCareJourneySlugs());
 
 export default function ClinicPathologies({
   locale,
@@ -35,10 +49,12 @@ export default function ClinicPathologies({
 }): React.JSX.Element {
   const { t } = getTranslations(lang);
   const pathologies: PathologyItem[] = getPathologies(locale as "fr" | "en").map((p) => {
-    const dest = (p.relatedPracticeSlugs ?? []).find((s) => VALID_SLUGS.has(s));
+    const journey = p.careJourneySlug;
     return {
       ...p,
-      href: dest ? h(locale, `/pratiques/${dest}`) : null,
+      href: journey && VALID_JOURNEY_SLUGS.has(journey)
+        ? careerJourneyHref(locale as "fr" | "en", journey)
+        : null,
     };
   });
 

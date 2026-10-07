@@ -111,6 +111,9 @@ interface BookingPanelProps {
     | "bookingErrorSlot"
     | "bookingErrorFeed"
     | "bookingErrorGeneric"
+    | "bookingErrorUncertainTitle"
+    | "bookingErrorUncertain"
+    | "bookingErrorUncertainAction"
     | "bookingDoneTitle"
     | "bookingDoneText"
   >;
@@ -155,6 +158,14 @@ export default function BookingPanel({
   const canContinue = selectedSlot !== null;
   const busy = status === "checking" || status === "submitting";
   const busyLabel = status === "checking" ? labels.bookingChecking : labels.bookingSubmitting;
+  /**
+   * The write may already be registered upstream without a confirmation ever
+   * coming back, so this state is neither a success nor a clean failure. It gets
+   * its own copy and suppresses the retry CTA: repeating the request straight
+   * away risks registering the same patient twice.
+   */
+  const uncertain = errorReason === "booking-uncertain";
+  const errorTitle = uncertain ? labels.bookingErrorUncertainTitle : labels.bookingErrorTitle;
   const errorCopy =
     errorReason === "unauthenticated"
       ? labels.bookingErrorSession
@@ -162,7 +173,9 @@ export default function BookingPanel({
         ? labels.bookingErrorSlot
         : errorReason === "feed-unavailable"
           ? labels.bookingErrorFeed
-          : labels.bookingErrorGeneric;
+          : errorReason === "booking-uncertain"
+            ? labels.bookingErrorUncertain
+            : labels.bookingErrorGeneric;
 
   /** Create the booking request for a validated slot. */
   async function submitSlot(slot: LiveGroupSessionSlot): Promise<void> {
@@ -548,15 +561,33 @@ export default function BookingPanel({
                 {errorReason && (
                   <div
                     role="alert"
-                    className="gs-booking-error rounded-xl border border-red-500/25 bg-red-500/[0.06] px-4 py-3 text-center"
+                    className={
+                      uncertain
+                        ? "gs-booking-error rounded-xl border border-[#B88A5A]/35 bg-[#B88A5A]/[0.07] px-4 py-3 text-center"
+                        : "gs-booking-error rounded-xl border border-red-500/25 bg-red-500/[0.06] px-4 py-3 text-center"
+                    }
                   >
-                    <p className="text-[12.5px] font-semibold text-red-600/90">
-                      {labels.bookingErrorTitle}
+                    <p
+                      className={
+                        uncertain
+                          ? "text-[12.5px] font-semibold text-[#9A7242]"
+                          : "text-[12.5px] font-semibold text-red-600/90"
+                      }
+                    >
+                      {errorTitle}
                     </p>
-                    <p className="mt-1 text-[12px] leading-relaxed text-red-500/80">{errorCopy}</p>
+                    <p
+                      className={
+                        uncertain
+                          ? "mt-1 text-[12px] leading-relaxed text-[#0B1220]/65"
+                          : "mt-1 text-[12px] leading-relaxed text-red-500/80"
+                      }
+                    >
+                      {errorCopy}
+                    </p>
                   </div>
                 )}
-                {canContinue ? (
+                {canContinue && !uncertain ? (
                   <button
                     type="button"
                     onClick={handlePayLater}
@@ -574,6 +605,12 @@ export default function BookingPanel({
                       </svg>
                     )}
                   </button>
+                ) : uncertain ? (
+                  // No retry affordance here on purpose: the registration may
+                  // already exist, so an immediate re-submit could double-book.
+                  <p className="px-1 text-center text-[11.5px] leading-relaxed text-[#2B2F36]/55">
+                    {labels.bookingErrorUncertainAction}
+                  </p>
                 ) : (
                   <span
                     className="gs-paylater inline-flex items-center justify-center gap-3 h-12 w-full rounded-xl px-8 text-white/70 text-sm font-semibold select-none cursor-not-allowed"

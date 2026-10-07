@@ -147,12 +147,12 @@ export default function EntreprisesFooter(): React.JSX.Element {
                   const isContact = group.links.length === 4 && group.links[1] === footerContactRaw.address;
                   const groupUrls = isContact
                     ? null
-: group.title === footerSolutions.title
-                        ? [h(locale, "/corporate"), "#", "#", "#"]
+                    : group.title === footerSolutions.title
+                      ? [h(locale, "/corporate")]
                       : group.title === footerResources.title
-                        ? [h(locale, "/faq"), "#", "#"]
+                        ? [h(locale, "/faq")]
                         : group.title === footerAPropos.title
-                          ? [h(locale, "/about-us"), h(locale, "/pratiques"), "#", "#"]
+                          ? [h(locale, "/about-us"), h(locale, "/pratiques")]
                           : null;
                   return (
                     <div key={group.title}>
@@ -168,7 +168,7 @@ export default function EntreprisesFooter(): React.JSX.Element {
                             else if (i === 3) { href = `mailto:${footerContactRaw.email}`; external = true; }
                             else href = null;
                           } else {
-                            href = groupUrls?.[i] ?? "#";
+                            href = groupUrls?.[i] ?? null;
                           }
                           if (href === null) {
                             return <li key={link} className="text-white/45 text-sm leading-relaxed">{link}</li>;

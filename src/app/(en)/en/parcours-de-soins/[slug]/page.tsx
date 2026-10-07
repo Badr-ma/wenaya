@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const url = `${SITE_URL}/en/parcours-de-soins/${slug}`;
 
   return {
-    title: seo.title,
+    title: { absolute: seo.title },
     description: seo.description,
     alternates: {
       canonical: url,

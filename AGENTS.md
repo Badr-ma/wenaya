@@ -1497,3 +1497,27 @@ Final run of %TEMP%\opencode\booking-url-cdp.mjs against the isolated build :301
 **Key learning (app design, not a bug):** step-2 Confirm is disabled while submitAttempted && errors>0 (BookingPanel.tsx:598) -- focus-first-invalid runs only on the initial invalid submit (T5); afterwards the button stays disabled until every field becomes valid via live re-validation on typing (handleFieldChange). Phone rule: 8-15 digits (digits>=8&&<=15). Harness T7/T8 rewritten to assert: confirm disabled while errors exist, live invalid->error on typing, valid->clears, confirm re-enables when form valid. The old T7/T8 "re-click confirm to move focus" approach was a no-op on the disabled button.
 
 **Gotchas reinforced:** stale next start serves pre-change HTML (always kill ALL node + Remove-Item .next before QA builds); ESM harness must import (no require/IIFE); headless Chrome path C:\Program Files\Google\Chrome\Application\chrome.exe; kill stray booking-chrome-* processes before runs; Node fetch() follows 308 (redirect:"manual" for redirect asserts); PowerShell console mangles accents and rg is unavailable.
+
+### 2026-10-07 — `dummy-man.png` follow-up: CONFIRMED ALREADY RESOLVED in working tree (no code change needed, branch pre-production-cleanup)
+
+Closed the Phase-1 audit set-8 #8 follow-up ("`/images/dummy-man.png` broken refs"). Outcome: **the fallback was ALREADY dropped in uncommitted WIP — zero source changes were required.** NOT committed/pushed.
+
+**Grep proof (whole repo):** `dummy-man` = **5 matches, ALL in docs** (AGENTS.md:1225 prior "kept by design" note, `wenaya-phase1-deadcode-report.md:126,160`, `wenaya-group-sessions-live-content-source-report.md:9,21`). `src/` grep (incl. `dummy_man|dummyMan|dummy-man|dummy man` in `*.ts`) = **0**; `public/**/*dummy*` = **no asset**. Audit line refs (`professionals.ts:28,51`, `professionals-detail.ts:45,70`) are stale.
+
+**Git diff proof** (`git diff HEAD -- src/lib/professionals.ts src/lib/professionals-detail.ts`): `DUMMY_IMAGE`/`/images/dummy-man.png` removed from both files, replaced with empty-string fallbacks — `image: pro.avatar || "",` (`professionals.ts:48`) and `return user.avatar || professional.logo || "";` (`professionals-detail.ts:67`).
+
+**Current behavior (verified):** all three image consumers guard absent images with `{specialist.image && (<Image/>)}` — `SpecialistListItem.tsx:38-40`, `SpecialistDetail.tsx:160-162`, `BookingPanel.tsx:378-379` → no broken image, no placeholder, no invented URL. `isRealRemoteImage` (`professionals-detail.ts:276-282`) keeps its `!value.includes("dummy")` guard — that is a **protection rail, NOT a fallback** (the real backend still serves `dummy-man.png` as `professional.avatar` for some corporate/event records, per the group-sessions report), so it was KEPT.
+
+**Doc updates only (no code):** phase1 report set-8 #8 + §9 flagged **RESOLVED** with the reasoning; group-sessions report :9,:21 left as-is (accurate backend-data caveat). Remaining doc mentions are historical record — not edited.
+
+**Gates:** no build run (zero source bytes changed this session); the working tree with these files already passed recent tsc/eslint/build gates in prior sessions. Prod :3002 + dev :3000 state untouched.
+
+### 2026-10-07 — Sitewide Footer responsive compaction (FR + EN, mobile/tablet only) — 17/17 CDP PASS, branch pre-production-cleanup
+
+Compacted the sitewide footer (`Footer.tsx`, navy `#0B1220` card) on mobile/tablet only; DESKTOP (lg:) appearance preserved class-for-class (lg values byte-identical to pre-edit). All logos, 3 link groups (Navigation 5 / Infos légales 2 / Contact), socials, bottom legal bar, and every live URL kept. FR/EN parity. Frontend-only, single file `Footer.tsx`. NOT committed/pushed.
+
+**Edits (`Footer.tsx` only), all with lg: = original desktop values:** section `py-16 sm:py-24` → `py-10 sm:py-20 lg:py-24`; card `p-6 sm:p-12 lg:p-16` → `p-5 sm:p-10 lg:p-16`; header row `flex flex-col lg:flex-row ... gap-8 mb-14` → `flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 lg:gap-8 mb-8 lg:mb-14`; logo `h-7 sm:h-8` → `h-6 sm:h-8`; desc `mt-4 max-w-sm` → `mt-2 sm:mt-3 lg:mt-4 max-w-sm`; socials row `gap-3` → `gap-2.5 lg:gap-3` + buttons `w-11 h-11` → `w-10 h-10 lg:w-11 lg:h-11`; link grid `grid sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8` → `grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8 lg:gap-x-8 lg:gap-y-8` (mobile rows = Navigation|Infos légales / Contact full-width); 3 h4s `mb-6` → `mb-3 lg:mb-6`; 3 uls `space-y-3` → `space-y-2 lg:space-y-3`; contact column branch `col-span-2 lg:col-span-1`; bottom bar `mt-12 pt-6 gap-4` → `mt-8 lg:mt-12 pt-4 lg:pt-6 gap-2 lg:gap-4`.
+
+**QA:** SSR :3000 confirms all new class strings (4 social buttons, 3 link groups, contact col-span-2, bottom bar); CDP headless Edge 17/17 PASS (FR 390 / FR 1440 / EN 390): footer present, no horizontal overflow, 13 footer links, zero dead hash links, 4 real external social URLs, mobile shorter than desktop. DOM content heights: 390px=746, 430px=724, 1440px=649 (unchanged desktop). The 105px "overflow" in the first probe was the PRE-EXISTING absolute glow blobs (w-[600px]/w-[400px] pointer-events-none) exceeding the footer box — document-level scrollWidth is 0/0/-15, ignore footer.scrollWidth probes.
+
+**Gates:** `npx tsc --noEmit` clean; `npx eslint src/components/Footer.tsx` clean; no build (dev :3000 HMR serves the edit; prod :3002 = previous build untouched). NOT committed/pushed.

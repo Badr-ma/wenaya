@@ -1,7 +1,10 @@
 /**
- * Professionals adapter — maps the live dev API professional listing to the
- * frontend `Specialist` interface. Falls back to Redis / hardcoded mock data
- * on any failure (network, shape validation, etc.).
+ * Professionals adapter — maps the live API professional listing to the
+ * frontend `Specialist` interface.
+ *
+ * NO DEMO FALLBACK: every consumer here returns an empty list on API failure
+ * so the legacy hardcoded practitioners are never served. The demo dataset
+ * (`specialistes.ts`) remains only as the admin seed default.
  *
  * Server-side only — consumed by the listing pages, never by client components.
  *
@@ -19,15 +22,11 @@
 import type { Specialist } from "./specialistes";
 import type { ApiProfessional } from "./professionals-api";
 import { fetchProfessionals } from "./professionals-api";
-import { getAllSpecialistsAsync } from "./specialistes";
 import { filterSpecialists, specialtyDisplayToSlug } from "./specialist-filters";
-
-/** Dummy image used when the API avatar is missing or unreachable. */
-const DUMMY_IMAGE = "/images/dummy-man.png";
 
 /**
  * Slugs excluded from the public listing. `introsens-sarl` is a corporate
- * account (no specialty, dummy avatar, empty profile) — not a practitioner.
+ * account (no specialty, no avatar, empty profile) — not a practitioner.
  * Its detail page renders 404 (see `professionals-detail.ts`).
  */
 const HIDDEN_SLUGS = new Set(["introsens-sarl"]);
@@ -46,7 +45,7 @@ function toSpecialist(pro: ApiProfessional): Specialist {
     role: primarySpecialty,
     roleEn: undefined,
     specialty: primarySpecialty,
-    image: pro.avatar || DUMMY_IMAGE,
+    image: pro.avatar || "",
     rating: 0,
     reviewCount: 0,
     yearsExperience: 0,
@@ -76,9 +75,14 @@ function toSpecialist(pro: ApiProfessional): Specialist {
 }
 
 /**
- * Fetch live professionals from the dev API, mapped to the Specialist
- * interface. On ANY failure (network, timeout, shape mismatch), falls
- * back to the existing Redis / hardcoded data.
+ * Fetch live professionals from the API, mapped to the Specialist interface.
+ *
+ * NO FALLBACK. On ANY failure (network, timeout, shape mismatch) or a valid
+ * empty response, this returns an empty list so the caller renders its empty
+ * state instead of ever showing the legacy Redis / hardcoded demo
+ * practitioners. The demo dataset is a different, non-overlapping slug set —
+ * serving it here would publish practitioners who do not exist and break the
+ * "listing cards === profile pages" invariant.
  *
  * This is the primary data source for the listing pages.
  */
@@ -87,16 +91,16 @@ export async function getLiveSpecialists(): Promise<Specialist[]> {
     const apiProfessionals = await fetchProfessionals();
 
     if (apiProfessionals.length === 0) {
-      console.warn("[professionals] API returned 0 professionals, falling back to local data");
-      return getAllSpecialistsAsync();
+      console.warn("[professionals] API returned 0 professionals, rendering without listings");
+      return [];
     }
 
     return apiProfessionals
       .filter((pro) => !HIDDEN_SLUGS.has(pro.slug))
       .map(toSpecialist);
   } catch (error) {
-    console.error("[professionals] API fetch failed, falling back to local data:", error);
-    return getAllSpecialistsAsync();
+    console.error("[professionals] API fetch failed, rendering without listings:", error);
+    return [];
   }
 }
 

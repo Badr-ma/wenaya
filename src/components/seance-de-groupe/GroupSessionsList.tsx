@@ -1,9 +1,10 @@
 /**
  * Group Sessions List — "Nos séances de groupe".
  * Lists the group sessions passed in by the server page (currently-active
- * backend feed via `getActiveGroupSessions`, with local editorial fallback).
+ * backend feed via `getActiveGroupSessions` — the live feed is the only source,
+ * so an unreachable backend yields an empty list, never a stale local set).
  * Rendered as compact, scannable cards. Every card links to its DEDICATED
- * detail route (`s.path`): local sessions to the editorial detail pages,
+ * detail route (`s.path`): editorial sessions to the static detail pages,
  * backend-only programs to their live detail pages (STEP 3) whose CTAs then
  * hand off to the contact flow.
  */
@@ -30,7 +31,7 @@ export default function GroupSessionsList({ sessions }: { sessions: GroupSession
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
-          {sessions.map((s, i) => (
+          {sessions.map((s) => (
             <Link
               key={s.id}
               href={s.path}
@@ -46,14 +47,6 @@ export default function GroupSessionsList({ sessions }: { sessions: GroupSession
                   className="object-cover transition-all duration-700 group-hover:scale-[1.05]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/80 via-[#0B1220]/10 to-transparent" />
-                <div
-                  className="absolute left-3 top-3 w-7 h-7 rounded-full flex items-center justify-center"
-                  style={{ background: `${s.accent}18`, border: `1px solid ${s.accent}30` }}
-                >
-                  <span className="font-heading font-bold text-[10px] tabular-nums" style={{ color: s.accent }}>
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                </div>
               </div>
               <div className="flex-1 px-5 py-4">
                 <h3 className="font-heading font-semibold text-white text-[15px] leading-snug">

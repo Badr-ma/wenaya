@@ -66,6 +66,10 @@ const nextConfig: NextConfig = {
       { source: "/en/soins",             destination: "/en/pratiques",   permanent: true },
       /* /en/maux-troubles now folds to the real EN health-needs page. */
       { source: "/en/maux-troubles",     destination: "/en/health-needs", permanent: true },
+      /* Home care (soins à domicile) is a FR-only page with no EN translation.
+         Collapse manually entered /en/soins-a-domicile to the canonical FR
+         route instead of 404. Both locale CTAs link straight to /soins-a-domicile. */
+      { source: "/en/soins-a-domicile", destination: "/soins-a-domicile", permanent: true },
       { source: "/en/blog",           destination: "/en/articles", permanent: true },
       { source: "/en/blog/:path*",    destination: "/en/articles/:path*", permanent: true },
       { source: "/en/evenements",        destination: "/en/seance-de-groupe", permanent: false },

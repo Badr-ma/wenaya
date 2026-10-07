@@ -35,6 +35,15 @@ export function clinicHref(locale: HrefLocale): string {
 }
 
 /**
+ * Route of the Homecare page.
+ * `/soins-a-domicile` exists in French only (no `/en/...` route is published),
+ * so every locale points at the FR page rather than fabricating a 404 path —
+ * the generic `h()` would wrongly produce "/en/soins-a-domicile". Imported as a
+ * constant (not a locale helper) precisely because it is locale-independent.
+ */
+export const HOMECARE_HREF = "/soins-a-domicile";
+
+/**
  * Locale-aware href for the Maux-Troubles orientation page.
  * The EN route uses the English segment ("/en/health-needs") while FR uses the
  * French segment ("/maux-troubles") — a strict locale split like the Clinic page.

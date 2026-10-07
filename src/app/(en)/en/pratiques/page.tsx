@@ -13,7 +13,7 @@ import { languageAlternates } from "@/lib/hreflang";
 import { getPracticesPageAsync, PRATIQUES_PAGE_SIZE } from "@/lib/pratiques";
 
 export const metadata: Metadata = {
-  title: "Our Practices — Physiotherapy, Osteopathy, Psychology & Nutrition | Wenaya",
+  title: "Our Practices — Physiotherapy, Osteopathy, Psychology & Nutrition",
   description:
     "Discover all Wenaya practices: physiotherapy, osteopathy, clinical psychology, neuropsychology, nutrition, speech therapy, naturopathy, psychomotricity and complementary therapies in Casablanca.",
   alternates: {

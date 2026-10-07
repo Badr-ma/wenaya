@@ -1,7 +1,14 @@
 /**
- * Clinic Practical Info — location/contact/client info for the Clinic/B2C page.
- * Editorial: a large clinic environment photograph opposite the practical
- * details (address, hours, appointments, phone) with call + book CTAs. No cards.
+ * Clinic Homecare Section — "Soins à domicile" access section for the Clinic page.
+ * Editorial: a large homecare photograph opposite the home-care details (services,
+ * first step, contact) with page + call CTAs. Structure, grid, spacing and styling
+ * are unchanged from the former practical-info section; only the content, labels,
+ * image and CTA destinations are home-care. French copy is drawn from the canonical
+ * home-care sources in src/components/domicile/* (hero H1/eyebrow, the three
+ * services, the evaluation intro, the contact band); a few labels compose two
+ * canonical strings into one summary line, and the two CTA labels + alt text are
+ * written for this context. English is a faithful translation, not a live-captured
+ * one. Both locales link to the FR-only `/soins-a-domicile` page (HOMECARE_HREF).
  */
 "use client";
 
@@ -9,19 +16,28 @@ import Link from "next/link";
 import Image from "next/image";
 import { useLocale } from "@/contexts/LanguageContext";
 import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
-import { clinicPracticalInfo } from "@/lib/clinic-content";
-import { h } from "@/lib/href";
+import { HOMECARE_HREF } from "@/lib/href";
 
 export default function ClinicPractical(): React.JSX.Element {
-  const { t, locale } = useLocale();
+  const { t } = useLocale();
   const { elRef: sectionRef } = useIntersectionDeferred();
-  const isEn = locale === "en";
-  const info = clinicPracticalInfo(locale);
 
   const rows = [
-    { label: t("clinic.practical.addressLabel"), value: info.address, sub: info.name },
-    { label: t("clinic.practical.hoursLabel"), value: info.hours, sub: null as string | null },
-    { label: t("clinic.practical.appointmentLabel"), value: info.appointment, sub: null as string | null },
+    {
+      label: t("clinic.practical.servicesLabel"),
+      value: t("clinic.practical.servicesValue"),
+      sub: t("clinic.practical.servicesSub"),
+    },
+    {
+      label: t("clinic.practical.stepLabel"),
+      value: t("clinic.practical.stepValue"),
+      sub: t("clinic.practical.stepSub"),
+    },
+    {
+      label: t("clinic.practical.contactLabel"),
+      value: t("clinic.practical.contactValue"),
+      sub: t("clinic.practical.contactSub"),
+    },
   ];
 
   return (
@@ -32,11 +48,11 @@ export default function ClinicPractical(): React.JSX.Element {
         </span>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
-          {/* Large clinic image */}
+          {/* Large homecare image */}
           <div className="lg:col-span-7">
             <div className="relative overflow-hidden rounded-t-[24px] bg-[#0B1220]/5 min-h-[240px] sm:min-h-[320px] lg:h-full">
               <Image
-                src="/pratiques/infirmerie.jpg"
+                src="/domicile/Infirmerie.jpg"
                 alt={t("clinic.practical.imageAlt")}
                 fill
                 sizes="(max-width: 1024px) 100vw, 58vw"
@@ -46,10 +62,10 @@ export default function ClinicPractical(): React.JSX.Element {
               <div className="absolute bottom-0 left-0 right-0 p-7 lg:p-9 flex items-end justify-between gap-6">
                 <div>
                   <h3 className="heading-serif text-white text-2xl lg:text-3xl leading-tight">
-                    {info.name}
+                    {t("clinic.practical.name")}
                   </h3>
                   <p className="mt-1.5 text-white/70 text-sm">
-                    {info.address}
+                    {t("clinic.practical.tagline")}
                   </p>
                 </div>
                 <span className="hidden sm:inline-flex items-center gap-2 text-white/70 text-[11px] tracking-[0.18em] uppercase shrink-0">
@@ -57,13 +73,13 @@ export default function ClinicPractical(): React.JSX.Element {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                  {isEn ? "Casablanca" : "Casablanca"}
+                  {t("clinic.practical.city")}
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Practical details + CTAs */}
+          {/* Home-care details + CTAs */}
           <div className="lg:col-span-5 flex flex-col">
             <h2 className="heading-serif text-[#0B1220] leading-[1.05]" style={{ fontSize: "clamp(2rem, 3.6vw, 3rem)" }}>
               {t("clinic.practical.heading1")}
@@ -89,23 +105,23 @@ export default function ClinicPractical(): React.JSX.Element {
 
             <div className="mt-6 flex flex-col sm:flex-row items-start gap-4">
               <Link
-                href="tel:+212666124035"
+                href={HOMECARE_HREF}
                 className="inline-flex items-center justify-center gap-2.5 h-13 px-8 text-white text-sm font-semibold transition-all duration-300 hover:-translate-y-px"
                 style={{
                   background: "linear-gradient(135deg, #B88A5A 0%, #9A7242 100%)",
                   boxShadow: "0 1px 0 rgba(255,255,255,0.14) inset, 0 6px 24px rgba(184,138,90,0.3)",
                 }}
               >
-                {t("clinic.practical.ctaCall")}
+                {t("clinic.practical.ctaPage")}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
               </Link>
               <Link
-                href={h(locale, "/search/all")}
+                href="tel:+212666124035"
                 className="inline-flex items-center justify-center gap-2 h-13 px-6 text-[#0B1220] text-sm font-medium border border-[#0B1220]/[0.16] transition-all duration-300 hover:border-[#0B1220]/[0.35]"
               >
-                {t("clinic.hero.ctaBook")}
+                {t("clinic.practical.ctaCall")}
               </Link>
             </div>
           </div>

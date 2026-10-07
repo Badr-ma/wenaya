@@ -375,9 +375,14 @@ export default function BookingPanel({
                   {/* LEFT — specialist */}
                   <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
                     <div className="relative w-16 h-16 rounded-full overflow-hidden bg-[#E8E2D9] mb-3">
-                      <Image src={specialist.image} alt={specialist.name} fill className="object-cover" sizes="64px" />
+                      {specialist.image && (
+                        <Image src={specialist.image} alt={specialist.name} fill className="object-cover" sizes="64px" />
+                      )}
                     </div>
                     <p className="font-heading font-bold text-[15px] text-[#0B1220] mb-2">{specialist.name}</p>
+                    {specialist.phone && (
+                      <p className="text-[12px] text-[#2B2F36]/70 mb-2">{specialist.phone}</p>
+                    )}
                     {selectedDay && (
                       <p className="flex items-center gap-1.5 text-[12px] text-[#2B2F36]/60 mb-4">
                         <svg className="w-3.5 h-3.5 text-[#B88A5A]/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M3 10h18M8 3v4M16 3v4" /></svg>

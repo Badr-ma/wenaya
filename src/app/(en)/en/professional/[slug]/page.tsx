@@ -2,9 +2,8 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import SpecialistDetail from "@/components/specialistes/SpecialistDetail";
-import { getAllSpecialists } from "@/lib/specialistes";
-import { getPracticesForSpecialist } from "@/lib/pratique-specialists";
-import { getLiveProfessionalBySlug } from "@/lib/professionals-detail";
+import { getLiveSpecialists } from "@/lib/professionals";
+import { getLiveProfessionalBySlug, getSpecialistPractices } from "@/lib/professionals-detail";
 import { SITE_URL, OG_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
@@ -12,8 +11,10 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+/** Live API slugs only (see the FR mirror for the rationale). */
 export async function generateStaticParams() {
-  return getAllSpecialists().map((s) => ({ slug: s.slug }));
+  const specialists = await getLiveSpecialists();
+  return specialists.map((s) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -30,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   ].join(" ");
 
   return {
-    title: `${specialist.name} — ${role} | Wenaya Casablanca`,
+    title: `${specialist.name} — ${role} — Casablanca`,
     description,
     keywords: [specialist.name, role, specialist.specialty, "Casablanca", "Wenaya", ...specialist.specialtyTags],
     alternates: { canonical: `${SITE_URL}/en/professional/${slug}`, languages: languageAlternates(`/professional/${slug}`) },
@@ -57,7 +58,10 @@ export default async function EnglishSpecialistPage({ params }: Props) {
   const specialist = await getLiveProfessionalBySlug(slug, "en");
   if (!specialist) notFound();
 
-  const practices = getPracticesForSpecialist(slug, "en");
+  // Live relationship: derived from the professional's own API specialities
+  // (canonical practice slugs), never the legacy demo map — so a profile can
+  // never surface a stale practice↔professional pairing.
+  const practices = getSpecialistPractices(specialist, "en");
 
   // Guarded JSON-LD — absent data is never emitted (no empty reviews,
   // no empty offer catalog, no zero-rating aggregates, no empty languages).

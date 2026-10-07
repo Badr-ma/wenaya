@@ -33,9 +33,6 @@ export const MONTHS_FR = [
 /** Weekday label per JS getDay() (0 = Sunday) */
 export const WEEKDAY_LABELS = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
 
-/** Calendar column headers, Monday-first */
-export const WEEKDAY_INITIALS = ["L", "M", "M", "J", "V", "S", "D"];
-
 function toIso(year: number, monthIndex: number, day: number): string {
   return `${year}-${String(monthIndex + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 }

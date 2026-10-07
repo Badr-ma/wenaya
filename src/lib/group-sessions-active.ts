@@ -51,7 +51,7 @@
  */
 
 import type { GroupSession, GroupSessionLocale, GroupSessionLiveFacts, LiveGroupSessionSlot } from "./group-sessions";
-import { getAllGroupSessions, getGroupSessionBySlug, getGroupSessionForBooking, getGroupSessionLabels } from "./group-sessions";
+import { getGroupSessionBySlug, getGroupSessionForBooking, getGroupSessionLabels } from "./group-sessions";
 import { fetchGroupPrograms } from "./group-sessions-api";
 import type { ApiGroupProgram, ApiGroupProgramChild } from "./group-sessions-api";
 import { isApiSessionService } from "./session-identity";
@@ -371,16 +371,13 @@ function normalizeProgram(program: ApiGroupProgram, locale: GroupSessionLocale):
  * Resolve the LISTING sessions from the live backend ACTIVE feed.
  * Returns only currently-active, today-or-future programs.
  *
- * By default (options.fallback !== false) any transport/shape failure falls
- * back to the local editorial sessions (never a blank page — the listing
- * contract). Pass `{ fallback: false }` to return `[]` instead: used where
- * historical/editorial sessions must NOT be presented as bookable when the
- * backend is unavailable (e.g. the Clinic Courses section), so the caller can
- * render its own unavailable/empty state without a silent stale set.
+ * API-ONLY: any transport/shape failure returns `[]`. The local editorial
+ * sessions are deliberately NOT substituted here — a program the backend
+ * cannot confirm must not be presented to a visitor as bookable. Callers
+ * render their own empty/unavailable state instead of a stale set.
  */
 export async function getActiveGroupSessions(
-  locale: GroupSessionLocale = "fr",
-  options: { fallback?: boolean } = {}
+  locale: GroupSessionLocale = "fr"
 ): Promise<GroupSession[]> {
   try {
     const programs = await fetchGroupPrograms();
@@ -390,19 +387,11 @@ export async function getActiveGroupSessions(
     return mapped;
   } catch (error) {
     console.warn(
-      options.fallback === false
-        ? "[group-sessions-active] backend feed unreachable, returning empty (no editorial fallback requested):"
-        : "[group-sessions-active] backend feed unreachable, falling back to local sessions:",
+      "[group-sessions-active] backend feed unreachable, returning empty:",
       error instanceof Error ? error.message : error
     );
-    if (options.fallback === false) return [];
-    return getAllGroupSessions(locale);
+    return [];
   }
-}
-
-/** Entity/tag sanitizer exported for verification harnesses and future use. */
-export function sanitizeGroupSessionHtml(input: string): string {
-  return decodeEntitiesStripped(input);
 }
 
 /**
@@ -412,8 +401,8 @@ export function sanitizeGroupSessionHtml(input: string): string {
  * (Data-Cache cached, 600s). Returns undefined when nothing matches so the
  * contact page stays a plain contact page.
  *
- * SERVER-ONLY — fetches the live feed for `api-*` keys; the fallback editorial
- * set carries no `api-*` ids, so an API outage degrades to "no session
+ * SERVER-ONLY — fetches the live feed for `api-*` keys; the editorial set
+ * carries no `api-*` ids, so an API outage degrades to "no session
  * recognised" rather than inventing one.
  */
 export async function resolveRequestedSession(

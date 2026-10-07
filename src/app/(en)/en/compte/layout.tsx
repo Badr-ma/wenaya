@@ -11,7 +11,7 @@ import { languageAlternates } from "@/lib/hreflang";
 export const dynamicParams = false;
 
 export const metadata: Metadata = {
-  title: "My account — Wenaya Patient Space | Wenaya",
+  title: { absolute: "My account — Wenaya Patient Space" },
   description:
     "Access your Wenaya patient space to manage your appointments, review your health reports and follow your wellness journey.",
   alternates: {

@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Page Not Found — 404 | Wenaya",
+  title: "Page Not Found — 404",
   description:
     "The page you're looking for doesn't exist or has been moved. Return to Wenaya's homepage to discover our integrated health services in Casablanca.",
   robots: { index: false, follow: true },

@@ -2,9 +2,8 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import SpecialistDetail from "@/components/specialistes/SpecialistDetail";
-import { getAllSpecialists } from "@/lib/specialistes";
-import { getPracticesForSpecialist } from "@/lib/pratique-specialists";
-import { getLiveProfessionalBySlug } from "@/lib/professionals-detail";
+import { getLiveSpecialists } from "@/lib/professionals";
+import { getLiveProfessionalBySlug, getSpecialistPractices } from "@/lib/professionals-detail";
 import { SITE_URL, OG_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
@@ -12,8 +11,17 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+/**
+ * Prerender exactly the slugs the LISTING can link to, i.e. the live API set —
+ * the listing has no demo fallback, so pre-rendering the local/Redis set would
+ * emit profile pages for practitioners that are not publicly listed (and would
+ * 404 at request time anyway). Guarded: an unreachable API yields no params and
+ * the route stays fully dynamic instead of failing the build. Slugs added to the
+ * backend later are generated on first request and then ISR-cached.
+ */
 export async function generateStaticParams() {
-  return getAllSpecialists().map((s) => ({ slug: s.slug }));
+  const specialists = await getLiveSpecialists();
+  return specialists.map((s) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -29,7 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   ].join(" ");
 
   return {
-    title: `${specialist.name} — ${specialist.role} | Wenaya Casablanca`,
+    title: `${specialist.name} — ${specialist.role} — Casablanca`,
     description,
     keywords: [specialist.name, specialist.role, specialist.specialty, "Casablanca", "Wenaya", ...specialist.specialtyTags],
     alternates: { canonical: `${SITE_URL}/professional/${slug}`, languages: languageAlternates(`/professional/${slug}`) },
@@ -55,7 +63,10 @@ export default async function SpecialistPage({ params }: Props) {
   const specialist = await getLiveProfessionalBySlug(slug, "fr");
   if (!specialist) notFound();
 
-  const practices = getPracticesForSpecialist(slug, "fr");
+  // Live relationship: derived from the professional's own API specialities
+  // (canonical practice slugs), never the legacy demo map — so a profile can
+  // never surface a stale practice↔professional pairing.
+  const practices = getSpecialistPractices(specialist, "fr");
 
   // Guarded JSON-LD — absent data is never emitted (no empty reviews,
   // no empty offer catalog, no zero-rating aggregates, no empty languages).

@@ -79,27 +79,6 @@ export async function updateSection(id: string, updates: Partial<HomepageSection
   return draft;
 }
 
-export async function reorderSections(ids: string[]): Promise<HomepageConfig> {
-  const draft = await getHomepageDraft();
-  const map = new Map(draft.sections.map((s) => [s.id, s]));
-  const reordered: HomepageSection[] = [];
-  for (const id of ids) {
-    const section = map.get(id);
-    if (section) {
-      section.order = reordered.length;
-      reordered.push(section);
-    }
-  }
-  const remaining = draft.sections.filter((s) => !ids.includes(s.id));
-  for (const s of remaining) {
-    s.order = reordered.length;
-    reordered.push(s);
-  }
-  draft.sections = reordered;
-  await saveHomepageDraft(draft);
-  return draft;
-}
-
 export async function resetHomepageDraft(): Promise<HomepageConfig> {
   const redis = getRedis();
   if (!redis) return defaultConfig();

@@ -30,9 +30,6 @@ import type { PatientProfile } from "./profile";
 export const PROFILE_DEV_FALLBACK_ENABLED: boolean =
   process.env.NODE_ENV !== "production" && process.env.PROFILE_DEV_FALLBACK === "true";
 
-/** The dev fallback is a QA/demo-only artifact. Persisting or relaying it is a bug. */
-export const PROFILE_DEV_FALLBACK_SOURCE = "dev-fallback";
-
 /**
  * Synthetic, read-only PatientProfile used to render the ACCOUNT UI in dev when
  * the real authenticated seam is unavailable. `avatar` is intentionally null

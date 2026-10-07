@@ -7,7 +7,7 @@ import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
 export const metadata: Metadata = {
-  title: "Conditions Générales d'Utilisation — Wenaya",
+  title: "Conditions Générales d'Utilisation",
   description:
     "Conditions générales d'utilisation de la plateforme Wenaya Clinic Casablanca. Droits, obligations, propriété intellectuelle et modalités de service.",
   alternates: {

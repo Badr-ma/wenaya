@@ -2,8 +2,10 @@
  * Pratique booking CTA resolution.
  *
  * The primary booking action on a practice detail page is derived from how many
- * specialists genuinely cover that practice (see `pratique-specialists.ts`), so
- * the user flows practice → specialist(s) → booking in as few steps as possible:
+ * LIVE specialists genuinely cover that practice (the same API-derived
+ * specialist↔practice pairing `professionals-detail.ts` builds from each
+ * professional's own API specialities), so the user flows practice →
+ * specialist(s) → booking in as few steps as possible:
  *
  *   0 specialists → /search/all           (the listing — no single match)
  *   1 specialist  → /professional/[slug]   (straight to the right specialist)

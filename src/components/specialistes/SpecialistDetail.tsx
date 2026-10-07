@@ -157,14 +157,16 @@ export default function SpecialistDetail({ specialist, practices = [] }: { speci
                 <div aria-hidden="true" className="absolute -inset-3 sm:-inset-4 rounded-[34px] border border-[#B88A5A]/30" />
                 <div aria-hidden="true" className="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 w-14 h-14 sm:w-20 sm:h-20 rounded-xl border border-[#159AA9]/30 bg-[#159AA9]/[0.06] rotate-6" />
                 <div className="relative aspect-[4/5] rounded-[28px] overflow-hidden bg-[#E8E2D9]">
-                  <Image
-                    src={specialist.image}
-                    alt={specialist.name}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 92vw, 42vw"
-                    priority
-                  />
+                  {specialist.image && (
+                    <Image
+                      src={specialist.image}
+                      alt={specialist.name}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 92vw, 42vw"
+                      priority
+                    />
+                  )}
                   <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0B1220]/30 to-transparent" />
                 </div>
               </div>
@@ -231,13 +233,22 @@ export default function SpecialistDetail({ specialist, practices = [] }: { speci
               </div>
 
               {(specialist.location.address || specialist.location.city) && (
-                <div className="inline-flex items-start gap-2.5 text-sm text-[#2B2F36]/70 mb-7">
+                <div className="inline-flex items-start gap-2.5 text-sm text-[#2B2F36]/70 mb-3">
                   <svg className="w-4 h-4 mt-0.5 text-[#B88A5A]/70 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" /><circle cx="12" cy="9" r="2.5" /></svg>
                   <span className="max-w-md leading-relaxed">
                     {specialist.location.address}
                     {specialist.location.address && specialist.location.city && ", "}
                     {specialist.location.city}
                   </span>
+                </div>
+              )}
+
+              {specialist.phone && (
+                <div className="inline-flex items-start gap-2.5 text-sm text-[#2B2F36]/70 mb-7">
+                  <svg className="w-4 h-4 mt-0.5 text-[#B88A5A]/70 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.08 4.18 2 2 0 014.07 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z" /></svg>
+                  <a href={`tel:${specialist.phone.replace(/[^+\d]/g, "")}`} className="max-w-md leading-relaxed hover:text-[#B88A5A] transition-colors">
+                    {specialist.phone}
+                  </a>
                 </div>
               )}
 

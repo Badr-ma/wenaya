@@ -44,6 +44,7 @@ export interface Specialist {
   role: string;
   roleEn?: string;
   specialty: string;
+  phone?: string;
   image: string;
   rating: number;
   reviewCount: number;
@@ -634,41 +635,3 @@ export const specialists: Specialist[] = [
     ],
   },
 ];
-
-export function getSpecialistBySlug(slug: string): Specialist | undefined {
-  return specialists.find((s) => s.slug === slug);
-}
-
-export function getAllSpecialists(): Specialist[] {
-  return specialists;
-}
-
-export function getSpecialistsBySpecialty(specialty: string): Specialist[] {
-  return specialists.filter((s) => s.specialty === specialty);
-}
-
-/**
- * Async versions — check Redis first, fall back to hardcoded data.
- * Used by server components (specialistes pages) to serve admin-edited data.
- */
-
-const REDIS_SPECIALISTS_KEY = "admin:specialists";
-
-export async function getAllSpecialistsAsync(): Promise<Specialist[]> {
-  try {
-    const { getRedis } = await import("./redis");
-    const redis = getRedis();
-    if (!redis) return specialists;
-
-    const stored = await redis.get<Specialist[]>(REDIS_SPECIALISTS_KEY);
-    if (!stored || !Array.isArray(stored) || stored.length === 0) return specialists;
-    return stored;
-  } catch {
-    return specialists;
-  }
-}
-
-export async function getSpecialistBySlugAsync(slug: string): Promise<Specialist | undefined> {
-  const all = await getAllSpecialistsAsync();
-  return all.find((s) => s.slug === slug);
-}

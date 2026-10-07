@@ -13,8 +13,10 @@
  *   - response is NOT paginated — flat array in `data`
  *   - response shape: `{ error: boolean, data: Professional[] }`
  *   - query params `?page=` and `?per_page=` are ignored
- *   - no Authorization header required
+ *   - no Authorization header required 
  */
+ 
+
 
 import { getProfessionalsApiBase } from "./professionals/config";
 

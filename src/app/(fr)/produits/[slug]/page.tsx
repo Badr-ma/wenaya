@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = getProductBySlug(slug, "fr");
   if (!product) return {};
   return {
-    title: `${product.name} — Wenaya`,
+    title: { absolute: `${product.name} — Wenaya` },
     description: product.description,
     alternates: { canonical: `${SITE_URL}/produits/${slug}`, languages: languageAlternates(`/produits/${slug}`) },
     openGraph: {

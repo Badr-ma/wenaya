@@ -1,73 +1,71 @@
 /**
- * Clinic Health Needs (Maux-troubles) — editorial symptom map -> active detail.
+ * Clinic Maux-troubles — editorial symptom map -> active trouble detail.
  *
  * "I know what I feel, but not who to see": a calm editorial statement plus a
  * single-select symptom map. No accordion, no dropdown rows, no chevrons, no
- * numbering — the 8 needs read as large textual nodes (desktop: a stacked
+ * numbering — the 8 nodes read as large textual nodes (desktop: a stacked
  * editorial list with a bronze active rail; mobile: a horizontal text rail).
  *
  * Selecting a symptom swaps ONE dedicated detail panel (title, one-line
- * summary, "PRATIQUES RECOMMANDÉES" label, recommended practice links) that
+ * summary, "PRATIQUES RECOMMANDÉES" label, recommended practice LABELS) that
  * animates in with a lightweight CSS rise. The selected node itself never
  * expands — only the shared detail panel changes.
  *
- * Link policy: every relatedPracticeSlug is resolved against the canonical
- * practice dataset (`getAllPratiques`). Only existing practices are rendered
- * as real `<a>` links (FR `/pratiques/{slug}`, EN `/en/pratiques/{slug}`);
- * no invented routes, no `href="#"`. Max 3 recommendations per need.
+ * DATA — LIVE ONLY. The 8 nodes are the SAME live Trouble records that drive
+ * the Maux-troubles hub (`GET /api/v1/getAllPublicTroubles`), projected
+ * server-side by `getClinicTroubleCards(locale)` in `@/lib/troubles-hub` and
+ * passed in as `troubleCards`. There is NO static/demonstration dataset, NO
+ * candidate-slug verification pass and NO local fallback anywhere in this
+ * section: what the hub shows is what the Clinic shows, in the same order.
+ * Because the records have no locale field, the EN Clinic renders the backend
+ * `name` / `description` verbatim (same policy as the EN hub and EN details).
  *
- * Typography-first, one interaction set for all breakpoints: hover opens on
- * desktop (mouse enter selects), tap/click toggles selection everywhere.
- * Selectors are real buttons with `aria-pressed`; the detail carries
- * `aria-live="polite"`. All need names, summaries and practice links are
- * server-rendered (SEO intact).
+ * NAVIGATION — one destination per node, no fallbacks. Each node is a real
+ * `next/link` anchor to its OWN localized trouble detail route, produced by
+ * `troubleDetailHref()` on the server (`/maux-troubles/{slug}` FR,
+ * `/en/health-needs/{slug}` EN — strict segment split). Hover/focus previews
+ * the shared panel WITHOUT navigating (`onMouseEnter`/`onFocus`); activating
+ * the node navigates. Because the nodes navigate they are links, NOT toggles,
+ * so `aria-pressed` is gone in favour of `aria-current` (marking the previewed
+ * node) — `aria-pressed` on a link is invalid.
+ *
+ * SPECIALTIES — TEXT ONLY, NEVER LINKS. The associated-discipline panel is
+ * preserved (label + list), but each entry is a plain non-linked label resolved
+ * from `Trouble.specialtySlugs` against the canonical practice dataset
+ * (`getAllPratiques(locale)`), so a discipline is never advertised as a page
+ * here. This section therefore contains ZERO `/pratiques/` hrefs: the only
+ * practice surfaces are the Trouble detail pages themselves. (A discipline link
+ * does exist there, gated on the live specialist option set.)
+ *
+ * The one CTA at the bottom still goes to the full Maux-Troubles catalogue
+ * (`healthNeedsHref(locale)`).
+ *
+ * Typography-first, one interaction set for all breakpoints.
  */
 "use client";
 
 import Link from "next/link";
 import { useState } from "react";
 import { useLocale } from "@/contexts/LanguageContext";
-import { getHealthNeeds } from "@/lib/health-needs";
-import { getAllPratiques } from "@/lib/pratiques";
-import { h, healthNeedsHref } from "@/lib/href";
+import { healthNeedsHref } from "@/lib/href";
+import type { ClinicTroubleCard } from "@/lib/troubles-hub";
 
-interface RecommendedPractice {
-  slug: string;
-  title: string;
-  href: string;
+interface Props {
+  /**
+   * Live Trouble-derived cards, resolved on the server by
+   * `getClinicTroubleCards(locale)`. Required so a node can never render
+   * without a real, backend-derived destination and real copy.
+   */
+  troubleCards: ClinicTroubleCard[];
 }
 
-interface NeedItem {
-  slug: string;
-  title: string;
-  summary: string;
-  practices: RecommendedPractice[];
-}
-
-export default function ClinicHealthNeeds(): React.JSX.Element {
+export default function ClinicHealthNeeds({ troubleCards }: Props): React.JSX.Element {
   const { t, locale } = useLocale();
-  const practiceBySlug = new Map(
-    getAllPratiques(locale as "fr" | "en").map((p) => [p.slug, p.title])
-  );
-
-  const needs: NeedItem[] = getHealthNeeds(locale as "fr" | "en").map((n) => ({
-    slug: n.slug,
-    title: n.title,
-    summary: n.summary,
-    practices: n.relatedPracticeSlugs
-      .filter((s) => practiceBySlug.has(s))
-      .slice(0, 3)
-      .map((s) => ({
-        slug: s,
-        title: practiceBySlug.get(s) as string,
-        href: h(locale, `/pratiques/${s}`),
-      })),
-  }));
 
   const [activeIdx, setActiveIdx] = useState(0);
 
-  if (needs.length === 0) return <></>;
-  const active = needs[activeIdx];
+  if (troubleCards.length === 0) return <></>;
+  const active = troubleCards[Math.min(activeIdx, troubleCards.length - 1)];
   const practicesLabel = t("clinic.healthNeeds.practicesLabel");
 
   return (
@@ -90,16 +88,16 @@ export default function ClinicHealthNeeds(): React.JSX.Element {
 
             {/* Desktop: editorial symptom list */}
             <ul className="mt-10 lg:mt-12 hidden lg:block border-t border-[#0B1220]/[0.08]">
-              {needs.map((n, i) => {
+              {troubleCards.map((trouble, i) => {
                 const isActive = i === activeIdx;
                 return (
-                  <li key={n.slug} className="border-b border-[#0B1220]/[0.08]">
-                    <button
-                      type="button"
-                      aria-pressed={isActive}
+                  <li key={trouble.id} className="border-b border-[#0B1220]/[0.08]">
+                    <Link
+                      href={trouble.href}
+                      aria-current={isActive ? "true" : undefined}
                       onMouseEnter={() => setActiveIdx(i)}
-                      onClick={() => setActiveIdx(i)}
-                      className={`group flex w-full items-center justify-between gap-4 border-l-2 py-4 pl-4 text-left outline-none transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#B88A5A]/70 ${
+                      onFocus={() => setActiveIdx(i)}
+                      className={`group flex w-full cursor-pointer items-center justify-between gap-4 border-l-2 py-4 pl-4 text-left outline-none transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#B88A5A]/70 ${
                         isActive ? "border-[#B88A5A]" : "border-transparent"
                       }`}
                     >
@@ -110,7 +108,7 @@ export default function ClinicHealthNeeds(): React.JSX.Element {
                             : "text-[#0B1220]/40 group-hover:text-[#0B1220]/70"
                         }`}
                       >
-                        {n.title}
+                        {trouble.name}
                       </span>
                       <svg
                         aria-hidden="true"
@@ -126,7 +124,7 @@ export default function ClinicHealthNeeds(): React.JSX.Element {
                       >
                         <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                       </svg>
-                    </button>
+                    </Link>
                   </li>
                 );
               })}
@@ -135,22 +133,22 @@ export default function ClinicHealthNeeds(): React.JSX.Element {
             {/* Mobile: horizontal text rail */}
             <div className="lg:hidden mt-9 -mx-6 sm:-mx-10 overflow-x-auto overscroll-x-contain px-6 sm:px-10 border-b border-[#0B1220]/[0.08]">
               <div className="flex min-w-max items-center gap-7">
-                {needs.map((n, i) => {
+                {troubleCards.map((trouble, i) => {
                   const isActive = i === activeIdx;
                   return (
-                    <button
-                      key={n.slug}
-                      type="button"
-                      aria-pressed={isActive}
-                      onClick={() => setActiveIdx(i)}
+                    <Link
+                      key={trouble.id}
+                      href={trouble.href}
+                      aria-current={isActive ? "true" : undefined}
+                      onFocus={() => setActiveIdx(i)}
                       className={`whitespace-nowrap py-4 text-sm font-semibold border-b-2 outline-none transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#B88A5A]/70 ${
                         isActive
                           ? "text-[#B88A5A] border-[#B88A5A]"
                           : "text-[#0B1220]/40 border-transparent hover:text-[#0B1220]/70"
                       }`}
                     >
-                      {n.title}
-                    </button>
+                      {trouble.name}
+                    </Link>
                   );
                 })}
               </div>
@@ -166,37 +164,27 @@ export default function ClinicHealthNeeds(): React.JSX.Element {
                     className="heading-serif text-[#0B1220] leading-tight"
                     style={{ fontSize: "clamp(1.9rem, 2.8vw, 2.9rem)" }}
                   >
-                    {active.title}
+                    {active.name}
                   </h3>
                   <p className="mt-3 text-[#0B1220]/55 text-base lg:text-lg leading-relaxed max-w-xl">
-                    {active.summary}
+                    {active.description}
                   </p>
-                  {active.practices.length > 0 ? (
+                  {active.specialties.length > 0 ? (
                     <div className="mt-7">
                       <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.24em] uppercase">
                         {practicesLabel}
                       </span>
-                      <ul className="mt-4 space-y-3">
-                        {active.practices.map((p) => (
-                          <li key={p.slug}>
-                            <Link
-                              href={p.href}
-                              className="group/link inline-flex items-center gap-2 text-base font-semibold text-[#0B1220]"
-                            >
-                              <span className="underline underline-offset-8 decoration-[#B88A5A]/40 transition-colors group-hover/link:decoration-[#B88A5A]">
-                                {p.title}
-                              </span>
-                              <svg
-                                className="w-4 h-4 text-[#B88A5A] transition-transform group-hover/link:translate-x-1"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth={2}
-                                aria-hidden="true"
-                              >
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                              </svg>
-                            </Link>
+                      {/* Plain labels — intentionally NOT anchors (see file header). */}
+                      <ul className="mt-4 space-y-2.5">
+                        {active.specialties.map((specialty) => (
+                          <li key={specialty.slug} className="flex items-center gap-3">
+                            <span
+                              aria-hidden="true"
+                              className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#B88A5A]"
+                            />
+                            <span className="text-base font-semibold text-[#0B1220]">
+                              {specialty.title}
+                            </span>
                           </li>
                         ))}
                       </ul>
@@ -211,7 +199,7 @@ export default function ClinicHealthNeeds(): React.JSX.Element {
         {/* ── Global CTA → the full Maux-Troubles catalogue page ── */}
         <div className="mt-12 lg:mt-14">
           <Link
-            href={healthNeedsHref(locale as "fr" | "en")}
+            href={healthNeedsHref(locale)}
             className="group/cta inline-flex items-center gap-2 text-sm font-semibold text-[#0B1220]"
           >
             <span className="underline underline-offset-8 decoration-[#B88A5A]/40 transition-colors group-hover/cta:decoration-[#B88A5A]">

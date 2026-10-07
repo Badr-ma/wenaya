@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { PATIENT_AUTH_ENABLED, PATIENT_BODY_MAX_CHARS } from "@/lib/patient-auth/config";
-import { browserCookieHeader } from "@/lib/patient-auth/cookies";
+import { browserCookieHeader, isSecureRequest, relayableSetCookies } from "@/lib/patient-auth/cookies";
 import { readXsrfHeaderFromCookie } from "@/lib/patient-auth/csrf";
 import { submitPatientLogin } from "@/lib/patient-auth/transport";
 import { invalidPayloadResponse, mapPatientOutcome, notEnabledResponse } from "@/lib/patient-auth/response";
@@ -13,9 +13,11 @@ import { invalidPayloadResponse, mapPatientOutcome, notEnabledResponse } from "@
  * it forwards `POST /customer/login` `{ email, password }` with the browser's
  * Sanctum cookies and XSRF token, and self-heals a single CSRF rotation on 419.
  *
- * When enabled, session cookies set by Laravel are relayed to the browser
- * unchanged; no token or session is stored on this box. This endpoint is
- * intentionally NOT wired to any UI.
+ * When enabled, the session cookies set by Laravel are relayed to the browser
+ * (the backend's own `Domain`/`Secure` attributes are dropped so the cookie is
+ * stored host-only on this origin — see `relayableSetCookie`); no token or
+ * session is stored on this box. This endpoint is intentionally NOT wired to
+ * any UI.
  */
 export const dynamic = "force-dynamic";
 
@@ -55,7 +57,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   const built = mapPatientOutcome(result.outcome);
 
   const res = NextResponse.json(built.body, { status: built.status });
-  for (const sc of result.setCookies) {
+  for (const sc of relayableSetCookies(result.setCookies, isSecureRequest(request))) {
     res.headers.append("Set-Cookie", sc);
   }
   return res;

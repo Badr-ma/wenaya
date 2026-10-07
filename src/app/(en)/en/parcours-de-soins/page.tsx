@@ -14,7 +14,7 @@ import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
 export const metadata: Metadata = {
-  title: PARCOURS_DE_SOINS_HUB.seo.en.title,
+  title: { absolute: PARCOURS_DE_SOINS_HUB.seo.en.title },
   description: PARCOURS_DE_SOINS_HUB.seo.en.description,
   alternates: {
     canonical: `${SITE_URL}/en/parcours-de-soins`,

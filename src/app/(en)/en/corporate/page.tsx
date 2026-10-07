@@ -27,7 +27,7 @@ import { languageAlternates } from "@/lib/hreflang";
 const EntreprisesFooter = dynamic(() => import("@/components/entreprises/Footer"), { ssr: true });
 
 export const metadata: Metadata = {
-  title: "Corporate Wellness — Health & Prevention Programs | Wenaya",
+  title: "Corporate Wellness — Health & Prevention Programs",
   description:
     "Wenaya designs evidence-based corporate wellness programs in Morocco: mental health, physiotherapy, nutrition, prevention — on-site or remote. Measurable, tailored, certified.",
   keywords: [

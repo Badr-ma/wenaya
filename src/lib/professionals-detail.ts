@@ -1,16 +1,12 @@
 /**
- * Professional detail adapter — maps the live dev API professional detail
+ * Professional detail adapter — maps the live API professional detail
  * (`getProfessionalBySlug/{slug}`) to the frontend `Specialist` interface.
  *
  * Server-side only — consumed by both `[slug]` pages, never by client
  * components.
  *
- * Resolution chain (per brief):
- *   1. local dataset for KNOWN slugs (Redis `admin:specialists` → local mock)
- *      — the 10 richer legacy pages (services, availability, photos, reviews,
- *      address) must stay intact, so they always render from the local data
- *   2. live DEV API by slug            → mapped Specialist (new API-only slugs)
- *   3. undefined                       → the page calls `notFound()`
+ * LIVE API ONLY: there is no local/Redis/demo fallback. A slug resolves
+ * through the API or not at all (see `getLiveProfessionalBySlug`).
  *
  * Mapping rules (API → Specialist), only confirmed fields:
  *   name          ← first_name + " " + last_name
@@ -25,8 +21,11 @@
  *   clinicPhotos, approach…) gets safe EMPTY defaults — never invented.
  */
 
-import type { Specialist, SpecialistPackage, SpecialistService } from "./specialistes";
-import { getSpecialistBySlugAsync } from "./specialistes";
+import type {
+  Specialist,
+  SpecialistPackage,
+  SpecialistService,
+} from "./specialistes";
 import type {
   ApiProfessionalDetail,
   ApiProfessionalDetailUser,
@@ -37,15 +36,14 @@ import type {
 import { fetchProfessionalDetail, fetchProfessionalCaresAndPacks } from "./professionals-detail-api";
 import { sanitizeSafeHtml, htmlToParagraphs } from "./sanitize-html";
 import { fetchProfessionalReviews } from "./professionals-reviews";
+import { getProfessionalSpecialtySlugs, specialtyDisplayToSlug } from "./specialist-filters";
+import { getAllPratiqueSlugs, getPratiqueBySlug, type Pratique } from "./pratiques";
 
 export { htmlToParagraphs } from "./sanitize-html";
 
-/** Dummy image used when the API avatar/logo is missing (same as listing). */
-const DUMMY_IMAGE = "/images/dummy-man.png";
-
 /**
  * Slugs excluded from the public site. Mirrors the listing-side HIDDEN_SLUGS
- * (`professionals.ts`): corporate accounts (no specialty, dummy avatar, empty
+ * (`professionals.ts`): corporate accounts (no specialty, no avatar, empty
  * profile) are not practitioners and their detail pages render 404.
  */
 const HIDDEN_SLUGS = new Set(["introsens-sarl"]);
@@ -66,7 +64,7 @@ function resolvePhoto(
   user: ApiProfessionalDetailUser,
   professional: ApiProfessionalDetailProfessional
 ): string {
-  return user.avatar || professional.logo || DUMMY_IMAGE;
+  return user.avatar || professional.logo || "";
 }
 
 /**
@@ -128,6 +126,7 @@ export function toDetailSpecialist(
   const address = user.address;
   const lat = address?.lat ? parseFloat(address.lat) : Number.NaN;
   const lng = address?.long ? parseFloat(address.long) : Number.NaN;
+  const phone = address?.phone ? String(address.phone).trim() : '';
 
   return {
     slug: professional.slug || user.slug,
@@ -148,6 +147,15 @@ export function toDetailSpecialist(
     appointmentInfoHtml,
     approach: "",
     specialtyTags: tags,
+    phone: phone || undefined,
+    // Canonical specialty slugs derived from the LIVE `specialities[]` list
+    // (fr_name first, so FR + EN pages agree) via the SAME `specialtyDisplayToSlug`
+    // the listing/search filters use — one slug system across the site. Used to
+    // resolve a professional's real practices (`getSpecialistPractices`) without
+    // any legacy/demo relationship map.
+    specialtySlugs: specialities
+      .map((s) => specialtyDisplayToSlug(s.fr_name || s.en_name || ""))
+      .filter(Boolean),
     certifications: [],
     services: [],
     isApiSourced: true,
@@ -171,7 +179,9 @@ export function toDetailSpecialist(
       access: "",
     },
     hours: "",
-    clinicPhotos: [],
+    // Real API gallery images only. Anything that isn't an array of remote
+    // image URLs yields an empty gallery — never the old demo Unsplash photos.
+    clinicPhotos: resolveGalleryImages(professional.images),
     reviews: [],
   };
 }
@@ -250,24 +260,18 @@ function toDetailPackages(data: ApiCaresAndPacks): SpecialistPackage[] {
 /**
  * Resolve one professional detail page's data.
  *
- * Source priority:
- *   1. Local dataset for KNOWN slugs (Redis `admin:specialists` → local mock).
- *      The dev API `getProfessionalBySlug` also serves these legacy slugs,
- *      but with a thinner payload (no services, no availability, no clinic
- *      photos, no reviews, often no address) — so the 10 richer legacy pages
- *      must keep rendering from the local dataset to stay intact.
- *   2. Live DEV API for UNKNOWN slugs (e.g. `khaoula-chah`), mapped to a
- *      minimal Specialist with safe empty defaults for anything the endpoint
- *      does not carry.
- *   3. `undefined` → the page calls `notFound()`.
+ * LIVE API ONLY — no local/Redis/demo dataset. A slug resolves exclusively
+ * through `getProfessionalBySlug`; anything else (unknown slug, corporate
+ * account, or the API being unreachable) yields `undefined` and the page calls
+ * `notFound()`. The legacy demo dataset is a non-overlapping slug set and is
+ * never served, so a listing card always has a matching profile page.
  *
- * Routing/static params never depend on API availability at build time:
- * known slugs are in `generateStaticParams` (SSG); unknown slugs resolve at
- * request time via the still-warm Data Cache from the last SSR.
+ * Anything the endpoint does not carry is left at its safe empty default
+ * (see `toDetailSpecialist`) — never invented.
  */
 /**
- * A usable remote image URL — real `https?://` source, never a local dummy
- * placeholder (same spirit as the listing side's DUMMY_IMAGE guard).
+ * A usable remote image URL — a real `https?://` source is kept, local
+ * placeholders are treated as absent (returning "" so the UI renders empty).
  */
 function isRealRemoteImage(value: unknown): value is string {
   return (
@@ -278,42 +282,6 @@ function isRealRemoteImage(value: unknown): value is string {
 }
 
 /** Same ISR window as the detail payload itself — cached, never per-render. */
-const IMAGE_REVALIDATE = 3600;
-
-/**
- * Reachability probe for a candidate avatar URL. "Valid/present" in the brief
- * means the URL actually serves bytes: a backend dead-handled URL (e.g. the
- * known dev-api `/storage/uploads/...` 404s) must NOT replace the legacy
- * portrait, otherwise the page would regress to a broken `<img>`.
- * Cached via the Next Data Cache (revalidate 3600) so known-good hosts cost
- * nothing after the first resolution. Any error → `false` → caller keeps the
- * local image (preserve current page behavior, never fabricate).
- */
-async function isReachableImage(url: string): Promise<boolean> {
-  const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), 5000);
-  try {
-    let res = await fetch(url, {
-      method: "HEAD",
-      signal: ctrl.signal,
-      next: { revalidate: IMAGE_REVALIDATE },
-    });
-    // Some hosts answer 405/501 to HEAD but serve GET.
-    if (res.status === 405 || res.status === 501) {
-      res = await fetch(url, {
-        method: "GET",
-        signal: ctrl.signal,
-        next: { revalidate: IMAGE_REVALIDATE },
-      });
-    }
-    return res.ok;
-  } catch {
-    return false;
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
 /**
  * Real gallery images from the API's `professional.images` field (typed
  * `unknown` on the endpoint). Anything that isn't an array of remote image
@@ -372,51 +340,6 @@ export async function getLiveProfessionalBySlug(
 ): Promise<Specialist | undefined> {
   if (HIDDEN_SLUGS.has(slug)) return undefined;
 
-  let local: Specialist | undefined;
-  try {
-    local = await getSpecialistBySlugAsync(slug);
-  } catch (error) {
-    console.warn(
-      `[professionals-detail] local dataset failed for "${slug}", falling back to live API:`,
-      error instanceof Error ? error.message : error
-    );
-  }
-  if (local) {
-    // Image enrichment ONLY: a known legacy slug keeps all its rich local
-    // fields (services, booking, reviews, address, bio…) but its profile
-    // photo/gallery are re-sourced from the live API when the API carries
-    // them. If the API is unreachable, we preserve the legacy record exactly
-    // as today — no fabricated images, no broken page.
-    let detail: ApiProfessionalDetail | undefined;
-    try {
-      detail = await fetchProfessionalDetail(slug);
-    } catch (error) {
-      console.warn(
-        `[professionals-detail] live API unavailable for "${slug}", keeping local data (incl. legacy images):`,
-        error instanceof Error ? error.message : error
-      );
-    }
-
-    // Failure behavior: keep the current page behavior untouched.
-    if (!detail) return local;
-
-    const enriched: Specialist = { ...local, clinicPhotos: [...local.clinicPhotos] };
-    // 3. Valid API avatar → override ONLY the profile photo, never fabricate.
-    //    "Valid" = a real remote URL that actually serves bytes (reachability
-    //    is cached 1h), so the known backend 404 avatars can't break a page.
-    if (isRealRemoteImage(detail.user.avatar) && (await isReachableImage(detail.user.avatar))) {
-      enriched.image = detail.user.avatar;
-    }
-    // 4. Real API gallery → use it; 5. empty/null API gallery → clear the
-    // legacy demo photos rather than keep stale Unsplash placeholders.
-    enriched.clinicPhotos = resolveGalleryImages(detail.professional.images);
-    // 6. Real reviews → authoritative (incl. authoritative-empty replacing the
-    // legacy mock — a valid 0-review backend is a REAL empty, never
-    // synthesized). On failure the legacy local mock is kept. The routing slug
-    // is a valid `userName` for the reviews endpoint (equals the username).
-    return withReviews(enriched, slug, local.reviews);
-  }
-
   try {
     const detail = await fetchProfessionalDetail(slug);
     const specialist = toDetailSpecialist(detail, locale);
@@ -437,15 +360,39 @@ export async function getLiveProfessionalBySlug(
     }
 
     // Reviews from the dedicated endpoint (data-only §6): a valid response
-    // (incl. zero reviews) is authoritative; on failure API-only pros keep the
+    // (incl. zero reviews) is authoritative; on failure the profile keeps the
     // safe empty set from `toDetailSpecialist` (never invented).
     const userName = specialist.availabilityApi?.userName ?? slug;
     return withReviews(specialist, userName, specialist.reviews);
   } catch (error) {
     console.warn(
-      `[professionals-detail] no source for "${slug}":`,
+      `[professionals-detail] no live source for "${slug}":`,
       error instanceof Error ? error.message : error
     );
     return undefined;
   }
+}
+
+/**
+ * Practices a professional genuinely offers, derived LIVE from their own API
+ * specialities — there is NO local/demo relationship map, so a profile can
+ * never surface a stale or fabricated practice↔professional pairing (the demo
+ * map that used to live here wrongly tied `nadine-kita` to `kinesitherapie`,
+ * while her live specialities are Naturopathie / Sophrologie / Psychothérapie).
+ *
+ * Each of the professional's specialty slugs (the canonical slugs set in
+ * `toDetailSpecialist`) is kept ONLY when it exists in the canonical practice
+ * set (`SLUG_ORDER`). Unknown or non-practice specialties are skipped — never
+ * invented. Returns `[]` when the professional has no practice specialty, and
+ * `SpecialistPractices` then renders nothing.
+ */
+export function getSpecialistPractices(
+  specialist: Specialist,
+  locale: ProfessionalLocale = "fr",
+): Pratique[] {
+  const canonical = new Set(getAllPratiqueSlugs());
+  return getProfessionalSpecialtySlugs(specialist)
+    .filter((slug) => canonical.has(slug))
+    .map((slug) => getPratiqueBySlug(slug, locale))
+    .filter((p): p is Pratique => Boolean(p));
 }

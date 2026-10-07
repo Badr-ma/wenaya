@@ -6,7 +6,11 @@ import Footer from "@/components/Footer";
 import { getLiveSpecialists } from "@/lib/professionals";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
-import { filterSpecialists, getSpecialtyOptions } from "@/lib/specialist-filters";
+import {
+  filterSpecialists,
+  getSpecialtyOptions,
+  isUnknownSpecialistSlug,
+} from "@/lib/specialist-filters";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -20,12 +24,11 @@ const DESCRIPTION =
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const all = await getLiveSpecialists();
-  const isSpecialty = getSpecialtyOptions(all).some((o) => o.slug === slug);
-  if (slug !== "all" && !isSpecialty) notFound();
+  if (isUnknownSpecialistSlug(all, slug)) notFound();
   const path = `/en/search/${slug}`;
   const frPath = `/search/${slug}`;
   return {
-    title: TITLE,
+    title: { absolute: TITLE },
     description: DESCRIPTION,
     keywords: ["specialists", "Casablanca", "physiotherapy", "osteopathy", "psychology", "nutrition", "Wenaya", "medical appointment"],
     alternates: { canonical: `${SITE_URL}${path}`, languages: languageAlternates(frPath) },
@@ -50,8 +53,7 @@ export default async function EnglishSpecialistsSearchPage({ params, searchParam
   const q = Array.isArray(sp?.q) ? sp.q[0] : (sp?.q ?? "");
 
   const all = await getLiveSpecialists();
-  const isSpecialty = getSpecialtyOptions(all).some((o) => o.slug === slug);
-  if (slug !== "all" && !isSpecialty) notFound();
+  if (isUnknownSpecialistSlug(all, slug)) notFound();
   const specialty = slug === "all" ? "" : slug;
 
   const specialists = filterSpecialists(all, { specialty, q });

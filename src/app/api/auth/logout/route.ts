@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { PATIENT_AUTH_ENABLED } from "@/lib/patient-auth/config";
-import { browserCookieHeader } from "@/lib/patient-auth/cookies";
+import { browserCookieHeader, isSecureRequest, relayableSetCookies } from "@/lib/patient-auth/cookies";
 import { readXsrfHeaderFromCookie } from "@/lib/patient-auth/csrf";
 import { submitPatientLogout } from "@/lib/patient-auth/transport";
 import { mapPatientOutcome, notEnabledResponse } from "@/lib/patient-auth/response";
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   const built = mapPatientOutcome(result.outcome);
 
   const res = NextResponse.json(built.body, { status: built.status });
-  for (const sc of result.setCookies) {
+  for (const sc of relayableSetCookies(result.setCookies, isSecureRequest(request))) {
     res.headers.append("Set-Cookie", sc);
   }
   return res;

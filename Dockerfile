@@ -10,6 +10,6 @@ COPY . .
 
 RUN NODE_OPTIONS="--max-old-space-size=6144" npm run build
 
-EXPOSE 3000
+EXPOSE 3006
 
 CMD ["npm", "run", "start"]

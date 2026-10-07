@@ -27,7 +27,7 @@ const socialUrls: Record<string, string> = {
   TikTok: "https://www.tiktok.com/@wenaya_maroc",
 };
 
-const navUrls = ["/clinique/wenaya-casablanca", "/search/all", "/seance-de-groupe", "/corporate", "/faq"];
+const navUrls = ["/clinique/wenaya-casablanca", "/pratiques", "/seance-de-groupe", "/corporate", "/faq"];
 const legalUrls = ["/privacy-policy", "/terms-and-conditions"];
 
 interface FooterProps {
@@ -65,7 +65,7 @@ export default function Footer({ content }: FooterProps): React.JSX.Element {
   }, []);
 
   return (
-    <footer ref={sectionRef} className="bg-[#0B1220] relative overflow-hidden py-16 sm:py-24">
+    <footer ref={sectionRef} className="bg-[#0B1220] relative overflow-hidden py-10 sm:py-20 lg:py-24">
       <div
         className="absolute -bottom-32 left-1/2 -translate-x-1/2 w-[600px] h-[300px] pointer-events-none"
         style={{ background: "radial-gradient(ellipse at center, rgba(21,154,169,0.06) 0%, transparent 65%)" }}
@@ -88,7 +88,7 @@ export default function Footer({ content }: FooterProps): React.JSX.Element {
       <div className="relative z-10 max-w-7xl mx-auto px-6">
         <div ref={bodyRef} className="flex justify-center">
           <div
-            className="w-full max-w-[840px] rounded-3xl p-6 sm:p-12 lg:p-16 border border-white/[0.06] relative overflow-hidden"
+            className="w-full max-w-[840px] rounded-3xl p-5 sm:p-10 lg:p-16 border border-white/[0.06] relative overflow-hidden"
             style={{ boxShadow: "0 24px 80px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.03)" }}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-[#159AA9]/8 via-[#0B1220] to-[#B88A5A]/4" />
@@ -97,27 +97,27 @@ export default function Footer({ content }: FooterProps): React.JSX.Element {
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
 
             <div className="relative z-10">
-              <div className="flex flex-col lg:flex-row items-start justify-between gap-8 mb-14">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 lg:gap-8 mb-8 lg:mb-14">
                 <div>
                   <Image
                     src="/images/logo-full.png"
                     alt="Wenaya"
                     width={1097}
                     height={222}
-                    className="h-7 sm:h-8 w-auto brightness-0 invert"
+                    className="h-6 sm:h-8 w-auto brightness-0 invert"
                   />
-                  <p className="text-white/45 text-sm mt-4 max-w-sm leading-relaxed">
+                  <p className="text-white/45 text-sm mt-2 sm:mt-3 lg:mt-4 max-w-sm leading-relaxed">
                     {content?.desc ?? t("footer.desc")}
                   </p>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2.5 lg:gap-3">
                   {socials.map((label: string) => (
                     <a
                       key={label}
                       href={socialUrls[label] || "#"}
                       rel="noopener noreferrer"
                       target="_blank"
-                      className="w-11 h-11 rounded-full bg-white/[0.05] hover:bg-[#B88A5A] flex items-center justify-center text-white/40 hover:text-white transition-all duration-300 group border border-white/[0.06]"
+                      className="w-10 h-10 lg:w-11 lg:h-11 rounded-full bg-white/[0.05] hover:bg-[#B88A5A] flex items-center justify-center text-white/40 hover:text-white transition-all duration-300 group border border-white/[0.06]"
                       aria-label={label}
                     >
                       <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -128,12 +128,12 @@ export default function Footer({ content }: FooterProps): React.JSX.Element {
                 </div>
               </div>
 
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8 lg:gap-x-8 lg:gap-y-8">
                 <div>
-                  <h4 className="text-white/30 font-heading font-semibold text-xs mb-6 uppercase tracking-[0.15em]">
+                  <h4 className="text-white/30 font-heading font-semibold text-xs mb-3 lg:mb-6 uppercase tracking-[0.15em]">
                     {t("footer.navigation.title")}
                   </h4>
-                  <ul className="space-y-3">
+                  <ul className="space-y-2 lg:space-y-3">
                     {navLinks.map((label: string, i: number) => (
                       <li key={label}>
                         <Link href={navUrls[i] === "/clinique/wenaya-casablanca" ? clinicHref(locale) : navUrls[i] === "/seance-de-groupe" ? groupSessionsHref(locale) : h(locale, navUrls[i] || "#")} className="text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed">
@@ -144,10 +144,10 @@ export default function Footer({ content }: FooterProps): React.JSX.Element {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="text-white/30 font-heading font-semibold text-xs mb-6 uppercase tracking-[0.15em]">
+                  <h4 className="text-white/30 font-heading font-semibold text-xs mb-3 lg:mb-6 uppercase tracking-[0.15em]">
                     {t("footer.infosLegales.title")}
                   </h4>
-                  <ul className="space-y-3">
+                  <ul className="space-y-2 lg:space-y-3">
                     {legalLinks.map((label: string, i: number) => (
                       <li key={label}>
                         <Link href={h(locale, legalUrls[i] || "#")} className="text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed">
@@ -157,11 +157,11 @@ export default function Footer({ content }: FooterProps): React.JSX.Element {
                     ))}
                   </ul>
                 </div>
-                <div>
-                  <h4 className="text-white/30 font-heading font-semibold text-xs mb-6 uppercase tracking-[0.15em]">
+                <div className="col-span-2 lg:col-span-1">
+                  <h4 className="text-white/30 font-heading font-semibold text-xs mb-3 lg:mb-6 uppercase tracking-[0.15em]">
                     {contactRaw.title}
                   </h4>
-                  <ul className="space-y-3">
+                  <ul className="space-y-2 lg:space-y-3">
                     <li>
                       <a href={`tel:${contactRaw.phone.replace(/\s/g, "")}`} className="text-white/45 hover:text-white transition-all duration-300 text-sm leading-relaxed">
                         {contactRaw.phone}
@@ -179,7 +179,7 @@ export default function Footer({ content }: FooterProps): React.JSX.Element {
                 </div>
               </div>
 
-              <div className="border-t border-white/[0.08] mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="border-t border-white/[0.08] mt-8 lg:mt-12 pt-4 lg:pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 lg:gap-4">
                 <p className="text-white/25 text-xs">
                   {t("footer.copyright").replace("{year}", String(new Date().getFullYear()))}
                 </p>

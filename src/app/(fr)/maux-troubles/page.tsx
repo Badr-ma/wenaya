@@ -21,7 +21,7 @@ const PAGE_PATH = "/maux-troubles";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: t("mauxTroubles.seoTitle"),
+  title: { absolute: t("mauxTroubles.seoTitle") },
   description: t("mauxTroubles.seoDescription"),
   alternates: { canonical: `${SITE_URL}${PAGE_PATH}`, languages: languageAlternates(PAGE_PATH, "/en/health-needs") },
   openGraph: {

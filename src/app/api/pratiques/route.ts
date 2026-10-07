@@ -6,8 +6,9 @@
  * Supports page / locale / category / search (same query shape as the SSR
  * `getPracticesPageAsync` call). Responds with the paginated contract
  * `{ items, total, page, pageSize, totalPages, hasMore, dataSource }` plus an
- * `X-Data-Source` header ("api" | "local-fallback") so QA can verify the data
- * path without inspecting the body.
+ * `X-Data-Source` header (always "api" — the backend is the only source) so QA
+ * can verify the data path without inspecting the body. When the backend cannot
+ * answer, the body is an empty window (total 0), never a substituted dataset.
  */
 import { NextRequest, NextResponse } from "next/server";
 import { getPracticesPageAsync, PRATIQUES_PAGE_SIZE } from "@/lib/pratiques";

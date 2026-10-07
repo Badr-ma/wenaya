@@ -201,6 +201,20 @@ const MILESTONE_POS = [
   { left: "50%", top: "56%" },
   { left: "95.4%", top: "18%" },
 ];
+/* ── Milestone label nudges (px, applied via `position: relative` + `top`) ──
+   Why `top` and not `transform`: `.mhm-lbl` animates `transform` in
+   globals.css (translateY(6px) -> translateY(0) on reveal). An inline
+   `transform` would override that rule and kill the entrance animation.
+   Why it is safe: `top` on a relatively-positioned element is a paint-time
+   offset — it does not reflow, so the milestone dot above each label and the
+   card height stay bit-identical.
+   Why these numbers: the rising chart line passes *through* the label boxes at
+   the default offset, and moving a label UP never helps (measured gap stays 0px
+   for every negative value, because the curve enters each box from the left).
+   These are the smallest downward offsets that clear the sampled line by >=7px
+   in FR and EN at 1440px and 390px, while keeping >=14px between each label and
+   its own dot. */
+const MILESTONE_LABEL_OFFSET_PX = [8, 14, 12];
 
 function FollowUpPanel({ label, milestones }: { label: string; milestones: string[] }): React.JSX.Element {
   return (
@@ -263,8 +277,8 @@ function FollowUpPanel({ label, milestones }: { label: string; milestones: strin
                   <span className="h-[5px] w-[5px] rounded-full" style={{ background: last ? BRONZE : TEAL }} />
                 </span>
                 <span
-                  className="mhm-lbl mt-2 whitespace-nowrap text-center text-[9.5px] font-semibold tracking-wide text-[#0B1220]/70"
-                  style={{ transitionDelay: `${710 + i * 160}ms` }}
+                  className="mhm-lbl relative mt-2 whitespace-nowrap text-center text-[9.5px] font-semibold tracking-wide text-[#0B1220]/70"
+                  style={{ transitionDelay: `${710 + i * 160}ms`, top: `${MILESTONE_LABEL_OFFSET_PX[i] ?? 0}px` }}
                 >
                   {m}
                 </span>

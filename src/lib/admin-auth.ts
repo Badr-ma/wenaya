@@ -8,7 +8,6 @@ import { getRedis } from "./redis";
 import type { NextRequest } from "next/server";
 
 const TOKEN_TTL_MS = 60 * 60 * 1000; // 1 hour
-const BCRYPT_ROUNDS = 10;
 
 function getAdminSecret(): string {
   const secret = process.env.ADMIN_SECRET;
@@ -29,10 +28,6 @@ export interface AdminUser {
 
 /* ── Password ── */
 
-export function hashPassword(plain: string): Promise<string> {
-  return bcrypt.hash(plain, BCRYPT_ROUNDS);
-}
-
 export function verifyBcrypt(plain: string, hash: string): Promise<boolean> {
   return bcrypt.compare(plain, hash);
 }
@@ -52,20 +47,6 @@ export async function getUser(username: string): Promise<AdminUser | null> {
   } catch {
     return null;
   }
-}
-
-export async function createUser(username: string, password: string, name: string): Promise<AdminUser> {
-  const redis = getRedis();
-  if (!redis) throw new Error("Redis not configured");
-  const hash = await hashPassword(password);
-  const user: AdminUser = {
-    username: username.toLowerCase(),
-    password: hash,
-    name,
-    createdAt: new Date().toISOString(),
-  };
-  await redis.set(userKey(username), user);
-  return user;
 }
 
 /* ── Token signing / verification ── */
@@ -120,12 +101,5 @@ export function setAuthCookie(response: Response, token: string): void {
   response.headers.set(
     "Set-Cookie",
     `wenaya_admin_token=${token}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=3600`
-  );
-}
-
-export function clearAuthCookie(response: Response): void {
-  response.headers.set(
-    "Set-Cookie",
-    "wenaya_admin_token=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0"
   );
 }

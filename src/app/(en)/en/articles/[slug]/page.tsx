@@ -10,10 +10,11 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import Footer from "@/components/Footer";
 import BlogPostClientEditorial from "@/components/blog/BlogPostClientEditorial";
+import ArticleUnavailable from "@/components/blog/ArticleUnavailable";
 import { getBlogPractitioner } from "@/lib/blog-practitioner";
 import { SITE_URL, OG_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
-import { getArticleBySlug, fetchAllArticles, blogApiErrorLabel } from "@/lib/blog-articles-api";
+import { lookupArticleBySlug, fetchAllArticles, blogApiErrorLabel } from "@/lib/blog-articles-api";
 import { toDetailPost, toPostSummary, BLOG_IMAGE_FALLBACK } from "@/lib/blog-mappers";
 
 interface Props {
@@ -32,15 +33,17 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  let article: Awaited<ReturnType<typeof getArticleBySlug>>;
-  try {
-    article = await getArticleBySlug(slug);
-  } catch (error) {
-    console.error(`[blog] article detail fetch failed for "${slug}": ${blogApiErrorLabel(error)}`);
-    article = null;
-  }
-  if (!article) return {};
+  const lookup = await lookupArticleBySlug(slug);
 
+  if (lookup.status === "unavailable") {
+    // Backend could not answer (outage / 5xx / malformed) — the article is NOT a
+    // 404, but it must not be indexed in this state either.
+    console.error(`[blog] article detail unavailable for "${slug}": ${lookup.label}`);
+    return { robots: { index: false, follow: true } };
+  }
+  if (lookup.status === "not-found") return {};
+
+  const article = lookup.article;
   const author = article.creator
     ? { name: [article.creator.firstName, article.creator.lastName].filter(Boolean).join(" ") }
     : null;
@@ -71,15 +74,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function EnglishBlogPostPage({ params }: Props) {
   const { slug } = await params;
-  let article: Awaited<ReturnType<typeof getArticleBySlug>>;
-  try {
-    article = await getArticleBySlug(slug);
-  } catch (error) {
-    console.error(`[blog] article detail fetch failed for "${slug}": ${blogApiErrorLabel(error)}`);
-    article = null;
-  }
-  if (!article) notFound();
+  const lookup = await lookupArticleBySlug(slug);
 
+  // Explicit backend 404 only — a transient failure must never be a 404.
+  if (lookup.status === "not-found") notFound();
+
+  if (lookup.status === "unavailable") {
+    console.error(`[blog] article detail unavailable for "${slug}": ${lookup.label}`);
+    return (
+      <>
+        <main>
+          <ArticleUnavailable locale="en" />
+        </main>
+        <div data-section-bg="dark"><Footer /></div>
+      </>
+    );
+  }
+
+  const article = lookup.article;
   let allArticles: Awaited<ReturnType<typeof fetchAllArticles>> = [];
   try {
     allArticles = await fetchAllArticles();
@@ -92,7 +104,7 @@ export default async function EnglishBlogPostPage({ params }: Props) {
     .map(toPostSummary);
 
   const clientPost = toDetailPost(article);
-  const practitioner = getBlogPractitioner(article.creator);
+  const practitioner = await getBlogPractitioner(article.creator);
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",

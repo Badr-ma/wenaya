@@ -1,33 +1,42 @@
 /**
- * Blog practitioner allowlist — maps article creators (by their Wenaya
- * user slug) to the professional profile used for the booking CTA on the
- * FR article editorial page.
+ * Blog practitioner resolution — maps article creators (by their Wenaya user
+ * slug) to the professional profile used for the booking CTA on the FR/EN
+ * article editorial page.
  *
- * Only these verified practitioners get a "Réserver une séance" CTA; every
- * other author (Yasmine Sekkat, Wenaya Clinic, unknown) renders none.
- * The mapping key is the creator's wire `slug` (exposed via the shared
- * article adapter projection) and returns the professional page slug.
+ * LIVE-ONLY: a creator earns the "Réserver une séance" CTA only when their slug
+ * resolves to a REAL professional in the live specialists feed. There is no
+ * hardcoded allowlist, so a creator who left, was hidden, or never existed can
+ * never produce a booking CTA pointing at a dead `/professional/[slug]` route.
+ * When the feed cannot be reached the CTA is simply absent — never fabricated.
  */
-import { ArticleCreator } from "./blog-articles-api";
+import type { ArticleCreator } from "./blog-articles-api";
+import { getLiveSpecialists } from "./professionals";
 
 export interface BlogPractitioner {
   slug: string;
   name: string;
 }
 
-const PRACTITIONER_SLUGS = new Set(["nadine-kita", "mehdi-sebti", "rose-mavoungou"]);
-
 /**
- * Resolve an article creator to a bookable practitioner when they are on the
- * allowlist. Returns null for every non-listed author.
+ * Resolve an article creator to a bookable practitioner, validated against the
+ * live specialists feed. Returns null for every non-practitioner author
+ * (Yasmine Sekkat, Wenaya Clinic, unknown) and when the feed is unreachable.
  */
-export function getBlogPractitioner(
+export async function getBlogPractitioner(
   creator: Pick<ArticleCreator, "slug" | "firstName" | "lastName"> | null
-): BlogPractitioner | null {
-  if (!creator?.slug || !PRACTITIONER_SLUGS.has(creator.slug)) return null;
+): Promise<BlogPractitioner | null> {
+  if (!creator?.slug) return null;
+
+  const slug = creator.slug.trim();
+  if (!slug) return null;
+
+  const specialists = await getLiveSpecialists();
+  const professional = specialists.find((s) => s.slug === slug);
+  if (!professional) return null;
+
   const name = [creator.firstName, creator.lastName].filter(Boolean).join(" ").trim();
   return {
-    slug: creator.slug,
-    name: name || creator.slug,
+    slug: professional.slug,
+    name: name || professional.name || professional.slug,
   };
 }

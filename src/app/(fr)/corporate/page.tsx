@@ -23,7 +23,7 @@ import { languageAlternates } from "@/lib/hreflang";
 const EntreprisesFooter = dynamic(() => import("@/components/entreprises/Footer"), { ssr: true });
 
 export const metadata: Metadata = {
-  title: "Bien-être en Entreprise — Programmes Santé & Prévention | Wenaya",
+  title: "Bien-être en Entreprise — Programmes Santé & Prévention",
   description:
     "Wenaya conçoit des programmes de bien-être en entreprise au Maroc : santé mentale, kinésithérapie, nutrition, prévention — sur site ou à distance. Mesurable, personnalisé, certifié.",
   keywords: [

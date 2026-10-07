@@ -12,7 +12,7 @@ import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
 export const metadata: Metadata = {
-  title: "FAQ — Questions Fréquentes sur Wenaya",
+  title: { absolute: "FAQ — Questions Fréquentes sur Wenaya" },
   description:
     "Tout savoir sur Wenaya : kinésithérapie, psychologie, nutrition et bien-être corporate à Casablanca, Maroc.",
   keywords: [

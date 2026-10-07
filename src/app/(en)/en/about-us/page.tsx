@@ -15,7 +15,7 @@ import { languageAlternates } from "@/lib/hreflang";
 const ABOUT_PATH = "/en/about-us";
 
 export const metadata: Metadata = {
-  title: "Who we are | Wenaya",
+  title: "Who we are",
   description:
     "At Wenaya, our mission is to guide each individual along their path to optimal health and overall wellbeing. Discover who we are and our vision of integrated healthcare in Casablanca.",
   keywords: [

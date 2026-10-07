@@ -10,7 +10,7 @@ import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
 export const metadata: Metadata = {
-  title: "Mon compte — Espace Patient Wenaya | Wenaya",
+  title: { absolute: "Mon compte — Espace Patient Wenaya" },
   description:
     "Accédez à votre espace patient Wenaya : gérez vos rendez-vous, suivez vos séances et consultez votre historique.",
   alternates: {

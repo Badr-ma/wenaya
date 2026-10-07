@@ -7,7 +7,7 @@ import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions — Wenaya",
+  title: { absolute: "Terms & Conditions — Wenaya" },
   description:
     "Terms and conditions of use of the Wenaya Clinic Casablanca platform. Rights, obligations, intellectual property and service terms.",
   alternates: {

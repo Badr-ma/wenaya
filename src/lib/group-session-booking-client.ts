@@ -29,7 +29,18 @@ export interface GroupSessionBookingRequest {
 export interface GroupSessionBookingResult {
   ok: boolean;
   /** Normalized failure reason for the UX copy. Absent on success. */
-  reason?: "validation" | "unauthenticated" | "feed-unavailable" | "api-error";
+  reason?:
+    | "validation"
+    | "unauthenticated"
+    | "feed-unavailable"
+    | "api-error"
+    /**
+     * The write may already have been registered upstream even though no
+     * confirmation came back (upstream 5xx after commit, timeout, or a lost
+     * response). Never treated as a success, and never offered as an immediate
+     * retry, because repeating it could register the patient twice.
+     */
+    | "booking-uncertain";
 }
 
 const ENDPOINT = "/api/group-sessions/booking";
@@ -51,7 +62,9 @@ export async function submitGroupSessionBooking(
     const json = (await res.json()) as { success?: unknown };
     return { ok: json?.success === true };
   } catch {
-    return { ok: false, reason: "api-error" };
+    // The browser never received the BFF answer, but the BFF may already have
+    // completed the upstream write — same ambiguity as an upstream 5xx.
+    return { ok: false, reason: "booking-uncertain" };
   }
 }
 

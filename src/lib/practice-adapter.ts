@@ -137,7 +137,13 @@ export function normalizeApiSpeciality(api: ApiSpeciality, locale: string): Prat
         : content.summaries.en;
   }
 
-  const image = firstNonEmpty(api.image_web, api.image_mobile, content.image) ?? content.image;
+  // STRICT API-ONLY IMAGE RULE — the listing must reflect what the API actually
+  // provides, nothing else. There is deliberately NO fallback to `content.image`
+  // (local asset) and no demo/mock asset: an empty result means "the API supplied
+  // no usable image" and the grid renders an empty image area. URLs that exist but
+  // fail to load (404/500) are caught at render time by the grid's `onError`
+  // handler, which hides the image without substituting anything.
+  const image = firstNonEmpty(api.image_web, api.image_mobile) ?? "";
 
   return {
     id: String(api.id),

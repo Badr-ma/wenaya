@@ -70,14 +70,16 @@ export default function ExpertiseSection({ content, specialists = [] }: Expertis
               <div ref={scrollRef} className="flex gap-4 overflow-x-auto pb-4 w-full snap-x snap-mandatory scrollbar-hide">
                 {specialists.map((s, index) => (
                   <Link key={s.slug} href={h(locale, `/professional/${s.slug}`)} className="es-img group relative shrink-0 w-[280px] h-[280px] rounded-xl overflow-hidden block z-10 snap-center">
-                    <Image
-                      src={s.image}
-                      alt={s.name}
-                      fill
-                      sizes="280px"
-                      priority={index === 0}
-                      className="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105 pointer-events-none"
-                    />
+                    {s.image && (
+                      <Image
+                        src={s.image}
+                        alt={s.name}
+                        fill
+                        sizes="280px"
+                        priority={index === 0}
+                        className="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105 pointer-events-none"
+                      />
+                    )}
                     <div className="absolute inset-0 rounded-xl ring-1 ring-inset ring-black/[0.04] pointer-events-none" />
                     <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#0B1220]/70 to-transparent p-3 sm:p-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
                       <p className="text-white text-sm font-heading font-bold">{s.name}</p>

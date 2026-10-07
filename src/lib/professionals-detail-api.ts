@@ -58,6 +58,7 @@ export interface ApiProfessionalDetailAddress {
   lat: string | null;
   long: string | null;
   zip: string | null;
+  phone?: string | null;
 }
 
 export interface ApiProfessionalDetailUser {

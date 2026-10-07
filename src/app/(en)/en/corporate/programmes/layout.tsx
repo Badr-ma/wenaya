@@ -8,7 +8,7 @@ import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
 export const metadata: Metadata = {
-  title: "Certified Corporate Wellness Programs | Wenaya Corporate",
+  title: "Certified Corporate Wellness Programs",
   description:
     "Discover our 4 certified programs for companies: PCM (Process Communication Model), Leadership 360°, The Art of Priorities and the People Model Canvas. Proven methods to improve communication, leadership, stress management and HR strategy in your teams.",
   keywords: [

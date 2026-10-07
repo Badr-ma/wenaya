@@ -35,13 +35,15 @@ export default function SpecialistListItem({
       }`}
     >
       <div className="relative aspect-[5/4] overflow-hidden bg-[#E8E2D9]">
-        <Image
-          src={specialist.image}
-          alt={specialist.name}
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-        />
+        {specialist.image && (
+          <Image
+            src={specialist.image}
+            alt={specialist.name}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          />
+        )}
       </div>
 
       <div className="flex flex-col px-4 sm:px-5 py-3 sm:py-4 flex-1 min-w-0">

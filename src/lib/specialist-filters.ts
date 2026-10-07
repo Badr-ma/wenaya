@@ -159,3 +159,21 @@ export function buildSearchQuery(q: string): string {
 
 /** Search-as-you-type debounce before pushing a history entry. */
 export const SPECIALIST_SEARCH_DEBOUNCE_MS = 350;
+
+/**
+ * Whether a `/search/<slug>` URL must 404.
+ *
+ * `all` is always valid. A specialty slug is valid when it exists in the
+ * dataset. An EMPTY dataset is NOT proof of a bad slug — `getLiveSpecialists`
+ * has no demo fallback and returns `[]` when the API is unreachable, so 404ing
+ * on an empty set would take the entire specialty family offline during an API
+ * outage. Return false in that case and let the page render its empty state.
+ */
+export function isUnknownSpecialistSlug(
+  all: Specialist[],
+  slug: string,
+): boolean {
+  if (slug === "all") return false;
+  if (all.length === 0) return false;
+  return !getSpecialtyOptions(all).some((o) => o.slug === slug);
+}

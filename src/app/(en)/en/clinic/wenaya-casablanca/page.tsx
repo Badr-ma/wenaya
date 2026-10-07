@@ -16,11 +16,11 @@ import ClinicCourses from "@/components/clinic/Courses";
 import ClinicPathologies from "@/components/clinic/Pathologies";
 import ClinicTeam from "@/components/clinic/Team";
 import ClinicHealthNeeds from "@/components/clinic/HealthNeeds";
-import ClinicParcoursDeSoins from "@/components/clinic/ParcoursDeSoins";
 import ClinicRecruitment from "@/components/clinic/Recruitment";
 import ClinicPractical from "@/components/clinic/Practical";
 import ClinicStructuredData from "@/components/clinic/StructuredData";
 import { getHomepageSpecialists } from "@/lib/professionals";
+import { getClinicTroubleCards } from "@/lib/troubles-hub";
 import Footer from "@/components/Footer";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
@@ -63,6 +63,10 @@ export default async function EnglishClinicPage() {
   const lang = "en";
   const locale = lang;
   const experts = (await getHomepageSpecialists(8)).slice(0, 8);
+  // Live "Aches & conditions" catalogue — the SAME backend records + order as
+  // the EN hub (the API has no locale field, so names/descriptions render
+  // verbatim), each with its own EN detail route. Resolved server-side.
+  const { items: troubleCards } = await getClinicTroubleCards(locale);
   return (
     <>
       <ErrorBoundary>
@@ -77,8 +81,7 @@ export default async function EnglishClinicPage() {
             <ClinicCourses locale={locale} lang={lang} />
             <ClinicPathologies locale={locale} lang={lang} />
             <ClinicTeam specialists={experts} />
-            <ClinicHealthNeeds />
-            <ClinicParcoursDeSoins />
+            <ClinicHealthNeeds troubleCards={troubleCards} />
             <ClinicRecruitment />
             <ClinicPractical />
           </div>

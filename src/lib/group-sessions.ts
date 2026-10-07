@@ -196,6 +196,12 @@ export interface GroupSessionDetailLabels {
   bookingErrorFeed: string;
   /** Error copy for any other failure */
   bookingErrorGeneric: string;
+  /** Title when the write may already be registered but was never confirmed */
+  bookingErrorUncertainTitle: string;
+  /** Body copy for the ambiguous (possibly already registered) state */
+  bookingErrorUncertain: string;
+  /** Guidance shown in place of the retry CTA in the ambiguous state */
+  bookingErrorUncertainAction: string;
   /** Confirmation block heading after a booking request was submitted */
   bookingDoneTitle: string;
   /** Confirmation block body after a booking request was submitted */
@@ -404,6 +410,9 @@ export function getGroupSessionLabels(locale: GroupSessionLocale = "fr"): GroupS
     bookingErrorSlot: detail.bookingErrorSlot ?? "",
     bookingErrorFeed: detail.bookingErrorFeed ?? "",
     bookingErrorGeneric: detail.bookingErrorGeneric ?? "",
+    bookingErrorUncertainTitle: detail.bookingErrorUncertainTitle ?? "",
+    bookingErrorUncertain: detail.bookingErrorUncertain ?? "",
+    bookingErrorUncertainAction: detail.bookingErrorUncertainAction ?? "",
     bookingDoneTitle: detail.bookingDoneTitle ?? "",
     bookingDoneText: detail.bookingDoneText ?? "",
   };

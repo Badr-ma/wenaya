@@ -23,7 +23,7 @@ interface Props {
 }
 
 /** Live meta descriptions (verbatim, captured 2026-09-09). */
-const SEOTitle = (name: string) => `${name} | Wenaya Corporate | Wenaya`;
+const SEOTitle = (name: string) => `${name} | Wenaya Corporate`;
 const SEODescriptions: Record<string, string> = {
   "leadership-360":
     "Cursus de développement managérial complet en 5 axes pour vos managers — connaissance de soi, relations, mission, efficacité et people management.",
@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const url = `${SITE_URL}/corporate/programmes/${slug}`;
 
   return {
-    title,
+    title: { absolute: title },
     description,
     alternates: { canonical: url, languages: languageAlternates(`/corporate/programmes/${slug}`) },
     openGraph: {

@@ -5,11 +5,11 @@
  * Every indexable FR URL has its EN equivalent. The sitemap uses the `alternates`
  * field so search engines can discover the locale pairings directly from the sitemap.
  *
- * Generated per request so Redis-backed specialists are always included.
+ * Generated per request so the live API set (specialists, articles, practices)
+ * is always reflected.
  */
 import type { MetadataRoute } from "next";
 import { fetchAllArticles, blogApiErrorLabel } from "@/lib/blog-articles-api";
-import { getAllSpecialistsAsync } from "@/lib/specialistes";
 import { getLiveSpecialists } from "@/lib/professionals";
 import { getSpecialtyOptions } from "@/lib/specialist-filters";
 import { getAllPratiqueSlugs } from "@/lib/pratiques";
@@ -23,6 +23,21 @@ import { SITE_URL } from "@/lib/site-config";
 export const dynamic = "force-dynamic";
 
 type SitemapEntry = MetadataRoute.Sitemap[number];
+
+/**
+ * XML-escape a URL destined for the sitemap document. Next.js's sitemap
+ * serialization interpolates `url` and alternate `href` values into the XML
+ * verbatim with no escaping, so a raw `&` in a path (the care-journey slugs
+ * "grossesse-&-maternite" / "kinesitherapie-&-avc") would emit invalid XML.
+ * Only a bare `&` is escaped to `&amp;`; already-escaped entities are left
+ * untouched so nothing is ever double-escaped.
+ */
+function xmlEscapeUrl(value: string): string {
+  return value.replace(
+    /&(?!amp;|lt;|gt;|quot;|apos;|#\d+;|#x[0-9a-fA-F]+;)/g,
+    "&amp;"
+  );
+}
 
 /** Helper: creates a FR+EN pair of sitemap entries with alternates */
 function dual(frPath: string, opts: Partial<SitemapEntry> = {}): SitemapEntry[] {
@@ -42,7 +57,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error(`[blog] sitemap article fetch failed: ${blogApiErrorLabel(error)}`);
     articles = [];
   }
-  const specialists = await getAllSpecialistsAsync();
+  /**
+   * Specialists come from the LIVE API only (`getLiveSpecialists`, no
+   * Redis/demo fallback). Fetched ONCE and reused for both the profile URLs and
+   * the derived `/search/<specialty>` slugs, so the two sets can never drift
+   * apart. An unreachable API yields an empty list → those entries are simply
+   * omitted for that request (the sitemap stays valid, never 500s).
+   */
+  const liveSpecialists = await getLiveSpecialists();
 
   /**
    * Static pages — core site pages with priority weights for SEO.
@@ -160,8 +182,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
    * next.config.ts Category 6), and redirected URLs must not be advertised
    * in the sitemap. The listing itself stays indexable via staticPages above.
    */
-  /** Specialist profile page URLs — Redis-backed, shared slug set */
-  const specialistEntries = specialists.flatMap((s) =>
+  /** Specialist profile page URLs — LIVE API, shared slug set */
+  const specialistEntries = liveSpecialists.flatMap((s) =>
     dual(`/professional/${s.slug}`, { changeFrequency: "monthly", priority: 0.8 })
   );
 
@@ -171,7 +193,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
    * from the SAME live dataset the listing pages filter. Derived live so a new
    * backend specialty automatically appears here.
    */
-  const searchSlugs = getSpecialtyOptions(await getLiveSpecialists()).map((o) => o.slug);
+  const searchSlugs = getSpecialtyOptions(liveSpecialists).map((o) => o.slug);
   const searchEntries = searchSlugs.flatMap((slug) =>
     dual(`/search/${slug}`, { changeFrequency: "monthly", priority: 0.8 })
   );
@@ -233,5 +255,34 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   });
 
-  return [...staticPages, ...blogEntries, ...specialistEntries, ...searchEntries, ...practiceEntries, ...groupSessionEntries, ...careJourneyEntries, ...troubleEntries];
+  const entries: SitemapEntry[] = [
+    ...staticPages,
+    ...blogEntries,
+    ...specialistEntries,
+    ...searchEntries,
+    ...practiceEntries,
+    ...groupSessionEntries,
+    ...careJourneyEntries,
+    ...troubleEntries,
+  ];
+
+  return entries.map((entry) => ({
+    ...entry,
+    url: xmlEscapeUrl(entry.url),
+    alternates: entry.alternates
+      ? {
+          ...entry.alternates,
+          languages: entry.alternates.languages
+            ? Object.fromEntries(
+                Object.entries(entry.alternates.languages).flatMap(
+                  ([lang, href]): [string, string][] =>
+                    typeof href === "string"
+                      ? [[lang, xmlEscapeUrl(href)]]
+                      : []
+                )
+              )
+            : undefined,
+        }
+      : undefined,
+  }));
 }

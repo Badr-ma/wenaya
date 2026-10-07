@@ -103,15 +103,11 @@ export default function CareJourneyDetail({ journey, locale }: Props) {
   };
 
   const orientationLabels = {
-    recPracticeEyebrow: t("careJourneys.detail.recPracticeEyebrow"),
-    recPracticeCopy: t("careJourneys.detail.recPracticeCopy"),
-    explorePractice: t("careJourneys.detail.explorePractice"),
+    nextStepEyebrow: t("careJourneys.detail.nextStepEyebrow"),
+    nextStepHeading: t("careJourneys.detail.nextStepHeading"),
     findSpecialist: t("careJourneys.detail.findSpecialist"),
     getGuidance: t("careJourneys.detail.getGuidance"),
-    recommendedEyebrow: t("careJourneys.detail.recommendedEyebrow"),
     multiCloseHeading: t("careJourneys.detail.multiCloseHeading"),
-    multiNote: t("careJourneys.detail.multiNote"),
-    viewRecommended: t("careJourneys.detail.viewRecommended"),
   };
 
   return (

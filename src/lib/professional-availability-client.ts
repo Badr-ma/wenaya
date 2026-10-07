@@ -128,9 +128,4 @@ export async function fetchClientDay(
 
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
-/** "YYYY-MM-DD" string for a Date instance (local time). */
-export function toIsoDate(date: Date): string {
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-}
-
 export { todayIso, ISO_DATE_RE };

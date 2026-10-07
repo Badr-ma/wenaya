@@ -10,7 +10,7 @@ import { getArticlesPage, blogApiErrorLabel } from "@/lib/blog-articles-api";
 import { toClientPost } from "@/lib/blog-mappers";
 
 export const metadata: Metadata = {
-  title: "Health & Wellness Blog — Tips, Studies & Guides | Wenaya",
+  title: "Health & Wellness Blog — Tips, Studies & Guides",
   description:
     "Articles, guides and health tips from the Wenaya Casablanca experts. Physiotherapy, nutrition, psychology, prevention and wellness — get inspired for a healthier life.",
   keywords: [
