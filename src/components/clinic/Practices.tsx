@@ -5,23 +5,28 @@
  * "what kinds of care can I explore at Wenaya?" without duplicating the
  * detail-page content.
  *
- * This server component stays the single data entry point: it derives a curated
- * cross-section of disciplines from the existing canonical data source
- * (`getAllPratiques`), collapses each summary to a one-sentence teaser, resolves
- * locale-aware detail links (canonical ASCII slugs), and passes a serializable
- * list to the `PratiquesExplorer` client interaction layer.
+ * This async server component stays the single data entry point: it derives a
+ * curated cross-section of disciplines from the LIVE Wenaya API (`getLivePratiques`,
+ * the same seam that powers `/pratiques`), collapses each summary to a
+ * one-sentence teaser, resolves locale-aware detail links (canonical ASCII
+ * slugs), and passes a serializable list to the `PratiquesExplorer` client
+ * interaction layer.
+ *
+ * API-ONLY: cards reflect what the API actually provides; there is no local
+ * editorial fallback. When the live dataset is empty/unavailable the section
+ * renders nothing rather than a fabricated listing.
  *
  * The section header + global "all practices" CTA remain server-rendered;
  * practice names and their links are present in the initial HTML (SEO intact).
  */
 import Link from "next/link";
-import { getAllPratiques } from "@/lib/pratiques";
+import { getLivePratiques } from "@/lib/pratiques";
 import { h, type HrefLocale } from "@/lib/href";
 import { getTranslations } from "@/i18n";
 import PratiquesExplorer, { type ExplorerItem } from "./PratiquesExplorer";
 
 /** Curated cross-section of Wenaya disciplines — all must already exist in the
- *  canonical `getAllPratiques` list (filtered below; never invented). */
+ *  LIVE API dataset (filtered below; never invented). */
 const EXPLORER_SLUGS = [
   "kinesitherapie",
   "osteopathie",
@@ -32,11 +37,6 @@ const EXPLORER_SLUGS = [
   "orthophonie",
   "yoga",
 ];
-
-/** High-resolution visual fallback for practices whose own image is too small. */
-const HIGH_RES_IMAGE: Record<string, string> = {
-  psychologie: "/pratiques/psychotherapie.jpg",
-};
 
 /** Collapse a practice description to a single sentence for the Clinic explorer
  *  — derived from the current source, no new medical claims. */
@@ -49,15 +49,15 @@ function explorerTeaser(desc: string): string {
   return one;
 }
 
-export default function ClinicPractices({
+export default async function ClinicPractices({
   locale,
   lang,
 }: {
   locale: HrefLocale;
   lang: string;
-}): React.JSX.Element {
+}): Promise<React.JSX.Element> {
   const { t } = getTranslations(lang);
-  const all = getAllPratiques(locale);
+  const all = await getLivePratiques(locale);
 
   const items: ExplorerItem[] = EXPLORER_SLUGS.map((slug) => {
     const p = all.find((candidate) => candidate.slug === slug);
@@ -66,7 +66,7 @@ export default function ClinicPractices({
       slug,
       title: p.title,
       teaser: explorerTeaser(p.description),
-      image: HIGH_RES_IMAGE[p.slug] ?? p.image,
+      image: p.image,
       href: h(locale, `/pratiques/${p.slug}`),
     } satisfies ExplorerItem;
   }).filter((p): p is ExplorerItem => p !== null);

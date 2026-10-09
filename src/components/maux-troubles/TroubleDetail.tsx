@@ -6,8 +6,11 @@
  *   1. Hero — name, short description, full-width API hero image (editorial
  *      asymmetric grid + 21/9 priority image, same visual logic as practice
  *      detail pages).
- *   2. About / Details — `aboutLabel` overline + detail paragraphs.
- *   3. Causes — `causesLabel` overline + causes paragraphs.
+ *   2. About / Details — `aboutLabel` overline + sanitized detail HTML
+ *      (p/ul/ol/li/strong/em/br preserved — section headings stay <strong>).
+ *   3. Causes — `causesLabel` overline + sanitized causes HTML; the whole
+ *      section is suppressed when `causesHtml` is empty (e.g. it merely
+ *      repeated the intro, so it is dropped by the adapter).
  *   4. Recommended practices — practice rows (canonical `/pratiques/{slug}`),
  *      each with its professional-search link (`/search/{slug}`) when the live
  *      specialist set resolves one.
@@ -84,33 +87,31 @@ export default function TroubleDetail({
         ) : null}
 
         {/* ── About / Details ── */}
-        {trouble.detailParagraphs.length > 0 ? (
+        {trouble.detailHtml.length > 0 ? (
           <section className="max-w-[820px] mx-auto mt-20 sm:mt-28">
             <div className="border-t border-[#0B1220]/10 pt-10 sm:pt-14">
               <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.24em] uppercase">
                 {labels.aboutLabel}
               </span>
-              <div className="mt-6 space-y-3 text-[#0B1220]/70 text-[15px] leading-[1.7]">
-                {trouble.detailParagraphs.map((paragraph, i) => (
-                  <p key={i}>{paragraph}</p>
-                ))}
-              </div>
+              <div
+                className="bio-content mt-6"
+                dangerouslySetInnerHTML={{ __html: trouble.detailHtml }}
+              />
             </div>
           </section>
         ) : null}
 
         {/* ── Causes ── */}
-        {trouble.causesParagraphs.length > 0 ? (
+        {trouble.causesHtml.length > 0 ? (
           <section className="max-w-[820px] mx-auto mt-14 sm:mt-24">
             <div className="border-t border-[#0B1220]/10 pt-10 sm:pt-14">
               <span className="text-[#B88A5A] text-[11px] font-semibold tracking-[0.24em] uppercase">
                 {labels.causesLabel}
               </span>
-              <div className="mt-6 space-y-3 text-[#0B1220]/70 text-[15px] leading-[1.7]">
-                {trouble.causesParagraphs.map((paragraph, i) => (
-                  <p key={i}>{paragraph}</p>
-                ))}
-              </div>
+              <div
+                className="bio-content mt-6"
+                dangerouslySetInnerHTML={{ __html: trouble.causesHtml }}
+              />
             </div>
           </section>
         ) : null}

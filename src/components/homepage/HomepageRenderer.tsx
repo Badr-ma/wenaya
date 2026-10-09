@@ -28,7 +28,15 @@ function SectionWrapper({ section, children }: { section: HomepageSection; child
   return <div data-section-bg={theme}>{children}</div>;
 }
 
-export default function HomepageRenderer({ config, experts }: { config: HomepageConfig; experts?: Specialist[] }) {
+export default function HomepageRenderer({
+  config,
+  experts,
+  quickAccessImages,
+}: {
+  config: HomepageConfig;
+  experts?: Specialist[];
+  quickAccessImages?: (string | null)[];
+}) {
   const sections = useMemo(() => {
     return [...config.sections]
       .filter((s) => s.enabled)
@@ -72,7 +80,7 @@ export default function HomepageRenderer({ config, experts }: { config: Homepage
     <span key={section.id}>
       {separator}
       <SectionWrapper section={section}>
-        <SectionComponent section={section} experts={experts} />
+        <SectionComponent section={section} experts={experts} quickAccessImages={quickAccessImages} />
       </SectionWrapper>
     </span>
   );
@@ -87,7 +95,15 @@ export default function HomepageRenderer({ config, experts }: { config: Homepage
   );
 }
 
-function SectionComponent({ section, experts }: { section: HomepageSection; experts?: Specialist[] }) {
+function SectionComponent({
+  section,
+  experts,
+  quickAccessImages,
+}: {
+  section: HomepageSection;
+  experts?: Specialist[];
+  quickAccessImages?: (string | null)[];
+}) {
   switch (section.type) {
     case "hero":
       return <HeroSection content={section.content} />;
@@ -101,7 +117,7 @@ function SectionComponent({ section, experts }: { section: HomepageSection; expe
     case "biomarkers":
       return <Biomarkers content={section.content} />;
     case "quick-links":
-      return <QuickAccessSection content={section.content} />;
+      return <QuickAccessSection content={section.content} images={quickAccessImages} />;
     case "testimonials":
       return <TestimonialsSection content={section.content} />;
     case "expertise":

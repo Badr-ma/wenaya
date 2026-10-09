@@ -143,6 +143,12 @@ export function normalizeApiSpeciality(api: ApiSpeciality, locale: string): Prat
   // no usable image" and the grid renders an empty image area. URLs that exist but
   // fail to load (404/500) are caught at render time by the grid's `onError`
   // handler, which hides the image without substituting anything.
+  //
+  // DEV-only policy: API-supplied image URLs pass through UNCHANGED — NO host
+  // rewriting to api.wenaya.com (prod dependence is forbidden). Missing/broken
+  // DEV images (e.g. dev-api.wenaya.com/storage 404s) are a DEV backend/storage
+  // data problem — resolved there; the frontend only hides the image on load
+  // failure. Other hosts (objectstorage, etc.) pass through untouched.
   const image = firstNonEmpty(api.image_web, api.image_mobile) ?? "";
 
   return {

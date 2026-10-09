@@ -15,7 +15,12 @@ import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
 import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 
-const STAT_SLOTS = ["order-1", "order-1", "order-3", "order-3"];
+const STAT_SLOTS = [
+  "order-1",
+  "order-1 text-right lg:text-left",
+  "order-3",
+  "order-3 text-right lg:text-left",
+];
 
 export default function Hero(): React.JSX.Element {
   const { t, tRaw } = useLocale();
@@ -172,7 +177,7 @@ export default function Hero(): React.JSX.Element {
         <div className="ch-stats order-3 col-span-full mt-2 grid grid-cols-2 gap-x-8 gap-y-6 border-t border-white/15 pt-7 lg:mt-4 lg:grid-cols-[1fr_1fr_auto_1fr_1fr] lg:gap-x-6 lg:items-start">
           {metrics.map((m, i) => (
             <div key={`${i}-${m.label}`} className={STAT_SLOTS[i % STAT_SLOTS.length]}>
-              <span className="font-serif text-2xl leading-none text-[#D4A56A] sm:text-[1.7rem]">
+              <span className="whitespace-nowrap font-serif text-2xl leading-none text-[#D4A56A] sm:text-[1.7rem]">
                 {m.number}
               </span>
               <p className="mt-2 text-xs leading-snug text-white/60 sm:text-[13px]">{m.label}</p>

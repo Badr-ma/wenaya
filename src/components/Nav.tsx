@@ -13,6 +13,7 @@ import { useLocale } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { h, clinicHref } from "@/lib/href";
 import LanguageSwitcher from "./LanguageSwitcher";
+import MobileLanguageSwitcher from "./nav/MobileLanguageSwitcher";
 import Logo from "./Logo";
 import MobileMenu from "./nav/MobileMenu";
 import ProduitsFilterBar from "./nav/ProduitsFilterBar";
@@ -258,6 +259,7 @@ export default function Nav(): React.JSX.Element {
             </nav>
 
             <div className={`flex items-center gap-3 shrink-0 ${isDark ? "text-white/70" : "text-[#0B1220]/50"}`}>
+              <div className="hidden items-center gap-3 lg:flex">
               <LanguageSwitcher />
               <div className={`hidden sm:block w-px h-5 ${sepStyle} mr-0.5`} />
 
@@ -303,16 +305,28 @@ export default function Nav(): React.JSX.Element {
               >
                 {t("nav.reserver")}
               </Link>
+              </div>
 
-              <button
-                onClick={() => setMobileOpen(!mobileOpen)}
-                className={`lg:hidden relative flex flex-col items-center justify-center w-11 h-11 rounded-xl transition-colors ${isDark ? "hover:bg-white/[0.06]" : "hover:bg-black/[0.06]"}`}
-                aria-label={t("nav.menu")}
-              >
-                <span className={`block w-[17px] h-[1.5px] rounded-full transition-all duration-300 origin-center ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "rotate-45 translate-y-[3px]" : ""}`} />
-                <span className={`block w-[17px] h-[1.5px] rounded-full mt-[5px] transition-all duration-300 ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "opacity-0 scale-x-0" : ""}`} />
-                <span className={`block w-[17px] h-[1.5px] rounded-full mt-[5px] transition-all duration-300 origin-center ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "-rotate-45 -translate-y-[3px]" : ""}`} />
-              </button>
+              <div className="flex items-center gap-1.5 lg:hidden">
+                <Link
+                  href={`${h(locale, "/contact-us")}?type=booking`}
+                  className="flex items-center justify-center h-[34px] px-2 sm:px-3 rounded-full text-[12px] sm:text-xs font-semibold text-[#0B1220] whitespace-nowrap transition-all duration-300 active:scale-95"
+                  style={{ background: "#B88A5A" }}
+                >
+                  {t("nav.reserver")}
+                </Link>
+                <MobileLanguageSwitcher dark={isDark} />
+
+                <button
+                  onClick={() => setMobileOpen(!mobileOpen)}
+                  className={`lg:hidden relative flex flex-col items-center justify-center w-11 h-11 rounded-xl transition-colors ${isDark ? "hover:bg-white/[0.06]" : "hover:bg-black/[0.06]"}`}
+                  aria-label={t("nav.menu")}
+                >
+                  <span className={`block w-[17px] h-[1.5px] rounded-full transition-all duration-300 origin-center ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "rotate-45 translate-y-[3px]" : ""}`} />
+                  <span className={`block w-[17px] h-[1.5px] rounded-full mt-[5px] transition-all duration-300 ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "opacity-0 scale-x-0" : ""}`} />
+                  <span className={`block w-[17px] h-[1.5px] rounded-full mt-[5px] transition-all duration-300 origin-center ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "-rotate-45 -translate-y-[3px]" : ""}`} />
+                </button>
+              </div>
             </div>
           </>
         )}

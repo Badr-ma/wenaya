@@ -398,6 +398,28 @@ test("adapter: FR takes title/description from the API, EN stays local", async (
   assert.equal(en.title, localEn, "EN title stays local (never the French en_name)");
 });
 
+test("adapter: API image URLs pass through UNCHANGED — no host rewriting to api.wenaya.com", async () => {
+  // DEV-only policy (practice-adapter.ts): the listing must reflect EXACTLY what
+  // the API provides. Regression guard for the removed normalizeSpecialityImage
+  // rewrite — a dev-api.wenaya.com/storage URL that 404s on DEV storage must NOT
+  // be silently rewritten to the prod host (that masking hid the backend defect).
+  const devStorage = "https://dev-api.wenaya.com/storage/uploads/specialties/651923ee355cc-web.png"; // Méditation (id 13)
+  const objectStorage = "https://nbg1.your-objectstorage.com/westo/specialties/images/web/2025/11/23/69232aa9038bf.jpg";
+  for (const image_web of [devStorage, objectStorage]) {
+    const raw = { ...makeSpeciality(13), image_web, image_mobile: "" };
+    const fr = adapter.normalizeApiSpeciality(raw, "fr");
+    assert.ok(fr, "speciality id 13 must map");
+    assert.equal(fr.image, image_web, `image must pass through unchanged (got ${fr.image})`);
+    assert.ok(
+      !fr.image.startsWith("https://api.wenaya.com/"),
+      "must never force the prod host (dev-api.wenaya.com legitimately contains the substring)"
+    );
+  }
+  const prodStorage = makeSpeciality(9).image_web;
+  const frProd = adapter.normalizeApiSpeciality(makeSpeciality(9), "fr");
+  assert.equal(frProd.image, prodStorage, "an api.wenaya.com URL already in the payload also passes through");
+});
+
 test("adapter: thin API description falls back to local summary", async () => {
   const raw = (await practicesApi.fetchSpecialitiesPage(2)).data.data.find((s) => s.id === 26);
   const fr = adapter.normalizeApiSpeciality(raw, "fr");
@@ -436,10 +458,15 @@ test("pratiques: category filter runs over the FULL dataset (api source)", async
   assert.ok(filtered.items.length >= 1);
 });
 
-test("fallback: backend down → local fallback, same query answered", async () => {
+test("backend down → honest empty page (api source), same query answered", async () => {
   // Run in a CLEAN child process: the compiled CommonJS require cache would
   // otherwise keep the live base URL bound to the already-loaded modules, so a
   // re-import in this process is not enough to "point" the client at dead host.
+  //
+  // The local-dataset fallback was REMOVED (pratiques.ts only has
+  // PratiquesDataSource = "api"): a practice the live feed cannot confirm must
+  // NOT be shown as bookable. On backend failure the accessor returns the
+  // deliberate honest empty page (items [], total 0, dataSource "api").
   const child = spawnSync(
     process.execPath,
     ["-e", FALLBACK_CHILD_SRC],
@@ -451,12 +478,12 @@ test("fallback: backend down → local fallback, same query answered", async () 
   );
   assert.equal(child.status, 0, `fallback child failed:\n${child.stdout}\n${child.stderr}`);
   const result = JSON.parse(child.stdout);
-  assert.equal(result.p1.dataSource, "local-fallback");
-  assert.equal(result.p1.total, 19);
-  assert.equal(result.p1.items.length, 12);
-  assert.equal(result.p1.hasMore, true);
-  assert.equal(result.p2.dataSource, "local-fallback");
-  assert.equal(result.p2.items.length, 7);
-  assert.equal(result.filtered.dataSource, "local-fallback");
-  assert.ok(result.filtered.items.length >= 1);
+  assert.equal(result.p1.dataSource, "api");
+  assert.equal(result.p1.total, 0);
+  assert.equal(result.p1.items.length, 0);
+  assert.equal(result.p1.hasMore, false);
+  assert.equal(result.p2.dataSource, "api");
+  assert.equal(result.p2.items.length, 0);
+  assert.equal(result.filtered.dataSource, "api");
+  assert.equal(result.filtered.items.length, 0);
 });

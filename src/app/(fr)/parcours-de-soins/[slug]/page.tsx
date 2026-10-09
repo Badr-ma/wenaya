@@ -11,6 +11,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import CareJourneyDetail from "@/components/care-journeys/CareJourneyDetail";
 import Footer from "@/components/Footer";
 import { getAllCareJourneySlugs, getCareJourneyBySlug } from "@/lib/care-journeys";
+import { getLivePracticeImageMap } from "@/lib/practice-images";
 import { safeDecodeURI } from "@/lib/href";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
@@ -57,6 +58,8 @@ export default async function CareJourneyPage({ params }: Props) {
   const journey = getCareJourneyBySlug(slug);
   if (!journey) notFound();
 
+  const recommendedImages = await getLivePracticeImageMap("fr");
+
   const pageUrl = `${SITE_URL}/parcours-de-soins/${slug}`;
   const jsonLd = {
     "@context": "https://schema.org",
@@ -75,7 +78,11 @@ export default async function CareJourneyPage({ params }: Props) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <main>
           <Breadcrumbs labels={{ "parcours-de-soins": "Parcours de soins", [slug]: journey.title }} />
-          <CareJourneyDetail journey={journey} locale="fr" />
+          <CareJourneyDetail
+            journey={journey}
+            locale="fr"
+            recommendedImages={recommendedImages}
+          />
         </main>
         <Footer />
       </div>

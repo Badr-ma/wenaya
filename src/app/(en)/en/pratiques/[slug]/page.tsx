@@ -16,10 +16,13 @@ import { resolvePracticeProfessionalsHref } from "@/lib/practice-professionals-l
 import { getTranslations } from "@/i18n";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
+import { getLivePracticeImageMap } from "@/lib/practice-images";
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
+
+export const revalidate = 3600;
 
 export function generateStaticParams() {
   return getAllPratiqueSlugs().map((slug) => ({ slug }));
@@ -32,7 +35,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = pratique.title;
   const url = `${SITE_URL}/en/pratiques/${slug}`;
-  const imageUrl = `${SITE_URL}${pratique.image}`;
+  const image = (await getLivePracticeImageMap("en"))[slug] ?? "";
+  const imageUrl = image
+    ? /^https?:\/\//.test(image)
+      ? image
+      : `${SITE_URL}${image}`
+    : "";
 
   return {
     title,
@@ -44,21 +52,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${title} | Wenaya`,
       description: pratique.description,
       url,
-      images: [{ url: imageUrl, alt: pratique.title }],
+      ...(imageUrl ? { images: [{ url: imageUrl, alt: pratique.title }] } : {}),
     },
     twitter: {
       ...TWITTER_DEFAULTS,
       title: `${title} | Wenaya`,
       description: pratique.description,
-      images: [imageUrl],
+      ...(imageUrl ? { images: [imageUrl] } : {}),
     },
   };
 }
 
 export default async function EnglishPratiquePage({ params }: Props) {
   const { slug } = await params;
-  const pratique = getPratiqueBySlug(slug, "en");
-  if (!pratique) notFound();
+  const basePratique = getPratiqueBySlug(slug, "en");
+  if (!basePratique) notFound();
+
+  const image = (await getLivePracticeImageMap("en"))[slug] ?? "";
+  const pratique = { ...basePratique, image };
 
   const { t } = getTranslations("en");
   const related = getRelatedPratiques(slug, "en", 6);
@@ -82,6 +93,11 @@ export default async function EnglishPratiquePage({ params }: Props) {
   };
 
   const pageUrl = `${SITE_URL}/en/pratiques/${slug}`;
+  const absoluteImage = pratique.image
+    ? /^https?:\/\//.test(pratique.image)
+      ? pratique.image
+      : `${SITE_URL}${pratique.image}`
+    : "";
 
   const jsonLd = [
     {
@@ -99,7 +115,7 @@ export default async function EnglishPratiquePage({ params }: Props) {
       "@type": "MedicalTherapy",
       name: pratique.title,
       description: pratique.description,
-      image: pratique.image,
+      ...(absoluteImage ? { image: absoluteImage } : {}),
       url: pageUrl,
       provider: { "@id": `${SITE_URL}/#clinic` },
       areaServed: { "@type": "City", name: "Casablanca" },

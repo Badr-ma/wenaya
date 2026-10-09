@@ -6,9 +6,9 @@
  * Normalization rules:
  *   - ONLY records with `is_visible !== false` are included (backend gate).
  *   - `description` → one-line plain text (HTML decoded + stripped).
- *   - `details` / `causes` → arrays of plain-text paragraphs (block tags are
- *     converted to paragraph breaks before stripping — readable inline, and
- *     injection-safe: every tag is removed, nothing is rendered raw).
+ *   - `details` → sanitized semantic HTML (p/ul/ol/li/strong/em/br preserved)
+ *     rendered via `dangerouslySetInnerHTML`; `causes` is included ONLY when it
+ *     carries content distinct from the `details` intro (today it repeats it).
  *   - image → `image_web` ?? `image_mobile` ?? `thumbnail`.
  *   - `specialtySlugs` ← the trouble's `specialties[].id`, canonicalized to the
  *     frontend practice slug via the shared `SLUG_BY_LIVE_ID` map (id-keyed,
@@ -26,14 +26,15 @@ import {
   fetchTroubleBySlug,
   type ApiTrouble,
 } from "./troubles-api";
+import { htmlToText, sanitizeSafeHtml } from "./sanitize-html";
 
 export interface Trouble {
   id: number;
   slug: string;
   name: string;
   description: string;
-  detailParagraphs: string[];
-  causesParagraphs: string[];
+  detailHtml: string;
+  causesHtml: string;
   image: string | null;
   specialtySlugs: string[];
 }
@@ -73,24 +74,25 @@ function toOneLine(html: string): string {
     .trim();
 }
 
-/** Block-ish tags → line breaks so multi-section HTML reads as paragraphs once stripped. */
-function toParagraphs(html: string | null | undefined): string[] {
-  if (!html) return [];
+/** Lower-cased, whitespace-collapsed plain text used for content comparison. */
+function comparableText(html: string | null | undefined): string {
+  return htmlToText(html ?? "").toLowerCase().replace(/\s+/g, " ").trim();
+}
 
-  const text = decodeEntities(html)
-    .replace(/\r\n/g, "\n")
-    // close tags that end a block → newline
-    .replace(/<\/(p|div|li|blockquote|ul|ol|h[1-6]|tr)>/gi, "\n")
-    // self-closing/void block breaks
-    .replace(/<(br|hr)\s*\/?>/gi, "\n")
-    // strip every remaining tag
-    .replace(/<\/?[^>]+(>|$)/g, " ")
-    .replace(/\s+/g, " ");
-
-  return text
-    .split("\n")
-    .map((line) => line.trim())
-    .filter((line) => line.length > 0);
+/**
+ * Sanitized `causes` HTML, suppressed when it is empty or merely repeats text
+ * already present in `details`. The current API dataset duplicates the intro
+ * paragraph in `causes`, so this keeps the "Causes courantes" section honest
+ * instead of echoing the intro. Never invents replacement content.
+ */
+function distinctCausesHtml(
+  causes: string | null | undefined,
+  details: string | null | undefined
+): string {
+  const causesText = comparableText(causes);
+  if (!causesText) return "";
+  if (comparableText(details).includes(causesText)) return "";
+  return sanitizeSafeHtml(causes);
 }
 
 function toOneLineSafe(html: string | null | undefined): string {
@@ -117,8 +119,8 @@ function normalize(trouble: ApiTrouble): Trouble {
     slug: trouble.slug,
     name: trouble.name ?? "",
     description: toOneLineSafe(trouble.description),
-    detailParagraphs: toParagraphs(trouble.details),
-    causesParagraphs: toParagraphs(trouble.causes),
+    detailHtml: sanitizeSafeHtml(trouble.details),
+    causesHtml: distinctCausesHtml(trouble.causes, trouble.details),
     image: firstImage(trouble),
     specialtySlugs: Array.from(new Set(specialtySlugs)),
   };

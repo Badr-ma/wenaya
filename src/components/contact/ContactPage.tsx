@@ -2,7 +2,7 @@
  * Contact Page — contact form and clinic information.
  * Shared by the French (/contact-us) and English (/en/contact-us) routes.
  * Features: form with name/email/subject/message fields, validation, success state,
- * clinic address, phone, email, and Google Maps embed.
+ * clinic address, phone and email.
  * Client component with i18n translations.
  * When `isBooking` is set (server passes it when the URL carries `type=booking`,
  * the nav Réserver CTA target), the page renders in BOOKING mode:
@@ -78,14 +78,6 @@ export default function ContactPage({
             </div>
 
             <ContactForm isBooking={isBooking} requestedSession={requestedSession} />
-          </div>
-
-          {/* Map placeholder */}
-          <div className="rounded-2xl overflow-hidden border border-[#0B1220]/[0.06] h-[250px] sm:h-[320px] bg-white/40 flex items-center justify-center">
-            <div className="text-center">
-              <PinIcon />
-              <p className="text-[#2B2F36]/30 text-sm mt-2">{t("contact.mapText")}</p>
-            </div>
           </div>
         </div>
       </div>

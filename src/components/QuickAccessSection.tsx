@@ -11,7 +11,7 @@
  */
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { gsap } from "gsap";
@@ -23,6 +23,7 @@ import SubtitleSplit from "@/components/SubtitleSplit";
 
 interface QuickAccessProps {
   content?: QuickLinksContent;
+  images?: (string | null)[];
 }
 
 /**
@@ -30,18 +31,20 @@ interface QuickAccessProps {
  * Card 0 (Needs & goals) links to the configurator coming-soon page; its EN
  * segment differs (/en/configurator vs /configurateur), so it uses the
  * dedicated configuratorHref resolver instead of the /en-prefix h() helper.
- * Each entry is paired with a local Wenaya editorial image strip for the visual.
+ * Each practice image strip comes from the live practice API (via the `images`
+ * prop); a missing or broken image hides the strip, leaving the navy frame.
  */
-const LINKS: { getHref: (locale: HrefLocale) => string; image: string }[] = [
-  { getHref: configuratorHref, image: "/pratiques/sophrologie.jpg" },
-  { getHref: (locale) => `${clinicHref(locale)}#pathologies`, image: "/pratiques/kinesitherapie.jpg" },
-  { getHref: (locale) => h(locale, "/pratiques"), image: "/pratiques/nutrition.jpg" },
+const LINKS: { getHref: (locale: HrefLocale) => string; image: string | null }[] = [
+  { getHref: configuratorHref, image: null },
+  { getHref: (locale) => `${clinicHref(locale)}#pathologies`, image: null },
+  { getHref: (locale) => h(locale, "/pratiques"), image: null },
   { getHref: (locale) => h(locale, "/search/all"), image: "/images/diverse-team.jpg" },
 ];
 
-export default function QuickAccessSection({ content }: QuickAccessProps): React.JSX.Element {
+export default function QuickAccessSection({ content, images }: QuickAccessProps): React.JSX.Element {
   const { locale, t, tRaw } = useLocale();
   const { elRef, ready } = useIntersectionDeferred();
+  const [hiddenIdx, setHiddenIdx] = useState<number[]>([]);
   const links = tRaw<{ title: string; text: string; cta: string }[]>("quickAccess.links");
 
   const reduceMotion = (): boolean =>
@@ -102,7 +105,9 @@ export default function QuickAccessSection({ content }: QuickAccessProps): React
 
         {/* 4-card grid — 1 col mobile, 2×2 tablet, 4 in a row desktop */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {links.map((link, i) => (
+          {links.map((link, i) => {
+            const src = images?.[i] ?? LINKS[i].image;
+            return (
             <Link
               key={i}
               href={LINKS[i].getHref(locale)}
@@ -110,13 +115,16 @@ export default function QuickAccessSection({ content }: QuickAccessProps): React
             >
               {/* Image strip */}
               <div className="relative aspect-[16/8] overflow-hidden bg-[#0B1220]">
-                <Image
-                  src={LINKS[i].image}
-                  alt=""
-                  fill
-                  sizes="(max-width: 639px) 92vw, (max-width: 1023px) 46vw, 23vw"
-                  className="object-cover"
-                />
+                {src && !hiddenIdx.includes(i) && (
+                  <Image
+                    src={src}
+                    alt=""
+                    fill
+                    sizes="(max-width: 639px) 92vw, (max-width: 1023px) 46vw, 23vw"
+                    className="object-cover"
+                    onError={() => setHiddenIdx((prev) => [...prev, i])}
+                  />
+                )}
                 <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-[#0B1220]/20 to-transparent" aria-hidden="true" />
               </div>
 
@@ -170,7 +178,8 @@ export default function QuickAccessSection({ content }: QuickAccessProps): React
                 </div>
               </div>
             </Link>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

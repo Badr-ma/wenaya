@@ -41,6 +41,7 @@ import { toFeedPost } from "@/lib/blog-mappers";
 import { getHomepagePublished } from "@/lib/homepage";
 import { getHomepageSpecialists } from "@/lib/professionals";
 import HomepageRenderer from "@/components/homepage/HomepageRenderer";
+import { getQuickAccessImages } from "@/lib/practice-images";
 import type { HomepageConfig } from "@/lib/homepage-types";
 
 /** English homepage WebPage schema — ties the /en homepage to the site's Organization and WebSite entities */
@@ -75,6 +76,7 @@ async function getHomeConfig(): Promise<HomepageConfig | null> {
 export default async function EnglishHome() {
   const published = await getHomeConfig();
   const experts = await getHomepageSpecialists();
+  const quickAccessImages = await getQuickAccessImages("en");
 
   if (published && published.sections.length > 0) {
     return (
@@ -83,7 +85,7 @@ export default async function EnglishHome() {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageJsonLd) }}
         />
-        <HomepageRenderer config={published} experts={experts} />
+        <HomepageRenderer config={published} experts={experts} quickAccessImages={quickAccessImages} />
       </ErrorBoundary>
     );
   }
@@ -109,7 +111,7 @@ export default async function EnglishHome() {
           <SectionBreak />
           <div data-section-bg="light"><HowItWorks /></div>
           <div data-section-bg="light"><Biomarkers /></div>
-          <div data-section-bg="light"><QuickAccessSection /></div>
+          <div data-section-bg="light"><QuickAccessSection images={quickAccessImages} /></div>
           <div data-section-bg="light"><ExpertiseSection specialists={experts} /></div>
           <div data-section-bg="light"><TestimonialsSection /></div>
           <div data-section-bg="light"><BlogSection posts={posts} /></div>

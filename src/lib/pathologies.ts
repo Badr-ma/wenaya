@@ -23,7 +23,6 @@ export interface PathologyTopic {
   slug: string;
   title: string;
   summary: string;
-  image: string;
   relatedPracticeSlugs?: string[];
   /** Candidate canonical care-journey slug; verify before linking. */
   careJourneySlug?: string;
@@ -32,7 +31,6 @@ export interface PathologyTopic {
 /** Raw bilingual source entry (dev-traceable, never rendered directly) */
 interface PathologySource {
   slug: string;
-  image: string;
   relatedPracticeSlugs?: string[];
   /** Canonical `CARE_JOURNEYS[].slug` for this condition (1:1 with the journey set). */
   careJourneySlug: string;
@@ -43,7 +41,6 @@ interface PathologySource {
 const pathologySources: PathologySource[] = [
   {
     slug: "grossesse-maternite",
-    image: "/pratiques/kinesitherapie.jpg",
     relatedPracticeSlugs: ["kinesitherapie", "osteopathie", "nutrition", "psychologie"],
     careJourneySlug: "grossesse-&-maternite",
     fr: {
@@ -57,7 +54,6 @@ const pathologySources: PathologySource[] = [
   },
   {
     slug: "troubles-apprentissage",
-    image: "/pratiques/orthophonie.jpg",
     relatedPracticeSlugs: ["orthophonie", "psychomotricite", "neuropsychologie"],
     careJourneySlug: "les-troubles-de-l-apprentissage",
     fr: {
@@ -71,7 +67,6 @@ const pathologySources: PathologySource[] = [
   },
   {
     slug: "vertiges",
-    image: "/pratiques/osteopathie.jpg",
     relatedPracticeSlugs: ["kinesitherapie", "osteopathie"],
     careJourneySlug: "le-vertige-positionnel",
     fr: {
@@ -85,7 +80,6 @@ const pathologySources: PathologySource[] = [
   },
   {
     slug: "alzheimer",
-    image: "/pratiques/neuropsychologie.png",
     relatedPracticeSlugs: ["neuropsychologie", "psychologie", "psychomotricite"],
     careJourneySlug: "la-maladie-d-alzheimer",
     fr: {
@@ -99,7 +93,6 @@ const pathologySources: PathologySource[] = [
   },
   {
     slug: "sante-holistique",
-    image: "/pratiques/sophrologie.jpg",
     relatedPracticeSlugs: ["naturopathie", "sophrologie", "meditation", "yoga"],
     careJourneySlug: "sante-holistique",
     fr: {
@@ -113,7 +106,6 @@ const pathologySources: PathologySource[] = [
   },
   {
     slug: "tecar-therapie",
-    image: "/pratiques/massotherapie.jpg",
     relatedPracticeSlugs: ["kinesitherapie"],
     careJourneySlug: "tecar-therapie",
     fr: {
@@ -127,7 +119,6 @@ const pathologySources: PathologySource[] = [
   },
   {
     slug: "kinesitherapie-avc",
-    image: "/pratiques/psychomotricite.png",
     relatedPracticeSlugs: ["kinesitherapie", "neuropsychologie", "psychomotricite"],
     careJourneySlug: "kinesitherapie-&-avc",
     fr: {
@@ -149,7 +140,6 @@ function normalize(s: PathologySource, locale: Locale): PathologyTopic {
     slug: s.slug,
     title: copy.title,
     summary: copy.summary,
-    image: s.image,
     relatedPracticeSlugs: s.relatedPracticeSlugs,
     careJourneySlug: s.careJourneySlug,
   };

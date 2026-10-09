@@ -96,17 +96,6 @@ export default function MobileMenu({
             >
               {t("nav.monCompte")}
             </Link>
-
-            <Link
-              href={`${h("/contact-us")}?type=booking`}
-              onClick={onClose}
-              className="flex items-center justify-center h-12 rounded-xl text-[#0B1220] text-sm font-semibold transition-all duration-300"
-              style={{
-                background: "#B88A5A",
-              }}
-            >
-              {t("nav.reserver")}
-            </Link>
           </div>
           <p className="text-center text-white/18 text-[11.5px] tracking-wide">
             {t("nav.votreSanteNotreEngagement")}

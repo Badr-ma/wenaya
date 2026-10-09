@@ -121,7 +121,7 @@ export default function PratiquesExplorer({ items, ctaDetail }: Props): React.JS
         {/* Active-practice showcase */}
         <div className="lg:sticky lg:top-24 flex flex-col">
           <div className="relative aspect-[4/3] overflow-hidden bg-[#0B1220]/5">
-            {prev ? (
+            {prev && prev.image ? (
               <Image
                 key={`prev-${prev.slug}`}
                 src={prev.image}
@@ -132,17 +132,19 @@ export default function PratiquesExplorer({ items, ctaDetail }: Props): React.JS
                 className="ch-img-fadeout absolute inset-0 object-cover"
               />
             ) : null}
-            <Image
-              key={`active-${active.slug}`}
-              src={active.image}
-              alt={active.title}
-              fill
-              sizes={PANEL_SIZES}
-              onLoad={() => markLoaded(active.image)}
-              className={`absolute inset-0 object-cover transition-all duration-500 ease-out ${
-                loaded[active.image] ? "opacity-100 scale-100" : "opacity-0 scale-[1.03]"
-              }`}
-            />
+            {active.image ? (
+              <Image
+                key={`active-${active.slug}`}
+                src={active.image}
+                alt={active.title}
+                fill
+                sizes={PANEL_SIZES}
+                onLoad={() => markLoaded(active.image)}
+                className={`absolute inset-0 object-cover transition-all duration-500 ease-out ${
+                  loaded[active.image] ? "opacity-100 scale-100" : "opacity-0 scale-[1.03]"
+                }`}
+              />
+            ) : null}
           </div>
 
           <div aria-live="polite" className="mt-6 sm:mt-7 flex flex-col gap-3">
@@ -221,14 +223,16 @@ export default function PratiquesExplorer({ items, ctaDetail }: Props): React.JS
                 <div className="overflow-hidden min-h-0">
                   <div className="pt-1 pb-7 flex flex-col gap-4">
                     <div className="relative aspect-[16/9] overflow-hidden bg-[#0B1220]/5">
-                      <Image
-                        src={it.image}
-                        alt={it.title}
-                        fill
-                        loading="lazy"
-                        sizes={PANEL_SIZES}
-                        className="object-cover"
-                      />
+                      {it.image ? (
+                        <Image
+                          src={it.image}
+                          alt={it.title}
+                          fill
+                          loading="lazy"
+                          sizes={PANEL_SIZES}
+                          className="object-cover"
+                        />
+                      ) : null}
                     </div>
                     <p className="text-[#0B1220]/55 text-[15px] leading-relaxed">{it.teaser}</p>
                     <Link

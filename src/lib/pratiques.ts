@@ -194,6 +194,18 @@ function emptyPracticesPage(page: number, pageSize: number): PaginatedPratiques 
 }
 
 /**
+ * Fetch the FULL remote dataset, normalize every record and drop any id the
+ * local canonical map does not know. Shared by the filtered listing branch and
+ * the live "all practices" accessor so normalization never diverges.
+ */
+async function fetchAllNormalized(locale: string): Promise<Pratique[]> {
+  const all = await fetchAllSpecialities();
+  return all
+    .map((raw) => normalizeApiSpeciality(raw, locale))
+    .filter((p): p is Pratique => p !== null);
+}
+
+/**
  * Async accessor consumed by the UI — the single seam between the component
  * tree and the data source.
  *
@@ -215,10 +227,7 @@ export async function getPracticesPageAsync(query: PratiquesQuery = {}): Promise
 
   try {
     if (category || search) {
-      const all = await fetchAllSpecialities();
-      let items = all
-        .map((raw) => normalizeApiSpeciality(raw, locale))
-        .filter((p): p is Pratique => p !== null);
+      let items = await fetchAllNormalized(locale);
 
       if (category) {
         const allowed = PRACTICE_CATEGORY_MAP[category] ?? [];
@@ -275,6 +284,23 @@ export async function getPracticesPageAsync(query: PratiquesQuery = {}): Promise
     // The caller renders its honest empty state instead of a fabricated listing.
     console.warn("[pratiques] backend unavailable, returning empty page:", error);
     return emptyPracticesPage(page, pageSize);
+  }
+}
+
+/**
+ * Fetch the FULL live practice dataset (all backend pages), normalized to
+ * `Pratique`. Consumed by the Clinic "Nos Pratiques" section.
+ *
+ * API-ONLY: this never falls back to the local editorial dataset — the Clinic
+ * section must reflect what the API actually provides. On any failure it
+ * returns an empty array and the caller renders its honest empty state.
+ */
+export async function getLivePratiques(locale: string = "fr"): Promise<Pratique[]> {
+  try {
+    return await fetchAllNormalized(locale);
+  } catch (error) {
+    console.warn("[pratiques] backend unavailable, returning no live practices:", error);
+    return [];
   }
 }
 

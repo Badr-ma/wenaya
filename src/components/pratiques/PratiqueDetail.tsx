@@ -8,7 +8,6 @@
  * `article` sections), specialists (editorial rows) with an id for in-page
  * scrolling, one final editorial booking CTA, related practices (text links).
  */
-import Image from "next/image";
 import Link from "next/link";
 import type { Pratique } from "@/lib/pratiques";
 import type { Specialist } from "@/lib/specialistes";
@@ -17,6 +16,7 @@ import { getPratiqueBookingCta, type PratiqueCtaLabel } from "@/lib/pratique-cta
 import PratiqueSpecialists from "./PratiqueSpecialists";
 import RelatedPratiques from "./RelatedPratiques";
 import StructuredArticle from "./StructuredArticle";
+import PracticeHeroImage from "./PracticeHeroImage";
 
 export interface PratiqueDetailLabels {
   eyebrow: string;
@@ -121,12 +121,10 @@ export default function PratiqueDetail({
 
         {/* Large image */}
         <div className="mt-14 sm:mt-20">
-          <div className="relative w-full aspect-[16/9] sm:aspect-[21/9] overflow-hidden rounded-2xl">
-            <Image
+          <div className="relative w-full aspect-[16/9] sm:aspect-[21/9] overflow-hidden rounded-2xl bg-[#0B1220]">
+            <PracticeHeroImage
               src={pratique.image}
               alt={pratique.title}
-              fill
-              priority
               sizes="100vw"
               className="object-cover"
             />

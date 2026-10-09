@@ -44,16 +44,18 @@ import RelatedJourneys from "./RelatedJourneys";
 interface Props {
   journey: CareJourney;
   locale: "fr" | "en";
+  recommendedImages?: Record<string, string>;
 }
 
-export default function CareJourneyDetail({ journey, locale }: Props) {
+export default function CareJourneyDetail({ journey, locale, recommendedImages }: Props) {
   const { t, tRaw } = getTranslations(locale);
   const presentation = getJourneyPresentation(journey.slug);
 
   // ── Recommended practices — derived from the journey's own content ──────
   const recommended: Pratique[] = getJourneyRecommendedSlugs(journey.slug)
     .map((slug) => getPratiqueBySlug(slug, locale))
-    .filter((p): p is Pratique => Boolean(p));
+    .filter((p): p is Pratique => Boolean(p))
+    .map((p) => ({ ...p, image: recommendedImages?.[p.slug] ?? "" }));
   const isMulti = recommended.length > 1;
   const relatedPractice = recommended[0] ?? null;
   const relatedHref = relatedPractice

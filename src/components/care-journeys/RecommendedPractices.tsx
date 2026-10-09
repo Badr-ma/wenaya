@@ -10,11 +10,49 @@
  *
  * Rendered light (ivory) with `id="recommandations"`; the intro orientation
  * panel and hero CTA scroll here.
+ *
+ * Images are sourced exclusively from the live practice API (passed in already
+ * resolved on `practices[].image`). A missing or broken image hides the image
+ * layer entirely — the navy wrapper stays as an intentional empty frame and no
+ * local substitute is ever used.
  */
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { h } from "@/lib/href";
 import type { Pratique } from "@/lib/pratiques";
+
+/**
+ * Practice image with a safety rail: renders nothing (leaving the parent's navy
+ * background visible) when the source is absent or fails to load.
+ */
+function PracticeImage({
+  src,
+  alt,
+  sizes,
+  className,
+}: {
+  src: string;
+  alt: string;
+  sizes: string;
+  className?: string;
+}) {
+  const [failed, setFailed] = useState(false);
+  if (!src || failed) return null;
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      fill
+      sizes={sizes}
+      className={className}
+      loading="lazy"
+      onError={() => setFailed(true)}
+    />
+  );
+}
 
 export interface RecommendedPracticesLabels {
   eyebrow: string;
@@ -57,13 +95,11 @@ export default function RecommendedPractices({
           <div className="mt-10 grid items-center gap-10 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-5">
               <div className="relative aspect-[16/11] overflow-hidden rounded-[24px] bg-[#0B1220] ring-1 ring-[#0B1220]/5">
-                <Image
+                <PracticeImage
                   src={p.image}
                   alt={p.title}
-                  fill
                   sizes="(max-width: 1023px) 100vw, 40vw"
                   className="object-cover"
-                  loading="lazy"
                 />
               </div>
             </div>
@@ -102,13 +138,11 @@ export default function RecommendedPractices({
                 className="group block rounded-[24px] bg-white ring-1 ring-[#0B1220]/[0.06] transition-all duration-300 hover:-translate-y-1 hover:ring-[#B88A5A]/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B88A5A]"
               >
                 <div className="relative aspect-[16/10] overflow-hidden rounded-t-[24px] bg-[#0B1220]">
-                  <Image
+                  <PracticeImage
                     src={practice.image}
                     alt={practice.title}
-                    fill
                     sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
-                    loading="lazy"
                   />
                 </div>
                 <div className="p-6">
