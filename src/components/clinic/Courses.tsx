@@ -35,16 +35,23 @@ export default async function ClinicCourses({
   const { t } = getTranslations(lang);
   const all = await getActiveGroupSessions(locale as GroupSessionLocale);
 
-  const items: SessionItem[] = all.map((s) => ({
-    slug: s.slug,
-    title: s.title,
-    type: s.typeLabel,
-    summary: explorerTeaser(s.description),
-    location: s.location.title,
-    image: s.image,
-    href: s.path,
-    bookingHref: s.bookingHref,
-  }));
+  const items: SessionItem[] = all.map((s) => {
+    // Live programmes render the interactive booking panel (`id="booking"`) on
+    // their detail page, so "Book Now" deep-links straight to it. Editorial
+    // sessions have no panel: "Book Now" opens the detail page itself, whose
+    // hero / CTA hand off to the session-preserving booking flow.
+    const hasBookingPanel = Boolean(s.live && s.live.slots.length > 0);
+    return {
+      slug: s.slug,
+      title: s.title,
+      type: s.typeLabel,
+      summary: explorerTeaser(s.description),
+      location: s.location.title,
+      image: s.image,
+      href: s.path,
+      bookingHref: hasBookingPanel ? `${s.path}#booking` : s.path,
+    };
+  });
 
   return (
     <section className="relative bg-[#F2EFE9] px-6 sm:px-10">

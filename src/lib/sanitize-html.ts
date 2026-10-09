@@ -257,10 +257,16 @@ function wrapConsecutiveLi(html: string): string {
  * Collapse runs of adjacent `<p>` tags into a single `<p>` with their
  * text content joined by double-newlines (visual paragraph breaks).
  * Handles `<p>` tags that contain only text or inline elements.
+ *
+ * IMPORTANT: a paragraph may only contain inline content (`strong`/`em`/`br`).
+ * The negative lookahead stops the lazy match from crossing a block boundary
+ * (`</p>`, `<ul>`, `<ol>`, `<li>`). Without it the `{2,}` quantifier could
+ * make the group span an intervening list — and since the callback only
+ * re-emits `<p>` inner content, that list was silently discarded.
  */
 function collapseConsecutiveParagraphs(html: string): string {
   return html.replace(
-    /(<p>(?:[\s\S]*?)<\/p>\s*){2,}/g,
+    /(?:<p>(?:(?!<\/?(?:p|ul|ol|li)\b)[\s\S])*?<\/p>\s*){2,}/g,
     (run) => {
       const texts: string[] = [];
       const P_RE = /<p>([\s\S]*?)<\/p>/g;

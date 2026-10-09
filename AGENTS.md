@@ -1521,3 +1521,16 @@ Compacted the sitewide footer (`Footer.tsx`, navy `#0B1220` card) on mobile/tabl
 **QA:** SSR :3000 confirms all new class strings (4 social buttons, 3 link groups, contact col-span-2, bottom bar); CDP headless Edge 17/17 PASS (FR 390 / FR 1440 / EN 390): footer present, no horizontal overflow, 13 footer links, zero dead hash links, 4 real external social URLs, mobile shorter than desktop. DOM content heights: 390px=746, 430px=724, 1440px=649 (unchanged desktop). The 105px "overflow" in the first probe was the PRE-EXISTING absolute glow blobs (w-[600px]/w-[400px] pointer-events-none) exceeding the footer box — document-level scrollWidth is 0/0/-15, ignore footer.scrollWidth probes.
 
 **Gates:** `npx tsc --noEmit` clean; `npx eslint src/components/Footer.tsx` clean; no build (dev :3000 HMR serves the edit; prod :3002 = previous build untouched). NOT committed/pushed.
+### 2026-10-09 — Clinic Group Sessions "Book Now" → own detail page + `#booking` anchor (FR + EN, branch pre-production-cleanup)
+
+Fixed the Clinic "Séances & Ateliers" slide CTA on `/clinique/wenaya-casablanca` + `/en/clinic/wenaya-casablanca`: **Book Now** now deep-links to the session's own group-session DETAIL page anchored at its existing booking panel (`{s.path}#booking`), instead of the generic Contact Us form. Explore stays at `s.path`. No backend/API change; NOT committed/pushed.
+
+**Decision:** append `#booking` ONLY when the live booking panel exists — `Boolean(s.live && s.live.slots.length > 0)`; editorial sessions (no live facts) get plain `s.path` (no dead hash). Applied in `Courses.tsx` (the section mapping), NOT in the adapter — `session.bookingHref` in `group-sessions-active.ts:344-347` stays untouched because the detail page's editorial CTAs (`GroupSessionDetail.tsx:117,346`) legitimately use it for the contact-flow handoff. `id="booking"` anchor confirmed at `BookingPanel.tsx:320`.
+
+**Files changed:** `src/components/clinic/Courses.tsx` (functional edit — `hasBookingPanel` + `bookingHref: hasBookingPanel ? \`${s.path}#booking\` : s.path`); `src/components/clinic/SessionsExplorer.tsx` (JSDoc + header comment only, renders `s.bookingHref` at ~357).
+
+**Gates:** `npx tsc --noEmit` clean; `npx eslint src/components/clinic/Courses.tsx src/components/clinic/SessionsExplorer.tsx` clean; `npm run build` (Next.js 16.2.7, Turbopack, kill-node + Remove-Item .next) 346 pages — reviews unavailable warnings (Reviews API HTTP 400) pre-existing/fallback.
+
+**SSR verified (dev :3000, `%TEMP%\opencode\book-cta-verify.mjs`):** FR `/clinique/wenaya-casablanca` + EN `/en/clinic/wenaya-casablanca` → 200; section hrefs = `/seance-de-groupe` (all-sessions CTA), `/seance-de-groupe/small-group-training-799` (Explore), `/seance-de-groupe/small-group-training-799#booking` (Book Now, EN mirrored); remaining `contact-us` hrefs are unrelated (`/contact-us?type=booking` ×2 = sitewide nav CTA desktop+mobile, `/contact-us` ×1). `#booking` count 1 = the single active program (parent 799) panel anchor.
+
+**Gotchas logged:** (1) `npm run dev -p 3000` on Windows silently fails to forward args — must be `npm run dev -- -p 3000` via nested `Start-Process powershell`. (2) Dev server PIDs after restart: 8352 npm / 10556 next dev / 15544 start-server. Remaining user check: visual/click QA at 1440/768/390 (Book Now lands scrolled to the sticky booking panel).

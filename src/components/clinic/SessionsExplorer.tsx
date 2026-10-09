@@ -10,9 +10,9 @@
  *   Gallery: all sessions in a native horizontal scroll-snap track — exactly
  *           3 panels on desktop, ~2 on tablet, ~1 + next-preview on mobile.
  *           Each panel carries TWO actions: a primary "Book Now" link to the
- *           booking flow (contact form with the session preselected) and an
- *           "Explore" link to its session detail page (image, title and text
- *           link all navigate to the detail page).
+ *           session's own detail page (anchored at the live booking panel
+ *           `#booking` when present) and an "Explore" link to the same detail
+ *           page (image, title and text link all navigate to the detail page).
  *
  *   Interaction: native swipe on touch; mouse drag with instant follow
  *           (pointer-capture is NOT used so link/button clicks are never
@@ -43,7 +43,11 @@ export interface SessionItem {
   image: string;
   /** Locale-aware session detail URL (/seance-de-groupe/<slug> or /en/…) — "Explore" destination */
   href: string;
-  /** Locale-aware booking URL (contact form with the session preselected) — "Book Now" destination */
+  /**
+   * "Book Now" destination: the session's own detail page — anchored at the
+   * live booking panel (`#booking`) when present, otherwise the detail page
+   * itself (whose hero / CTA carry the session-preserving booking flow).
+   */
   bookingHref: string;
 }
 
