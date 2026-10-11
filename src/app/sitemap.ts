@@ -72,7 +72,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
    */
   const staticPages: SitemapEntry[] = [
     ...dual("/", { changeFrequency: "weekly", priority: 1.0 }),
-    ...dual("/about-us", { changeFrequency: "monthly", priority: 0.9 }),
+    {
+      url: `${SITE_URL}/about-us`,
+      alternates: {
+        languages: {
+          "x-default": `${SITE_URL}/about-us`,
+          "fr-MA": `${SITE_URL}/about-us`,
+          "en-MA": `${SITE_URL}/en/about-us`,
+        },
+      },
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/en/about-us`,
+      alternates: {
+        languages: {
+          "x-default": `${SITE_URL}/about-us`,
+          "fr-MA": `${SITE_URL}/about-us`,
+          "en-MA": `${SITE_URL}/en/about-us`,
+        },
+      },
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
     {
       url: `${SITE_URL}/clinique/wenaya-casablanca`,
       alternates: {

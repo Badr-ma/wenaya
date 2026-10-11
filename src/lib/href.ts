@@ -35,6 +35,15 @@ export function clinicHref(locale: HrefLocale): string {
 }
 
 /**
+ * Locale-aware href for the About / À propos nav entry.
+ * Both locales render the editorial company page: FR `/about-us` and EN
+ * `/en/about-us`. The legacy `/a-propos` path 308-redirects to `/about-us`.
+ */
+export function aboutHref(locale: HrefLocale): string {
+  return locale === "en" ? "/en/about-us" : "/about-us";
+}
+
+/**
  * Route of the Homecare page.
  * `/soins-a-domicile` exists in French only (no `/en/...` route is published),
  * so every locale points at the FR page rather than fabricating a 404 path —
@@ -82,6 +91,8 @@ export function configuratorHref(locale: HrefLocale): string {
  *   /en/configurator      → /configurateur
  *   /clinique/wenaya-casablanca → /en/clinic/wenaya-casablanca
  *   /en/clinic/wenaya-casablanca → /clinique/wenaya-casablanca
+ *   /about-us             → /en/about-us
+ *   /en/about-us          → /about-us
  * Every other route keeps the historical behavior (add/remove the /en prefix,
  * or return "/" when the path is "/en").
  */
@@ -91,12 +102,14 @@ export function switchLocalePathname(pathname: string, from: "fr" | "en"): strin
     if (pathname === "/en/configurator") return "/configurateur";
     if (pathname === "/en/health-needs") return "/maux-troubles";
     if (pathname.startsWith("/en/health-needs/")) return pathname.replace(/^\/en\/health-needs/, "/maux-troubles");
+    if (pathname === "/en/about-us") return "/about-us";
     return pathname === "/en" ? "/" : pathname.replace(/^\/en/, "") || "/";
   }
   if (pathname === "/clinique/wenaya-casablanca") return "/en/clinic/wenaya-casablanca";
   if (pathname === "/configurateur") return "/en/configurator";
   if (pathname === "/maux-troubles") return "/en/health-needs";
   if (pathname.startsWith("/maux-troubles/")) return pathname.replace(/^\/maux-troubles/, "/en/health-needs");
+  if (pathname === "/about-us") return "/en/about-us";
   return `/en${pathname === "/" ? "" : pathname}`;
 }
 

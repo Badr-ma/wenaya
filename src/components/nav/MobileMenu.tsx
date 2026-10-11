@@ -13,6 +13,8 @@ interface MobileMenuProps {
   isActive: (href: string) => boolean;
   h: (path: string) => string;
   clinicHref: string;
+  aboutHref: string;
+  authState: "loading" | "authenticated" | "anonymous";
   t: (key: string) => string;
 }
 
@@ -22,6 +24,8 @@ export default function MobileMenu({
   isActive,
   h,
   clinicHref,
+  aboutHref,
+  authState,
   t,
 }: MobileMenuProps) {
   return (
@@ -59,7 +63,7 @@ export default function MobileMenu({
 
             {[
               { label: t("nav.clinique"), href: clinicHref },
-              { label: t("nav.aPropos"), href: h("/about-us") },
+              { label: t("nav.aPropos"), href: aboutHref },
               { label: t("nav.produits"), href: h("/produits") },
               { label: t("nav.solutions"), href: h("/corporate") },
             ].map(({ label, href }) => (
@@ -80,23 +84,25 @@ export default function MobileMenu({
         </nav>
 
         <div className="pt-8 border-t border-white/[0.06] space-y-3">
-          <div className="grid grid-cols-2 gap-3">
-            <Link
-              href={h("/login")}
-              onClick={onClose}
-              className="flex items-center justify-center h-12 rounded-xl border border-white/[0.09] bg-white/[0.04] text-white/65 text-sm font-medium transition-all hover:bg-white/[0.07]"
-            >
-              {t("nav.seConnecter")}            </Link>
-
-            <Link
-              href={h("/compte")}
-              onClick={onClose}
-              className="flex items-center justify-center h-12 rounded-xl text-[#0B1220] text-sm font-semibold transition-all duration-300"
-              style={{ background: "#B88A5A" }}
-            >
-              {t("nav.monCompte")}
-            </Link>
-          </div>
+          {authState !== "loading" && (
+            authState === "authenticated" ? (
+              <Link
+                href={h("/compte")}
+                onClick={onClose}
+                className="flex items-center justify-center h-12 rounded-xl border border-white/[0.09] bg-white/[0.04] text-white/65 text-sm font-medium transition-all hover:bg-white/[0.07]"
+              >
+                {t("nav.monCompte")}
+              </Link>
+            ) : (
+              <Link
+                href={h("/login")}
+                onClick={onClose}
+                className="flex items-center justify-center h-12 rounded-xl border border-white/[0.09] bg-white/[0.04] text-white/65 text-sm font-medium transition-all hover:bg-white/[0.07]"
+              >
+                {t("nav.seConnecter")}
+              </Link>
+            )
+          )}
           <p className="text-center text-white/18 text-[11.5px] tracking-wide">
             {t("nav.votreSanteNotreEngagement")}
           </p>

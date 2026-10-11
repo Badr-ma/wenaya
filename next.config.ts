@@ -22,6 +22,7 @@ const nextConfig: NextConfig = {
          /confidentialite) fold INTO the live canonical URLs the old site indexed
          (/about-us, /contact-us, /terms-and-conditions, /privacy-policy). */
       { source: "/about",            destination: "/about-us",                  permanent: true },
+      { source: "/a-propos",         destination: "/about-us",                  permanent: true },
       { source: "/contact",          destination: "/contact-us",                 permanent: true },
       { source: "/conditions",       destination: "/terms-and-conditions",       permanent: true },
       { source: "/confidentialite",  destination: "/privacy-policy",             permanent: true },
@@ -31,6 +32,7 @@ const nextConfig: NextConfig = {
       { source: "/solutions/entreprises/:path*", destination: "/corporate/:path*", permanent: true },
       /* EN equivalents */
       { source: "/en/about",            destination: "/en/about-us",                  permanent: true },
+      { source: "/en/a-propos",         destination: "/en/about-us",                  permanent: true },
       { source: "/en/contact",          destination: "/en/contact-us",                 permanent: true },
       { source: "/en/conditions",       destination: "/en/terms-and-conditions",       permanent: true },
       { source: "/en/confidentialite",  destination: "/en/privacy-policy",             permanent: true },

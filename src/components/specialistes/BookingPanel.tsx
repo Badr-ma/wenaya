@@ -132,8 +132,9 @@ export default function BookingPanel({
     onCloseRef.current = onClose;
   }, [onClose]);
 
-  // Close on Escape; lock body scroll while the panel is open; reset the
-  // content scroll position whenever the step changes (fresh view per step).
+  // Close on Escape; lock body scroll while the panel is open.
+  // Reset the content scroll position whenever the step changes or the panel
+  // (re)opens (the panel stays mounted between opens, so it must scroll to top).
   useEffect(() => {
     if (!isOpen) return;
 
@@ -152,7 +153,7 @@ export default function BookingPanel({
 
   useEffect(() => {
     if (contentRef.current) contentRef.current.scrollTop = 0;
-  }, [step]);
+  }, [step, isOpen]);
 
   const monthDays = useMemo(
     () =>
@@ -367,7 +368,7 @@ export default function BookingPanel({
           </div>
 
           {/* Content */}
-          <div ref={contentRef} className="flex-1 overflow-y-auto overscroll-contain min-h-0 px-6 py-4 sm:px-8 sm:py-6">
+          <div ref={contentRef} data-lenis-prevent className="flex-1 overflow-y-auto overscroll-contain min-h-0 px-6 py-4 sm:px-8 sm:py-6">
             {step === 1 && (
               <>
                 {/* Three-column booking card */}
@@ -463,10 +464,10 @@ export default function BookingPanel({
                     )}
                     <p className="text-[11px] font-mono text-[#B88A5A] uppercase tracking-[0.2em] mb-3">{t("specialistes.booking.availableSlots")}</p>
                     {selectedDay && slotsToRender.length > 0 ? (
-                      <div className="w-full rounded-lg border border-[#0B1220]/[0.10] divide-y divide-[#0B1220]/[0.06] overflow-hidden">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-2">
                         {slotsToRender.map((slot) => (
                           <button key={slot.key} disabled={slot.disabled} onClick={() => setSelectedSlot(slot.label)}
-                            className={`w-full px-3.5 py-2.5 text-[13px] font-medium text-center transition-colors ${slot.disabled ? "bg-[#0B1220]/[0.03] text-[#2B2F36]/25 line-through cursor-not-allowed" : selectedSlot === slot.label ? "bg-[#B88A5A] text-white" : "bg-white text-[#0B1220]/70 hover:bg-[#B88A5A]/10 hover:text-[#0B1220]"}`}>
+                            className={`px-2 py-2.5 rounded-lg border text-[13px] font-medium text-center transition-colors ${slot.disabled ? "border-[#0B1220]/[0.06] bg-[#0B1220]/[0.03] text-[#2B2F36]/25 line-through cursor-not-allowed" : selectedSlot === slot.label ? "border-[#B88A5A] bg-[#B88A5A] text-white" : "border-[#0B1220]/[0.10] bg-white text-[#0B1220]/70 hover:border-[#B88A5A]/40 hover:bg-[#B88A5A]/10 hover:text-[#0B1220]"}`}>
                             {slot.label}
                           </button>
                         ))}

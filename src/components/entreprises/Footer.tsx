@@ -10,7 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
-import { h } from "@/lib/href";
+import { aboutHref, h } from "@/lib/href";
 
 const socialLinks = [
   {
@@ -152,7 +152,7 @@ export default function EntreprisesFooter(): React.JSX.Element {
                       : group.title === footerResources.title
                         ? [h(locale, "/faq")]
                         : group.title === footerAPropos.title
-                          ? [h(locale, "/about-us"), h(locale, "/pratiques")]
+                          ? [aboutHref(locale), h(locale, "/pratiques")]
                           : null;
                   return (
                     <div key={group.title}>

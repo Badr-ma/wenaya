@@ -1,13 +1,15 @@
 /**
  * English About Page ("Who we are") — server component.
- * Concise editorial company-mission page. No clinic sections: the CTAs point
- * toward the Clinic page, the practices catalogue and the booking request flow.
+ * Renders the shared editorial APropos component in English (lang="en") — the
+ * same content and design as the FR /about-us editorial page, with a faithful
+ * EN copy (approved en.ts tokens + FR-derived editorial rest). Hreflang FR
+ * alternate points at /about-us; canonical stays /en/about-us.
  * Includes WebPage structured data for SEO.
  */
 import type { Metadata } from "next";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import AboutUs from "@/components/about/AboutUs";
+import APropos from "@/components/about/APropos";
 import Footer from "@/components/Footer";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
@@ -72,7 +74,7 @@ export default function EnglishAboutPage() {
       <ErrorBoundary>
         <main>
           <Breadcrumbs />
-          <AboutUs lang="en" />
+          <APropos lang="en" />
         </main>
         <Footer />
       </ErrorBoundary>

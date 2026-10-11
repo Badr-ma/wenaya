@@ -11,7 +11,7 @@ import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { useLocale } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
-import { h, clinicHref } from "@/lib/href";
+import { h, clinicHref, aboutHref } from "@/lib/href";
 import LanguageSwitcher from "./LanguageSwitcher";
 import MobileLanguageSwitcher from "./nav/MobileLanguageSwitcher";
 import Logo from "./Logo";
@@ -19,6 +19,7 @@ import MobileMenu from "./nav/MobileMenu";
 import ProduitsFilterBar from "./nav/ProduitsFilterBar";
 import PratiquesFilterBar from "./nav/PratiquesFilterBar";
 import { useLenis } from "lenis/react";
+import { getCurrentPatient } from "@/lib/patient-auth-client";
 
 // Matches the current shop launch freeze; retain the cart entry for reopening.
 const SHOP_COMING_SOON = true;
@@ -37,8 +38,19 @@ export default function Nav(): React.JSX.Element {
   const lastThemeRef = useRef<"dark" | "light">("dark"); // Avoids unnecessary re-renders on same theme
   const pathnameRef = useRef(pathname); // Ref to pathname for use inside scroll handlers
   const filtersPastRef = useRef(false); // Whether filter bar has scrolled past nav
+  const [authState, setAuthState] = useState<"loading" | "authenticated" | "anonymous">("loading"); // Patient session state for the Login/My-Account CTA
 
   useEffect(() => { pathnameRef.current = pathname; });
+
+  // Resolve patient session for the nav auth CTA (single source: GET /api/auth/me).
+  // Re-checks on navigation; keeps the last known state so the CTA never flickers.
+  useEffect(() => {
+    let cancelled = false;
+    getCurrentPatient()
+      .then((res) => { if (!cancelled) setAuthState(res.success ? "authenticated" : "anonymous"); })
+      .catch(() => { if (!cancelled) setAuthState("anonymous"); });
+    return () => { cancelled = true; };
+  }, [pathname]);
 
   // Filter state for /produits page — synced via custom DOM events
   const [filtersPast, setFiltersPast] = useState(false);
@@ -231,7 +243,7 @@ export default function Nav(): React.JSX.Element {
                 {[
                   { label: t("nav.accueil"), href: h(locale, "/") },
                   { label: t("nav.clinique"), href: clinicHref(locale) },
-                  { label: t("nav.aPropos"), href: h(locale, "/about-us") },
+                  { label: t("nav.aPropos"), href: aboutHref(locale) },
                   { label: t("nav.solutions"), href: h(locale, "/corporate") },
                   { label: t("nav.produits"), href: h(locale, "/produits") },
                 ].map((link) => (
@@ -282,19 +294,21 @@ export default function Nav(): React.JSX.Element {
                 </Link>
               )}
 
-              <Link
-                href={h(locale, "/login")}
-                className={`hidden sm:inline-flex items-center justify-center px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${loginBtn}`}
-              >
-                {t("nav.seConnecter")}
-              </Link>
-
-              <Link
-                href={h(locale, "/compte")}
-                className="hidden sm:inline-flex items-center justify-center px-4 py-1.5 rounded-full text-sm font-medium text-[#0B1220]/[0.78] transition-colors duration-200 hover:text-[#0B1220]"
-              >
-                {t("nav.monCompte")}
-              </Link>
+              {authState === "authenticated" ? (
+                <Link
+                  href={h(locale, "/compte")}
+                  className={`hidden sm:inline-flex items-center justify-center px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${loginBtn}`}
+                >
+                  {t("nav.monCompte")}
+                </Link>
+              ) : authState === "anonymous" ? (
+                <Link
+                  href={h(locale, "/login")}
+                  className={`hidden sm:inline-flex items-center justify-center px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${loginBtn}`}
+                >
+                  {t("nav.seConnecter")}
+                </Link>
+              ) : null}
 
               <Link
                 href={`${h(locale, "/contact-us")}?type=booking`}
@@ -340,6 +354,8 @@ export default function Nav(): React.JSX.Element {
       isActive={isActive}
       h={(p) => h(locale, p)}
       clinicHref={clinicHref(locale)}
+      aboutHref={aboutHref(locale)}
+      authState={authState}
       t={t}
     />
     </>
