@@ -17,10 +17,11 @@ import {
 /**
  * POST /api/auth/register
  *
- * GUARDED: returns the normalized 403 `{ success: false, type: "not-enabled" }`
- * until `PATIENT_REGISTER_ENABLED === "true"`. The transport self-heals a
- * single CSRF rotation exactly like login (Proven on DEV 2026-09-20: a bare
- * POST returns 419, reseeding `/sanctum/csrf-cookie` then retrying succeeds).
+ * Registration is enabled by default (`PATIENT_REGISTER_ENABLED`). Set the env
+ * var to "false" to return a normalized 403 `{ success: false, type:
+ * "not-enabled" }`. The transport self-heals a single CSRF rotation exactly
+ * like login (Proven on DEV 2026-09-20: a bare POST returns 419, reseeding
+ * `/sanctum/csrf-cookie` then retrying succeeds).
  *
  * The client sends only identity/contact fields:
  * `{ firstName, lastName, email, password, phone, countryCode?, timezone?,

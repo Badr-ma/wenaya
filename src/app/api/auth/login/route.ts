@@ -8,10 +8,11 @@ import { invalidPayloadResponse, mapPatientOutcome, notEnabledResponse } from "@
 /**
  * POST /api/auth/login
  *
- * GUARDED: returns the normalized 403 `{ success: false, type: "not-enabled" }`
- * until `PATIENT_AUTH_ENABLED === "true"`. The transport itself is complete —
- * it forwards `POST /customer/login` `{ email, password }` with the browser's
- * Sanctum cookies and XSRF token, and self-heals a single CSRF rotation on 419.
+ * Auth is enabled by default (`PATIENT_AUTH_ENABLED`). Set the env var to
+ * "false" to return a normalized 403 `{ success: false, type: "not-enabled" }`.
+ * The transport itself is complete — it forwards `POST /customer/login`
+ * `{ email, password }` with the browser's Sanctum cookies and XSRF token, and
+ * self-heals a single CSRF rotation on 419.
  *
  * When enabled, the session cookies set by Laravel are relayed to the browser
  * (the backend's own `Domain`/`Secure` attributes are dropped so the cookie is
@@ -55,6 +56,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     body: { email: body.email, password: body.password },
   });
   const built = mapPatientOutcome(result.outcome);
+  console.log("login result", result);
 
   const res = NextResponse.json(built.body, { status: built.status });
   for (const sc of relayableSetCookies(result.setCookies, isSecureRequest(request))) {

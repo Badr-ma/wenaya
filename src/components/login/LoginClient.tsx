@@ -3,11 +3,11 @@
  *
  * Minimal centered column: brand, "Wenaya pour les patients", supporting line,
  * email + password fields and a functional submit wired to the same-origin BFF
- * (`POST /api/auth/login` then `GET /api/auth/me`). The server guards the flow
- * while patient auth is inactive (`PATIENT_AUTH_ENABLED`), answering
- * `not-enabled`; the UI then shows the unavailable notice. On success the user
- * lands on a signed-in state with a CTA home (no patient dashboard route exists
- * yet — product decision pending; home is the established destination).
+ * (`POST /api/auth/login` then `GET /api/auth/me`). Patient auth is enabled by
+ * default; if an admin disables it (`PATIENT_AUTH_ENABLED=false`) the server
+ * answers `not-enabled` and the UI shows the unavailable notice. On success the
+ * user lands on a signed-in state with a CTA home (no patient dashboard route
+ * exists yet — product decision pending; home is the established destination).
  * Shared by the French (/login) and English (/en/login) routes.
  *
  * `returnTo` (optional, same-origin only) resumes an interrupted flow — e.g. the

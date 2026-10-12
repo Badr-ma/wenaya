@@ -146,7 +146,7 @@ export function mapRegisterOutcome(outcome: UpstreamOutcome): BuiltResponse {
   return failure(502, "backend-error");
 }
 
-/** BFF-own guard for the state-changing routes while patient auth is disabled. */
+/** BFF-own guard for the state-changing routes when patient auth is disabled. */
 export function notEnabledResponse(): BuiltResponse {
   return failure(403, "not-enabled");
 }

@@ -2,14 +2,15 @@
  * Client account (FR/EN shared) — the logged-in patient space.
  *
  * Resolves the READ-ONLY PatientProfile through the real BFF seam
- * (`GET /api/account/profile` → Laravel `getCustomerInformations`). The BFF
- * answers `not-enabled` when `PATIENT_AUTH_ENABLED` is inactive, `unauthenticated`
- * when no session resolves. While the upstream DEV session is blocked, and ONLY
- * when the page has armed the compile-time dev fallback (PROFILE_DEV_FALLBACK=true
- * + NODE_ENV!==production), an unauthenticated result renders the profile view
- * from a clearly-labelled DEV mock so the account UI stays buildable/QA-able.
- * The real seam remains the primary source; the fallback is never persisted,
- * never relayed, and impossible in production.
+ * (`GET /api/account/profile` → Laravel `getCustomerInformations`). Patient auth
+ * is enabled by default; the BFF answers `not-enabled` only if an admin disables
+ * it (`PATIENT_AUTH_ENABLED=false`). It answers `unauthenticated` when no session
+ * resolves. While the upstream DEV session is blocked, and ONLY when the page has
+ * armed the compile-time dev fallback (PROFILE_DEV_FALLBACK=true +
+ * NODE_ENV!==production), an unauthenticated result renders the profile view from
+ * a clearly-labelled DEV mock so the account UI stays buildable/QA-able. The real
+ * seam remains the primary source; the fallback is never persisted, never relayed,
+ * and impossible in production.
  *
  * States: loading · profile · anonymous · backend-unavailable ·
  *         not-enabled · dev-fallback (visually identical to profile).

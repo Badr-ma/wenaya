@@ -7,8 +7,9 @@
  * with each request via `credentials: "same-origin"`.
  *
  * The server guards the state-changing routes (`PATIENT_AUTH_ENABLED`,
- * `PATIENT_REGISTER_ENABLED`); while a flag is off the route answers
- * `{ type: "not-enabled" }` and no session/account change happens.
+ * `PATIENT_REGISTER_ENABLED`). Auth and registration are enabled by default;
+ * set the corresponding env var to "false" to disable. While disabled the
+ * route answers `{ type: "not-enabled" }` and no session/account change happens.
  */
 
 export interface PatientUser {
@@ -72,7 +73,7 @@ export async function getPatientProfile(): Promise<PatientProfileResult> {
   return patientFetch<PatientProfileResult>("/api/account/profile", { method: "GET" });
 }
 
-/** Start a patient session. Server is guarded — false until `PATIENT_AUTH_ENABLED`. */
+/** Start a patient session. Enabled by default (see `PATIENT_AUTH_ENABLED`). */
 export async function loginPatient(email: string, password: string): Promise<PatientAuthResult> {
   return patientFetch("/api/auth/login", {
     method: "POST",
@@ -82,11 +83,10 @@ export async function loginPatient(email: string, password: string): Promise<Pat
 }
 
 /**
- * Create a patient account. Server is guarded — inactive until
- * `PATIENT_REGISTER_ENABLED`. The BFF injects `role: "patient"` and applies the
- * probe-verified defaults for missing countryCode/timezone/currency; on success
- * Laravel auto-authenticates and the caller resolves the session via
- * `getCurrentPatient()`.
+ * Create a patient account. Enabled by default (see `PATIENT_REGISTER_ENABLED`).
+ * The BFF injects `role: "patient"` and applies the probe-verified defaults for
+ * missing countryCode/timezone/currency; on success Laravel auto-authenticates
+ * and the caller resolves the session via `getCurrentPatient()`.
  */
 export async function registerPatient(input: {
   firstName: string;
@@ -102,7 +102,7 @@ export async function registerPatient(input: {
   });
 }
 
-/** End the patient session. Server is guarded until `PATIENT_AUTH_ENABLED`. */
+/** End the patient session. Enabled by default (see `PATIENT_AUTH_ENABLED`). */
 export async function logoutPatient(): Promise<PatientAuthResult> {
   return patientFetch("/api/auth/logout", { method: "POST" });
 }

@@ -1549,3 +1549,34 @@ Closed the bilingual APropos CDP QA (`%TEMP%\opencode\apropos-en-cdp.cjs`, headl
 **Final CDP run: TOTAL 145 checks, 0 FAIL** — EN+FR × desktop/tablet/mobile: no horizontal overflow, exactly 1 h1, 0 broken images (0/8), 16 EN needles + 9 FR-no-leak + 12 FR needles + 6 EN-no-leak per viewport, hreflang fr-MA/en-MA/x-default + canonical, 14 internal links all resolve 200, 0 Runtime exceptions. SSR harness `apropos-bilingual-qa.mjs` still green 51/51.
 
 **Gotchas logged:** (1) `link.hrefLang` is undefined — always use `link.hreflang`; the original harness had this wrong from the start, which silently corrupted all 4 SEO checks. (2) `innerText` applies CSS text-transform (uppercase eyebrows) — harness needles for stylized-eyebrow text must compare case-insensitively or use the rendered uppercased form. (3) Grep-tool `path` is directory-scoped — passing `%TEMP%\opencode\en-about-raw.html` searched the whole temp dir and returned polluted matches; use `Select-String`/`[regex]` on the exact file instead. (4) Canonical/hreflang hrefs are absolute `https://www.wenaya.com/...` (metadataBase), never `http://localhost:3002/...` — assert on path suffix, not host. Gates: tsc/eslint/build previously green, untouched this pass; prod :3002 left running, dev :3000 relaunched via `Start-Process cmd /c "npx next dev -p 3000 > %TEMP%\opencode\dev3000.log 2>&1"` (LISTENING).
+
+### 2026-10-12 — Dev server crash on `/login?returnTo=...` fixed (switch dev to Webpack HMR, branch pre-production-cleanup)
+
+Fixed the dev-server crash that occurred when accessing `/login?returnTo=%2Fseance-de-groupe%2Fbreathwork-soundhealing-435%3Fslot%3D1123%26date%3D2026-10-22%26time%3D18%253A45%26gs%3D1` (and similar URLs). The server died with `RangeError: Map maximum size exceeded` inside `AsyncHook.init` in `next/dist/compiled/next-server/app-page-turbo.runtime.dev.js`, with the stack ending in `createIterator` / `hot-reloader-turbopack.js`.
+
+**Root cause:** upstream Next.js 16.2.7 + Turbopack dev-mode bug. React 19's dev-only `async_hooks` profiler stores every async resource in an internal `pendingOperations` Map; Turbopack's HMR `subscribe()` async generator creates 3–4 async-hook IDs per HMR event. The Map is only pruned on GC, so under sustained dev/HMR load it grows until it hits V8's hard Map size limit and `Map.set` throws, killing the dev server. Tracked in vercel/next.js#85666 / #96140 / #97153; fixes pending in PR #91704 and #96182.
+
+**Files changed:**
+- `package.json` — `"dev": "next dev"` → `"dev": "next dev --webpack"` (Webpack HMR instead of Turbopack).
+
+**Note on flag choice:** Next.js 16.2.7 does **not** accept `--no-turbopack` / `--no-turbo`; the supported opt-out flag is `--webpack`. This only affects the dev server — production builds use `next build` and are unaffected.
+
+**Verification (dev server, clean `.next`):**
+- Started `npm run dev` on :3000 (Webpack HMR).
+- Requested the exact failing URL.
+- Result: `HTTP 200` in ~7.6s, rendered title `Connexion — Espace Patient Wenaya | Wenaya`, dev server stayed alive (no `RangeError`, no exit).
+- The request log shows upstream API retries/timeouts (pre-existing), but the page renders successfully.
+
+**Gates:** no `tsc`/`eslint`/`build` run required (single package-script change). Revert to Turbopack once the upstream PRs land in a stable Next.js release.
+
+### 2026-10-12 — Patient auth/register enabled by default (branch pre-production-cleanup)
+
+Removed the requirement to set `PATIENT_AUTH_ENABLED=true` / `PATIENT_REGISTER_ENABLED=true` in env. Auth and registration are now enabled by default; the env vars remain as opt-out switches (set to `"false"` to disable). This fixes the `403 Forbidden` on `POST /api/auth/login` when no env file was present.
+
+**Files changed:**
+- `src/lib/patient-auth/config.ts` — `PATIENT_AUTH_ENABLED` and `PATIENT_REGISTER_ENABLED` now default to `process.env.* !== "false"`.
+- `src/app/api/auth/login/route.ts`, `src/app/api/auth/logout/route.ts`, `src/app/api/auth/register/route.ts` — updated header comments to reflect enabled-by-default behavior.
+- `src/lib/patient-auth-client.ts`, `src/lib/patient-auth/transport.ts`, `src/lib/patient-auth/response.ts` — updated comments.
+- `src/components/login/LoginClient.tsx`, `src/components/login/SignupClient.tsx`, `src/components/compte/CompteClient.tsx` — updated header comments.
+
+**Gates:** `npx tsc --noEmit` clean. Targeted eslint on the changed files clean (the pre-existing `CompteClient.tsx` eslint errors remain untouched; they were present in the baseline).

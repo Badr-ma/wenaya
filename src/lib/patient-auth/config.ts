@@ -47,21 +47,22 @@ export const PATIENT_TIMEOUT_MS: number = (() => {
 
 /**
  * Master switch for the state-changing patient routes (`/api/auth/login`,
- * `/api/auth/logout`). Set to "true" ONLY after an approved DEV patient account
- * and backend domain/CORS confirmation are in place. Defaults OFF: the routes
- * return a normalized 403 `not-enabled` response and the transport is never
- * triggered. Read side (`/api/auth/csrf`, `/api/auth/me`) is unaffected.
+ * `/api/auth/logout`). Auth is enabled by default; set the env var to "false"
+ * to disable. When disabled the routes return a normalized 403 `not-enabled`
+ * response and the transport is never triggered. Read side (`/api/auth/csrf`,
+ * `/api/auth/me`) is unaffected.
  */
 export const PATIENT_AUTH_ENABLED: boolean =
-  process.env.PATIENT_AUTH_ENABLED === "true";
+  process.env.PATIENT_AUTH_ENABLED !== "false";
 
 /**
- * Master switch for the register route (`/api/auth/register`). Set to "true"
- * for QA/launch; defaults OFF so the route returns a normalized 403
- * `not-enabled` response and no account is ever created implicitly.
+ * Master switch for the register route (`/api/auth/register`). Registration is
+ * enabled by default; set the env var to "false" to disable. When disabled the
+ * route returns a normalized 403 `not-enabled` response and no account is ever
+ * created implicitly.
  */
 export const PATIENT_REGISTER_ENABLED: boolean =
-  process.env.PATIENT_REGISTER_ENABLED === "true";
+  process.env.PATIENT_REGISTER_ENABLED !== "false";
 
 /**
  * Proven registration field defaults (establish from the 2026-09-20 DEV

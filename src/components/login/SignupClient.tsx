@@ -3,10 +3,11 @@
  * login page design language (brand → eyebrow → heading → supporting line).
  *
  * Fully wired to the same-origin BFF: `POST /api/auth/register` then
- * `GET /api/auth/me`. The server guards the flow while registration is inactive
- * (`PATIENT_REGISTER_ENABLED`), answering `not-enabled`; the UI then shows the
- * unavailable notice. On success Laravel auto-authenticates (proven on DEV), so
- * the signup succeeds directly into a signed-in success state with a CTA home.
+ * `GET /api/auth/me`. Registration is enabled by default; if an admin disables
+ * it (`PATIENT_REGISTER_ENABLED=false`) the server answers `not-enabled` and the
+ * UI shows the unavailable notice. On success Laravel auto-authenticates (proven
+ * on DEV), so the signup succeeds directly into a signed-in success state with
+ * a CTA home.
  *
  * Client-side validation is native (required / type=email); per-field server
  * validation errors render localized copy; unknown backend field keys fall back

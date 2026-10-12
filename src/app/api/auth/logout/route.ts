@@ -8,11 +8,11 @@ import { mapPatientOutcome, notEnabledResponse } from "@/lib/patient-auth/respon
 /**
  * POST /api/auth/logout
  *
- * GUARDED the same way as `/api/auth/login`: until `PATIENT_AUTH_ENABLED ===
- * "true"` this returns the normalized 403 `{ success: false, type:
- * "not-enabled" }`. When enabled it forwards `POST /customer/logout` with the
- * browser's Sanctum cookies and a single CSRF self-healing cycle, relaying any
- * session-clearing `Set-Cookie` back to the browser. The BFF stores nothing.
+ * Auth is enabled by default (`PATIENT_AUTH_ENABLED`). Set the env var to
+ * "false" to return a normalized 403 `{ success: false, type: "not-enabled" }`.
+ * When enabled it forwards `POST /customer/logout` with the browser's Sanctum
+ * cookies and a single CSRF self-healing cycle, relaying any session-clearing
+ * `Set-Cookie` back to the browser. The BFF stores nothing.
  */
 export const dynamic = "force-dynamic";
 

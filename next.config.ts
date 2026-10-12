@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "http", hostname: "localhost" },
       { protocol: "https", hostname: "nbg1.your-objectstorage.com" },
       { protocol: "https", hostname: "api.wenaya.com" },
       { protocol: "https", hostname: "dev-api.wenaya.com" },

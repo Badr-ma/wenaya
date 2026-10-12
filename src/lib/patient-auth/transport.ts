@@ -155,22 +155,23 @@ async function postWithCsrfRetry(path: string, opts: ForwardOptions): Promise<Tr
   return { outcome: last.outcome, setCookies: relay };
 }
 
-/** POST /customer/login — GUARDED at the route layer; transport itself is complete. */
+/** POST /customer/login — enabled by default, GUARDED at the route layer; transport itself is complete. */
 export function submitPatientLogin(opts: ForwardOptions): Promise<TransportResult> {
   return postWithCsrfRetry(PATIENT_LOGIN_PATH, opts);
 }
 
-/** POST /customer/logout — GUARDED at the route layer. */
+/** POST /customer/logout — enabled by default, GUARDED at the route layer. */
 export function submitPatientLogout(opts: ForwardOptions): Promise<TransportResult> {
   return postWithCsrfRetry(PATIENT_LOGOUT_PATH, opts);
 }
 
 /**
- * POST /user/register — GUARDED at the route layer (`PATIENT_REGISTER_ENABLED`).
- * Same single self-healing CSRF cycle as login; on success Laravel logs the new
- * patient in (proven: a follow-up GET /api/v1/customer with the relayed cookies
- * returns the authenticated customer), so the BFF relays the Set-Cookie values
- * and the client can resolve the session via `/api/auth/me`.
+ * POST /user/register — enabled by default, GUARDED at the route layer
+ * (`PATIENT_REGISTER_ENABLED`). Same single self-healing CSRF cycle as login; on
+ * success Laravel logs the new patient in (proven: a follow-up GET
+ * /api/v1/customer with the relayed cookies returns the authenticated customer),
+ * so the BFF relays the Set-Cookie values and the client can resolve the
+ * session via `/api/auth/me`.
  */
 export function submitPatientRegister(opts: ForwardOptions): Promise<TransportResult> {
   return postWithCsrfRetry(PATIENT_REGISTER_PATH, opts);
