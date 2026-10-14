@@ -12,14 +12,23 @@
  * Client-side validation is native (required / type=email); per-field server
  * validation errors render localized copy; unknown backend field keys fall back
  * to their (BFF-own) message. Shared by FR (/signup) and EN (/en/signup).
+ *
+ * `returnTo` (optional, same-origin only) resumes an interrupted flow — e.g. a
+ * visitor routed here from the login page after the group-session booking panel
+ * sent them to sign in. On success (Laravel auto-authenticates) the client
+ * returns to that exact URL so the chosen slot is restored. `safeReturnPath`
+ * rejects anything that is not a root-relative internal path and never bounces
+ * back to an auth route. Without a usable `returnTo` the success card is shown.
  */
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Logo from "@/components/Logo";
 import { useLocale } from "@/contexts/LanguageContext";
 import { h } from "@/lib/href";
+import { safeReturnPath, withReturnTo } from "@/lib/safe-return-path";
 import {
   getCurrentPatient,
   registerPatient,
@@ -34,14 +43,18 @@ const FIELD_COPY: Record<string, string> = {
   phone: "signup.errors.phone",
 };
 
-export default function SignupClient() {
+export default function SignupClient({ returnTo }: { returnTo?: string }) {
   const { locale, t } = useLocale();
+  const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
   const [notEnabled, setNotEnabled] = useState(false);
   const [success, setSuccess] = useState(false);
   const [successName, setSuccessName] = useState<string>();
   const [serverFields, setServerFields] = useState<Record<string, string>>();
   const [generalError, setGeneralError] = useState<string>();
+
+  /** Validated destination for the interrupted flow (null = show success card). */
+  const back = safeReturnPath(returnTo, locale);
 
   const fieldError = (key: string): string | undefined => {
     const copyKey = FIELD_COPY[key];
@@ -82,6 +95,13 @@ export default function SignupClient() {
     }
 
     if (res.success) {
+      if (back) {
+        // Resume the interrupted flow (e.g. the booking panel restores its slot
+        // from the very same URL). No success card: the user is already signed in.
+        setSubmitting(false);
+        router.replace(back);
+        return;
+      }
       const me = await getCurrentPatient();
       if (me.success) setSuccessName(me.user?.name);
       setSuccess(true);
@@ -306,7 +326,7 @@ export default function SignupClient() {
           <div className="mt-8 pt-7 border-t border-[#0B1220]/[0.06] text-center">
             <p className="text-sm text-[#2B2F36]/55">{t("signup.hasAccount")}</p>
             <Link
-              href={h(locale, "/login")}
+              href={withReturnTo(h(locale, "/login"), returnTo, locale)}
               className="inline-block mt-2 text-sm font-semibold text-[#B88A5A] underline underline-offset-4 decoration-[#B88A5A]/40 hover:decoration-[#B88A5A] transition-colors"
             >
               {t("signup.signIn")}

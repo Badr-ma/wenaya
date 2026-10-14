@@ -26,6 +26,7 @@ import { useState } from "react";
 import Logo from "@/components/Logo";
 import { useLocale } from "@/contexts/LanguageContext";
 import { h } from "@/lib/href";
+import { safeReturnPath, withReturnTo } from "@/lib/safe-return-path";
 import { getCurrentPatient, loginPatient, type PatientAuthResult } from "@/lib/patient-auth-client";
 
 export default function LoginClient({ returnTo }: { returnTo?: string }) {
@@ -36,6 +37,9 @@ export default function LoginClient({ returnTo }: { returnTo?: string }) {
   const [success, setSuccess] = useState(false);
   const [successName, setSuccessName] = useState<string>();
   const [error, setError] = useState<string>();
+
+  /** Validated destination for the interrupted flow (null = show success card). */
+  const back = safeReturnPath(returnTo, locale);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -60,7 +64,6 @@ export default function LoginClient({ returnTo }: { returnTo?: string }) {
     }
 
     if (res.success) {
-      const back = safeReturnPath(returnTo, locale);
       if (back) {
         // Resume the interrupted flow (booking panel restores its slot from the
         // very same URL). No success card: the user already knows they signed in.
@@ -199,7 +202,7 @@ export default function LoginClient({ returnTo }: { returnTo?: string }) {
           <div className="mt-8 pt-7 border-t border-[#0B1220]/[0.06] text-center">
             <p className="text-sm text-[#2B2F36]/55">{t("login.noAccount")}</p>
             <Link
-              href={h(locale, "/signup")}
+              href={withReturnTo(h(locale, "/signup"), returnTo, locale)}
               className="inline-block mt-2 text-sm font-semibold text-[#B88A5A] underline underline-offset-4 decoration-[#B88A5A]/40 hover:decoration-[#B88A5A] transition-colors"
             >
               {t("login.createAccount")}
@@ -223,23 +226,4 @@ export default function LoginClient({ returnTo }: { returnTo?: string }) {
       </main>
     </div>
   );
-}
-
-/**
- * Validate a `returnTo` value before navigating to it.
- *
- * Only a root-relative internal path is accepted. Rejected: absolute URLs,
- * protocol-relative (`//evil.tld`), backslash variants (`/\evil.tld` — some
- * browsers normalise it to `//`), and the login routes themselves (a loop).
- * Returns `null` when the caller must fall back to the default success card.
- */
-function safeReturnPath(value: string | undefined, locale: string): string | null {
-  if (typeof value !== "string" || value === "") return null;
-  if (!value.startsWith("/")) return null;
-  if (value.startsWith("//") || value.startsWith("/\\")) return null;
-  if (/[\r\n]/.test(value)) return null;
-  const path = value.split(/[?#]/, 1)[0];
-  const loginPath = h(locale as "fr" | "en", "/login");
-  if (path === loginPath || path === `${loginPath}/`) return null;
-  return value;
 }
