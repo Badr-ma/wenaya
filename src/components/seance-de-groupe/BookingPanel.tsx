@@ -534,9 +534,11 @@ export default function BookingPanel({
                 </svg>
                 {labels.bookingDoneTitle}
               </p>
-              <p className="mt-1.5 text-[12.5px] leading-relaxed text-[#2B2F36]/70 text-center">
-                {labels.bookingDoneText}
-              </p>
+              {labels.bookingDoneText && (
+                <p className="mt-1.5 text-[12.5px] leading-relaxed text-[#2B2F36]/70 text-center">
+                  {labels.bookingDoneText}
+                </p>
+              )}
               {selectedSlot && (
                 <p className="mt-2 text-[12px] font-semibold text-[#0B1220] tabular-nums text-center">
                   {dateParts(selectedSlot.date ?? "", locale).full} ·{" "}
