@@ -15,6 +15,11 @@ export type ProductItem = {
   image: string;
   goals: string[];
   topics: string[];
+  price?: number;
+  currency?: string;
+  availability?: "in_stock" | "out_of_stock" | "pre_order" | "limited";
+  badges?: string[];
+  featured?: boolean;
 };
 
 export type ProduitsQuery = {

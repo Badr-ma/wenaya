@@ -281,15 +281,10 @@ const nextConfig: NextConfig = {
       { source: "/en/pratiques/ost%C3%A9opathie",           destination: "/en/pratiques/osteopathie",          permanent: true },
       { source: "/en/pratiques/sono-th%C3%A9rapie",         destination: "/en/pratiques/sono-therapie",        permanent: true },
 
-      /* ── Category 6: Shop launch freeze (temporary — permanent: false) ──
-         The commerce frontend is paused. /produits and /en/produits render a
-         premium "coming soon" editorial page; product-detail deep links fold
-         onto the corresponding listing, and cart/checkout redirect to the
-         listing too. `:path+` (one+ segments) so `/produits` itself is NOT
-         matched (avoids a self-redirect loop). Existing shop code stays on
-         disk untouched — 307 so nothing is cached as gone while paused. */
-      { source: "/produits/:path+",     destination: "/produits",     permanent: false },
-      { source: "/en/produits/:path+",  destination: "/en/produits",  permanent: false },
+      /* ── Category 6: Shop cart/checkout redirect (temporary — permanent: false) ──
+         Product listing and detail pages are now live. The legacy cart and
+         checkout routes are not wired to the new purchase flow yet, so they
+         redirect to the shop listing. 307 so nothing is cached as gone. */
       { source: "/panier",              destination: "/produits",     permanent: false },
       { source: "/en/panier",           destination: "/en/produits",  permanent: false },
       { source: "/checkout",            destination: "/produits",     permanent: false },

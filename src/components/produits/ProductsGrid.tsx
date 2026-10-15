@@ -14,7 +14,6 @@ import type { ActiveFilter } from "./ActiveFilters";
 import EmptyState from "./EmptyState";
 import SkeletonCard from "./SkeletonCard";
 import type { Product } from "@/types/product";
-import { h } from "@/lib/href";
 
 type ProductItem = {
   slug: string;
@@ -26,6 +25,11 @@ type ProductItem = {
   image: string;
   goals: string[];
   topics: string[];
+  price?: number;
+  currency?: string;
+  availability?: "in_stock" | "out_of_stock" | "pre_order" | "limited";
+  badges?: string[];
+  featured?: boolean;
 };
 
 type ApiResponse = {
@@ -36,10 +40,19 @@ type ApiResponse = {
   hasMore: boolean;
 };
 
-const goalOptions = ["longevity", "sleep", "stress", "recovery", "skin", "heart", "energy", "brain"];
-const categoryOptions = ["supplements", "devices", "wearables", "skincare", "programs"];
-const topicOptions = ["magnesium", "omega-3", "glucose", "collagen", "peptides", "sleep-tracking", "heart-rate", "meditation", "breathwork"];
+const FALLBACK_GOAL_OPTIONS = ["longevity", "sleep", "stress", "recovery", "skin", "heart", "energy", "brain"];
+const FALLBACK_CATEGORY_OPTIONS = ["supplements", "devices", "wearables", "skincare", "programs"];
+const FALLBACK_TOPIC_OPTIONS = ["magnesium", "omega-3", "glucose", "collagen", "peptides", "sleep-tracking", "heart-rate", "meditation", "breathwork"];
 const PAGE_LIMIT = 12;
+
+function uniqueSorted(values: string[]): string[] {
+  return Array.from(new Set(values)).sort((a, b) => a.localeCompare(b));
+}
+
+function safeLabel(tRaw: <T>(path: string) => T, path: string, fallback: string): string {
+  const value = tRaw<string | undefined>(path);
+  return typeof value === "string" ? value : fallback;
+}
 
 /** Convert legacy ProductItem to shared Product type for ProductCard */
 function toProduct(item: ProductItem): Product {
@@ -55,11 +68,16 @@ function toProduct(item: ProductItem): Product {
     thumbnail: item.image,
     rating: item.rating,
     reviewCount: item.reviews,
+    price: item.price,
+    currency: item.currency,
+    availability: item.availability,
+    badges: item.badges,
+    featured: item.featured,
   };
 }
 
 export default function ProductsGrid({ initial }: { initial?: ApiResponse }): React.JSX.Element {
-  const { t, locale } = useLocale();
+  const { t, tRaw, locale } = useLocale();
   const [items, setItems] = useState<ProductItem[]>(initial?.items ?? []);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -166,21 +184,45 @@ export default function ProductsGrid({ initial }: { initial?: ApiResponse }): Re
     }
   }, [items]);
 
+  // ── Available filter values come from the live backend catalogue ──
+  const goalOptions = useMemo(
+    () => (items.length > 0 ? uniqueSorted(items.flatMap((i) => i.goals)) : FALLBACK_GOAL_OPTIONS),
+    [items]
+  );
+  const categoryOptions = useMemo(
+    () => (items.length > 0 ? uniqueSorted(items.map((i) => i.category)) : FALLBACK_CATEGORY_OPTIONS),
+    [items]
+  );
+  const topicOptions = useMemo(
+    () => (items.length > 0 ? uniqueSorted(items.flatMap((i) => i.topics)) : FALLBACK_TOPIC_OPTIONS),
+    [items]
+  );
+
   useEffect(() => {
     window.dispatchEvent(
       new CustomEvent("products-update", {
-        detail: { search, count: total, selectedGoals, selectedCategory, selectedTopics, sort },
+        detail: {
+          search,
+          count: total,
+          selectedGoals,
+          selectedCategory,
+          selectedTopics,
+          sort,
+          goalOptions,
+          categoryOptions,
+          topicOptions,
+        },
       })
     );
-  }, [search, total, selectedGoals, selectedCategory, selectedTopics, sort]);
+  }, [search, total, selectedGoals, selectedCategory, selectedTopics, sort, goalOptions, categoryOptions, topicOptions]);
 
   // ── Active filter pills ──
   const activeFilters = useMemo<ActiveFilter[]>(() => {
     const filters: ActiveFilter[] = [];
     if (search) filters.push({ type: "search", value: search, label: search });
-    if (selectedCategory) filters.push({ type: "category", value: selectedCategory, label: t(`produits.filters.${selectedCategory}`) });
-    selectedGoals.forEach((g) => filters.push({ type: "goal", value: g, label: t(`produits.filters.goalLabels.${g}`) }));
-    selectedTopics.forEach((tp) => filters.push({ type: "topic", value: tp, label: t(`produits.filters.topicLabels.${tp}`) }));
+    if (selectedCategory) filters.push({ type: "category", value: selectedCategory, label: safeLabel(tRaw, `produits.filters.${selectedCategory}`, selectedCategory) });
+    selectedGoals.forEach((g) => filters.push({ type: "goal", value: g, label: safeLabel(tRaw, `produits.filters.goalLabels.${g}`, g) }));
+    selectedTopics.forEach((tp) => filters.push({ type: "topic", value: tp, label: safeLabel(tRaw, `produits.filters.topicLabels.${tp}`, tp) }));
     if (sort !== "bestRated") filters.push({ type: "sort", value: sort, label: t(`produits.sort.${sort}`) });
     return filters;
   }, [search, selectedCategory, selectedGoals, selectedTopics, sort, t]);
@@ -208,21 +250,21 @@ export default function ProductsGrid({ initial }: { initial?: ApiResponse }): Re
   // ── Translated labels for dropdown items ──
   const goalLabels = useMemo(() => {
     const map: Record<string, string> = {};
-    goalOptions.forEach((g) => { map[g] = t(`produits.filters.goalLabels.${g}`); });
+    goalOptions.forEach((g) => { map[g] = safeLabel(tRaw, `produits.filters.goalLabels.${g}`, g); });
     return map;
-  }, [t]);
+  }, [goalOptions, t]);
 
   const categoryLabels = useMemo(() => {
     const map: Record<string, string> = {};
-    categoryOptions.forEach((c) => { map[c] = t(`produits.filters.${c}`); });
+    categoryOptions.forEach((c) => { map[c] = safeLabel(tRaw, `produits.filters.${c}`, c); });
     return map;
-  }, [t]);
+  }, [categoryOptions, t]);
 
   const topicLabels = useMemo(() => {
     const map: Record<string, string> = {};
-    topicOptions.forEach((tp) => { map[tp] = t(`produits.filters.topicLabels.${tp}`); });
+    topicOptions.forEach((tp) => { map[tp] = safeLabel(tRaw, `produits.filters.topicLabels.${tp}`, tp); });
     return map;
-  }, [t]);
+  }, [topicOptions, t]);
 
   const sortLabels = useMemo(() => {
     const map: Record<string, string> = {};
@@ -264,7 +306,7 @@ export default function ProductsGrid({ initial }: { initial?: ApiResponse }): Re
               labels={goalLabels}
             />
             <MinimalDropdown
-              label={selectedCategory ? t(`produits.filters.${selectedCategory}`) : t("produits.filters.categories")}
+              label={selectedCategory ? safeLabel(tRaw, `produits.filters.${selectedCategory}`, selectedCategory) : t("produits.filters.categories")}
               options={categoryOptions}
               selected={selectedCategory ? [selectedCategory] : []}
               onChange={(v) => setSelectedCategory(v[0] || null)}

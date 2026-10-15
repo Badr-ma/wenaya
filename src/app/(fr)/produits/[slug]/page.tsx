@@ -1,7 +1,5 @@
 /**
- * Product Detail Page — server component for individual product pages (/produits/[slug]).
- * Server-resolves product via adapter, computes related + brand products, passes full data to ProductDetail.
- * Returns 404 if product not found.
+ * Product Detail Page (FR) — server-resolves product from the live public API.
  */
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -9,7 +7,11 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ProductDetail from "@/components/produits/ProductDetail";
 import Footer from "@/components/Footer";
-import { getProductBySlug, getProducts, getAllProductSlugs } from "@/lib/product-adapter";
+import {
+  fetchPublicProductBySlug,
+  fetchPublicProducts,
+  mapBackendProductToProduct,
+} from "@/lib/products/api-adapter";
 import { getTranslations } from "@/i18n";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
@@ -18,18 +20,29 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export function generateStaticParams() {
-  return getAllProductSlugs().map((slug) => ({ slug }));
+export async function generateStaticParams() {
+  try {
+    const backendProducts = await fetchPublicProducts();
+    return backendProducts.map((p) => ({ slug: p.slug }));
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProductBySlug(slug, "fr");
-  if (!product) return {};
+  const backendProduct = await fetchPublicProductBySlug(slug);
+  if (!backendProduct) return {};
+
+  const product = mapBackendProductToProduct(backendProduct);
+
   return {
     title: { absolute: `${product.name} — Wenaya` },
     description: product.description,
-    alternates: { canonical: `${SITE_URL}/produits/${slug}`, languages: languageAlternates(`/produits/${slug}`) },
+    alternates: {
+      canonical: `${SITE_URL}/produits/${slug}`,
+      languages: languageAlternates(`/produits/${slug}`),
+    },
     openGraph: {
       ...OG_DEFAULTS,
       title: `${product.name} — Wenaya`,
@@ -44,26 +57,32 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+export const revalidate = 60;
+
 export default async function ProduitPage({ params }: Props) {
   const { slug } = await params;
-  const product = getProductBySlug(slug, "fr");
-  if (!product) notFound();
+  const backendProduct = await fetchPublicProductBySlug(slug);
+  if (!backendProduct) notFound();
 
+  const product = mapBackendProductToProduct(backendProduct);
   const { t, tRaw, locale } = getTranslations("fr");
 
-  // Full Product objects for related and brand products
-  const allProducts = getProducts("fr");
+  let allProducts: ReturnType<typeof mapBackendProductToProduct>[] = [];
+  try {
+    const backendProducts = await fetchPublicProducts();
+    allProducts = backendProducts.map((p) => mapBackendProductToProduct(p));
+  } catch {
+    // leave empty; detail still renders
+  }
+
   const relatedProducts = allProducts
     .filter((p) => p.slug !== slug && p.category === product.category)
     .slice(0, 4);
 
-  const brandProducts = product.brandSlug
-    ? allProducts
-        .filter((p) => p.slug !== slug && p.brandSlug === product.brandSlug)
-        .slice(0, 6)
+  const brandProducts = product.brand
+    ? allProducts.filter((p) => p.slug !== slug && p.brand === product.brand).slice(0, 6)
     : [];
 
-  // ── Product JSON-LD ──
   const productJsonLd: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -73,7 +92,6 @@ export default async function ProduitPage({ params }: Props) {
     category: product.category,
   };
 
-  // Brand (only if exists)
   if (product.brand) {
     productJsonLd.brand = {
       "@type": "Brand",
@@ -81,7 +99,6 @@ export default async function ProduitPage({ params }: Props) {
     };
   }
 
-  // AggregateRating (only if rating exists)
   if (product.rating != null && product.reviewCount != null) {
     productJsonLd.aggregateRating = {
       "@type": "AggregateRating",
@@ -91,7 +108,6 @@ export default async function ProduitPage({ params }: Props) {
     };
   }
 
-  // Offers (only if real commerce data exists)
   if (product.price != null) {
     const offers: Record<string, unknown> = {
       "@type": "Offer",
@@ -107,9 +123,7 @@ export default async function ProduitPage({ params }: Props) {
       };
       offers.availability = availabilityMap[product.availability];
     }
-    if (product.purchaseUrl) {
-      offers.url = product.purchaseUrl;
-    }
+    offers.url = `${SITE_URL}/produits/${slug}`;
     productJsonLd.offers = offers;
   }
 

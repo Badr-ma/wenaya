@@ -1,45 +1,65 @@
 /**
- * Products Page — SHOP LAUNCH FREEZE landing (FR).
- * /produits now renders the premium "shop coming soon" editorial page.
- * Product-detail, cart and checkout routes redirect here (see next.config.ts).
- * The existing shop implementation stays on disk untouched for future activation.
+ * Products listing page (FR) — populated from the live public product API.
  */
 import type { Metadata } from "next";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Footer from "@/components/Footer";
-import ShopComingSoonLanding from "@/components/shop/ShopComingSoonLanding";
+import ProductsGrid from "@/components/produits/ProductsGrid";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
+import {
+  fetchPublicProducts,
+  mapBackendProductToProductItem,
+} from "@/lib/products/api-adapter";
 
 export const metadata: Metadata = {
-  title: "Boutique Wenaya — Bientôt disponible",
+  title: "Boutique Wenaya — Produits",
   description:
-    "La boutique Wenaya arrive bientôt. Nous préparons une sélection de produits soigneusement choisis pour accompagner votre santé et votre bien-être au quotidien.",
+    "Découvrez notre sélection de produits soigneusement choisis pour accompagner votre santé et votre bien-être au quotidien.",
   alternates: {
     canonical: `${SITE_URL}/produits`,
     languages: languageAlternates("/produits"),
   },
   openGraph: {
     ...OG_DEFAULTS,
-    title: "Boutique Wenaya — Bientôt disponible",
+    title: "Boutique Wenaya — Produits",
     description:
-      "La boutique Wenaya arrive bientôt. Nous préparons une sélection de produits soigneusement choisis pour accompagner votre santé et votre bien-être au quotidien.",
+      "Découvrez notre sélection de produits soigneusement choisis pour accompagner votre santé et votre bien-être au quotidien.",
     url: `${SITE_URL}/produits`,
   },
   twitter: {
     ...TWITTER_DEFAULTS,
-    title: "Boutique Wenaya — Bientôt disponible",
+    title: "Boutique Wenaya — Produits",
     description:
-      "La boutique Wenaya arrive bientôt. Nous préparons une sélection de produits soigneusement choisis pour accompagner votre santé et votre bien-être au quotidien.",
+      "Découvrez notre sélection de produits soigneusement choisis pour accompagner votre santé et votre bien-être au quotidien.",
   },
 };
 
-export default function ProduitsPage() {
+export const revalidate = 60;
+
+export default async function ProduitsPage() {
+  let initial = undefined;
+
+  try {
+    const backendProducts = await fetchPublicProducts();
+    const items = backendProducts.map((p) => mapBackendProductToProductItem(p));
+
+    initial = {
+      items,
+      total: items.length,
+      page: 1,
+      totalPages: 1,
+      hasMore: false,
+    };
+  } catch (error) {
+    console.error("[produits] failed to load products", error);
+  }
+
   return (
     <ErrorBoundary>
       <div className="flex flex-col min-h-screen">
-        <main>
-          <ShopComingSoonLanding locale="fr" />
+        <main className="flex-1">
+          <ProductsGrid initial={initial} />
         </main>
         <Footer />
       </div>

@@ -50,10 +50,15 @@ export default function ProductDetail({
   const hasReviews = hasRating && (product.reviewCount ?? 0) > 0;
   const hasCommerce = hasPrice || hasAvailability || hasPurchaseUrl || hasWebsiteUrl;
 
+  function safeLabel(path: string, fallback: string): string {
+    const value = tRaw<string | undefined>(path);
+    return typeof value === "string" ? value : fallback;
+  }
+
   // Build goal tags with translated labels
   const goalTags = hasGoals
     ? product.goals.map((g) => ({
-        label: t(`produits.filters.goalLabels.${g}`),
+        label: safeLabel(`produits.filters.goalLabels.${g}`, g),
         href: h(locale as "fr" | "en", `/produits?goals=${g}`),
       }))
     : [];
@@ -61,7 +66,7 @@ export default function ProductDetail({
   // Build topic tags with translated labels
   const topicTags = hasTopics
     ? product.topics.map((tp) => ({
-        label: t(`produits.filters.topicLabels.${tp}`),
+        label: safeLabel(`produits.filters.topicLabels.${tp}`, tp),
         href: h(locale as "fr" | "en", `/produits?topics=${tp}`),
       }))
     : [];
@@ -117,7 +122,7 @@ export default function ProductDetail({
           <div className="flex-1 min-w-0">
             {/* Category */}
             <p className="text-[11px] font-mono text-[#2B2F36]/30 uppercase tracking-[0.15em] mb-3">
-              {t(`produits.filters.${product.category}`)}
+              {safeLabel(`produits.filters.${product.category}`, product.category)}
             </p>
 
             {/* H1 — Product Name */}

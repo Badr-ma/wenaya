@@ -18,6 +18,7 @@ import { getAllProgrammeSlugs } from "@/lib/corporate-programmes";
 import { getAllGroupSessionSlugs } from "@/lib/group-sessions";
 import { getAllCareJourneySlugs } from "@/lib/care-journeys";
 import { SITE_URL } from "@/lib/site-config";
+import { fetchPublicProducts } from "@/lib/products/api-adapter";
 
 /** Regenerate the sitemap on every request so CMS/Redis additions appear immediately */
 export const dynamic = "force-dynamic";
@@ -65,6 +66,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
    * omitted for that request (the sitemap stays valid, never 500s).
    */
   const liveSpecialists = await getLiveSpecialists();
+
+  /**
+   * Public products come from the backend catalogue. An unreachable API yields
+   * an empty list → product detail entries are simply omitted for that request.
+   */
+  let publicProducts: { slug: string }[] = [];
+  try {
+    publicProducts = await fetchPublicProducts();
+  } catch {
+    publicProducts = [];
+  }
 
   /**
    * Static pages — core site pages with priority weights for SEO.
@@ -200,11 +212,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   });
 
   /**
-   * Product detail URLs — NOT emitted while the shop launch freeze is on:
-   * /produits/{slug} temporarily 307s to the /produits listing (see
-   * next.config.ts Category 6), and redirected URLs must not be advertised
-   * in the sitemap. The listing itself stays indexable via staticPages above.
+   * Product detail URLs — emitted from the live public product catalogue.
    */
+  const productEntries = publicProducts.flatMap((product) =>
+    dual(`/produits/${product.slug}`, { changeFrequency: "weekly", priority: 0.8 })
+  );
+
   /** Specialist profile page URLs — LIVE API, shared slug set */
   const specialistEntries = liveSpecialists.flatMap((s) =>
     dual(`/professional/${s.slug}`, { changeFrequency: "monthly", priority: 0.8 })
@@ -280,6 +293,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const entries: SitemapEntry[] = [
     ...staticPages,
+    ...productEntries,
     ...blogEntries,
     ...specialistEntries,
     ...searchEntries,

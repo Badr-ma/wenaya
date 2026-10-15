@@ -26,7 +26,7 @@ const SHOP_COMING_SOON = true;
 
 export default function Nav(): React.JSX.Element {
   const pathname = usePathname();
-  const { t, locale } = useLocale();
+  const { t, tRaw, locale } = useLocale();
   const { totalItems, hydrated } = useCart();
   const isProduitsRoute = pathname === "/produits" || pathname === "/en/produits";
   const isPratiquesRoute = pathname === "/pratiques" || pathname === "/en/pratiques";
@@ -60,6 +60,9 @@ export default function Nav(): React.JSX.Element {
   const [filterCategory, setFilterCategory] = useState<string | null>(null);
   const [filterTopics, setFilterTopics] = useState<string[]>([]);
   const [filterSort, setFilterSort] = useState("bestRated");
+  const [filterGoalOptions, setFilterGoalOptions] = useState<string[]>(["longevity", "sleep", "stress", "recovery", "skin", "heart", "energy", "brain"]);
+  const [filterCategoryOptions, setFilterCategoryOptions] = useState<string[]>(["supplements", "devices", "wearables", "skincare", "programs"]);
+  const [filterTopicOptions, setFilterTopicOptions] = useState<string[]>(["magnesium", "omega-3", "glucose", "collagen", "peptides", "sleep-tracking", "heart-rate", "meditation", "breathwork"]);
 
   // Filter state for /pratiques page — synced via custom DOM events
   const [pratiquesSearch, setPratiquesSearch] = useState("");
@@ -75,6 +78,9 @@ export default function Nav(): React.JSX.Element {
       if (detail.selectedCategory !== undefined) setFilterCategory(detail.selectedCategory);
       if (detail.selectedTopics !== undefined) setFilterTopics(detail.selectedTopics);
       if (detail.sort !== undefined) setFilterSort(detail.sort);
+      if (detail.goalOptions !== undefined) setFilterGoalOptions(detail.goalOptions);
+      if (detail.categoryOptions !== undefined) setFilterCategoryOptions(detail.categoryOptions);
+      if (detail.topicOptions !== undefined) setFilterTopicOptions(detail.topicOptions);
     };
     window.addEventListener("products-update", handler);
     return () => window.removeEventListener("products-update", handler);
@@ -218,11 +224,15 @@ export default function Nav(): React.JSX.Element {
             filterCategory={filterCategory}
             filterTopics={filterTopics}
             filterSort={filterSort}
+            goalOptions={filterGoalOptions}
+            categoryOptions={filterCategoryOptions}
+            topicOptions={filterTopicOptions}
             onFilterChange={handleFilterChange}
             isDark={isDark}
             mobileOpen={mobileOpen}
             onToggleMobile={() => setMobileOpen(!mobileOpen)}
             t={t}
+            tRaw={tRaw}
           />
         ) : filtersPast && isPratiquesRoute ? (
           <PratiquesFilterBar

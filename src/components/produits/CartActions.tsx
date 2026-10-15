@@ -12,11 +12,15 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useLocale } from "@/contexts/LanguageContext";
-import { useShopComingSoon } from "@/contexts/ShopComingSoonContext";
+import { getCurrentPatient } from "@/lib/patient-auth-client";
 import { formatPrice } from "@/lib/format";
 
 type Availability = "in_stock" | "out_of_stock" | "pre_order" | "limited";
+
+type PurchaseStatus = "idle" | "loading" | "success" | "error";
 
 interface CartActionsProps {
   productSlug: string;
@@ -33,39 +37,76 @@ interface CartActionsProps {
 }
 
 export default function CartActions({
+  productSlug,
   unitPrice,
   currency = "MAD",
   availability,
   hasPrice,
-  hasPurchaseUrl,
   hasWebsiteUrl,
   websiteUrl,
 }: CartActionsProps) {
   const { t, locale } = useLocale();
-  const { openShopComingSoon } = useShopComingSoon();
+  const router = useRouter();
   const [quantity, setQuantity] = useState(1);
+  const [purchaseStatus, setPurchaseStatus] = useState<PurchaseStatus>("idle");
+  const [invoiceNumber, setInvoiceNumber] = useState<string | null>(null);
 
   const isOutOfStock = availability === "out_of_stock";
   const isPreOrder = availability === "pre_order";
   const isLimited = availability === "limited";
   const canAddToCart = hasPrice && !isOutOfStock;
 
-  // SHOP LAUNCH FREEZE: Commerce interactions are temporarily disabled. These
-  // handlers only surface the "coming soon" dialog — they never mutate the cart,
-  // create an order, or navigate to checkout. Restore the original addItem /
-  // router.push behavior here when the shop reopens.
-  const handleAddToCart = useCallback(() => {
-    if (!canAddToCart) return;
-    openShopComingSoon();
-  }, [canAddToCart, openShopComingSoon]);
+  const purchase = useCallback(async () => {
+    if (!canAddToCart || purchaseStatus === "loading") return;
 
-  const handleBuyNow = useCallback(() => {
-    if (!canAddToCart) return;
-    openShopComingSoon();
-  }, [canAddToCart, openShopComingSoon]);
+    setPurchaseStatus("loading");
+    setInvoiceNumber(null);
 
-  const decrementQty = useCallback(() => setQuantity((q) => Math.max(1, q - 1)), []);
+    try {
+      const session = await getCurrentPatient();
+      if (!session.success || session.type !== "success") {
+        const returnTo = encodeURIComponent(`/produits/${productSlug}`);
+        router.push(`/login?returnTo=${returnTo}`);
+        return;
+      }
+
+      const res = await fetch("/api/products/purchase", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({
+          items: [{ slug: productSlug, quantity }],
+        }),
+      });
+
+      const json = (await res.json()) as {
+        error?: boolean;
+        message?: string;
+        data?: { invoice_number?: string | null; id?: string | number } | null;
+      };
+
+      if (!res.ok || json.error) {
+        setPurchaseStatus("error");
+        return;
+      }
+
+      const number =
+        json.data?.invoice_number ||
+        (json.data?.id ? String(json.data.id) : null);
+      setInvoiceNumber(number ?? null);
+      setPurchaseStatus("success");
+    } catch {
+      setPurchaseStatus("error");
+    }
+  }, [canAddToCart, purchaseStatus, productSlug, quantity, router]);
+
+  const decrementQty = useCallback(
+    () => setQuantity((q) => Math.max(1, q - 1)),
+    [],
+  );
   const incrementQty = useCallback(() => setQuantity((q) => q + 1), []);
+  const closeSuccess = useCallback(() => setPurchaseStatus("idle"), []);
+  const isSubmitting = purchaseStatus === "loading";
 
   return (
     <div className="space-y-4">
@@ -135,49 +176,105 @@ export default function CartActions({
           {/* Add to Cart */}
           <button
             type="button"
-            disabled={!canAddToCart}
-            onClick={handleAddToCart}
+            disabled={!canAddToCart || isSubmitting}
+            onClick={purchase}
             className="inline-flex items-center justify-center px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-[#B88A5A] text-white hover:bg-[#a07a4e] disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B88A5A] focus-visible:ring-offset-2"
             aria-label={t("produits.detail.addToCart")}
           >
-            {t("produits.detail.addToCart")}
+            {isSubmitting ? "…" : t("produits.detail.addToCart")}
           </button>
 
           {/* Buy Now */}
           <button
             type="button"
-            disabled={!canAddToCart}
-            onClick={handleBuyNow}
+            disabled={!canAddToCart || isSubmitting}
+            onClick={purchase}
             className="inline-flex items-center justify-center px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 border border-[#0B1220]/[0.12] text-[#0B1220] hover:border-[#0B1220]/30 disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B88A5A] focus-visible:ring-offset-2"
             aria-label={t("produits.detail.buyNow")}
           >
-            {t("produits.detail.buyNow")}
+            {isSubmitting ? "…" : t("produits.detail.buyNow")}
           </button>
         </div>
       )}
 
+      {/* ── Purchase result ── */}
+      {purchaseStatus === "success" && (
+        <div
+          className="rounded-xl border border-emerald-200 bg-emerald-50 p-5 shadow-sm"
+          role="status"
+          aria-live="polite"
+        >
+          <div className="flex items-start gap-3">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-emerald-800">
+                {t("produits.detail.purchaseSuccessTitle")}
+              </p>
+              <p className="mt-1 text-sm text-emerald-700">
+                {t("produits.detail.purchaseSuccess")}
+              </p>
+              {invoiceNumber && (
+                <p className="mt-2 text-sm font-medium text-emerald-800">
+                  {t("produits.detail.invoiceRef").replace(
+                    "{num}",
+                    invoiceNumber,
+                  )}
+                </p>
+              )}
+              <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+                <Link
+                  href={locale === "en" ? "/en/compte" : "/compte"}
+                  className="inline-flex items-center justify-center rounded-full bg-[#0B1220] px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#0B1220]/90"
+                >
+                  {t("produits.detail.viewAccount")}
+                </Link>
+                <button
+                  type="button"
+                  onClick={closeSuccess}
+                  className="inline-flex items-center justify-center rounded-full border border-emerald-300 bg-white px-5 py-2.5 text-sm font-medium text-emerald-800 transition-colors hover:bg-emerald-100/50"
+                >
+                  {t("produits.detail.continueShopping")}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {purchaseStatus === "error" && (
+        <div
+          className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+          role="alert"
+        >
+          {t("produits.detail.purchaseError")}
+        </div>
+      )}
+
       {/* ── External links (secondary) ── */}
-      {(hasPurchaseUrl || hasWebsiteUrl) && (
+      {hasWebsiteUrl && websiteUrl && (
         <div className="flex flex-wrap gap-3 pt-1">
-          {hasPurchaseUrl && (
-            <button
-              type="button"
-              onClick={openShopComingSoon}
-              className="text-xs text-[#2B2F36]/40 hover:text-[#B88A5A] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B88A5A] focus-visible:ring-offset-2 rounded"
-            >
-              {t("produits.detail.externalLink")} →
-            </button>
-          )}
-          {hasWebsiteUrl && websiteUrl && (
-            <a
-              href={websiteUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-[#2B2F36]/40 hover:text-[#B88A5A] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B88A5A] focus-visible:ring-offset-2 rounded"
-            >
-              {t("produits.detail.websiteLink")}
-            </a>
-          )}
+          <a
+            href={websiteUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-[#2B2F36]/40 hover:text-[#B88A5A] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B88A5A] focus-visible:ring-offset-2 rounded"
+          >
+            {t("produits.detail.websiteLink")}
+          </a>
         </div>
       )}
     </div>

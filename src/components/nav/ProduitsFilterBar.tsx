@@ -16,17 +16,26 @@ interface Props {
   filterCategory: string | null;
   filterTopics: string[];
   filterSort: string;
+  goalOptions?: string[];
+  categoryOptions?: string[];
+  topicOptions?: string[];
   onFilterChange: (key: string, value: unknown) => void;
   isDark: boolean;
   mobileOpen: boolean;
   onToggleMobile: () => void;
   t: (key: string) => string;
+  tRaw: <T>(path: string) => T;
 }
 
-const goalOptions = ["longevity", "sleep", "stress", "recovery", "skin", "heart", "energy", "brain"];
-const categoryOptions = ["supplements", "devices", "wearables", "skincare", "programs"];
-const topicOptions = ["magnesium", "omega-3", "glucose", "collagen", "peptides", "sleep-tracking", "heart-rate", "meditation", "breathwork"];
+const DEFAULT_GOAL_OPTIONS = ["longevity", "sleep", "stress", "recovery", "skin", "heart", "energy", "brain"];
+const DEFAULT_CATEGORY_OPTIONS = ["supplements", "devices", "wearables", "skincare", "programs"];
+const DEFAULT_TOPIC_OPTIONS = ["magnesium", "omega-3", "glucose", "collagen", "peptides", "sleep-tracking", "heart-rate", "meditation", "breathwork"];
 const sortOptions = ["bestRated", "mostPopular", "newest"] as const;
+
+function safeLabel(tRaw: <T>(path: string) => T, path: string, fallback: string): string {
+  const value = tRaw<string | undefined>(path);
+  return typeof value === "string" ? value : fallback;
+}
 
 export default function ProduitsFilterBar({
   filterCount,
@@ -35,29 +44,33 @@ export default function ProduitsFilterBar({
   filterCategory,
   filterTopics,
   filterSort,
+  goalOptions = DEFAULT_GOAL_OPTIONS,
+  categoryOptions = DEFAULT_CATEGORY_OPTIONS,
+  topicOptions = DEFAULT_TOPIC_OPTIONS,
   onFilterChange,
   isDark,
   mobileOpen,
   onToggleMobile,
   t,
+  tRaw,
 }: Props) {
   const goalLabels = useMemo(() => {
     const map: Record<string, string> = {};
-    goalOptions.forEach((g) => { map[g] = t(`produits.filters.goalLabels.${g}`); });
+    goalOptions.forEach((g) => { map[g] = safeLabel(tRaw, `produits.filters.goalLabels.${g}`, g); });
     return map;
-  }, [t]);
+  }, [goalOptions, tRaw]);
 
   const categoryLabels = useMemo(() => {
     const map: Record<string, string> = {};
-    categoryOptions.forEach((c) => { map[c] = t(`produits.filters.${c}`); });
+    categoryOptions.forEach((c) => { map[c] = safeLabel(tRaw, `produits.filters.${c}`, c); });
     return map;
-  }, [t]);
+  }, [categoryOptions, tRaw]);
 
   const topicLabels = useMemo(() => {
     const map: Record<string, string> = {};
-    topicOptions.forEach((tp) => { map[tp] = t(`produits.filters.topicLabels.${tp}`); });
+    topicOptions.forEach((tp) => { map[tp] = safeLabel(tRaw, `produits.filters.topicLabels.${tp}`, tp); });
     return map;
-  }, [t]);
+  }, [topicOptions, tRaw]);
 
   const sortLabels = useMemo(() => {
     const map: Record<string, string> = {};
@@ -83,7 +96,7 @@ export default function ProduitsFilterBar({
             labels={goalLabels}
           />
           <MinimalDropdown
-            label={filterCategory ? t(`produits.filters.${filterCategory}`) : t("produits.filters.categories")}
+            label={filterCategory ? safeLabel(tRaw, `produits.filters.${filterCategory}`, filterCategory) : t("produits.filters.categories")}
             options={categoryOptions}
             selected={filterCategory ? [filterCategory] : []}
             onChange={(v) => onFilterChange("selectedCategory", v[0] ?? null)}
