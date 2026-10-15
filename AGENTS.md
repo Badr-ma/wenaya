@@ -1590,3 +1590,13 @@ Removed the requirement to set `PATIENT_AUTH_ENABLED=true` / `PATIENT_REGISTER_E
 - `webackend/tests/Feature/V2/PublicProductApiTest.php` — assert `unique_hash` is non-null and `template_name` equals `invoice1`.
 
 **Gates:** `php -l` clean; `php artisan test tests/Feature/V2/PublicProductApiTest.php` 4/4 pass. Committed to `webackend` `e0c246dc`.
+
+### 2026-10-15 — Fix: invoice PDF failed when creator is null (product-purchase invoices)
+
+Product-purchase invoices have no `creator_id`, so `$this->creator` is null. `Invoice::getPDFData()` called `$this->creator->isProfessional()` unconditionally and threw `Call to a member function isProfessional() on null`. Added a null guard so PDF generation works for patient-purchase invoices.
+
+**Files changed:**
+- `webackend/app/Models/Invoice.php` — `if ($this->creator->isProfessional())` → `if ($this->creator && $this->creator->isProfessional())`.
+- `webackend/tests/Feature/V2/PublicProductApiTest.php` — after a successful purchase, assert the generated `invoice_pdf_url` returns 200 with `Content-Type: application/pdf`.
+
+**Gates:** `php -l` clean; `php artisan test tests/Feature/V2/PublicProductApiTest.php` 4/4 pass. Committed to `webackend` `30221958`.
