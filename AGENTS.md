@@ -1580,3 +1580,13 @@ Removed the requirement to set `PATIENT_AUTH_ENABLED=true` / `PATIENT_REGISTER_E
 - `src/components/login/LoginClient.tsx`, `src/components/login/SignupClient.tsx`, `src/components/compte/CompteClient.tsx` — updated header comments.
 
 **Gates:** `npx tsc --noEmit` clean. Targeted eslint on the changed files clean (the pre-existing `CompteClient.tsx` eslint errors remain untouched; they were present in the baseline).
+
+### 2026-10-15 — Fix: product-purchase invoice missing unique_hash caused 404 PDF in partners
+
+`Invoice::createFromProductPurchase` now generates `unique_hash` and defaults `template_name` to `invoice1` after creating the invoice, so the partners invoice view can fetch `/invoices/pdf/{hash}` and PDF generation has a valid template.
+
+**Files changed:**
+- `webackend/app/Models/Invoice.php` — set `unique_hash` via Hashids and `template_name` fallback after item creation.
+- `webackend/tests/Feature/V2/PublicProductApiTest.php` — assert `unique_hash` is non-null and `template_name` equals `invoice1`.
+
+**Gates:** `php -l` clean; `php artisan test tests/Feature/V2/PublicProductApiTest.php` 4/4 pass. Committed to `webackend` `e0c246dc`.
