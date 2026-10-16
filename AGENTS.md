@@ -1600,3 +1600,16 @@ Product-purchase invoices have no `creator_id`, so `$this->creator` is null. `In
 - `webackend/tests/Feature/V2/PublicProductApiTest.php` — after a successful purchase, assert the generated `invoice_pdf_url` returns 200 with `Content-Type: application/pdf`.
 
 **Gates:** `php -l` clean; `php artisan test tests/Feature/V2/PublicProductApiTest.php` 4/4 pass. Committed to `webackend` `30221958`.
+
+### 2026-10-16 — Fix: public product API now returns all product images
+
+The public product endpoint was only returning the first product photo (`public_photo_url`). The detail page therefore could never show a gallery. Exposed the full `product_photos` collection and wired it through the frontend adapter and detail UI.
+
+**Files changed:**
+- `webackend/app/Http/Resources/PublicProductResource.php` — added `images` array from `$this->photos->pluck('url')`.
+- `new-website/src/lib/products/api-adapter.ts` — `BackendPublicProduct` gains `images?: string[]`; mapping helpers now build full `ProductImage[]` arrays for `Product` / `ProductListItem` / `ProductItem`.
+- `new-website/src/components/produits/ProductsGrid.tsx` — local `ProductItem` carries `images`; `toProduct()` maps the full set into `Product` for cards.
+- `new-website/src/components/produits/ProductDetail.tsx` — replaced single static image with the new gallery component.
+- `new-website/src/components/produits/ProductImageGallery.tsx` — **new** client gallery: main image + horizontal thumbnail strip, active-state bronze border, keyboard focus ring, fallback placeholder.
+
+**Gates:** `php artisan test tests/Feature/V2/PublicProductApiTest.php` 4/4 pass; `npx tsc --noEmit` clean; `npm run build` 232 pages. Committed to `webackend` `30d6eba2` and `new-website` `985018b`.
