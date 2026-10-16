@@ -18,6 +18,7 @@ export type BackendPublicProduct = {
   currency: string;
   unit_name?: string | null;
   image?: string | null;
+  images?: string[];
   availability: "in_stock" | "out_of_stock" | "pre_order" | "limited";
   category?: string | null;
   goals?: string[];
@@ -43,14 +44,21 @@ export type BackendPublicProductResponse = {
   data: BackendPublicProduct;
 };
 
+const FALLBACK_IMAGE = "/images/wellness-stretch.jpg";
+
+function getProductImages(product: BackendPublicProduct): string[] {
+  const images = product.images ?? (product.image ? [product.image] : []);
+  return images.length > 0 ? images : [FALLBACK_IMAGE];
+}
+
 function getProductImage(product: BackendPublicProduct): string {
-  return product.image ?? "/images/wellness-stretch.jpg";
+  return getProductImages(product)[0];
 }
 
 export function mapBackendProductToProduct(
   product: BackendPublicProduct,
 ): Product {
-  const image = getProductImage(product);
+  const images = getProductImages(product);
   return {
     id: String(product.id),
     slug: product.slug,
@@ -60,8 +68,8 @@ export function mapBackendProductToProduct(
     category: product.category ?? "supplements",
     goals: product.goals ?? [],
     topics: product.topics ?? [],
-    images: [{ src: image, alt: product.name }],
-    thumbnail: image,
+    images: images.map((src) => ({ src, alt: product.name })),
+    thumbnail: images[0],
     rating: product.rating ?? undefined,
     reviewCount: product.reviews ?? 0,
     price: product.price,
@@ -82,6 +90,7 @@ export type ProductItem = {
   rating: number;
   reviews: number;
   image: string;
+  images?: string[];
   goals: string[];
   topics: string[];
   price?: number;
@@ -95,6 +104,7 @@ export function mapBackendProductToProductItem(
   product: BackendPublicProduct,
 ): ProductItem {
   const availability = product.availability;
+  const images = getProductImages(product);
   return {
     slug: product.slug,
     title: product.name,
@@ -102,7 +112,8 @@ export function mapBackendProductToProductItem(
     category: product.category ?? "supplements",
     rating: product.rating ?? 0,
     reviews: product.reviews ?? 0,
-    image: getProductImage(product),
+    image: images[0],
+    images,
     goals: product.goals ?? [],
     topics: product.topics ?? [],
     price: product.price,
@@ -116,7 +127,7 @@ export function mapBackendProductToProductItem(
 export function mapBackendProductToListItem(
   product: BackendPublicProduct,
 ): ProductListItem {
-  const image = getProductImage(product);
+  const images = getProductImages(product);
   return {
     id: String(product.id),
     slug: product.slug,
@@ -126,8 +137,8 @@ export function mapBackendProductToListItem(
     category: product.category ?? "supplements",
     goals: product.goals ?? [],
     topics: product.topics ?? [],
-    images: [{ src: image, alt: product.name }],
-    thumbnail: image,
+    images: images.map((src) => ({ src, alt: product.name })),
+    thumbnail: images[0],
     rating: product.rating ?? undefined,
     reviewCount: product.reviews ?? 0,
     price: product.price,

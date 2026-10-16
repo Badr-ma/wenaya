@@ -4,13 +4,13 @@
  * Two-column hero (desktop), stacked (mobile). Commerce-ready architecture.
  * Reuses: ProductCard, ProductRating, EntityTags. No duplicated components.
  */
-import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/types/product";
 import ProductCard from "./ProductCard";
 import ProductRating from "./ProductRating";
 import EntityTags from "./EntityTags";
 import CartActions from "./CartActions";
+import ProductImageGallery from "./ProductImageGallery";
 import { h } from "@/lib/href";
 
 type TFn = (key: string) => string;
@@ -31,9 +31,6 @@ export default function ProductDetail({
   t: TFn;
   tRaw: TRawFn;
 }): React.JSX.Element {
-  const imageSrc = product.images?.[0]?.src || product.thumbnail || "";
-  const imageAlt = product.images?.[0]?.alt || product.name;
-  const hasImage = Boolean(imageSrc);
   const hasRating = product.rating != null;
   const hasPrice = product.price != null;
   const hasAvailability = product.availability != null;
@@ -87,36 +84,8 @@ export default function ProductDetail({
             HERO — Two-column (desktop) / Stacked (mobile)
             ══════════════════════════════════════════════ */}
         <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 mb-20">
-          {/* ── LEFT: Image ── */}
-          <div className="w-full lg:w-[45%] shrink-0">
-            <div className="relative aspect-square overflow-hidden bg-[#E8E2D9] rounded-xl">
-              {hasImage ? (
-                <Image
-                  src={imageSrc}
-                  alt={imageAlt}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 45vw"
-                  priority
-                />
-              ) : (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <svg
-                    className="w-16 h-16 text-[#0B1220]/[0.06]"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1"
-                    aria-hidden="true"
-                  >
-                    <rect x="3" y="3" width="18" height="18" rx="2" />
-                    <circle cx="8.5" cy="8.5" r="1.5" />
-                    <path d="M21 15l-5-5L5 21" />
-                  </svg>
-                </div>
-              )}
-            </div>
-          </div>
+          {/* ── LEFT: Image Gallery ── */}
+          <ProductImageGallery images={product.images ?? []} alt={product.name} />
 
           {/* ── RIGHT: Content + Commerce ── */}
           <div className="flex-1 min-w-0">
@@ -168,7 +137,7 @@ export default function ProductDetail({
               <CartActions
                 productSlug={product.slug}
                 productName={product.name}
-                image={imageSrc}
+                image={product.thumbnail || product.images?.[0]?.src || ""}
                 unitPrice={product.price}
                 currency={product.currency}
                 availability={product.availability}

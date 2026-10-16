@@ -23,6 +23,7 @@ type ProductItem = {
   rating: number;
   reviews: number;
   image: string;
+  images?: string[];
   goals: string[];
   topics: string[];
   price?: number;
@@ -56,6 +57,7 @@ function safeLabel(tRaw: <T>(path: string) => T, path: string, fallback: string)
 
 /** Convert legacy ProductItem to shared Product type for ProductCard */
 function toProduct(item: ProductItem): Product {
+  const images = item.images?.length ? item.images : [item.image];
   return {
     id: item.slug,
     slug: item.slug,
@@ -64,8 +66,8 @@ function toProduct(item: ProductItem): Product {
     category: item.category,
     goals: item.goals,
     topics: item.topics,
-    images: [{ src: item.image, alt: item.title }],
-    thumbnail: item.image,
+    images: images.map((src) => ({ src, alt: item.title })),
+    thumbnail: images[0],
     rating: item.rating,
     reviewCount: item.reviews,
     price: item.price,
