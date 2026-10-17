@@ -85,7 +85,11 @@ export default function ProductDetail({
             ══════════════════════════════════════════════ */}
         <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 mb-20">
           {/* ── LEFT: Image Gallery ── */}
-          <ProductImageGallery images={product.images ?? []} alt={product.name} />
+          <ProductImageGallery
+            images={product.images ?? []}
+            alt={product.name}
+            locale={locale as "fr" | "en"}
+          />
 
           {/* ── RIGHT: Content + Commerce ── */}
           <div className="flex-1 min-w-0">
