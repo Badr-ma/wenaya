@@ -1784,6 +1784,8 @@ const fr = {
       bookingErrorFeed:
         "Les créneaux sont momentanément indisponibles. Réessayez dans un instant.",
       bookingErrorGeneric: "Une erreur est survenue. Réessayez.",
+      bookingErrorGroupFull: "Cette séance de groupe est complète. Veuillez choisir une autre séance.",
+      bookingErrorAlreadyJoined: "Vous êtes déjà inscrit(e) à cette séance.",
       bookingErrorUncertainTitle:
         "Nous n'avons pas pu confirmer votre inscription.",
       bookingErrorUncertain:

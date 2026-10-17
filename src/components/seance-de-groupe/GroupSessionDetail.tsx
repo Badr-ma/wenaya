@@ -171,6 +171,8 @@ export default function GroupSessionDetail({
                     bookingErrorSlot: labels.bookingErrorSlot,
                     bookingErrorFeed: labels.bookingErrorFeed,
                     bookingErrorGeneric: labels.bookingErrorGeneric,
+                    bookingErrorGroupFull: labels.bookingErrorGroupFull,
+                    bookingErrorAlreadyJoined: labels.bookingErrorAlreadyJoined,
                     bookingErrorUncertainTitle: labels.bookingErrorUncertainTitle,
                     bookingErrorUncertain: labels.bookingErrorUncertain,
                     bookingErrorUncertainAction: labels.bookingErrorUncertainAction,

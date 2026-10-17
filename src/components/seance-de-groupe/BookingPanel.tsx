@@ -51,6 +51,7 @@ import {
   submitGroupSessionBooking,
   type GroupSessionBookingResult,
 } from "@/lib/group-session-booking-client";
+import { isNonRetryableBookingReason } from "@/lib/group-session-booking-reason";
 
 const BRONZE = "#B88A5A";
 const BRONZE_DARK = "#9A7242";
@@ -111,6 +112,8 @@ interface BookingPanelProps {
     | "bookingErrorSlot"
     | "bookingErrorFeed"
     | "bookingErrorGeneric"
+    | "bookingErrorGroupFull"
+    | "bookingErrorAlreadyJoined"
     | "bookingErrorUncertainTitle"
     | "bookingErrorUncertain"
     | "bookingErrorUncertainAction"
@@ -158,13 +161,13 @@ export default function BookingPanel({
   const canContinue = selectedSlot !== null;
   const busy = status === "checking" || status === "submitting";
   const busyLabel = status === "checking" ? labels.bookingChecking : labels.bookingSubmitting;
-  /**
-   * The write may already be registered upstream without a confirmation ever
-   * coming back, so this state is neither a success nor a clean failure. It gets
-   * its own copy and suppresses the retry CTA: repeating the request straight
-   * away risks registering the same patient twice.
-   */
   const uncertain = errorReason === "booking-uncertain";
+  /**
+   * Some failures must not offer the retry CTA: a full session can only fail
+   * again, and an ambiguous write may already be registered (retrying could
+   * double-book). Shared with the BFF/client mapping so the rule has one home.
+   */
+  const suppressRetry = isNonRetryableBookingReason(errorReason);
   const errorTitle = uncertain ? labels.bookingErrorUncertainTitle : labels.bookingErrorTitle;
   const errorCopy =
     errorReason === "unauthenticated"
@@ -173,9 +176,13 @@ export default function BookingPanel({
         ? labels.bookingErrorSlot
         : errorReason === "feed-unavailable"
           ? labels.bookingErrorFeed
-          : errorReason === "booking-uncertain"
-            ? labels.bookingErrorUncertain
-            : labels.bookingErrorGeneric;
+          : errorReason === "group-full"
+            ? labels.bookingErrorGroupFull
+            : errorReason === "already-joined"
+              ? labels.bookingErrorAlreadyJoined
+              : errorReason === "booking-uncertain"
+                ? labels.bookingErrorUncertain
+                : labels.bookingErrorGeneric;
 
   /** Create the booking request for a validated slot. */
   async function submitSlot(slot: LiveGroupSessionSlot): Promise<void> {
@@ -589,7 +596,7 @@ export default function BookingPanel({
                     </p>
                   </div>
                 )}
-                {canContinue && !uncertain ? (
+                {canContinue && !suppressRetry ? (
                   <button
                     type="button"
                     onClick={handlePayLater}
