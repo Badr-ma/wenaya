@@ -8,7 +8,8 @@
     "start": "next start -p 3006",
     "lint": "eslint",
     "verify:api": "node scripts/verify-practices-api.mjs",
-    "verify:price": "node --experimental-strip-types scripts/verify-price-normalization.mjs"
+    "verify:price": "node --experimental-strip-types scripts/verify-price-normalization.mjs",
+    "verify:booking": "node --experimental-strip-types scripts/verify-group-booking-reason.mjs"
   },
   "dependencies": {
     "@upstash/redis": "^1.38.0",

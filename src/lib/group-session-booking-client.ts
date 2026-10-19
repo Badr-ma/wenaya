@@ -15,6 +15,11 @@
  * Never rejects: `{ ok:false, reason }` maps to the panel's retry UX state.
  */
 
+import {
+  resolveGroupSessionBookingReason,
+  type GroupSessionBookingReason,
+} from "./group-session-booking-reason";
+
 export interface GroupSessionBookingRequest {
   /** Backend programme id (`session.live.programId`). */
   sessionId: number;
@@ -28,19 +33,12 @@ export interface GroupSessionBookingRequest {
 
 export interface GroupSessionBookingResult {
   ok: boolean;
-  /** Normalized failure reason for the UX copy. Absent on success. */
-  reason?:
-    | "validation"
-    | "unauthenticated"
-    | "feed-unavailable"
-    | "api-error"
-    /**
-     * The write may already have been registered upstream even though no
-     * confirmation came back (upstream 5xx after commit, timeout, or a lost
-     * response). Never treated as a success, and never offered as an immediate
-     * retry, because repeating it could register the patient twice.
-     */
-    | "booking-uncertain";
+  /**
+   * Normalized failure reason for the UX copy. Absent on success. The union and
+   * its trust guard live in `./group-session-booking-reason`, shared with the
+   * BFF so both sides agree on the vocabulary.
+   */
+  reason?: GroupSessionBookingReason;
 }
 
 const ENDPOINT = "/api/group-sessions/booking";
@@ -68,18 +66,21 @@ export async function submitGroupSessionBooking(
   }
 }
 
-/** Map an HTTP status onto a reason the panel can explain to the visitor. */
-async function readReason(res: Response): Promise<GroupSessionBookingResult["reason"]> {
-  if (res.status === 401) return "unauthenticated";
-  if (res.status === 504) return "feed-unavailable";
-  if (res.status === 400) return "validation";
+/**
+ * Map the BFF answer onto a reason the panel can explain to the visitor.
+ *
+ * The body-provided reason is authoritative when it is a known value (two
+ * distinct failures can share one HTTP status: slot validation and `group-full`
+ * are both HTTP 400), then the status fallback applies — both rules live in
+ * `resolveGroupSessionBookingReason`, shared with the BFF.
+ */
+async function readReason(res: Response): Promise<GroupSessionBookingReason> {
+  let bodyReason: unknown;
   try {
     const json = (await res.json()) as { reason?: unknown };
-    if (typeof json?.reason === "string") {
-      return json.reason as GroupSessionBookingResult["reason"];
-    }
+    bodyReason = json?.reason;
   } catch {
     /* body was not JSON — fall through to the status default */
   }
-  return "api-error";
+  return resolveGroupSessionBookingReason(res.status, bodyReason);
 }

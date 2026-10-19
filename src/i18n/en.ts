@@ -1766,6 +1766,8 @@ const en: Translations = {
       bookingErrorFeed:
         "Slots are temporarily unavailable. Please try again in a moment.",
       bookingErrorGeneric: "Something went wrong. Please try again.",
+      bookingErrorGroupFull: "This group session is full. Please choose another session.",
+      bookingErrorAlreadyJoined: "You are already registered for this session.",
       bookingErrorUncertainTitle: "We could not confirm your registration.",
       bookingErrorUncertain:
         "Your request may already have been recorded, but the confirmation did not complete.",
