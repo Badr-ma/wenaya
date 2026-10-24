@@ -37,7 +37,8 @@ export interface HeroContent {
   /** Stored but the Hero component does not consume it today — the primary CTA
    *  scrolls to the Quick Access section (`#acces-directs`). */
   ctaUrl?: string;
-  /** Stored but not yet consumed — the Hero plays a local /videos/forest.mp4. */
+  /** Reserved. The Hero always plays its bundled 4-clip background sequence
+   *  (`/videos/homepage-hero/*`); this value is stored but not consumed. */
   videoUrl?: string;
 }
 

@@ -18,6 +18,8 @@ import {
 } from "@/lib/availability";
 import { fetchClientUnavailableDates, fetchClientDay } from "@/lib/professional-availability-client";
 import { submitWaitingListRequest } from "@/lib/professional-booking-client";
+import { getPatientProfile } from "@/lib/patient-auth-client";
+import type { PatientProfile } from "@/lib/patient-auth/profile";
 import type { ProfessionalAvailabilityReason, ProfessionalTimeSlot } from "@/lib/professional-availability";
 
 type BookingConfirmationData = {
@@ -90,12 +92,18 @@ export default function BookingPanel({
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", message: "" });
+  /** Profile handed over by the lazy fetch; applied during render (see below). */
+  const [profileToApply, setProfileToApply] = useState<PatientProfile | null>(null);
+  /** Contact fields the user has actually typed in (never overwritten by prefill). */
+  const [touchedFields, setTouchedFields] = useState<Set<"name" | "email" | "phone">>(new Set());
   const [errors, setErrors] = useState<{ name?: string; email?: string; phone?: string }>({});
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(false);
   const submittingRef = useRef(false);
   const contentRef = useRef<HTMLDivElement | null>(null);
+  /** The patient profile is fetched at most once per mount (first open). */
+  const profileRequestedRef = useRef(false);
   const [viewMonth, setViewMonth] = useState(() => {
     const now = new Date();
     return { year: now.getFullYear(), month: now.getMonth() };
@@ -250,10 +258,50 @@ export default function BookingPanel({
   };
 
   const handleFieldChange = (key: "name" | "email" | "phone", value: string) => {
+    setTouchedFields((prev) => {
+      if (prev.has(key)) return prev;
+      const nextSet = new Set(prev);
+      nextSet.add(key);
+      return nextSet;
+    });
     const next = { ...formData, [key]: value };
     setFormData(next);
     if (submitAttempted) setErrors(validateBooking(next));
   };
+
+  // Prefill the step-2 contact fields from the authenticated patient's profile
+  // the first time the panel opens (lazy: anonymous visitors get a fast 401 and
+  // the form stays untouched). Only fields that are still empty AND were never
+  // edited are filled — `message` is never prefilled, and every field stays
+  // fully editable. The response is deliberately NOT cancelled on close: the
+  // panel stays mounted between opens, so a late profile simply lands later.
+  useEffect(() => {
+    if (!isOpen || profileRequestedRef.current) return;
+    profileRequestedRef.current = true;
+    getPatientProfile().then((res) => {
+      if (res.success) setProfileToApply(res.profile);
+    });
+  }, [isOpen]);
+
+  // Apply the fetched profile during render (React's documented "adjust state
+  // during render" pattern, same as the seed block above — keeps setState out
+  // of the effect body per react-hooks/set-state-in-effect). `formData` read
+  // here is always the state of THIS render, so a late profile can never
+  // clobber a user edit (edited fields are tracked in `touchedFields`), and
+  // errors are re-validated in the same pass when a submit was already
+  // attempted (no stale inline error on a newly filled field).
+  if (profileToApply) {
+    const p = profileToApply;
+    setProfileToApply(null);
+    const next = { ...formData };
+    if (!formData.name && !touchedFields.has("name") && p.fullName) next.name = p.fullName;
+    if (!formData.email && !touchedFields.has("email") && p.email) next.email = p.email;
+    if (!formData.phone && !touchedFields.has("phone") && p.phone) next.phone = p.phone;
+    if (next.name !== formData.name || next.email !== formData.email || next.phone !== formData.phone) {
+      setFormData(next);
+      if (submitAttempted) setErrors(validateBooking(next));
+    }
+  }
 
   const handleConfirm = async () => {
     if (submittingRef.current) return;

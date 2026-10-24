@@ -14,6 +14,9 @@ export type BackendPublicProduct = {
   slug: string;
   name: string;
   description: string | null;
+  /** Raw API price value: 100× the product's intended MAD price.
+   *  Verified 2026-10-22 — backend's actual price is 450 DH but the API
+   *  returns `price: 45000` (and 350 DH → `35000` for the second product). */
   price: number;
   currency: string;
   unit_name?: string | null;
@@ -51,6 +54,27 @@ function getProductImages(product: BackendPublicProduct): string[] {
   return images.length > 0 ? images : [FALLBACK_IMAGE];
 }
 
+/**
+ * Converts a raw V2 public-products API price to the intended MAD price.
+ *
+ * Data contract (verified 2026-10-22, backend price confirmed as 450 DH):
+ * the API returns a value 100× the product's real price — `test-prod`
+ * (450 DH) comes back as `price: 45000`, `agnosco-cado-stipes` (350 DH)
+ * as `35000`. The displayed MAD price is therefore `raw / 100`
+ * (45000 → 450 MAD, 35000 → 350 MAD). Without this conversion, fr-MA
+ * formatting renders `45000` as "45.000" (dot thousands separator).
+ *
+ * Conversion happens ONLY at this adapter seam so every downstream
+ * consumer (cards, detail, cart unitPrice, checkout, JSON-LD) receives
+ * the intended MAD price exactly once — no double conversion anywhere.
+ * Static/canonical products already carry MAD prices and never pass
+ * through here. The purchase BFF never sends a price to the backend
+ * (slug + quantity only), so this cannot affect payment amounts.
+ */
+export function apiPriceToMad(rawPrice: number): number {
+  return rawPrice / 100;
+}
+
 function getProductImage(product: BackendPublicProduct): string {
   return getProductImages(product)[0];
 }
@@ -72,7 +96,7 @@ export function mapBackendProductToProduct(
     thumbnail: images[0],
     rating: product.rating ?? undefined,
     reviewCount: product.reviews ?? 0,
-    price: product.price,
+    price: apiPriceToMad(product.price),
     currency: product.currency ?? "MAD",
     availability: product.availability,
     purchaseUrl: `/produits/${product.slug}`,
@@ -116,7 +140,7 @@ export function mapBackendProductToProductItem(
     images,
     goals: product.goals ?? [],
     topics: product.topics ?? [],
-    price: product.price,
+    price: apiPriceToMad(product.price),
     currency: product.currency ?? "MAD",
     availability,
     badges: availability === "out_of_stock" ? ["Out of stock"] : undefined,
@@ -141,7 +165,7 @@ export function mapBackendProductToListItem(
     thumbnail: images[0],
     rating: product.rating ?? undefined,
     reviewCount: product.reviews ?? 0,
-    price: product.price,
+    price: apiPriceToMad(product.price),
     currency: product.currency ?? "MAD",
     availability: product.availability,
     badges:

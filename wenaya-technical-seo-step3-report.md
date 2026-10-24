@@ -61,7 +61,7 @@ No files were changed while producing this report. Working tree must stay exactl
 
 ### CATEGORY A — DOUBLE `| Wenaya` (string ends with the template token)
 
-| # | File:line |
+| # | File:line |   
 |---|-----------|
 | A1 | `(fr)/about-us/page.tsx:18` — `Qui sommes nous \| Wenaya` |
 | A2 | `(en)/en/about-us/page.tsx:18` — `Who we are \| Wenaya` |

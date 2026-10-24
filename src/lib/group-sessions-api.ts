@@ -22,6 +22,7 @@
  */
 import { wenayaApiGet } from "./api/client";
 import type { LaravelEnvelope } from "./api/types";
+import { withTransientRetry, RETRY_DELAY_MS } from "./api/retry";
 
 /** Back-compat alias — the shared base owns env resolution (see client.ts). */
 
@@ -173,14 +174,24 @@ function toProgram(value: Record<string, unknown>): ApiGroupProgram | null {
  * Fetch a single 1-based page of parent group programs from the backend.
  * Throws on network error, non-2xx, or an unexpected payload shape.
  * Result is cached for `GROUP_SESSIONS_API_REVALIDATE` seconds (Data Cache).
+ *
+ * Transient transport failures (network reset, 5xx, timeout) are retried
+ * once after `RETRY_DELAY_MS` (2 attempts total); shape-validation failures
+ * are NOT retried — they indicate a contract change, not a blip.
  */
 export async function fetchGroupProgramsPage(rawPage: number): Promise<ApiGroupProgramsResponse> {
   const page = Math.max(1, Math.trunc(rawPage) || 1);
 
-  const json = await wenayaApiGet<unknown>(GROUP_SESSIONS_API_ENDPOINT, {
-    query: { page },
-    revalidate: GROUP_SESSIONS_API_REVALIDATE,
-  });
+  // Only the transport call is retried; payload-shape validation below is
+  // deterministic and must fail fast on a contract change.
+  const json = await withTransientRetry(
+    () =>
+      wenayaApiGet<unknown>(GROUP_SESSIONS_API_ENDPOINT, {
+        query: { page },
+        revalidate: GROUP_SESSIONS_API_REVALIDATE,
+      }),
+    { delayMs: RETRY_DELAY_MS }
+  );
 
   if (!isValidResponse(json)) {
     throw new Error("Unexpected Wenaya group-sessions API payload");

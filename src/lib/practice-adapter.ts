@@ -22,30 +22,31 @@ import { EN_ARTICLE_DEMO } from "./en-translations";
 import type { ApiSpeciality } from "./practices-api";
 import type { Pratique } from "./pratiques";
 
-/** backend id → canonical frontend slug (mirrors local `liveId`, practice-content.ts).
- *  Exported for the Troubles adapter — its `specialties[]` embed full speciality
- *  records keyed by the same backend id. */
-export const SLUG_BY_LIVE_ID: Record<number, string> = {
-  2: "psychomotricite",
-  3: "orthophonie",
-  4: "kinesitherapie",
-  5: "nutrition",
-  6: "naturopathie",
-  7: "neuropsychologie",
-  8: "sexologie",
-  9: "cupping-therapy-hijama",
-  11: "psychologie",
-  12: "yoga",
-  13: "meditation",
-  14: "psychotherapie",
-  16: "massotherapie",
-  18: "art-martial-therapie",
-  22: "osteopathie",
-  23: "sono-therapie",
-  24: "coaching-sportif",
-  25: "sophrologie",
-  26: "infirmerie",
-};
+/**
+ * backend id → canonical frontend slug (mirrors local `liveId`, practice-content.ts).
+ * Derived from `practicesContent` to avoid duplication. Exported for the Troubles
+ * adapter — its `specialties[]` embed full speciality records keyed by the same
+ * backend id.
+ */
+export const SLUG_BY_LIVE_ID: Record<number, string> = (() => {
+  const map: Record<number, string> = {};
+  const seen = new Set<number>();
+  for (const [slug, content] of Object.entries(practicesContent)) {
+    const id = content.liveId;
+    if (typeof id !== "number" || Number.isNaN(id)) {
+      continue;
+    }
+    if (seen.has(id)) {
+      console.warn(
+        `[practice-adapter] duplicate liveId ${id} detected for slug "${slug}"; keeping first occurrence`
+      );
+      continue;
+    }
+    seen.add(id);
+    map[id] = slug;
+  }
+  return map;
+})();
 
 /** Minimum meaningful description length — shorter API strings are treated as
  *  unusable (e.g. inline-styled leftovers that decode to a bare title). */

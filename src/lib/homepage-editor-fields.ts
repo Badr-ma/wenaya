@@ -52,7 +52,7 @@ export const SECTION_EDITOR_DEFS: Partial<Record<SectionType, HomepageSectionEdi
       { label: "Primary CTA label", key: "ctaLabel", i18nPath: "hero.cta" },
       { label: "Secondary CTA label", key: "ctaSecondary", i18nPath: "hero.ctaSecondary" },
       { label: "Primary CTA URL", key: "ctaUrl" },
-      { label: "Video URL", key: "videoUrl" },
+      { label: "Video URL (reserved — hero uses its bundled sequence)", key: "videoUrl" },
     ],
   },
 

@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
 import { h } from "@/lib/href";
+import HeroVideoSequence, { type HeroClip } from "@/components/HeroVideoSequence";
 import type { HeroContent } from "@/lib/homepage-types";
 
 /* ── Hero Section ──────────────────────────────────────────── */
@@ -13,11 +13,31 @@ interface HeroSectionProps {
   content?: HeroContent;
 }
 
+const HERO_CLIPS: HeroClip[] = [
+  {
+    src: "/videos/homepage-hero/homepage-hero-01.mp4",
+    poster: "/videos/homepage-hero/homepage-hero-01-poster.webp",
+  },
+  {
+    src: "/videos/homepage-hero/homepage-hero-02.mp4",
+    poster: "/videos/homepage-hero/homepage-hero-02-poster.webp",
+  },
+  {
+    src: "/videos/homepage-hero/homepage-hero-03.mp4",
+    poster: "/videos/homepage-hero/homepage-hero-03-poster.webp",
+  },
+  {
+    src: "/videos/homepage-hero/homepage-hero-04.mp4",
+    poster: "/videos/homepage-hero/homepage-hero-04-poster.webp",
+  },
+];
+
+const HERO_MEDIA_POSITION = "center 30%";
+
 export default function HeroSection({ content }: HeroSectionProps): React.JSX.Element {
   const { t, locale } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const trustRef = useRef<HTMLDivElement>(null);
-  const [videoSrc, setVideoSrc] = useState<string | null>(null);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -32,13 +52,8 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
         .fromTo(trustRef.current, { opacity: 0 }, { opacity: 1, duration: 0.5 }, "-=0.25");
     }, el);
 
-    const scheduleIdle = typeof requestIdleCallback === "function"
-      ? requestIdleCallback(() => setVideoSrc("/videos/forest.mp4"), { timeout: 3000 })
-      : setTimeout(() => setVideoSrc("/videos/forest.mp4"), 200);
-
     return () => {
       ctx.revert();
-      if (typeof scheduleIdle === "number") clearTimeout(scheduleIdle);
     };
   }, []);
 
@@ -53,41 +68,31 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
       ref={sectionRef}
       className="relative min-h-[80vh] sm:min-h-screen flex items-center overflow-hidden"
     >
-      {/* ── Poster image — standalone LCP element ── */}
-      <Image
-        src="/videos/forest-poster.webp"
-        alt=""
-        fill
-        priority
-        sizes="100vw"
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{ objectPosition: "center 30%" }}
+      {/* ── Video background sequence — posters are the LCP/fallback layer ── */}
+      <HeroVideoSequence
+        clips={HERO_CLIPS}
+        className="absolute inset-0 z-0"
+        objectPosition={HERO_MEDIA_POSITION}
       />
 
-      {/* ── Video background — loads after idle, layers over poster ── */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="none"
-        className="absolute inset-0 w-full h-full object-cover z-[1]"
-        style={{ objectPosition: "center 30%" }}
-      >
-        {videoSrc && <source src={videoSrc} type="video/mp4" />}
-      </video>
-
-      {/* ── Directional overlay: dark-left for text, lighter-right for video depth ── */}
+      {/* ── Directional overlay: light scrim only where the copy sits, video stays readable ── */}
       <div
         className="absolute inset-0 pointer-events-none z-[2]"
         style={{
-          background: "linear-gradient(108deg, rgba(6,10,22,0.94) 0%, rgba(6,10,22,0.88) 38%, rgba(6,10,22,0.65) 60%, rgba(6,10,22,0.50) 80%, rgba(6,10,22,0.58) 100%)",
+          background: "linear-gradient(96deg, rgba(6,10,22,0.72) 0%, rgba(6,10,22,0.6) 26%, rgba(6,10,22,0.4) 48%, rgba(6,10,22,0.18) 66%, rgba(6,10,22,0.05) 82%, rgba(6,10,22,0.12) 100%)",
         }}
       />
-      {/* Top dark fade (hides video at nav level) */}
+      {/* Bottom weld so the hero melts into the section below */}
       <div
-        className="absolute top-0 left-0 right-0 h-40 pointer-events-none z-[2]"
-        style={{ background: "linear-gradient(to bottom, rgba(6,10,22,0.7) 0%, transparent 100%)" }}
+        className="absolute bottom-0 left-0 right-0 h-56 pointer-events-none z-[2]"
+        style={{
+          background: "linear-gradient(to top, rgba(6,10,22,0.55) 0%, rgba(6,10,22,0.25) 18%, transparent 55%)",
+        }}
+      />
+      {/* Top fade — the fixed nav already carries its own dark glass */}
+      <div
+        className="absolute top-0 left-0 right-0 h-32 pointer-events-none z-[2]"
+        style={{ background: "linear-gradient(to bottom, rgba(6,10,22,0.32) 0%, transparent 100%)" }}
       />
 
       {/* ── Content ── */}
@@ -97,7 +102,10 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
             {/* Eyebrow */}
             <p className="hero-eyebrow flex items-center gap-2.5 mb-7">
               <span className="w-1.5 h-1.5 rounded-full bg-[#B88A5A]" aria-hidden="true" />
-              <span className="text-[#B88A5A] text-[11px] sm:text-xs font-semibold tracking-[0.24em] uppercase">
+              <span
+                className="text-[#B88A5A] text-[11px] sm:text-xs font-semibold tracking-[0.24em] uppercase"
+                style={{ textShadow: "0 1px 10px rgba(6,10,22,0.6)" }}
+              >
                 {content?.eyebrow ?? t("hero.eyebrow")}
               </span>
             </p>
@@ -110,6 +118,7 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
                 fontSize: "clamp(2.2rem, 4vw, 3.9rem)",
                 fontWeight: 500,
                 letterSpacing: "-0.02em",
+                textShadow: "0 2px 30px rgba(6,10,22,0.55), 0 1px 3px rgba(6,10,22,0.55)",
               }}
             >
               <span className="hero-line block">{content?.heading1 ?? t("hero.heading1")}</span>
@@ -129,7 +138,11 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
             {/* Sub */}
             <p
               className="hero-sub mt-6 max-w-[560px] leading-[1.78]"
-              style={{ color: "rgba(255,255,255,0.5)", fontSize: "clamp(0.93rem, 1.4vw, 1.05rem)" }}
+              style={{
+                color: "rgba(255,255,255,0.8)",
+                textShadow: "0 1px 14px rgba(6,10,22,0.7)",
+                fontSize: "clamp(0.93rem, 1.4vw, 1.05rem)",
+              }}
             >
               {content?.sub ?? t("hero.sub")}
             </p>
@@ -147,7 +160,7 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
               </a>
               <Link
                 href={h(locale, "/contact-us") + "?type=booking"}
-                className="inline-flex items-center justify-center h-11 px-7 rounded-xl border border-white/25 text-[13.5px] font-semibold text-white/90 transition-all duration-300 hover:border-white/45 hover:bg-white/5"
+                className="inline-flex items-center justify-center h-11 px-7 rounded-xl border border-white/35 text-[13.5px] font-semibold text-white transition-all duration-300 hover:border-white/55 hover:bg-white/5"
               >
                 {content?.ctaSecondary ?? t("hero.ctaSecondary")}
               </Link>
@@ -160,14 +173,20 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
         <div
           ref={trustRef}
           className="mt-10 sm:mt-20 pt-8 grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-3 sm:gap-y-6"
-          style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
+          style={{ borderTop: "1px solid rgba(255,255,255,0.16)" }}
         >
           {stats.map((s, i) => (
             <div key={i} className="flex flex-col gap-1.5">
-              <div className="font-heading font-bold text-[22px] tracking-tight text-white/90">
+              <div
+                className="font-heading font-bold text-[22px] tracking-tight text-white"
+                style={{ textShadow: "0 1px 12px rgba(6,10,22,0.6)" }}
+              >
                 {s.value}
               </div>
-              <div className="text-[11.5px] text-white/32">
+              <div
+                className="text-[11.5px] text-white/60"
+                style={{ textShadow: "0 1px 10px rgba(6,10,22,0.65)" }}
+              >
                 {s.label}
               </div>
             </div>

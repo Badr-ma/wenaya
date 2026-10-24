@@ -347,6 +347,24 @@ body {
 .dc-line { transform: translateY(115%); }
 .dc-fade { opacity: 0; }
 
+/* Homepage hero video sequence.
+ * Each clip drifts through a very slow zoom so the frame feels alive between
+ * dissolves. The animation only runs while a clip is on screen; reduced motion
+ * pins it to the rest scale. */
+.hero-clip-media {
+  position: absolute;
+  inset: 0;
+  transform: scale(1.001);
+  will-change: transform;
+}
+.hero-clip-media[data-shown="true"] {
+  animation: hero-drift 22s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes hero-drift {
+  from { transform: scale(1.001); }
+  to   { transform: scale(1.045); }
+}
+
 @keyframes ch-scroll-hint {
   0%         { transform: translateY(-100%); }
   55%, 100%  { transform: translateY(300%); }
@@ -382,6 +400,11 @@ body {
   .dc-bg-wrap { transform: none; }
   .dc-line { transform: none; }
   .dc-fade { opacity: 1; }
+  .hero-clip-media {
+    transform: none;
+    will-change: auto;
+    animation: none;
+  }
 }
 
 /* Homepage practices — cinematic swipe gallery.

@@ -2,9 +2,15 @@
  * Professionals adapter — maps the live API professional listing to the
  * frontend `Specialist` interface.
  *
- * NO DEMO FALLBACK: every consumer here returns an empty list on API failure
- * so the legacy hardcoded practitioners are never served. The demo dataset
- * (`specialistes.ts`) remains only as the admin seed default.
+ * NO DEMO FALLBACK: every consumer here returns an empty list on a valid
+ * empty API response, and never serves the legacy hardcoded practitioners.
+ * Transport failures follow the shared ISR-failure policy
+ * (`api/retry.ts#shouldPropagateApiFailure`): swallowed during `next build`
+ * and `next dev`, rethrown in the `next start` production runtime so ISR
+ * revalidation fails and the previously-good cached page is retained
+ * (except `getLiveSpecialists`, which always swallows — see its doc).
+ * The demo dataset (`specialistes.ts`) remains only as the admin seed
+ * default.
  *
  * Server-side only — consumed by the listing pages, never by client components.
  *
@@ -22,6 +28,7 @@
 import type { Specialist } from "./specialistes";
 import type { ApiProfessional } from "./professionals-api";
 import { fetchProfessionals } from "./professionals-api";
+import { shouldPropagateApiFailure } from "./api/retry";
 import { filterSpecialists, specialtyDisplayToSlug } from "./specialist-filters";
 
 /**
@@ -84,6 +91,10 @@ function toSpecialist(pro: ApiProfessional): Specialist {
  * serving it here would publish practitioners who do not exist and break the
  * "listing cards === profile pages" invariant.
  *
+ * ALWAYS swallows (unlike `getPracticeSpecialists`/`getHomepageSpecialists`):
+ * its consumers include `sitemap.ts` and the search/professional pages, where
+ * a rethrown transport error would 500 the whole route instead of degrading.
+ *
  * This is the primary data source for the listing pages.
  */
 export async function getLiveSpecialists(): Promise<Specialist[]> {
@@ -111,10 +122,11 @@ export async function getLiveSpecialists(): Promise<Specialist[]> {
  * `specialtyDisplayToSlug` ancestry). One source of truth: the cards on a
 *  practice page are exactly the pros `/search/<slug>` shows.
  *
- * Deliberately does NOT fall back to the Redis/hardcoded demo dataset: on ANY
- * failure it returns an empty list so the practice section renders without
- * specialist cards instead of ever showing demo professionals. Mirrors
- * `getHomepageSpecialists` policy.
+ * Deliberately does NOT fall back to the Redis/hardcoded demo dataset: a
+ * valid empty response renders the section without specialist cards. A
+ * transport failure follows `shouldPropagateApiFailure` — rethrown in the
+ * production runtime (ISR revalidation fails, stale page retained), swallowed
+ * during build/dev. Mirrors `getHomepageSpecialists` policy.
  */
 export async function getPracticeSpecialists(practiceSlug: string): Promise<Specialist[]> {
   try {
@@ -126,7 +138,11 @@ export async function getPracticeSpecialists(practiceSlug: string): Promise<Spec
 
     return filterSpecialists(mapped, { specialty: practiceSlug });
   } catch (error) {
-    console.error("[professionals] practice specialists fetch failed, rendering without specialist rows:", error);
+    console.warn(
+      "[professionals] practice specialists fetch failed:",
+      error instanceof Error ? error.message : error
+    );
+    if (shouldPropagateApiFailure()) throw error;
     return [];
   }
 }
@@ -143,9 +159,10 @@ export async function getPracticeSpecialists(practiceSlug: string): Promise<Spec
  *
  * Reuses the SAME listing client + adapter as `/professional` (one call, Data
  * Cache ISR, no N+1 — no per-card detail fetches). Deliberately does NOT fall
- * back to the Redis/hardcoded local dataset: on ANY failure it returns an
- * empty list so the section renders without member cards instead of ever
- * showing demo names/photos.
+ * back to the Redis/hardcoded local dataset: a valid empty response renders
+ * the section without member cards. A transport failure follows
+ * `shouldPropagateApiFailure` — rethrown in the production runtime (ISR
+ * revalidation fails, stale page retained), swallowed during build/dev.
  *
  * NOTE: if an API avatar URL returns 404 that is a backend/dev-API data issue;
  * the practitioner stays in their API position and is rendered as-is.
@@ -166,7 +183,11 @@ export async function getHomepageSpecialists(limit = 6): Promise<Specialist[]> {
 
     return featured;
   } catch (error) {
-    console.error("[professionals] homepage featured fetch failed, rendering without team cards:", error);
+    console.warn(
+      "[professionals] homepage featured fetch failed:",
+      error instanceof Error ? error.message : error
+    );
+    if (shouldPropagateApiFailure()) throw error;
     return [];
   }
 }

@@ -19,6 +19,8 @@
 
 
 import { getProfessionalsApiBase } from "./professionals/config";
+import { withTransientRetry, RETRY_DELAY_MS } from "./api/retry";
+import { WenayaApiError } from "./api/client";
 
 const PROFESSIONALS_API_PATH = "/api/v1/getProfessionals/1";
 
@@ -72,32 +74,43 @@ function isValidResponse(value: unknown): value is ProfessionalsApiResponse {
  * Fetch the full professional listing for Wenaya Clinic (company 1).
  * Throws on network error, non-2xx, or an unexpected payload shape.
  * Result is cached for `PROFESSIONALS_API_REVALIDATE` seconds (Data Cache).
+ *
+ * Transient failures (network reset, 5xx, timeout) are retried once after
+ * `RETRY_DELAY_MS` (2 attempts total); permanent failures (4xx, shape
+ * mismatch) fail immediately.
  */
 export async function fetchProfessionals(): Promise<ApiProfessional[]> {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  return withTransientRetry(async () => {
+    // Fresh AbortController + timeout PER ATTEMPT so a timed-out first
+    // attempt can never abort the retry.
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
-  try {
-    const url = `${getProfessionalsApiBase()}${PROFESSIONALS_API_PATH}`;
-    const res = await fetch(url, {
-      method: "GET",
-      headers: { Accept: "application/json" },
-      signal: controller.signal,
-      next: { revalidate: PROFESSIONALS_API_REVALIDATE },
-    });
+    try {
+      const url = `${getProfessionalsApiBase()}${PROFESSIONALS_API_PATH}`;
+      const res = await fetch(url, {
+        method: "GET",
+        headers: { Accept: "application/json" },
+        signal: controller.signal,
+        next: { revalidate: PROFESSIONALS_API_REVALIDATE },
+      });
 
-    if (!res.ok) {
-      throw new Error(`Professionals API HTTP ${res.status}`);
+      if (!res.ok) {
+        throw new WenayaApiError(
+          `Professionals API HTTP ${res.status}`,
+          res.status
+        );
+      }
+
+      const json = await res.json();
+
+      if (!isValidResponse(json)) {
+        throw new Error("Unexpected professionals API payload shape");
+      }
+
+      return json.data.filter(isValidProfessional);
+    } finally {
+      clearTimeout(timeout);
     }
-
-    const json = await res.json();
-
-    if (!isValidResponse(json)) {
-      throw new Error("Unexpected professionals API payload shape");
-    }
-
-    return json.data.filter(isValidProfessional);
-  } finally {
-    clearTimeout(timeout);
-  }
+  }, { delayMs: RETRY_DELAY_MS });
 }

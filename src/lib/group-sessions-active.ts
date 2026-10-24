@@ -24,8 +24,12 @@
  *   stable slug `${slugified-title}-{id}` (reverse-parseable via the trailing
  *   `-{id}`). `path` becomes the detail route so listing cards reach a real
  *   page; `bookingHref` stays the contact flow for the CTAs.
- *   - on ANY API failure the whole listing falls back to local editorial
- *     sessions (never a blank page, never a partial merge)
+ *   - on a transport failure the helper follows the shared ISR-failure
+ *     policy (`api/retry.ts#shouldPropagateApiFailure`): swallowed into `[]`
+ *     during build/dev, rethrown in the production runtime so ISR
+ *     revalidation fails and the previously-good cached page is retained.
+ *     The local editorial sessions are NEVER substituted — a program the
+ *     backend cannot confirm must not be presented to a visitor as bookable
  *   - local editorial sessions are NOT merged into an API-success listing —
  *     the backend ACTIVE set is authoritative
  *
@@ -54,6 +58,7 @@ import type { GroupSession, GroupSessionLocale, GroupSessionLiveFacts, LiveGroup
 import { getGroupSessionBySlug, getGroupSessionForBooking, getGroupSessionLabels } from "./group-sessions";
 import { fetchGroupPrograms } from "./group-sessions-api";
 import type { ApiGroupProgram, ApiGroupProgramChild } from "./group-sessions-api";
+import { shouldPropagateApiFailure } from "./api/retry";
 import { isApiSessionService } from "./session-identity";
 import { SITE_URL } from "./site-config";
 import fr from "@/i18n/fr";
@@ -371,10 +376,13 @@ function normalizeProgram(program: ApiGroupProgram, locale: GroupSessionLocale):
  * Resolve the LISTING sessions from the live backend ACTIVE feed.
  * Returns only currently-active, today-or-future programs.
  *
- * API-ONLY: any transport/shape failure returns `[]`. The local editorial
- * sessions are deliberately NOT substituted here — a program the backend
- * cannot confirm must not be presented to a visitor as bookable. Callers
- * render their own empty/unavailable state instead of a stale set.
+ * API-ONLY: a valid empty feed returns `[]`. A transport failure follows the
+ * shared ISR-failure policy (`api/retry.ts#shouldPropagateApiFailure`):
+ * rethrown in the `next start` production runtime so the ISR revalidation
+ * fails and the previously-good cached page is retained; swallowed into `[]`
+ * during `next build` and `next dev`. The local editorial sessions are
+ * deliberately NOT substituted — a program the backend cannot confirm must
+ * not be presented to a visitor as bookable.
  */
 export async function getActiveGroupSessions(
   locale: GroupSessionLocale = "fr"
@@ -387,9 +395,10 @@ export async function getActiveGroupSessions(
     return mapped;
   } catch (error) {
     console.warn(
-      "[group-sessions-active] backend feed unreachable, returning empty:",
+      "[group-sessions-active] backend feed unreachable:",
       error instanceof Error ? error.message : error
     );
+    if (shouldPropagateApiFailure()) throw error;
     return [];
   }
 }
@@ -403,7 +412,10 @@ export async function getActiveGroupSessions(
  *
  * SERVER-ONLY — fetches the live feed for `api-*` keys; the editorial set
  * carries no `api-*` ids, so an API outage degrades to "no session
- * recognised" rather than inventing one.
+ * recognised" rather than inventing one. A local try/catch swallows ANY
+ * failure (including a production-runtime rethrow from
+ * `getActiveGroupSessions`) so the dynamic contact-us route never 500s —
+ * it just shows the plain contact form without a recognised session.
  */
 export async function resolveRequestedSession(
   service: string | undefined,
@@ -413,9 +425,13 @@ export async function resolveRequestedSession(
   const editorial = getGroupSessionForBooking(service, locale);
   if (editorial) return { title: editorial.title };
   if (!isApiSessionService(service)) return undefined;
-  const sessions = await getActiveGroupSessions(locale);
-  const matched = sessions.find((s) => s.id === service);
-  return matched ? { title: matched.title } : undefined;
+  try {
+    const sessions = await getActiveGroupSessions(locale);
+    const matched = sessions.find((s) => s.id === service);
+    return matched ? { title: matched.title } : undefined;
+  } catch {
+    return undefined;
+  }
 }
 
 /**

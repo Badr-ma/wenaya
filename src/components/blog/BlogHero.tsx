@@ -8,38 +8,45 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
 import { formatDate, categoryColors, type PostWithAuthor } from "@/lib/blog-utils";
+import { BLOG_IMAGE_FALLBACK } from "@/lib/blog-mappers";
 import { useLocale } from "@/contexts/LanguageContext";
+import { BlogAuthorAvatar } from "@/components/blog/BlogAuthorAvatar";
 import { h } from "@/lib/href";
 
 export default function BlogHero({ latest }: { latest: PostWithAuthor | null }) {
   const { t, locale } = useLocale();
+  const [thumbFailed, setThumbFailed] = useState(false);
+  const thumbSrc = thumbFailed ? BLOG_IMAGE_FALLBACK : latest?.featuredImage ?? BLOG_IMAGE_FALLBACK;
 
   return (
     <>
-      <section className="relative pt-32 pb-16 sm:pt-40 sm:pb-20 overflow-hidden">
+      <section className="relative pt-28 pb-10 sm:pt-32 sm:pb-12 overflow-hidden">
         <div className="absolute top-0 right-0 w-[700px] h-[700px] rounded-full bg-gradient-to-bl from-[#B88A5A]/5 to-transparent blur-[150px] pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-[#159AA9]/5 to-transparent blur-[100px] pointer-events-none" />
         <div className="absolute top-1/2 left-1/4 w-[300px] h-[300px] rounded-full bg-gradient-to-br from-[#0B1220]/3 to-transparent blur-[80px] pointer-events-none" />
 
         <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="max-w-2xl mx-auto text-center">
+          <div className="max-w-3xl mx-auto text-center">
             <span className="inline-flex items-center gap-2 bg-[#B88A5A]/5 border border-[#B88A5A]/10 rounded-full px-3 py-1 mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-[#B88A5A]/50" />
               <span className="text-[10px] font-mono text-[#B88A5A]/60 tracking-wider uppercase">{t("blog.badge")}</span>
             </span>
-            <h1 className="heading-serif text-[clamp(2.5rem,5vw,4.5rem)] text-[#0B1220]">
-              {t("blog.heading1")}{" "}
-              <span style={{
-                background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}>
-                {t("blog.heading2")}
+            <p className="mt-4 text-balance">
+              <span className="heading-serif block text-[clamp(2rem,3.6vw,3rem)] leading-[1.02] text-[#0B1220]">
+                {t("blog.subLead")}
+              </span>{" "}
+              <span
+                className="mt-2 block text-[clamp(1.05rem,1.7vw,1.5rem)] font-normal leading-[1.4]"
+                style={{
+                  background: "linear-gradient(135deg, #B88A5A 0%, #C99B68 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                {t("blog.subAccent")}
               </span>
-            </h1>
-            <p className="text-gray-500 text-sm sm:text-base mt-4 max-w-lg mx-auto leading-relaxed">
-              {t("blog.sub")}
             </p>
           </div>
         </div>
@@ -55,12 +62,13 @@ export default function BlogHero({ latest }: { latest: PostWithAuthor | null }) 
             <div className="sm:flex">
               <div className="sm:w-[45%] relative overflow-hidden aspect-[16/9] sm:aspect-auto sm:min-h-[320px]">
                 <Image
-                  src={latest.featuredImage}
+                  src={thumbSrc}
                   alt={latest.title}
                   fill
                   priority
                   sizes="(max-width: 640px) 100vw, 45vw"
                   className="object-cover transition-all duration-700 group-hover:scale-105"
+                  onError={() => setThumbFailed(true)}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                 <div className="absolute bottom-4 left-4 sm:hidden">
@@ -78,7 +86,7 @@ export default function BlogHero({ latest }: { latest: PostWithAuthor | null }) 
                       {latest.category.name}
                     </span>
                   )}
-                  {latest.readingTime && (
+                  {latest.readingTime > 0 && (
                     <span className="text-xs text-gray-400 font-mono">{latest.readingTime} {t("blog.minLecture")}</span>
                   )}
                 </div>
@@ -89,7 +97,13 @@ export default function BlogHero({ latest }: { latest: PostWithAuthor | null }) 
                 <p className="mt-3 text-gray-500 text-sm leading-relaxed line-clamp-2">{latest.excerpt}</p>
                 {latest.author && (
                   <div className="flex items-center gap-3 mt-5 pt-4 border-t border-gray-50">
-                    <Image src={latest.author.avatar} alt={latest.author.name} width={32} height={32} className="w-8 h-8 rounded-full object-cover ring-2 ring-gray-50" unoptimized />
+                    <BlogAuthorAvatar
+                      src={latest.author.avatar}
+                      name={latest.author.name}
+                      size={32}
+                      imgClassName="w-8 h-8 rounded-full object-cover ring-2 ring-gray-50"
+                      initialsClassName="w-8 h-8 rounded-full bg-[#B88A5A]/10 text-xs font-medium text-[#B88A5A] ring-2 ring-gray-50"
+                    />
                     <div>
                       <span className="block text-sm font-medium text-gray-900">{latest.author.name}</span>
                       <span className="text-[11px] text-gray-400 font-mono">{formatDate(latest.publishedAt, locale)}</span>

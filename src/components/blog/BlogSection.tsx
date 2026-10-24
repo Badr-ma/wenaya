@@ -11,6 +11,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { formatDate, type PostWithAuthor } from "@/lib/blog-utils";
 import { useLocale } from "@/contexts/LanguageContext";
+import { BlogAuthorAvatar } from "@/components/blog/BlogAuthorAvatar";
 import { h } from "@/lib/href";
 import type { BlogContent } from "@/lib/homepage-types";
 import SubtitleSplit from "@/components/SubtitleSplit";
@@ -34,7 +35,7 @@ function BlogCard({ post }: { post: PostWithAuthor }): React.JSX.Element {
           />
         ) : null}
         <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
-        {post.readingTime && (
+        {post.readingTime > 0 && (
           <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full px-2.5 py-0.5 text-[10px] font-medium text-[#2B2F36]/60 shadow-sm">
             {post.readingTime} {t("blog.minLecture")}
           </span>
@@ -51,15 +52,21 @@ function BlogCard({ post }: { post: PostWithAuthor }): React.JSX.Element {
           {post.title}
         </h3>
         <p className="text-xs text-[#2B2F36]/50 mt-1.5 leading-relaxed line-clamp-2">{post.excerpt}</p>
-        {post.author?.avatar ? (
+        {post.author && (
           <div className="flex items-center gap-2.5 mt-3 pt-3 border-t border-[#0B1220]/[0.04]">
-            <Image src={post.author.avatar} alt={post.author.name} width={24} height={24} className="w-6 h-6 rounded-full object-cover" unoptimized />
+            <BlogAuthorAvatar
+              src={post.author.avatar}
+              name={post.author.name}
+              size={24}
+              imgClassName="w-6 h-6 rounded-full object-cover"
+              initialsClassName="w-6 h-6 rounded-full bg-[#B88A5A]/10 text-[10px] font-medium text-[#B88A5A]"
+            />
             <div>
               <span className="text-[11px] font-medium text-[#0B1220]">{post.author.name}</span>
               <span className="text-[10px] text-[#2B2F36]/40 ml-1.5">{post.author.role}</span>
             </div>
           </div>
-        ) : null}
+        )}
       </div>
     </Link>
   );

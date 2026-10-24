@@ -19,6 +19,7 @@ import { MotionConfig, motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { useLocale } from "@/contexts/LanguageContext";
+import { BlogAuthorAvatar } from "@/components/blog/BlogAuthorAvatar";
 import { h } from "@/lib/href";
 import { formatDate, type PostWithAuthor } from "@/lib/blog-utils";
 import type { BlogPractitioner } from "@/lib/blog-practitioner";
@@ -48,7 +49,6 @@ export default function BlogPostClientEditorial({
 
   const shareText = encodeURIComponent(post.title);
   const authorName = post.author?.name?.trim() || "";
-  const hasAvatar = Boolean(post.author?.avatar?.trim());
 
   const practitionerHref = practitioner ? h(locale, `/professional/${practitioner.slug}`) : null;
   const backHref = h(locale, "/articles");
@@ -98,20 +98,13 @@ export default function BlogPostClientEditorial({
             {authorName && (
               <>
                 <span className="flex items-center gap-3">
-                  {hasAvatar ? (
-                    <Image
-                      src={post.author!.avatar as string}
-                      alt={authorName}
-                      width={40}
-                      height={40}
-                      className="w-10 h-10 rounded-full object-cover"
-                      unoptimized
-                    />
-                  ) : (
-                    <span className="w-10 h-10 rounded-full bg-[#0B1220] text-white flex items-center justify-center text-sm font-semibold">
-                      {authorName.charAt(0).toUpperCase()}
-                    </span>
-                  )}
+                  <BlogAuthorAvatar
+                    src={post.author!.avatar}
+                    name={authorName}
+                    size={40}
+                    imgClassName="w-10 h-10 rounded-full object-cover"
+                    initialsClassName="w-10 h-10 rounded-full bg-[#0B1220] text-white text-sm font-semibold"
+                  />
                   {practitioner && practitionerHref ? (
                     <Link
                       href={practitionerHref}
@@ -181,20 +174,13 @@ export default function BlogPostClientEditorial({
               {/* Author bio card */}
               {authorName && (
                 <div className="mt-10 flex items-center gap-4 rounded-2xl bg-[#F2EFE9] px-6 py-5">
-                  {hasAvatar ? (
-                    <Image
-                      src={post.author!.avatar as string}
-                      alt={authorName}
-                      width={48}
-                      height={48}
-                      className="w-12 h-12 rounded-full object-cover"
-                      unoptimized
-                    />
-                  ) : (
-                    <span className="w-12 h-12 rounded-full bg-[#0B1220] text-white flex items-center justify-center text-base font-semibold">
-                      {authorName.charAt(0).toUpperCase()}
-                    </span>
-                  )}
+                  <BlogAuthorAvatar
+                    src={post.author!.avatar}
+                    name={authorName}
+                    size={48}
+                    imgClassName="w-12 h-12 rounded-full object-cover"
+                    initialsClassName="w-12 h-12 rounded-full bg-[#0B1220] text-white text-base font-semibold"
+                  />
                   <div>
                     <p className="text-sm font-semibold text-[#0B1220]">{authorName}</p>
                     <p className="text-xs font-mono text-[#2B2F36]/50">

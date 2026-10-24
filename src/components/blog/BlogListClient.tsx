@@ -11,13 +11,17 @@ import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { formatDate, categoryColors, type PostWithAuthor, type Category } from "@/lib/blog-utils";
+import { BLOG_IMAGE_FALLBACK } from "@/lib/blog-mappers";
 import { useLocale } from "@/contexts/LanguageContext";
+import { BlogAuthorAvatar } from "@/components/blog/BlogAuthorAvatar";
 import { h } from "@/lib/href";
 
 function BlogCard({ post, index }: { post: PostWithAuthor; index: number }) {
   const { t, locale } = useLocale();
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
+  const [thumbFailed, setThumbFailed] = useState(false);
+  const thumbSrc = thumbFailed ? BLOG_IMAGE_FALLBACK : post.featuredImage;
 
   return (
     <motion.div
@@ -25,19 +29,21 @@ function BlogCard({ post, index }: { post: PostWithAuthor; index: number }) {
       initial={{ opacity: 0, y: 40 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: index * 0.08, ease: [0.25, 0.1, 0.25, 1] }}
+      className="h-full"
     >
       <Link
         href={h(locale, `/articles/${post.slug}`)}
-        className="group block relative bg-white rounded-2xl border border-gray-100 overflow-hidden transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] hover:-translate-y-1"
+        className="group relative flex h-full flex-col bg-white rounded-2xl border border-gray-100 overflow-hidden transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] hover:-translate-y-1"
       >
         <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-transparent via-transparent to-transparent group-hover:from-[#B88A5A]/20 group-hover:via-[#159AA9]/10 group-hover:to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700 z-0 pointer-events-none" />
         <div className="relative overflow-hidden aspect-[16/9]">
           <Image
-            src={post.featuredImage}
+            src={thumbSrc}
             alt={post.title}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition-all duration-700 group-hover:scale-105"
+            onError={() => setThumbFailed(true)}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
           {post.category && (
@@ -49,33 +55,39 @@ function BlogCard({ post, index }: { post: PostWithAuthor; index: number }) {
               {post.category.name}
             </span>
           )}
-          {post.readingTime && (
+          {post.readingTime > 0 && (
             <span className="absolute top-4 right-4 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 text-[11px] font-mono text-gray-600 shadow-sm">
               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2" />
               </svg>
-              {post.readingTime && <>{post.readingTime} min</>}
+              {post.readingTime} min
             </span>
           )}
         </div>
-        <div className="relative p-6">
+        <div className="relative flex flex-1 flex-col p-6">
           <div className="flex items-center gap-3 mb-3 text-xs text-gray-400 font-mono">
             <span>{formatDate(post.publishedAt, locale)}</span>
           </div>
-          <h3 className="text-lg font-heading font-bold text-[#0B1220] leading-tight transition-colors duration-300 group-hover:text-[#B88A5A]">
+          <h3 className="line-clamp-2 text-lg font-heading font-bold text-[#0B1220] leading-tight transition-colors duration-300 group-hover:text-[#B88A5A]">
             {post.title}
           </h3>
           <p className="mt-2 text-gray-500 text-sm leading-relaxed line-clamp-2">{post.excerpt}</p>
           {post.author && (
             <div className="flex items-center gap-3 mt-5 pt-4 border-t border-gray-50">
-              <Image src={post.author.avatar} alt={post.author.name} width={32} height={32} className="w-8 h-8 rounded-full object-cover ring-2 ring-gray-50" unoptimized />
+              <BlogAuthorAvatar
+                src={post.author.avatar}
+                name={post.author.name}
+                size={32}
+                imgClassName="w-8 h-8 rounded-full object-cover ring-2 ring-gray-50"
+                initialsClassName="w-8 h-8 rounded-full bg-[#B88A5A]/10 text-xs font-medium text-[#B88A5A] ring-2 ring-gray-50"
+              />
               <div>
                 <span className="block text-sm font-medium text-gray-900">{post.author.name}</span>
                 <span className="text-[11px] text-gray-400 font-mono">{post.author.role}</span>
               </div>
             </div>
           )}
-          <div className="mt-4 flex items-center gap-1.5 text-sm font-medium text-[#B88A5A] opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
+          <div className="mt-auto pt-4 flex items-center gap-1.5 text-sm font-medium text-[#B88A5A] opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
             <span>{t("blog.lireArticle")}</span>
             <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />

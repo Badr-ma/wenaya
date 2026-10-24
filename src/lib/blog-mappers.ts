@@ -20,13 +20,30 @@ import type { ArticleSummary, ArticleDetail, ArticleCreator } from "./blog-artic
 /** Neutral local fallback for broken/missing article images. */
 export const BLOG_IMAGE_FALLBACK = "/images/wellness-stretch.jpg";
 
+/**
+ * Normalizes an avatar URL at the mapper boundary:
+ * - empty / whitespace-only → `""` (no avatar — renderers show initials);
+ * - the backend's "no real avatar" placeholder (`dummy-man.png` — the same
+ *   sentinel the professionals pipeline filters via `isRealRemoteImage`)
+ *   → `""` so a generic stock face never renders as a real author;
+ * - any other value passes through unchanged (host rewriting is forbidden;
+ *   genuinely unreachable URLs are caught at render time by `onError`).
+ */
+function normalizeAvatar(avatar: string | null | undefined): string {
+  if (!avatar) return "";
+  const value = avatar.trim();
+  if (!value) return "";
+  if (value.toLowerCase().includes("dummy-man.png")) return "";
+  return value;
+}
+
 /** Projects the adapted creator identity into the shared Author model. */
 function toAuthor(creator: ArticleCreator | null): Author | undefined {
   if (!creator) return undefined;
   return {
     id: String(creator.id),
     name: [creator.firstName, creator.lastName].filter(Boolean).join(" "),
-    avatar: creator.avatar ?? "",
+    avatar: normalizeAvatar(creator.avatar),
     role: "",
     bio: "",
   };
