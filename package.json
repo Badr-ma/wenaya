@@ -9,7 +9,8 @@
     "lint": "eslint",
     "test": "node --import ./tests/helpers/register.mjs --test \"tests/*.test.mjs\"",
     "verify:api": "node scripts/verify-practices-api.mjs",
-    "verify:price": "node --experimental-strip-types scripts/verify-price-normalization.mjs"
+    "verify:price": "node --experimental-strip-types scripts/verify-price-normalization.mjs",
+    "verify:booking": "node --experimental-strip-types scripts/verify-group-booking-reason.mjs"
   },
   "dependencies": {
     "@upstash/redis": "^1.38.0",

@@ -1768,6 +1768,8 @@ const en: Translations = {
       bookingErrorFeed:
         "Slots are temporarily unavailable. Please try again in a moment.",
       bookingErrorGeneric: "Something went wrong. Please try again.",
+      bookingErrorGroupFull: "This group session is full. Please choose another session.",
+      bookingErrorAlreadyJoined: "You are already registered for this session.",
       bookingErrorUncertainTitle: "We could not confirm your registration.",
       bookingErrorUncertain:
         "Your request may already have been recorded, but the confirmation did not complete.",
@@ -1853,6 +1855,7 @@ const en: Translations = {
       viewAllBrand: "View all products",
       addToCart: "Add to basket",
       addedToCart: "Added to basket",
+      viewCart: "View basket",
       buyNow: "Buy now",
       externalLink: "Visit website",
       availability: {
@@ -1876,12 +1879,6 @@ const en: Translations = {
       ingredients: "Ingredients",
       noCommerceInfo: "Order information is not available at this time.",
       websiteLink: "Official website →",
-      purchaseSuccess:
-        "Your order has been placed. Our team will contact you to finalize payment.",
-      purchaseError:
-        "An error occurred while placing your order. Please try again.",
-      purchaseSuccessTitle: "Order placed",
-      invoiceRef: "Invoice #{num}",
       viewAccount: "View my account",
       continueShopping: "Continue shopping",
     },
@@ -2624,6 +2621,7 @@ const en: Translations = {
     checkoutNote: "Checkout will be available soon.",
     perUnit: "per item",
   },
+  loadingAddresses: "Loading addresses…",
   checkout: {
     title: "Checkout",
     back: "Back to basket",
@@ -2642,6 +2640,30 @@ const en: Translations = {
     contactUs: "Contact us",
     orderSummary: "Order summary",
     placeOrder: "Place order",
+    codLabel: "Cash on delivery (COD)",
+    codDescription:
+      "Pay for your order in cash when it is delivered. No online payment required.",
+    deliveryAddress: "Delivery address",
+    addAddress: "Add an address",
+    noAddress: "No saved addresses. Add one to continue.",
+    defaultAddress: "Default address",
+    addressName: "Address name (optional)",
+    street1: "Address line 1",
+    street2: "Address line 2 (optional)",
+    phoneDelivery: "Contact phone (optional)",
+    locationNote: "Location details will be confirmed when the order is processed.",
+    saving: "Saving…",
+    saveAddress: "Save address",
+    cancelAdd: "Cancel",
+    placingOrder: "Placing order…",
+    orderError: "An error occurred while placing your order. Please try again.",
+    orderSuccessTitle: "Order confirmed",
+    orderSuccessCod: "Your order has been placed. You will pay on delivery.",
+    orderNumber: "Order #{num}",
+    addressInvalid:
+      "Please enter a complete address with street, postal code and city.",
+    addressSaveError: "Could not save the address. Please try again.",
+    needAddress: "Please select or add a delivery address.",
   },
   shop: {
     comingSoon: {

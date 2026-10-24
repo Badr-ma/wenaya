@@ -6,6 +6,7 @@ import { readXsrfHeaderFromCookie } from "@/lib/patient-auth/csrf";
 import { fetchPatientProfile, seedPatientCsrf } from "@/lib/patient-auth/transport";
 import { mapPatientOutcome } from "@/lib/patient-auth/response";
 import { normalizePatientProfile, type PatientProfile } from "@/lib/patient-auth/profile";
+import { mapUpstreamJoinFailure } from "@/lib/group-session-booking-reason";
 
 /**
  * POST /api/group-sessions/booking
@@ -87,8 +88,10 @@ import { normalizePatientProfile, type PatientProfile } from "@/lib/patient-auth
  * Responses:
  *   - 200 { success: true }                       (upstream 2xx: registered)
  *   - 400 { success: false, reason: "validation", fields: string[] }
+ *   - 400 { success: false, reason: "group-full" }  (upstream 400 event_is_full)
  *   - 401 { success: false, type: "unauthenticated" }
  *   - 502 { success: false, reason: "api-error" }
+ *   - 502 { success: false, reason: "booking-uncertain" }
  *   - 504 { success: false, reason: "feed-unavailable" }
  *
  * 401 is reserved for a LOCAL decision — this route could not resolve a usable
@@ -507,69 +510,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   if (status >= 200 && status < 300) {
     return NextResponse.json({ success: true });
   }
-  // Upstream refused the write even though the patient IS authenticated locally
-  // (the profile call above succeeded). This is the documented upstream session
-  // problem — observed as 401 `fresh_access_token_required` — not a local
-  // "log in again", so it must not be reported as `unauthenticated`. Mapping it
-  // to `api-error` keeps the two conditions distinguishable while leaving the
-  // client's existing reason union untouched. No upstream body or header is
-  // relayed, so no cookie/session/XSRF value can leak to the browser.
-  if (status === 401 || status === 403) {
-    logJoinFailure({
-      stage: "unauthenticated-upstream",
-      upstreamStatus: status,
-      attempt: join.attempt,
-      upstreamMessage: join.upstreamMessage,
-      sessionId: value.sessionId,
-      slotId: value.slotId,
-      patientId,
-    });
-    return NextResponse.json({ success: false, reason: "api-error" }, { status: 502 });
-  }
-  // The class or slot was refused upstream (full, already taken or withdrawn):
-  // the visitor has to re-pick, so it is surfaced as a slot validation failure
-  // rather than as a generic error.
-  if (status === 404 || status === 422) {
-    logJoinFailure({
-      stage: "slot-refused",
-      upstreamStatus: status,
-      attempt: join.attempt,
-      upstreamMessage: join.upstreamMessage,
-      sessionId: value.sessionId,
-      slotId: value.slotId,
-      patientId,
-    });
-    return NextResponse.json(
-      { success: false, reason: "validation", fields: ["slotId"] },
-      { status: 400 }
-    );
-  }
-  // An upstream 5xx is AMBIGUOUS, not a refusal. The upstream write is not
-  // atomic: the registration is committed and a downstream external call then
-  // fails, answering 500 ("Could not connect to api, check your ID and SECRET"),
-  // so the patient IS registered even though the status is a 5xx. Reporting that
-  // as a plain failure invites an immediate retry that could double-book them, so
-  // the client receives its own reason and states the ambiguity. This never
-  // claims the booking succeeded — that stays tied to a real upstream 2xx above.
-  if (status >= 500) {
-    logJoinFailure({
-      stage: "upstream-ambiguous",
-      upstreamStatus: status,
-      attempt: join.attempt,
-      upstreamMessage: join.upstreamMessage,
-      sessionId: value.sessionId,
-      slotId: value.slotId,
-      patientId,
-    });
-    return NextResponse.json(
-      { success: false, reason: "booking-uncertain" },
-      { status: 502 }
-    );
-  }
-  // 419 (CSRF could not be reseeded) and any other 4xx: the write was rejected
-  // before anything was registered, so this is a genuine failure.
+  // Every remaining status is a refusal whose meaning is documented in one place:
+  // `mapUpstreamJoinFailure` owns the four cases (upstream-auth refusal, slot
+  // refusal, AMBIGUOUS 5xx, and the exact `event_is_full` → group-full rule) and
+  // is unit-tested in isolation by `scripts/verify-group-booking-reason.mjs`. The
+  // raw upstream body/headers are still never relayed, so nothing can leak.
+  const failure = mapUpstreamJoinFailure(status, join.upstreamMessage);
   logJoinFailure({
-    stage: "upstream-error",
+    stage: failure.stage,
     upstreamStatus: status,
     attempt: join.attempt,
     upstreamMessage: join.upstreamMessage,
@@ -577,5 +525,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     slotId: value.slotId,
     patientId,
   });
-  return NextResponse.json({ success: false, reason: "api-error" }, { status: 502 });
+  return NextResponse.json(
+    failure.fields
+      ? { success: false, reason: failure.reason, fields: failure.fields }
+      : { success: false, reason: failure.reason },
+    { status: failure.httpStatus }
+  );
 }

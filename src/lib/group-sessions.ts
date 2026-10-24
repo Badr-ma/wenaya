@@ -196,6 +196,10 @@ export interface GroupSessionDetailLabels {
   bookingErrorFeed: string;
   /** Error copy for any other failure */
   bookingErrorGeneric: string;
+  /** Error copy when the group session is full (upstream `event_is_full`) */
+  bookingErrorGroupFull: string;
+  /** Error copy when the patient is already registered to the session (upstream `user_already_joined`) */
+  bookingErrorAlreadyJoined: string;
   /** Title when the write may already be registered but was never confirmed */
   bookingErrorUncertainTitle: string;
   /** Body copy for the ambiguous (possibly already registered) state */
@@ -410,6 +414,8 @@ export function getGroupSessionLabels(locale: GroupSessionLocale = "fr"): GroupS
     bookingErrorSlot: detail.bookingErrorSlot ?? "",
     bookingErrorFeed: detail.bookingErrorFeed ?? "",
     bookingErrorGeneric: detail.bookingErrorGeneric ?? "",
+    bookingErrorGroupFull: detail.bookingErrorGroupFull ?? "",
+    bookingErrorAlreadyJoined: detail.bookingErrorAlreadyJoined ?? "",
     bookingErrorUncertainTitle: detail.bookingErrorUncertainTitle ?? "",
     bookingErrorUncertain: detail.bookingErrorUncertain ?? "",
     bookingErrorUncertainAction: detail.bookingErrorUncertainAction ?? "",
