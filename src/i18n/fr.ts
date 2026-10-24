@@ -1873,6 +1873,7 @@ const fr = {
       viewAllBrand: "Voir tous les produits",
       addToCart: "Ajouter au panier",
       addedToCart: "Ajouté au panier",
+      viewCart: "Voir le panier",
       buyNow: "Acheter maintenant",
       externalLink: "Visiter le site",
       availability: {
@@ -1897,12 +1898,6 @@ const fr = {
       noCommerceInfo:
         "Informations de commande non disponibles pour le moment.",
       websiteLink: "Site officiel →",
-      purchaseSuccess:
-        "Votre commande a bien été enregistrée. Notre équipe vous contactera pour finaliser le paiement.",
-      purchaseError:
-        "Une erreur est survenue lors de l'enregistrement de votre commande. Veuillez réessayer.",
-      purchaseSuccessTitle: "Commande enregistrée",
-      invoiceRef: "Facture n° {num}",
       viewAccount: "Voir mon compte",
       continueShopping: "Continuer mes achats",
     },
@@ -2646,6 +2641,7 @@ const fr = {
       "La finalisation de la commande sera disponible prochainement.",
     perUnit: "le produit",
   },
+  loadingAddresses: "Chargement des adresses…",
   checkout: {
     title: "Paiement",
     back: "Retour au panier",
@@ -2664,6 +2660,30 @@ const fr = {
     contactUs: "Nous contacter",
     orderSummary: "Résumé de la commande",
     placeOrder: "Passer la commande",
+    codLabel: "Paiement à la livraison (COD)",
+    codDescription:
+      "Réglez votre commande en espèces à la livraison. Aucun paiement en ligne n'est requis.",
+    deliveryAddress: "Adresse de livraison",
+    addAddress: "Ajouter une adresse",
+    noAddress: "Aucune adresse enregistrée. Ajoutez-en une pour continuer.",
+    defaultAddress: "Adresse par défaut",
+    addressName: "Nom de l'adresse (optionnel)",
+    street1: "Adresse ligne 1",
+    street2: "Adresse ligne 2 (optionnel)",
+    phoneDelivery: "Téléphone de contact (optionnel)",
+    locationNote: "La localisation sera précisée à la confirmation de la commande.",
+    saving: "Enregistrement…",
+    saveAddress: "Enregistrer l'adresse",
+    cancelAdd: "Annuler",
+    placingOrder: "Commande en cours…",
+    orderError: "Une erreur est survenue lors de la commande. Veuillez réessayer.",
+    orderSuccessTitle: "Commande confirmée",
+    orderSuccessCod: "Votre commande a bien été enregistrée. Vous paierez à la livraison.",
+    orderNumber: "Commande n° {num}",
+    addressInvalid:
+      "Veuillez saisir une adresse complète avec rue, code postal et ville.",
+    addressSaveError: "Impossible d'enregistrer l'adresse. Veuillez réessayer.",
+    needAddress: "Veuillez sélectionner ou ajouter une adresse de livraison.",
   },
   shop: {
     comingSoon: {

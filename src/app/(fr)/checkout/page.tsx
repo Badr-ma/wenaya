@@ -1,12 +1,11 @@
 /**
  * Checkout page (FR).
  *
- * SHOP LAUNCH FREEZE: Commerce is temporarily disabled — this route shows the
- * "coming soon" notice instead of a checkout flow. The CheckoutView implementation
- * stays on disk (src/components/cart/CheckoutView.tsx) for future activation.
+ * Real checkout flow: cash-on-delivery (COD) order with a customer
+ * destination address, via the shared CheckoutView component.
  */
-import ShopComingSoonNotice from "@/components/shop/ShopComingSoonNotice";
+import CheckoutView from "@/components/cart/CheckoutView";
 
 export default function CheckoutPage() {
-  return <ShopComingSoonNotice />;
+  return <CheckoutView />;
 }
