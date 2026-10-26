@@ -134,6 +134,11 @@ export default function HeroVideoSequence({
         );
       } else {
         /* Every clip failed: rest on the first poster as the static base. */
+        if (transitionTimerRef.current !== null) {
+          window.clearTimeout(transitionTimerRef.current);
+          transitionTimerRef.current = null;
+        }
+        advancingRef.current = false;
         activeRef.current = 0;
         setActive(0);
       }
@@ -238,6 +243,11 @@ export default function HeroVideoSequence({
             transitionTimerRef,
           );
         } else {
+          if (transitionTimerRef.current !== null) {
+            window.clearTimeout(transitionTimerRef.current);
+            transitionTimerRef.current = null;
+          }
+          advancingRef.current = false;
           activeRef.current = 0;
           setActive(0);
         }
@@ -378,6 +388,11 @@ export default function HeroVideoSequence({
                         transitionTimerRef,
                       );
                     } else {
+                      if (transitionTimerRef.current !== null) {
+                        window.clearTimeout(transitionTimerRef.current);
+                        transitionTimerRef.current = null;
+                      }
+                      advancingRef.current = false;
                       activeRef.current = 0;
                       setActive(0);
                     }
