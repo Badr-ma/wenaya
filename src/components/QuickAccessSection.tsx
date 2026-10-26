@@ -31,8 +31,10 @@ interface QuickAccessProps {
  * Card 0 (Needs & goals) links to the configurator coming-soon page; its EN
  * segment differs (/en/configurator vs /configurateur), so it uses the
  * dedicated configuratorHref resolver instead of the /en-prefix h() helper.
- * Each practice image strip comes from the live practice API (via the `images`
- * prop); a missing or broken image hides the strip, leaving the navy frame.
+ * Practice image strips come from the live practice API (via the `images`
+ * prop), except for the cards listed in LOCAL_IMAGE_OVERRIDES, which use the
+ * local editorial photos below. A missing or broken image hides the strip,
+ * leaving the navy frame.
  */
 const LINKS: { getHref: (locale: HrefLocale) => string; image: string | null }[] = [
   { getHref: configuratorHref, image: null },
@@ -40,6 +42,23 @@ const LINKS: { getHref: (locale: HrefLocale) => string; image: string | null }[]
   { getHref: (locale) => h(locale, "/pratiques"), image: null },
   { getHref: (locale) => h(locale, "/search/all"), image: "/images/diverse-team.jpg" },
 ];
+
+/**
+ * Local editorial overrides, keyed by card index, win over the API-provided
+ * images. Card 0 ("Besoins & objectifs") intentionally ships a repo-owned
+ * wellness photo instead of the API sophrologie strip, card 1
+ * ("Pathologies & troubles") ships the clinical knee-evaluation photo instead
+ * of the API kinesitherapie strip, card 2 ("Soins & spécialités") ships the
+ * integrated-care-team photo instead of the API nutrition strip, and card 3
+ * ("Professionnels") ships the medical-collaboration photo instead of the
+ * API-derived strip.
+ */
+const LOCAL_IMAGE_OVERRIDES: Record<number, string> = {
+  0: "/images/objectifs-bien-etre-bureau.webp",
+  1: "/images/Évaluation%20clinique%20du%20genou%20en%20physiothérapie.png",
+  2: "/images/%C3%89quipe%20de%20soins%20int%C3%A9gr%C3%A9s%20en%20consultation.png",
+  3: "/images/Collaboration%20m%C3%A9dicale%20autour%20des%20soins.png",
+};
 
 export default function QuickAccessSection({ content, images }: QuickAccessProps): React.JSX.Element {
   const { locale, t, tRaw } = useLocale();
@@ -106,7 +125,7 @@ export default function QuickAccessSection({ content, images }: QuickAccessProps
         {/* 4-card grid — 1 col mobile, 2×2 tablet, 4 in a row desktop */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {links.map((link, i) => {
-            const src = images?.[i] ?? LINKS[i].image;
+            const src = LOCAL_IMAGE_OVERRIDES[i] ?? images?.[i] ?? LINKS[i].image;
             return (
             <Link
               key={i}
@@ -121,7 +140,7 @@ export default function QuickAccessSection({ content, images }: QuickAccessProps
                     alt=""
                     fill
                     sizes="(max-width: 639px) 92vw, (max-width: 1023px) 46vw, 23vw"
-                    className="object-cover"
+                    className="object-cover object-center"
                     onError={() => setHiddenIdx((prev) => [...prev, i])}
                   />
                 )}
