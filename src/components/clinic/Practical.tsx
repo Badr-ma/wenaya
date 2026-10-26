@@ -52,7 +52,7 @@ export default function ClinicPractical(): React.JSX.Element {
           <div className="lg:col-span-7">
             <div className="relative overflow-hidden rounded-t-[24px] bg-[#0B1220]/5 min-h-[240px] sm:min-h-[320px] lg:h-full">
               <Image
-                src="/domicile/Infirmerie.jpg"
+                src="/domicile/Infirmerie.webp"
                 alt={t("clinic.practical.imageAlt")}
                 fill
                 sizes="(max-width: 1024px) 100vw, 58vw"

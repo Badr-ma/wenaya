@@ -73,7 +73,7 @@ export default function HomecareHero(): React.JSX.Element {
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div className="dc-bg-wrap absolute inset-x-0 -top-[6%] -bottom-[6%] will-change-transform">
           <Image
-            src="/domicile/Infirmerie.jpg"
+            src="/domicile/Infirmerie.webp"
             alt=""
             fill
             priority

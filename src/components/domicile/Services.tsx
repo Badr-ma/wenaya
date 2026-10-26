@@ -65,7 +65,7 @@ export default function HomecareServices(): React.JSX.Element {
         <div className="mt-14 lg:mt-16">
           <div className="relative overflow-hidden rounded-t-[24px]">
             <Image
-              src="/domicile/Soins-Infirmiers-min.jpeg"
+              src="/domicile/Soins-Infirmiers-min.webp"
               alt="Infirmiers à domicile"
               width={1600}
               height={1067}

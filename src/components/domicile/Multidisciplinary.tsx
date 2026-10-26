@@ -28,7 +28,7 @@ export default function HomecareMultidisciplinary(): React.JSX.Element {
             </p>
             <div className="mt-8 relative overflow-hidden rounded-t-[24px]">
               <Image
-                src="/domicile/pluridisciplinaire-min.jpeg"
+                src="/domicile/pluridisciplinaire-min.webp"
                 alt="Prise en charge pluridisciplinaire à domicile"
                 width={1600}
                 height={900}

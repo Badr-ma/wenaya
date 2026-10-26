@@ -18,7 +18,7 @@ export default function ClinicHomecareBanner(): React.JSX.Element {
           <div className="lg:col-span-5">
             <div className="relative overflow-hidden rounded-t-[24px]">
               <Image
-                src="/domicile/Infirmerie.jpg"
+                src="/domicile/Infirmerie.webp"
                 alt="Soins à domicile Wenaya"
                 width={1600}
                 height={900}

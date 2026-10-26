@@ -46,7 +46,7 @@ export default function HomecareMaterial(): React.JSX.Element {
           <div className="lg:col-span-5 lg:col-start-8">
             <div className="relative overflow-hidden rounded-t-[24px]">
               <Image
-                src="/domicile/materiel-medical-a-domicile-min.jpg"
+                src="/domicile/materiel-medical-a-domicile-min.webp"
                 alt="Matériel médical à domicile"
                 width={1408}
                 height={768}
