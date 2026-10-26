@@ -95,6 +95,18 @@ const BLOCK_CLOSE_RE =
 const LINE_BREAK_RE = /<br\s*\/?>/gi;
 
 /**
+ * `String.fromCodePoint` throws a `RangeError` for out-of-range or surrogate
+ * code points. A malformed entity in backend HTML must never crash the whole
+ * mapping, so fall back to returning the original match unchanged (consistent
+ * with unknown named entities).
+ */
+function safeFromCodePoint(cp: number, fallback: string): string {
+  if (!Number.isInteger(cp) || cp < 0 || cp > 0x10ffff) return fallback;
+  if (cp >= 0xd800 && cp <= 0xdfff) return fallback;
+  return String.fromCodePoint(cp);
+}
+
+/**
  * Decode numeric + named HTML entities, then strip tags while PRESERVING
  * paragraph breaks: block-element closing tags become `\n\n`, `<br>` becomes
  * `\n`, other tags become a space (so inline text never glues). Horizontal
@@ -116,8 +128,14 @@ function decodeEntitiesStripped(input: string): string {
       if (lower === "&ldquo;") return '"';
       if (lower === "&rdquo;") return '"';
       if (lower === "&hellip;") return "…";
-      if (lower.startsWith("&#x")) return String.fromCodePoint(parseInt(lower.slice(3, -1), 16));
-      if (lower.startsWith("&#")) return String.fromCodePoint(parseInt(lower.slice(2, -1), 10));
+      if (lower.startsWith("&#x")) {
+        const cp = parseInt(lower.slice(3, -1), 16);
+        return safeFromCodePoint(cp, match);
+      }
+      if (lower.startsWith("&#")) {
+        const cp = parseInt(lower.slice(2, -1), 10);
+        return safeFromCodePoint(cp, match);
+      }
       return match;
     })
     .replace(BLOCK_CLOSE_RE, "\n\n")
@@ -164,8 +182,23 @@ function locationForLocale(locale: GroupSessionLocale): GroupSession["location"]
 
 // ─── Active predicate (verified against the live feed) ──────────────────
 
+function isValidIsoDateString(date: string): boolean {
+  if (typeof date !== "string") return false;
+  const match = date.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) return false;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const dt = new Date(Date.UTC(year, month - 1, day));
+  return (
+    dt.getUTCFullYear() === year &&
+    dt.getUTCMonth() === month - 1 &&
+    dt.getUTCDate() === day
+  );
+}
+
 function isTodayOrFuture(date: string | null): boolean {
-  if (!date) return false;
+  if (!date || !isValidIsoDateString(date)) return false;
   // `event_date` is an ISO `YYYY-MM-DD` — lexicographic comparison is correct.
   const today = new Date().toISOString().slice(0, 10);
   return date >= today;
@@ -207,7 +240,7 @@ function findNextSlot(program: ApiGroupProgram): ApiGroupProgramChild | null {
 function minPriceString(program: ApiGroupProgram): string | null {
   let best: string | null = null;
   let bestValue = Infinity;
-  for (const child of program.children) {
+  for (const child of activeChildren(program)) {
     const n = Number.parseFloat(child.price ?? "");
     if (!Number.isFinite(n) || n <= 0 || n >= bestValue) continue;
     bestValue = n;

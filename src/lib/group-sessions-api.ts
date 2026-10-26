@@ -124,35 +124,44 @@ function toIntOrNull(value: unknown): number | null {
 
 /** Coerce one raw program row to the typed shape (defensive unions). */
 function toProgram(value: Record<string, unknown>): ApiGroupProgram | null {
-  if (typeof value.id !== "number" && typeof value.id !== "string") return null;
+  // A row without a usable numeric id cannot be identified (slug, booking href
+  // and slot selection all key on it). Drop it rather than coercing to `0`,
+  // which would collide with every other malformed row and can resolve the
+  // wrong program.
+  const id = toIntOrNull(value.id);
+  if (id === null) return null;
   const children = Array.isArray(value.children)
     ? value.children.filter(
         (c): c is Record<string, unknown> => Boolean(c) && typeof c === "object"
       )
     : [];
-  const child = (c: Record<string, unknown>): ApiGroupProgramChild => ({
-    id: Number(c.id) || 0,
-    title: typeof c.title === "string" ? c.title : null,
-    description: typeof c.description === "string" ? c.description : null,
-    logo: typeof c.logo === "string" ? c.logo : null,
-    parent: typeof c.parent === "number" || typeof c.parent === "string" ? Number(c.parent) || null : null,
-    nbr_of_participants: toIntOrNull(c.nbr_of_participants),
-    capacity: toIntOrNull(c.capacity),
-    event_key: typeof c.event_key === "string" ? c.event_key : null,
-    event_slug: typeof c.event_slug === "string" ? c.event_slug : null,
-    event_date: typeof c.event_date === "string" ? c.event_date : null,
-    event_time: typeof c.event_time === "string" ? c.event_time : null,
-    event_status: typeof c.event_status === "string" ? c.event_status : null,
-    price: typeof c.price === "string" ? c.price : null,
-    firstUseprice: typeof c.firstUseprice === "string" ? c.firstUseprice : null,
-    duration: typeof c.duration === "string" ? c.duration : null,
-  });
+  const child = (c: Record<string, unknown>): ApiGroupProgramChild | null => {
+    const childId = toIntOrNull(c.id);
+    if (childId === null) return null;
+    return {
+      id: childId,
+      title: typeof c.title === "string" ? c.title : null,
+      description: typeof c.description === "string" ? c.description : null,
+      logo: typeof c.logo === "string" ? c.logo : null,
+      parent: toIntOrNull(c.parent),
+      nbr_of_participants: toIntOrNull(c.nbr_of_participants),
+      capacity: toIntOrNull(c.capacity),
+      event_key: typeof c.event_key === "string" ? c.event_key : null,
+      event_slug: typeof c.event_slug === "string" ? c.event_slug : null,
+      event_date: typeof c.event_date === "string" ? c.event_date : null,
+      event_time: typeof c.event_time === "string" ? c.event_time : null,
+      event_status: typeof c.event_status === "string" ? c.event_status : null,
+      price: typeof c.price === "string" ? c.price : null,
+      firstUseprice: typeof c.firstUseprice === "string" ? c.firstUseprice : null,
+      duration: typeof c.duration === "string" ? c.duration : null,
+    };
+  };
 
   return {
-    id: Number(value.id) || 0,
+    id,
     title: typeof value.title === "string" ? value.title : null,
     description: typeof value.description === "string" ? value.description : null,
-    parent: typeof value.parent === "number" || typeof value.parent === "string" ? Number(value.parent) || null : null,
+    parent: toIntOrNull(value.parent),
     nbr_of_participants: toIntOrNull(value.nbr_of_participants),
     capacity: toIntOrNull(value.capacity),
     event_key: typeof value.event_key === "string" ? value.event_key : null,
@@ -166,7 +175,9 @@ function toProgram(value: Record<string, unknown>): ApiGroupProgram | null {
     logo: typeof value.logo === "string" ? value.logo : null,
     professional: value.professional && typeof value.professional === "object" ? value.professional as ApiGroupProfessional : null,
     company: value.company && typeof value.company === "object" ? value.company as ApiGroupCompany : null,
-    children: children.map(child),
+    children: children
+      .map(child)
+      .filter((c): c is ApiGroupProgramChild => c !== null),
   };
 }
 
