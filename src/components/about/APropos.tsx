@@ -141,7 +141,7 @@ const frEcosystem = {
     closing:
       "Selon les besoins, nos bilans biologiques, physiques et cognitifs aident à définir les priorités d'un parcours adapté, avec l'appui de professionnels qualifiés.",
     cta: "Découvrir Wenaya Clinics",
-    image: "/images/diverse-team.jpg",
+    image: "/images/Cabinet%20de%20kin%C3%A9sith%C3%A9rapie%20lumineux%20et%20moderne.png",
     imageAlt:
       "Professionnels et patients Wenaya lors d'un accompagnement pluridisciplinaire au centre de Casablanca",
   },
@@ -156,7 +156,8 @@ const frEcosystem = {
     highlight:
       "Prendre soin des collaborateurs, c'est d'abord prendre soin des personnes.",
     cta: "Découvrir Wenaya Corporate",
-    image: "/images/wellness-stretch.jpg",
+    image:
+      "/images/Espace%20de%20travail%20chaleureux%20et%20collaboratif%20%281%29.png",
     imageAlt:
       "Atelier bien-être en entreprise conduit par les équipes Wenaya Corporate",
   },
@@ -301,7 +302,7 @@ const enEcosystem = {
     closing:
       "Depending on needs, our biological, physical and cognitive assessments help define the priorities of a tailored programme, with the support of qualified professionals.",
     cta: "Discover Wenaya Clinics",
-    image: "/images/diverse-team.jpg",
+    image: "/images/Cabinet%20de%20kin%C3%A9sith%C3%A9rapie%20lumineux%20et%20moderne.png",
     imageAlt:
       "Wenaya professionals and patients during a multidisciplinary appointment at the Casablanca centre",
   },
@@ -315,7 +316,8 @@ const enEcosystem = {
     ],
     highlight: "Taking care of employees starts with taking care of people.",
     cta: "Discover Wenaya Corporate",
-    image: "/images/wellness-stretch.jpg",
+    image:
+      "/images/Espace%20de%20travail%20chaleureux%20et%20collaboratif%20%281%29.png",
     imageAlt: "Workplace wellness workshop led by the Wenaya Corporate teams",
   },
   technology: {
