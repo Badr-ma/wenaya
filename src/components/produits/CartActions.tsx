@@ -172,7 +172,7 @@ export default function CartActions({
             className="inline-flex items-center justify-center px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-[#B88A5A] text-white hover:bg-[#a07a4e] disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B88A5A] focus-visible:ring-offset-2"
             aria-label={t("produits.detail.addToCart")}
           >
-            {added ? t("produits.addedToCart") : t("produits.detail.addToCart")}
+            {added ? t("produits.detail.addedToCart") : t("produits.detail.addToCart")}
           </button>
 
           {/* Buy Now */}
@@ -195,7 +195,7 @@ export default function CartActions({
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
           <Link href={h(locale, "/panier")} className="underline hover:no-underline">
-            {t("produits.viewCart")}
+            {t("produits.detail.viewCart")}
           </Link>
         </div>
       )}
