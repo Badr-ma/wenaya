@@ -2664,6 +2664,11 @@ const en: Translations = {
       "Please enter a complete address with street, postal code and city.",
     addressSaveError: "Could not save the address. Please try again.",
     needAddress: "Please select or add a delivery address.",
+    guestInfo: "Your information",
+    guestName: "Full name",
+    guestAddress: "Delivery address",
+    guestInfoInvalid:
+      "Please enter your name, phone number and a complete address.",
   },
   shop: {
     comingSoon: {

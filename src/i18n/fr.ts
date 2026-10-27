@@ -2686,6 +2686,11 @@ const fr = {
       "Veuillez saisir une adresse complète avec rue, code postal et ville.",
     addressSaveError: "Impossible d'enregistrer l'adresse. Veuillez réessayer.",
     needAddress: "Veuillez sélectionner ou ajouter une adresse de livraison.",
+    guestInfo: "Vos informations",
+    guestName: "Nom complet",
+    guestAddress: "Adresse de livraison",
+    guestInfoInvalid:
+      "Veuillez saisir votre nom, votre téléphone et une adresse complète.",
   },
   shop: {
     comingSoon: {

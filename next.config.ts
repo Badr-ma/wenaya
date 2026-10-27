@@ -281,14 +281,6 @@ const nextConfig: NextConfig = {
       { source: "/en/pratiques/ost%C3%A9opathie",           destination: "/en/pratiques/osteopathie",          permanent: true },
       { source: "/en/pratiques/sono-th%C3%A9rapie",         destination: "/en/pratiques/sono-therapie",        permanent: true },
 
-      /* ── Category 6: Shop cart/checkout redirect (temporary — permanent: false) ──
-         Product listing and detail pages are now live. The legacy cart and
-         checkout routes are not wired to the new purchase flow yet, so they
-         redirect to the shop listing. 307 so nothing is cached as gone. */
-      { source: "/panier",              destination: "/produits",     permanent: false },
-      { source: "/en/panier",           destination: "/en/produits",  permanent: false },
-      { source: "/checkout",            destination: "/produits",     permanent: false },
-      { source: "/en/checkout",         destination: "/en/produits",  permanent: false },
     ];
   },
   /** Enables app/global-not-found.tsx — restores the custom French 404 for unmatched URLs (multi-root-layout app) */

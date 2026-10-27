@@ -1,12 +1,10 @@
 /**
  * Basket page (EN).
  *
- * SHOP LAUNCH FREEZE: Commerce is temporarily disabled — this route shows the
- * "coming soon" notice instead of a working basket. The PanierView implementation
- * stays on disk (src/components/cart/PanierView.tsx) for future activation.
+ * Renders the shared PanierView cart UI.
  */
-import ShopComingSoonNotice from "@/components/shop/ShopComingSoonNotice";
+import PanierView from "@/components/cart/PanierView";
 
 export default function BasketPage() {
-  return <ShopComingSoonNotice />;
+  return <PanierView />;
 }

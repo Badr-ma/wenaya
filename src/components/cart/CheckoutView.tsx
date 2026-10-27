@@ -9,7 +9,6 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useLocale } from "@/contexts/LanguageContext";
@@ -42,7 +41,6 @@ const EMPTY_ADDRESS_FORM = {
 
 export default function CheckoutView() {
   const { t, locale } = useLocale();
-  const router = useRouter();
   const { items, totalItems, subtotal, clearCart, isEmpty, hydrated } = useCart();
   const itemWord = locale === "fr" ? "article" : "item";
   const itemWords = locale === "fr" ? "articles" : "items";
@@ -58,12 +56,22 @@ export default function CheckoutView() {
   const [orderState, setOrderState] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [invoiceNumber, setInvoiceNumber] = useState<string | null>(null);
 
+  // ── Guest checkout form ──
+  const [guestForm, setGuestForm] = useState({
+    name: "",
+    phone: "",
+    email: "",
+  });
+  const [guestAddress, setGuestAddress] = useState({ ...EMPTY_ADDRESS_FORM });
+
   // ── Load the session then the saved addresses ──
   const loadSessionAndAddresses = useCallback(async () => {
     const session = await getCurrentPatient();
 
     if (!session.success || session.type !== "success") {
-      router.replace(`${h(locale, "/login")}?returnTo=${encodeURIComponent("/checkout")}`);
+      // Guest checkout — render the inline form instead of redirecting.
+      setAuthState("unauthenticated");
+      setAddressesLoading(false);
       return;
     }
 
@@ -86,7 +94,7 @@ export default function CheckoutView() {
     } finally {
       setAddressesLoading(false);
     }
-  }, [locale, router]);
+  }, []);
 
   useEffect(() => {
     if (hydrated && !isEmpty) {
@@ -153,9 +161,55 @@ export default function CheckoutView() {
   // ── Place the COD order ──
   const placeOrder = async () => {
     if (orderState === "submitting") return;
-    if (!selectedAddressId) {
-      setAddressError(t("checkout.needAddress"));
-      return;
+
+    let body: Record<string, unknown>;
+
+    if (authState === "ready") {
+      if (!selectedAddressId) {
+        setAddressError(t("checkout.needAddress"));
+        return;
+      }
+      body = {
+        items: items.map((item) => ({
+          slug: item.productSlug,
+          quantity: item.quantity,
+        })),
+        address_id: selectedAddressId,
+        payment_method: "COD",
+      };
+    } else {
+      const name = guestForm.name.trim();
+      const phone = guestForm.phone.trim();
+      const addressLine1 = guestAddress.address_line_1.trim();
+      const zip = guestAddress.zip_code.trim();
+      const city = guestAddress.city.trim();
+
+      if (!name || !phone || addressLine1.length < 5 || !zip || !city) {
+        setAddressError(t("checkout.guestInfoInvalid"));
+        return;
+      }
+
+      body = {
+        items: items.map((item) => ({
+          slug: item.productSlug,
+          quantity: item.quantity,
+        })),
+        payment_method: "COD",
+        guest: {
+          name,
+          phone,
+          email: guestForm.email.trim() || undefined,
+        },
+        address: {
+          address_line_1: addressLine1,
+          address_line_2: guestAddress.address_line_2.trim() || undefined,
+          zip_code: zip,
+          city,
+          type: "home",
+          name: name || undefined,
+          phone: phone || undefined,
+        },
+      };
     }
 
     setAddressError(null);
@@ -166,14 +220,7 @@ export default function CheckoutView() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "same-origin",
-        body: JSON.stringify({
-          items: items.map((item) => ({
-            slug: item.productSlug,
-            quantity: item.quantity,
-          })),
-          address_id: selectedAddressId,
-          payment_method: "COD",
-        }),
+        body: JSON.stringify(body),
       });
 
       const json = (await res.json()) as {
@@ -227,12 +274,14 @@ export default function CheckoutView() {
             </p>
           )}
           <div className="flex flex-col justify-center gap-3 sm:flex-row">
-            <Link
-              href={h(locale, "/compte")}
-              className="inline-flex items-center justify-center px-6 py-3 rounded-full text-sm font-medium bg-[#B88A5A] text-white hover:bg-[#a07a4e] transition-colors"
-            >
-              {t("produits.detail.viewAccount")}
-            </Link>
+            {authState === "ready" && (
+              <Link
+                href={h(locale, "/compte")}
+                className="inline-flex items-center justify-center px-6 py-3 rounded-full text-sm font-medium bg-[#B88A5A] text-white hover:bg-[#a07a4e] transition-colors"
+              >
+                {t("produits.detail.viewAccount")}
+              </Link>
+            )}
             <Link
               href={h(locale, "/produits")}
               className="inline-flex items-center justify-center px-6 py-3 rounded-full text-sm font-medium border border-[#0B1220]/[0.12] text-[#0B1220] hover:border-[#0B1220]/30 transition-colors"
@@ -261,7 +310,7 @@ export default function CheckoutView() {
     );
   }
 
-  if (authState !== "ready") {
+  if (authState === "checking") {
     return (
       <section className="min-h-screen bg-[#F2EFE9] pt-28 pb-20 px-4 sm:px-8">
         <div className="max-w-5xl mx-auto">
@@ -273,6 +322,8 @@ export default function CheckoutView() {
   }
 
   const addressList = addresses.filter(Boolean);
+
+  const isAuthenticated = authState === "ready";
 
   return (
     <section className="min-h-screen bg-[#F2EFE9] pt-28 pb-20 px-4 sm:px-8">
@@ -319,24 +370,105 @@ export default function CheckoutView() {
             <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-[#0B1220]/[0.04] p-6 sm:p-8">
               <div className="flex items-center justify-between gap-4 mb-4">
                 <h2 className="font-heading font-semibold text-lg text-[#0B1220]">
-                  {t("checkout.deliveryAddress")}
+                  {isAuthenticated ? t("checkout.deliveryAddress") : t("checkout.guestInfo")}
                 </h2>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setAddressError(null);
-                    setAddressFormState(addressFormState === "hidden" ? "open" : "hidden");
-                  }}
-                  disabled={addressFormState === "saving"}
-                  className="text-xs font-medium text-[#B88A5A] hover:underline disabled:opacity-40"
-                >
-                  + {t("checkout.addAddress")}
-                </button>
+                {isAuthenticated && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAddressError(null);
+                      setAddressFormState(addressFormState === "hidden" ? "open" : "hidden");
+                    }}
+                    disabled={addressFormState === "saving"}
+                    className="text-xs font-medium text-[#B88A5A] hover:underline disabled:opacity-40"
+                  >
+                    + {t("checkout.addAddress")}
+                  </button>
+                )}
               </div>
 
-              {addressesLoading ? (
-                <p className="text-sm text-[#2B2F36]/40 py-4">{t("loadingAddresses")}</p>
-              ) : addressList.length === 0 ? (
+              {!isAuthenticated && (
+                <div className="space-y-3 mb-4">
+                  <input
+                    type="text"
+                    value={guestForm.name}
+                    onChange={(event) => setGuestForm((previous) => ({ ...previous, name: event.target.value }))}
+                    placeholder={t("checkout.guestName")}
+                    required
+                    className="w-full px-3 py-2.5 text-sm text-[#0B1220] rounded-md border border-[#0B1220]/[0.12] bg-white focus:outline-none focus:ring-2 focus:ring-[#B88A5A]/50"
+                  />
+                  <input
+                    type="tel"
+                    value={guestForm.phone}
+                    onChange={(event) => setGuestForm((previous) => ({ ...previous, phone: event.target.value }))}
+                    placeholder={t("checkout.phone")}
+                    required
+                    className="w-full px-3 py-2.5 text-sm text-[#0B1220] rounded-md border border-[#0B1220]/[0.12] bg-white focus:outline-none focus:ring-2 focus:ring-[#B88A5A]/50"
+                  />
+                  <input
+                    type="email"
+                    value={guestForm.email}
+                    onChange={(event) => setGuestForm((previous) => ({ ...previous, email: event.target.value }))}
+                    placeholder={t("checkout.email")}
+                    className="w-full px-3 py-2.5 text-sm text-[#0B1220] rounded-md border border-[#0B1220]/[0.12] bg-white focus:outline-none focus:ring-2 focus:ring-[#B88A5A]/50"
+                  />
+
+                  <div className="pt-2">
+                    <h3 className="text-sm font-medium text-[#0B1220] mb-2">
+                      {t("checkout.guestAddress")}
+                    </h3>
+                    <div className="space-y-3">
+                      <input
+                        type="text"
+                        value={guestAddress.address_line_1}
+                        onChange={(event) =>
+                          setGuestAddress((previous) => ({ ...previous, address_line_1: event.target.value }))
+                        }
+                        placeholder={t("checkout.street1")}
+                        required
+                        className="w-full px-3 py-2.5 text-sm text-[#0B1220] rounded-md border border-[#0B1220]/[0.12] bg-white focus:outline-none focus:ring-2 focus:ring-[#B88A5A]/50"
+                      />
+                      <input
+                        type="text"
+                        value={guestAddress.address_line_2}
+                        onChange={(event) =>
+                          setGuestAddress((previous) => ({ ...previous, address_line_2: event.target.value }))
+                        }
+                        placeholder={t("checkout.street2")}
+                        className="w-full px-3 py-2.5 text-sm text-[#0B1220] rounded-md border border-[#0B1220]/[0.12] bg-white focus:outline-none focus:ring-2 focus:ring-[#B88A5A]/50"
+                      />
+                      <div className="grid grid-cols-2 gap-3">
+                        <input
+                          type="text"
+                          value={guestAddress.zip_code}
+                          onChange={(event) =>
+                            setGuestAddress((previous) => ({ ...previous, zip_code: event.target.value }))
+                          }
+                          placeholder={t("checkout.postalCode")}
+                          required
+                          className="w-full px-3 py-2.5 text-sm text-[#0B1220] rounded-md border border-[#0B1220]/[0.12] bg-white focus:outline-none focus:ring-2 focus:ring-[#B88A5A]/50"
+                        />
+                        <input
+                          type="text"
+                          value={guestAddress.city}
+                          onChange={(event) =>
+                            setGuestAddress((previous) => ({ ...previous, city: event.target.value }))
+                          }
+                          placeholder={t("checkout.city")}
+                          required
+                          className="w-full px-3 py-2.5 text-sm text-[#0B1220] rounded-md border border-[#0B1220]/[0.12] bg-white focus:outline-none focus:ring-2 focus:ring-[#B88A5A]/50"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {isAuthenticated && (
+                <>
+                  {addressesLoading ? (
+                    <p className="text-sm text-[#2B2F36]/40 py-4">{t("loadingAddresses")}</p>
+                  ) : addressList.length === 0 ? (
                 <p className="text-sm text-[#2B2F36]/50 py-2">{t("checkout.noAddress")}</p>
               ) : (
                 <div className="space-y-3 mb-4">
@@ -453,6 +585,8 @@ export default function CheckoutView() {
                     </button>
                   </div>
                 </div>
+              )}
+                </>
               )}
 
               {addressError && (
