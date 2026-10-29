@@ -20,10 +20,10 @@
  * Data source — the live backend is the ONLY source for the LISTING:
  * `getPracticesPageAsync` reads the real Wenaya listing endpoint (see
  * `./practices-api.ts` + `./practice-adapter.ts`). There is deliberately no
- * local dataset to fall back to: when the backend cannot answer, the accessor
- * returns an empty window so the caller renders its honest empty state. List
- * order for the default listing follows the backend's priority ordering;
- * canonical slugs are preserved via the id map.
+ * local dataset to fall back to: successful empty feeds stay empty, while a
+ * failed production revalidation throws and build/dev failures are explicitly
+ * flagged for client recovery. List order follows backend priority; canonical
+ * slugs are preserved via the id map.
  *
  * `practice-content.ts` still backs the SYNCHRONOUS editorial helpers above
  * (`getAllPratiques` / `getPratiqueBySlug` / `getAllPratiqueSlugs`), which are
@@ -34,6 +34,7 @@ import { practicesContent, type PracticeSection } from "./practice-content";
 import { EN_ARTICLE_DEMO } from "./en-translations";
 import { fetchSpecialitiesPage, fetchAllSpecialities } from "./practices-api";
 import { normalizeApiSpeciality } from "./practice-adapter";
+import { shouldPropagateApiFailure } from "./api/retry";
 
 // ─── Domain Model ──────────────────────────────────────────────
 
@@ -153,6 +154,8 @@ export interface PaginatedPratiques {
   hasMore: boolean;
   /** The live Wenaya backend is the ONLY source — there is no local dataset. */
   dataSource: PratiquesDataSource;
+  /** True only when a failed request was tolerated during build or development. */
+  loadError: boolean;
 }
 
 export type PratiquesDataSource = "api";
@@ -175,7 +178,8 @@ export interface PratiquesQuery {
 // applied after pagination.
 
 /**
- * Honest empty page — the single response used when the backend cannot answer.
+ * Empty page for a failed build/dev request. `loadError` distinguishes it
+ * from a legitimate successful empty API response so the client can retry.
  *
  * Returning an empty window (rather than substituting local editorial records)
  * is deliberate: a practice that the live feed cannot confirm must NOT be shown
@@ -190,6 +194,7 @@ function emptyPracticesPage(page: number, pageSize: number): PaginatedPratiques 
     totalPages: 0,
     hasMore: false,
     dataSource: "api",
+    loadError: true,
   };
 }
 
@@ -215,8 +220,8 @@ async function fetchAllNormalized(locale: string): Promise<Pratique[]> {
  *   FILTERED/SHARED → fetch the FULL remote dataset, merge + normalize,
  *                     then filter/search and paginate locally — filters never
  *                     run over a single loaded page.
- *   FAILURE         → empty window (no local dataset is substituted);
- *                     the caller renders its honest empty state.
+ *   FAILURE         → throws during production runtime (preserve ISR output);
+ *                     build/dev returns an empty window flagged for retry.
  */
 export async function getPracticesPageAsync(query: PratiquesQuery = {}): Promise<PaginatedPratiques> {
   const locale = query.locale ?? "fr";
@@ -253,6 +258,7 @@ export async function getPracticesPageAsync(query: PratiquesQuery = {}): Promise
         totalPages,
         hasMore: page < totalPages,
         dataSource: "api",
+        loadError: false,
       };
     }
 
@@ -278,11 +284,14 @@ export async function getPracticesPageAsync(query: PratiquesQuery = {}): Promise
       totalPages: res.data.last_page,
       hasMore: res.data.current_page < res.data.last_page,
       dataSource: "api",
+      loadError: false,
     };
   } catch (error) {
     // API-ONLY: no local editorial dataset may be substituted for the live feed.
-    // The caller renders its honest empty state instead of a fabricated listing.
-    console.warn("[pratiques] backend unavailable, returning empty page:", error);
+    // Production ISR must fail so Next retains its last good page. Builds/dev
+    // stay resilient and mark the empty result for an automatic client retry.
+    console.warn("[pratiques] backend unavailable:", error instanceof Error ? error.message : "request failed");
+    if (shouldPropagateApiFailure()) throw error;
     return emptyPracticesPage(page, pageSize);
   }
 }

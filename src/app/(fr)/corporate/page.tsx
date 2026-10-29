@@ -23,9 +23,9 @@ import { languageAlternates } from "@/lib/hreflang";
 const EntreprisesFooter = dynamic(() => import("@/components/entreprises/Footer"), { ssr: true });
 
 export const metadata: Metadata = {
-  title: "Bien-être en Entreprise — Programmes Santé & Prévention",
+  title: "Wenaya Corporate Programs (WCP) — Bien-être en Entreprise",
   description:
-    "Wenaya conçoit des programmes de bien-être en entreprise au Maroc : santé mentale, kinésithérapie, nutrition, prévention — sur site ou à distance. Mesurable, personnalisé, certifié.",
+    "Wenaya Corporate Programs (WCP) conçoit des programmes de bien-être en entreprise au Maroc : santé mentale, kinésithérapie, nutrition, prévention — sur site ou à distance. Mesurable, personnalisé, certifié.",
   keywords: [
     "bien-être entreprise Maroc",
     "programme santé entreprise Casablanca",
@@ -43,16 +43,16 @@ export const metadata: Metadata = {
   },
   openGraph: {
     ...OG_DEFAULTS,
-    title: "Bien-être en Entreprise — Programmes Santé & Prévention | Wenaya",
+    title: "Wenaya Corporate Programs (WCP) — Bien-être en Entreprise | Wenaya",
     description:
-      "Wenaya conçoit des programmes de bien-être en entreprise fondés sur des données probantes, pour organisations marocaines et internationales. Santé mentale, kinésithérapie, nutrition, prévention — mesurables et adaptés à vos équipes.",
+      "Wenaya Corporate Programs (WCP) conçoit des programmes de bien-être en entreprise fondés sur des données probantes, pour organisations marocaines et internationales. Santé mentale, kinésithérapie, nutrition, prévention — mesurables et adaptés à vos équipes.",
     url: `${SITE_URL}/corporate`,
   },
   twitter: {
     ...TWITTER_DEFAULTS,
-    title: "Bien-être en Entreprise — Programmes Santé & Prévention | Wenaya",
+    title: "Wenaya Corporate Programs (WCP) — Bien-être en Entreprise | Wenaya",
     description:
-      "Wenaya conçoit des programmes de bien-être en entreprise fondés sur des données probantes, pour organisations marocaines et internationales. Santé mentale, kinésithérapie, nutrition, prévention — mesurables et adaptés à vos équipes.",
+      "Wenaya Corporate Programs (WCP) conçoit des programmes de bien-être en entreprise fondés sur des données probantes, pour organisations marocaines et internationales. Santé mentale, kinésithérapie, nutrition, prévention — mesurables et adaptés à vos équipes.",
   },
 };
 

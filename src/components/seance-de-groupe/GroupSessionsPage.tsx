@@ -9,13 +9,19 @@ import GroupSessionsHero from "./GroupSessionsHero";
 import GroupSessionsList from "./GroupSessionsList";
 import type { GroupSession } from "@/lib/group-sessions";
 
-export default function GroupSessionsPage({ sessions }: { sessions: GroupSession[] }): React.JSX.Element {
+export default function GroupSessionsPage({
+  sessions,
+  initialLoadError = false,
+}: {
+  sessions: GroupSession[];
+  initialLoadError?: boolean;
+}): React.JSX.Element {
   return (
     <div className="flex flex-col min-h-screen">
       <Breadcrumbs />
       <main>
         <GroupSessionsHero />
-        <GroupSessionsList sessions={sessions} />
+        <GroupSessionsList sessions={sessions} initialLoadError={initialLoadError} />
       </main>
       <Footer />
     </div>

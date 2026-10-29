@@ -53,11 +53,11 @@ export default function AboutUs({ lang }: { lang: "fr" | "en" }) {
           <div className="lg:col-span-5">
             <div className="relative aspect-[4/5] overflow-hidden rounded-t-[24px] bg-[#0B1220]">
               <Image
-                src="/images/about/about-hero.jpg"
+                src="/images/wenaya-ecosystem-anime.svg"
                 alt={t("aboutUs.imageAlt")}
                 fill
                 sizes="(max-width:1023px) 100vw, 42vw"
-                className="object-cover"
+                className="object-contain"
               />
             </div>
           </div>

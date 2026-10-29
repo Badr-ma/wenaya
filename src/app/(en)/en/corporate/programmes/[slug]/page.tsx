@@ -23,7 +23,7 @@ interface Props {
 }
 
 /** English meta descriptions (EN equivalents of the live FR descriptions). */
-const SEOTitle = (name: string) => `${name} | Wenaya Corporate`;
+const SEOTitle = (name: string) => `${name} | Wenaya Corporate Programs (WCP) | Wenaya`;
 const SEODescriptions: Record<string, string> = {
   "leadership-360":
     "A complete 5-pillar managerial development programme for your managers — self-awareness, relationships, mission, effectiveness and people management.",
@@ -54,13 +54,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       ...OG_DEFAULTS,
       locale: "en_MA",
-      title: `${programme.name} | Wenaya Corporate`,
+      title: `${programme.name} | Wenaya Corporate Programs (WCP) | Wenaya`,
       description,
       url,
     },
     twitter: {
       ...TWITTER_DEFAULTS,
-      title: `${programme.name} | Wenaya Corporate`,
+      title: `${programme.name} | Wenaya Corporate Programs (WCP) | Wenaya`,
       description,
     },
   };

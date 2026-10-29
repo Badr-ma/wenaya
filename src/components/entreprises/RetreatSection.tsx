@@ -25,9 +25,9 @@ const reducedMotion =
 type Chapter = { number: string; title: string; theme?: string; desc?: string; capabilities: string[] };
 
 const RETREAT_IMAGES = [
-  "/images/cours-ateliers/wellness.jpg",
-  "/images/business-meeting.jpg",
-  "/pratiques/coaching-sportif.jpg",
+  "/images/Traversée dorée sur le lac Wenaya.png",
+  "/images/DSC08751.jpg",
+  "/images/image00029.jpg",
 ];
 
 export default function RetreatSection() {

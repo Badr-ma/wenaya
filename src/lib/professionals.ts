@@ -7,8 +7,8 @@
  * Transport failures follow the shared ISR-failure policy
  * (`api/retry.ts#shouldPropagateApiFailure`): swallowed during `next build`
  * and `next dev`, rethrown in the `next start` production runtime so ISR
- * revalidation fails and the previously-good cached page is retained
- * (except `getLiveSpecialists`, which always swallows — see its doc).
+ * revalidation fails and the previously-good cached page is retained. This
+ * applies to `getLiveSpecialists` as well.
  * The demo dataset (`specialistes.ts`) remains only as the admin seed
  * default.
  *
@@ -84,18 +84,10 @@ function toSpecialist(pro: ApiProfessional): Specialist {
 /**
  * Fetch live professionals from the API, mapped to the Specialist interface.
  *
- * NO FALLBACK. On ANY failure (network, timeout, shape mismatch) or a valid
- * empty response, this returns an empty list so the caller renders its empty
- * state instead of ever showing the legacy Redis / hardcoded demo
- * practitioners. The demo dataset is a different, non-overlapping slug set —
- * serving it here would publish practitioners who do not exist and break the
- * "listing cards === profile pages" invariant.
- *
- * ALWAYS swallows (unlike `getPracticeSpecialists`/`getHomepageSpecialists`):
- * its consumers include `sitemap.ts` and the search/professional pages, where
- * a rethrown transport error would 500 the whole route instead of degrading.
- *
- * This is the primary data source for the listing pages.
+ * NO FALLBACK. Valid empty data stays empty; build/dev failures return an empty
+ * list so generation can proceed, while production runtime failures propagate
+ * so ISR does not cache an empty listing over usable output. No legacy/demo
+ * practitioners are introduced.
  */
 export async function getLiveSpecialists(): Promise<Specialist[]> {
   try {
@@ -110,7 +102,8 @@ export async function getLiveSpecialists(): Promise<Specialist[]> {
       .filter((pro) => !HIDDEN_SLUGS.has(pro.slug))
       .map(toSpecialist);
   } catch (error) {
-    console.error("[professionals] API fetch failed, rendering without listings:", error);
+    console.error("[professionals] API fetch failed");
+    if (shouldPropagateApiFailure()) throw error;
     return [];
   }
 }

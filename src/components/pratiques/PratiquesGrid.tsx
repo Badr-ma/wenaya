@@ -54,8 +54,8 @@ interface ProxyQuery {
  * Load a practices batch through the `/api/pratiques` proxy (the browser never
  * calls the Wenaya backend directly). The proxy answers with the same paginated
  * contract the SSR seam produces — including the `X-Data-Source` header, which
- * confirms the batch came from the live API (an empty body means the backend
- * could not answer and the grid falls back to its empty state).
+ * confirms the batch came from the live API (a failed request is a non-2xx
+ * response so the grid can show its retry state).
  */
 async function fetchPracticesProxy(query: ProxyQuery): Promise<PaginatedPratiques> {
   const params = new URLSearchParams();
@@ -79,6 +79,8 @@ interface PratiquesGridProps {
   initialHasMore?: boolean;
   /** Size of the unfiltered dataset (used by the count line). */
   totalAll?: number;
+  /** SSR tolerated an API failure during build/dev; retry the initial page on mount. */
+  initialLoadError?: boolean;
 }
 
 export default function PratiquesGrid({
@@ -86,6 +88,7 @@ export default function PratiquesGrid({
   initialTotal,
   initialHasMore,
   totalAll,
+  initialLoadError = false,
 }: PratiquesGridProps): React.JSX.Element {
   const { t, locale } = useLocale();
   const { elRef: sectionElRef, ready } = useIntersectionDeferred();
@@ -96,7 +99,7 @@ export default function PratiquesGrid({
   const [hasMore, setHasMore] = useState(initialHasMore ?? initialItems.length > 0);
   const [total, setTotal] = useState(initialTotal ?? initialItems.length);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [loadError, setLoadError] = useState(false);
+  const [loadError, setLoadError] = useState(initialLoadError);
 
   const [activeFilter, setActiveFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -198,14 +201,19 @@ export default function PratiquesGrid({
     }
   }, [locale, activeFilter, searchQuery]);
 
-  // Reset on every filter/search change (not on mount — SSR state already valid).
+  // Reset on filter/search changes. If SSR explicitly marked a tolerated
+  // build/dev failure, retry once on mount instead of treating it as empty data.
   useEffect(() => {
     if (firstRunRef.current) {
       firstRunRef.current = false;
+      if (initialLoadError) {
+        const timer = window.setTimeout(() => void resetAndLoadFirst(), 0);
+        return () => window.clearTimeout(timer);
+      }
       return;
     }
     resetAndLoadFirst();
-  }, [activeFilter, searchQuery, resetAndLoadFirst]);
+  }, [activeFilter, searchQuery, initialLoadError, resetAndLoadFirst]);
 
   // External filter bar (Nav) → keeps this grid in sync.
   useEffect(() => {

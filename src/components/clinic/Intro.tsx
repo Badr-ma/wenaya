@@ -90,7 +90,7 @@ export default function ClinicIntro(): React.JSX.Element {
           <div className="ci-img lg:col-span-5">
             <div className="relative overflow-hidden rounded-t-[24px]">
               <Image
-                src="/images/diverse-team.jpg"
+                src="/images/Collage de la clinique Wenaya .png"
                 alt={t("clinic.intro.imageAlt")}
                 fill={false}
                 width={900}

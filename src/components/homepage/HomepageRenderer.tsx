@@ -1,13 +1,17 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useEffect, useCallback, useReducer, useRef } from "react";
 import { usePathname } from "next/navigation";
 import type { HomepageConfig, HomepageSection, BlogContent } from "@/lib/homepage-types";
 import type { Specialist } from "@/lib/specialistes";
 import { SECTION_META } from "@/lib/homepage-types";
 import SectionBreak from "@/components/SectionBreak";
-import type { PostWithAuthor } from "@/lib/blog-utils";
+import {
+  fetchBlogPosts,
+  homepageBlogFeedReducer,
+  initialHomepageBlogFeedState,
+} from "@/lib/homepage-blog-feed";
 
 const HeroSection = dynamic(() => import("@/components/HeroSection"), { ssr: true });
 const HowItWorks = dynamic(() => import("@/components/HowItWorks"), { ssr: true });
@@ -142,16 +146,63 @@ function SectionComponent({
 }
 
 function BlogSectionWrapper({ content }: { content: BlogContent }) {
-  const [posts, setPosts] = useState<PostWithAuthor[]>([]);
   const pathname = usePathname();
   const locale = pathname?.startsWith("/en") ? "en" : "fr";
-  useEffect(() => {
-    fetch(`/api/blog/posts?locale=${locale}`)
-      .then((r) => r.json())
-      .then((d) => { if (d.data) setPosts(d.data); })
-      .catch(() => {});
+  const [feed, dispatch] = useReducer(homepageBlogFeedReducer, initialHomepageBlogFeedState);
+  const requestIdRef = useRef(0);
+
+  const loadPosts = useCallback(async () => {
+    const requestId = ++requestIdRef.current;
+    dispatch({ type: "start", requestId });
+    try {
+      const posts = await fetchBlogPosts(locale);
+      if (requestId === requestIdRef.current) {
+        dispatch({ type: "success", requestId, posts });
+      }
+    } catch {
+      if (requestId === requestIdRef.current) dispatch({ type: "failure", requestId });
+    }
   }, [locale]);
-  if (posts.length === 0) return null;
-  return <BlogSection posts={posts} content={content} />;
+
+  useEffect(() => {
+    void loadPosts();
+    return () => {
+      // Invalidate a pending request when locale changes or the section unmounts.
+      requestIdRef.current += 1;
+    };
+  }, [loadPosts]);
+
+  if (feed.status === "loading") {
+    return (
+      <section className="bg-[#F2EFE9] py-10 sm:py-20 px-6" aria-busy="true">
+        <p role="status" className="max-w-7xl mx-auto text-center text-sm text-[#2B2F36]/55">
+          {locale === "en" ? "Loading articles…" : "Chargement des articles…"}
+        </p>
+      </section>
+    );
+  }
+
+  if (feed.status === "error") {
+    return (
+      <section className="bg-[#F2EFE9] py-10 sm:py-20 px-6">
+        <div className="max-w-7xl mx-auto text-center">
+          <p role="alert" className="text-sm text-[#2B2F36]/65">
+            {locale === "en"
+              ? "The latest articles are temporarily unavailable. Please try again."
+              : "Les derniers articles sont momentanément indisponibles. Veuillez réessayer."}
+          </p>
+          <button
+            type="button"
+            onClick={() => void loadPosts()}
+            className="mt-4 inline-flex h-10 items-center justify-center rounded-full border border-[#B88A5A]/40 px-5 text-sm font-medium text-[#9A7242] transition-colors hover:bg-[#B88A5A]/10"
+          >
+            {locale === "en" ? "Try again" : "Réessayer"}
+          </button>
+        </div>
+      </section>
+    );
+  }
+
+  return <BlogSection posts={feed.posts} content={content} />;
 }
 

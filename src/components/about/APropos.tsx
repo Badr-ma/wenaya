@@ -11,8 +11,8 @@
  *
  * Composition (editorial healthcare brand, not a template):
  *   Héros      → asymmetric two-column hero: editorial content left (eyebrow +
- *                hairline, headline, bronze statement, CTA, positioning row) and the
- *                genuine clinic photograph right with a restrained offset bronze block.
+ *                hairline, headline, bronze statement, CTA and positioning row, beside
+ *                the Wenaya ecosystem illustration with a restrained bronze accent.
  *   Vision     → split editorial column; the mission becomes a leaded pull-quote,
  *                not a rounded panel.
  *   Approche   → three columns with large 01/02/03 numerals and hairline dividers;
@@ -61,7 +61,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 const frHero = {
   imageAlt:
-    "Équipe Wenaya au sein du centre de santé pluridisciplinaire à Casablanca",
+    "Illustration de l’écosystème Wenaya reliant Clinics, Corporate et YOLO AI",
   eyebrow: "À propos de Wenaya",
   title: "Réinventer la manière de prendre soin de sa santé.",
   lead: "Parce que la santé est à la base de tout.",
@@ -223,7 +223,7 @@ const frAmbition = {
 };
 
 const enHero = {
-  imageAlt: "The Wenaya care team in Casablanca",
+  imageAlt: "Illustration of the Wenaya ecosystem connecting Clinics, Corporate and YOLO AI",
   eyebrow: "About Wenaya",
   title: "Reinventing the way we care for our health.",
   lead: "Because health is the foundation of everything.",
@@ -396,10 +396,10 @@ export default function APropos({ lang = "fr" }: { lang?: "fr" | "en" }) {
         aria-labelledby="wa-title"
         className="pt-14 sm:pt-20 lg:pt-24 pb-12 sm:pb-16 scroll-mt-24"
       >
-        <div className="max-w-7xl mx-auto px-6 sm:px-10">
+        <div className="max-w-[1600px] mx-auto px-6 sm:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-12 lg:gap-x-14 lg:gap-y-0">
             {/* Editorial content */}
-            <div className="lg:col-span-5">
+            <div className="lg:col-span-5 lg:max-w-[500px]">
               <div className="flex items-center gap-4">
                 <p className="text-[#B88A5A] font-semibold uppercase tracking-[0.22em] text-[11px] sm:text-xs">
                   {hero.eyebrow}
@@ -412,12 +412,12 @@ export default function APropos({ lang = "fr" }: { lang?: "fr" | "en" }) {
 
               <h1
                 id="wa-title"
-                className="heading-serif text-[#0B1220] mt-7 sm:mt-8 text-[clamp(2.25rem,3.9vw,3.875rem)] leading-[1.05] tracking-[-0.02em] text-balance"
+                className="heading-serif text-[#0B1220] mt-7 sm:mt-8 text-[clamp(2.25rem,3.5vw,3.5rem)] leading-[1.08] tracking-[-0.02em] text-balance"
               >
                 {hero.title}
               </h1>
 
-              <p className="heading-serif text-[#B88A5A] mt-6 text-[clamp(1.125rem,1.4vw,1.375rem)] leading-[1.4]">
+              <p className="heading-serif text-[#B88A5A] mt-6 text-[clamp(1.125rem,1.3vw,1.3125rem)] leading-[1.4]">
                 {hero.lead}
               </p>
 
@@ -457,21 +457,21 @@ export default function APropos({ lang = "fr" }: { lang?: "fr" | "en" }) {
               </ul>
             </div>
 
-            {/* Clinic photograph */}
-            <div className="lg:col-span-5 lg:col-start-7">
-              <div className="relative">
+            {/* Ecosystem illustration */}
+            <div className="flex items-center justify-center lg:col-span-7 lg:col-start-6">
+              <div className="relative w-full">
                 <div
                   aria-hidden="true"
                   className="hidden lg:block absolute -left-5 -bottom-5 w-32 h-32 border border-[#B88A5A]/35"
                 />
-                <div className="relative aspect-[4/3] sm:aspect-[3/2] lg:aspect-[4/5] overflow-hidden bg-[#0B1220]">
+                <div className="relative mx-auto aspect-[60/53] w-full max-w-[850px] bg-transparent">
                   <Image
-                    src="/images/about/about-hero.jpg"
+                    src="/images/wenaya-ecosystem-anime.svg"
                     alt={hero.imageAlt}
                     fill
                     priority
-                    sizes="(max-width:1023px) 100vw, 50vw"
-                    className="object-cover"
+                    sizes="(max-width:1023px) 90vw, (max-width:1600px) 55vw, 850px"
+                    className="object-contain"
                   />
                 </div>
               </div>

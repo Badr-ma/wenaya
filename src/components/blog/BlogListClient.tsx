@@ -6,7 +6,7 @@
  */
 "use client";
 
-import { useState, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -15,6 +15,7 @@ import { BLOG_IMAGE_FALLBACK } from "@/lib/blog-mappers";
 import { useLocale } from "@/contexts/LanguageContext";
 import { BlogAuthorAvatar } from "@/components/blog/BlogAuthorAvatar";
 import { h } from "@/lib/href";
+import { fetchBlogPosts } from "@/lib/homepage-blog-feed";
 
 function BlogCard({ post, index }: { post: PostWithAuthor; index: number }) {
   const { t, locale } = useLocale();
@@ -102,13 +103,45 @@ function BlogCard({ post, index }: { post: PostWithAuthor; index: number }) {
 export default function BlogListClient({
   posts,
   categories,
+  initialLoadError = false,
 }: {
   posts: PostWithAuthor[];
   categories: Category[];
+  initialLoadError?: boolean;
 }) {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const { t } = useLocale();
-  const filtered = activeCategory ? posts.filter((p) => p.category?.slug === activeCategory) : posts;
+  const { t, locale } = useLocale();
+  const [loadedPosts, setLoadedPosts] = useState(posts);
+  const [feedStatus, setFeedStatus] = useState<"ready" | "loading" | "error">(
+    initialLoadError ? "loading" : "ready"
+  );
+  const requestIdRef = useRef(0);
+
+  const reloadPosts = useCallback(async () => {
+    const requestId = ++requestIdRef.current;
+    setFeedStatus("loading");
+    try {
+      const nextPosts = await fetchBlogPosts(locale, "listing");
+      if (requestId === requestIdRef.current) {
+        setLoadedPosts(nextPosts);
+        setFeedStatus("ready");
+      }
+    } catch {
+      if (requestId === requestIdRef.current) setFeedStatus("error");
+    }
+  }, [locale]);
+
+  useEffect(() => {
+    const timer = initialLoadError ? window.setTimeout(() => void reloadPosts(), 0) : undefined;
+    return () => {
+      if (timer !== undefined) window.clearTimeout(timer);
+      requestIdRef.current += 1;
+    };
+  }, [initialLoadError, reloadPosts]);
+
+  const filtered = activeCategory
+    ? loadedPosts.filter((p) => p.category?.slug === activeCategory)
+    : loadedPosts;
 
   return (
     <section className="pb-24 sm:pb-32">
@@ -139,7 +172,28 @@ export default function BlogListClient({
           ))}
         </div>
 
-        {filtered.length === 0 ? (
+        {feedStatus === "loading" ? (
+          <div className="text-center py-20" aria-busy="true">
+            <p role="status" className="text-gray-400 text-sm">
+              {locale === "en" ? "Loading articles…" : "Chargement des articles…"}
+            </p>
+          </div>
+        ) : feedStatus === "error" ? (
+          <div className="text-center py-20">
+            <p role="alert" className="text-gray-500 text-sm">
+              {locale === "en"
+                ? "Articles are temporarily unavailable. Please try again."
+                : "Les articles sont momentanément indisponibles. Veuillez réessayer."}
+            </p>
+            <button
+              type="button"
+              onClick={() => void reloadPosts()}
+              className="mt-4 inline-flex h-10 items-center justify-center rounded-full border border-[#B88A5A]/40 px-5 text-sm font-medium text-[#9A7242] transition-colors hover:bg-[#B88A5A]/10"
+            >
+              {locale === "en" ? "Try again" : "Réessayer"}
+            </button>
+          </div>
+        ) : filtered.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-gray-400 text-lg">{t("blog.aucunDansCategorie")}</p>
           </div>

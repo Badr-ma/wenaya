@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getArticlesPage, blogApiErrorLabel } from "@/lib/blog-articles-api";
 import { toFeedPost } from "@/lib/blog-mappers";
 
@@ -9,13 +9,19 @@ import { toFeedPost } from "@/lib/blog-mappers";
  * articles with EN chrome. The `locale` query string is still appended by the
  * section wrapper but is intentionally ignored — there is no separate EN feed.
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const { articles } = await getArticlesPage(1);
-    const enriched = articles.slice(0, 3).map(toFeedPost);
-    return NextResponse.json({ data: enriched });
+    const isListing = request.nextUrl.searchParams.get("view") === "listing";
+    const enriched = (isListing ? articles : articles.slice(0, 3)).map(toFeedPost);
+    const response = NextResponse.json({ data: enriched });
+    response.headers.set("Cache-Control", "no-store");
+    return response;
   } catch (error) {
     console.error(`[blog] feed fetch failed: ${blogApiErrorLabel(error)}`);
-    return NextResponse.json({ data: [] });
+    return NextResponse.json(
+      { error: "The blog feed is temporarily unavailable" },
+      { status: 503, headers: { "Cache-Control": "no-store" } }
+    );
   }
 }

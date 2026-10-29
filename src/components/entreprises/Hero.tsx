@@ -1,28 +1,24 @@
 ﻿/**
- * Corporate hero Ã¢â‚¬â€ cinematic full-bleed hero aligned to the HOMEPAGE hero
+ * Corporate hero - cinematic full-bleed hero aligned to the HOMEPAGE hero
  * design language (src/components/HeroSection.tsx): full-bleed photograph,
  * directional + top-fade overlays, vertically centered content, Manrope 500
- * H1 (clamp 2.2Ã¢â‚¬â€œ3.9rem, 1.08 leading) with a bronze gradient accent line,
+ * H1 (clamp 2.2-3.9rem, 1.08 leading) with a bronze gradient accent line,
  * rounded-xl `h-11 px-7` pill CTAs, and a homepage-style trust/metrics row
  * (hairline border-t, white/90 bold values, white/32 micro labels). Wenaya
  * copy, image, CTA destinations (external audit calendar + `#downloads`),
- * value bullets and the 4 metrics + partner logo are all preserved Ã¢â‚¬â€ only the
+ * value bullets and the 4 metrics + partner logo are all preserved - only the
  * visual language changed. No bottom melt: the next section (TrustBand) is a
  * light band, so the overlay fades cleanly to the section edge.
  *
- * Animation mirrors the homepage: content is hidden at first paint via
- * `.ch-fade` (globals.css), then revealed by GSAP `fromTo` tweens in order
- * eyebrow Ã¢â€ â€™ H1 Ã¢â€ â€™ sub Ã¢â€ â€™ CTAs Ã¢â€ â€™ bullets Ã¢â€ â€™ metrics/logo. Reduced motion renders
- * everything statically visible (CSS + JS `matchMedia` bail).
+ * No entrance animation: all content paints in the initial HTML with no
+ * opacity gates or transform tweens. The background media owns its own
+ * reduced-motion fallback separately.
  */
 "use client";
 
 import Image from "next/image";
 import CorporateHeroVideo from "./corporate-hero/CorporateHeroVideo";
-import { useEffect } from "react";
-import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
-import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 
 const STAT_ORDER = [
   // stat 0: 35+ Ã¢â‚¬â€ five-column grid column 1 (left)
@@ -39,42 +35,9 @@ export default function Hero(): React.JSX.Element {
   const { t, tRaw, locale } = useLocale();
   const bullets = tRaw<string[]>("entreprises.hero.bullets");
   const metrics = tRaw<{ number: string; label: string }[]>("entreprises.approach.stats");
-  const { elRef: sectionRef, ready } = useIntersectionDeferred();
-
-  useEffect(() => {
-    if (!ready) return;
-    const section = sectionRef.current;
-    if (!section) return;
-    if (typeof window === "undefined") return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const ctx = gsap.context(() => {
-      gsap.timeline({ defaults: { ease: "power3.out" } })
-        .fromTo(".hero-eyebrow", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5 })
-        .fromTo(
-          ".hero-line",
-          { opacity: 0, y: 32 },
-          { opacity: 1, y: 0, duration: 0.75, stagger: 0.1 },
-          "-=0.3"
-        )
-        .fromTo(".hero-sub", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5 }, "-=0.35")
-        .fromTo(
-          ".hero-cta",
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.45 },
-          "-=0.25"
-        )
-        .fromTo(".ch-proof", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5 }, "-=0.3")
-        .fromTo(".ch-stats", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.55 }, "-=0.3");
-    }, section);
-
-    return () => ctx.revert();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready]);
 
   return (
     <section
-      ref={sectionRef}
       data-section-bg="dark"
       aria-label={t("entreprises.hero.badge")}
       className="relative flex items-center overflow-hidden bg-[#0B1220] min-h-[calc(100vh-80px)] pt-20"
@@ -85,7 +48,7 @@ export default function Hero(): React.JSX.Element {
       {/* Ã¢â€â‚¬Ã¢â€â‚¬ Content Ã¢â‚¬â€ homepage container + centered copy Ã¢â€â‚¬Ã¢â€â‚¬ */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pt-8 sm:pt-12 pb-16 sm:pb-20">
         {/* Eyebrow */}
-        <p className="hero-eyebrow ch-fade flex items-center gap-2.5 mb-7">
+        <p className="hero-eyebrow flex items-center gap-2.5 mb-7">
           <span className="w-1.5 h-1.5 rounded-full bg-[#B88A5A]" aria-hidden="true" />
           <span className="text-[#B88A5A] text-[11px] sm:text-xs font-semibold tracking-[0.24em] uppercase">
             {t("entreprises.hero.badge")}
@@ -102,8 +65,8 @@ export default function Hero(): React.JSX.Element {
             letterSpacing: "-0.02em",
           }}
         >
-          <span className="hero-line ch-fade block">{t("entreprises.hero.heading1")}</span>
-          <span className="hero-line ch-fade block">
+          <span className="hero-line block">{t("entreprises.hero.heading1")}</span>
+          <span className="hero-line block">
             <span
               style={{
                 background: "linear-gradient(135deg, #D4A870 0%, #B88A5A 45%, #E8C99A 100%)",
@@ -118,14 +81,14 @@ export default function Hero(): React.JSX.Element {
 
         {/* Single supporting paragraph */}
         <p
-          className="hero-sub ch-fade mt-6 max-w-[560px] leading-[1.78]"
+          className="hero-sub mt-6 max-w-[560px] leading-[1.78]"
           style={{ color: "rgba(255,255,255,0.88)", fontSize: "clamp(0.93rem, 1.4vw, 1.05rem)" }}
         >
           {t("entreprises.hero.desc")}
         </p>
 
         {/* CTAs Ã¢â‚¬â€ homepage pills; primary solid bronze (external), secondary outline */}
-        <div className="hero-cta ch-fade mt-9 flex flex-col sm:flex-row items-start sm:items-center gap-3">
+        <div className="hero-cta mt-9 flex flex-col sm:flex-row items-start sm:items-center gap-3">
           <a
             href="https://calendar.app.google/YyAirdPSc2ugGbnh9"
             target="_blank"
@@ -145,7 +108,7 @@ export default function Hero(): React.JSX.Element {
         </div>
 
         {/* Value bullets */}
-        <ul className="ch-proof ch-fade mt-9 flex flex-col gap-2.5">
+        <ul className="ch-proof mt-9 flex flex-col gap-2.5">
           {bullets.map((bullet, i) => (
             <li
               key={`${i}-${bullet}`}
@@ -172,7 +135,7 @@ export default function Hero(): React.JSX.Element {
             right in the right tracks, so the logo column centre always equals the
             row centre. Each stat is its own min-w-0 wrapper (number over label)
             so labels wrap within their track instead of colliding. */}
-        <div className="ch-stats ch-fade mt-10 sm:mt-20 pt-8 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-white/[0.08] lg:grid-cols-[1fr_1fr_auto_1fr_1fr] lg:items-start lg:gap-x-10">
+        <div className="ch-stats mt-10 sm:mt-20 pt-8 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-white/[0.08] lg:grid-cols-[1fr_1fr_auto_1fr_1fr] lg:items-start lg:gap-x-10">
           {metrics.map((m, i) => {
             const mobileRight = i % 2 === 1;
             const rightGroup = i >= 2;
@@ -201,7 +164,7 @@ export default function Hero(): React.JSX.Element {
                 fill
                 priority
                 sizes="(min-width: 1024px) 190px, (min-width: 640px) 132px, 104px"
-                className="object-cover object-[50%_52.5%] brightness-0 invert"
+                className="object-cover object-[50%_52.5%]"
               />
             </span>
           </span>

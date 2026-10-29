@@ -9,7 +9,6 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import Image from "next/image";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
 
@@ -72,18 +71,6 @@ export default function AdaptableApproachSection() {
             {t("entreprises.programs.heading1")} <span className="text-[#B88A5A]">{t("entreprises.programs.heading2")}</span>
           </h2>
           <p className="mx-auto mt-4 max-w-[600px] text-[15px] sm:text-base text-[#2B2F36]/55 leading-relaxed">{t("entreprises.programs.sub")}</p>
-        </div>
-
-        {/* Hub — Wenaya Corporate Programs logo */}
-        <div className="aa-hub flex justify-center">
-          <Image
-            src="/images/wenaya-corporate-programs.png"
-            alt="Wenaya Corporate Programs"
-            width={1441}
-            height={1092}
-            sizes="(max-width: 640px) 68vw, (max-width: 1024px) 40vw, 30vw"
-            className="h-auto w-full max-w-[340px] sm:max-w-[400px] lg:max-w-[460px]"
-          />
         </div>
 
         {/* Stem */}

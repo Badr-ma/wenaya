@@ -40,6 +40,7 @@ import { getArticlesPage, blogApiErrorLabel } from "@/lib/blog-articles-api";
 import { toFeedPost } from "@/lib/blog-mappers";
 import { getHomepagePublished } from "@/lib/homepage";
 import { getHomepageSpecialists } from "@/lib/professionals";
+import { shouldPropagateApiFailure } from "@/lib/api/retry";
 import HomepageRenderer from "@/components/homepage/HomepageRenderer";
 import { getQuickAccessImages } from "@/lib/practice-images";
 import type { HomepageConfig } from "@/lib/homepage-types";
@@ -91,11 +92,14 @@ export default async function EnglishHome() {
   }
 
   let posts: ReturnType<typeof toFeedPost>[] = [];
+  let blogLoadError = false;
   try {
     const { articles } = await getArticlesPage(1);
     posts = articles.slice(0, 3).map(toFeedPost);
   } catch (error) {
     console.error(`[blog] homepage feed fetch failed: ${blogApiErrorLabel(error)}`);
+    if (shouldPropagateApiFailure()) throw error;
+    blogLoadError = true;
     posts = [];
   }
 
@@ -114,7 +118,7 @@ export default async function EnglishHome() {
           <div data-section-bg="light"><QuickAccessSection images={quickAccessImages} /></div>
           <div data-section-bg="light"><ExpertiseSection specialists={experts} /></div>
           <div data-section-bg="light"><TestimonialsSection /></div>
-          <div data-section-bg="light"><BlogSection posts={posts} /></div>
+          <div data-section-bg="light"><BlogSection posts={posts} initialLoadError={blogLoadError} /></div>
         </main>
         <div data-section-bg="dark"><Footer /></div>
       </div>

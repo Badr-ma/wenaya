@@ -1,6 +1,6 @@
 /**
  * ISR failure-policy tests — src/lib/api/retry.ts#shouldPropagateApiFailure
- * wired through the three rethrowing adapters + the always-swallow adapter
+ * wired through the rethrowing listing/detail adapters
  * and the contact-form local catch.
  *
  * Policy under test:
@@ -9,7 +9,7 @@
  *   next build (NEXT_PHASE=phase-production-build)            → swallowed → []
  *   next dev  (NODE_ENV=development)                          → swallowed → []
  *   valid empty API response (any env)                        → [] (never an error)
- *   getLiveSpecialists (any env)                              → always swallows → []
+ *   getLiveSpecialists (production runtime)                   → rethrows
  *   resolveRequestedSession                                   → local catch swallows
  *     even a production-runtime rethrow → undefined (contact page never 500s)
  *
@@ -23,9 +23,12 @@ process.env.WENAYA_API_URL = "https://api.test";
 
 const { getPracticeSpecialists, getHomepageSpecialists, getLiveSpecialists } =
   await import("@/lib/professionals");
-const { getActiveGroupSessions, resolveRequestedSession } = await import(
-  "@/lib/group-sessions-active"
-);
+const {
+  getActiveGroupSessions,
+  resolveRequestedSession,
+  resolveDetailSession,
+  getLiveRelatedSessions,
+} = await import("@/lib/group-sessions-active");
 
 // ─── Helpers ────────────────────────────────────────────────────────────
 
@@ -209,14 +212,22 @@ test("active group sessions: prod runtime + VALID empty paginator → [] (never 
 
 // ─── getLiveSpecialists — ALWAYS swallows ───────────────────────────────
 
-test("live specialists: prod runtime + transport failure → ALWAYS swallows → []", async (t) => {
+test("live specialists: prod runtime + transport failure → RETHROWS", async (t) => {
   const error = t.mock.method(console, "error", () => {});
   const state = stubFetchAlways(t, http400);
   await withEnv(PROD, async () => {
-    assert.deepEqual(await getLiveSpecialists(), []);
+    await assert.rejects(getLiveSpecialists(), /HTTP 400/);
   });
   assert.equal(state.calls, 1);
-  assert.ok(error.mock.callCount() >= 1, "must log via console.error");
+  assert.ok(error.mock.callCount() >= 1, "must log a sanitized failure message");
+});
+
+test("live specialists: build failure is swallowed for build resilience", async (t) => {
+  t.mock.method(console, "error", () => {});
+  stubFetchAlways(t, http400);
+  await withEnv(BUILD, async () => {
+    assert.deepEqual(await getLiveSpecialists(), []);
+  });
 });
 
 test("live specialists: prod runtime + VALID empty response → []", async (t) => {
@@ -233,12 +244,38 @@ test("live specialists: prod runtime + VALID empty response → []", async (t) =
 
 // ─── resolveRequestedSession — local catch swallows everything ──────────
 
-test("resolveRequestedSession: api-* service + prod-runtime rethrow underneath → undefined (no throw)", async (t) => {
+test("resolveRequestedSession: api-* service gracefully degrades on upstream failure", async (t) => {
   t.mock.method(console, "warn", () => {});
   const state = stubFetchAlways(t, http400);
   await withEnv(PROD, async () => {
     const result = await resolveRequestedSession("api-922", "fr");
     assert.equal(result, undefined);
+  });
+  assert.equal(state.calls, 1);
+});
+
+test("live group detail: production runtime failure propagates instead of becoming not-found", async (t) => {
+  t.mock.method(console, "warn", () => {});
+  const state = stubFetchAlways(t, http400);
+  await withEnv(PROD, async () => {
+    await assert.rejects(resolveDetailSession("group-training", "fr"), /HTTP 400/);
+  });
+  assert.equal(state.calls, 1);
+});
+
+test("live group detail: build failure stays unresolved without fabricated data", async (t) => {
+  t.mock.method(console, "warn", () => {});
+  stubFetchAlways(t, http400);
+  await withEnv(BUILD, async () => {
+    assert.equal(await resolveDetailSession("group-training", "fr"), undefined);
+  });
+});
+
+test("live group related sessions: production runtime failure propagates for ISR", async (t) => {
+  t.mock.method(console, "warn", () => {});
+  const state = stubFetchAlways(t, http400);
+  await withEnv(PROD, async () => {
+    await assert.rejects(getLiveRelatedSessions("922", "fr"), /HTTP 400/);
   });
   assert.equal(state.calls, 1);
 });

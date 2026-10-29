@@ -32,6 +32,7 @@
  */
 
 import { getProfessionalsApiBase } from "./professionals/config";
+import { WenayaApiError } from "./api/client";
 
 const PROFESSIONALS_DETAIL_PATH = "/api/v1/getProfessionalBySlug";
 
@@ -208,7 +209,7 @@ function isValidResponse(value: unknown): value is ProfessionalDetailResponse {
 /**
  * Fetch one professional's detail by routing slug.
  * Throws on network error, non-2xx, an unexpected payload shape, or a
- * missing/blank slug. The caller decides the fallback (Redis → mock → 404).
+ * missing/blank slug. Only an explicit upstream 404 is treated as not found.
  */
 export async function fetchProfessionalDetail(slug: string): Promise<ApiProfessionalDetail> {
   if (!slug) throw new Error("Missing professional slug");
@@ -226,7 +227,7 @@ export async function fetchProfessionalDetail(slug: string): Promise<ApiProfessi
     });
 
     if (!res.ok) {
-      throw new Error(`Professional detail API HTTP ${res.status}`);
+      throw new WenayaApiError("Professional detail API request failed", res.status);
     }
 
     const json = await res.json();

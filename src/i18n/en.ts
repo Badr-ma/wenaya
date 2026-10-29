@@ -593,8 +593,8 @@ const en: Translations = {
   },
   entreprises: {
     hero: {
-      logoAlt: "Wenaya Corporate",
-      badge: "Wenaya for business",
+      logoAlt: "Wenaya Corporate Programs",
+      badge: "Wenaya Corporate Programs",
       heading1: "Cultivate well-being.",
       heading2: "Reap performance.",
       desc: "A health partner for your teams and your HR challenges.",
@@ -613,7 +613,7 @@ const en: Translations = {
       },
     },
     programs: {
-      badge: "Our program",
+      badge: "Wenaya Corporate Programs",
       heading1: "A tailored",
       heading2: "approach",
       sub: "Our offer and our key themes.",
@@ -758,7 +758,7 @@ const en: Translations = {
         { number: "7", label: "years of experience" },
       ],
       comparison: {
-        heading: "Without Wenaya / With Wenaya",
+        heading: "Without WCP / With WCP",
         sub: "The difference a structured approach makes.",
         without: [
           {
@@ -944,7 +944,7 @@ const en: Translations = {
       ],
     },
     programmes: {
-      title: "Certified programs",
+      title: "Wenaya Corporate Programs",
       subtitle: "Proven methods adapted to your company.",
       discoverLabel: "Discover",
       swipeLabel: "Swipe to explore",
@@ -1076,7 +1076,7 @@ const en: Translations = {
           source: "Source: Deloitte (2022)",
         },
       ],
-      band: "At Wenaya: 35 certified therapists · +2,000 employees supported",
+      band: "At Wenaya Corporate: 35 certified therapists · +2,000 employees supported",
     },
     testimonials: {
       title: "Testimonials",
@@ -1086,7 +1086,7 @@ const en: Translations = {
       items: [
         {
           quote:
-            "An annual Wenaya program for more than 900 employees, adapted to our multi-site constraints, with engagement that exceeds expectations.",
+            "An annual WCP program for more than 900 employees, adapted to our multi-site constraints, with engagement that exceeds expectations.",
           author:
             "HR Director, consulting multinational (Big 4), +900 employees supported",
         },
@@ -1136,7 +1136,7 @@ const en: Translations = {
         },
         {
           q: "How does your intervention work with my HRIS and existing providers?",
-          a: "Wenaya complements your HR ecosystem; HRIS connectors coming soon.",
+          a: "Wenaya Corporate Programs complements your HR ecosystem; HRIS connectors coming soon.",
         },
         {
           q: "What are the billing and contractual terms?",
@@ -1637,6 +1637,9 @@ const en: Translations = {
       title: "Our group sessions",
       sub: "Group workshops and classes led by our specialists, for every chapter of your life.",
       cta: "Book a spot",
+      loading: "Loading sessions…",
+      unavailable: "Sessions are temporarily unavailable.",
+      retry: "Try again",
     },
     benefits: {
       title: "Why take part?",

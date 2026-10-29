@@ -22,9 +22,9 @@ const FADE_MS = 1600;
 /* Poster -> video hand-off (a video's own fade-in once it reports playing). */
 const VIDEO_REVEAL_MS = 700;
 /* Start buffering the next clip this early so the dissolve is always covered. */
-const PRELOAD_LEAD_SECONDS = 8;
+const PRELOAD_LEAD_SECONDS = 3;
 /* Begin the dissolve this long before the outgoing clip ends. */
-const TRANSITION_LEAD_SECONDS = 2;
+const TRANSITION_LEAD_SECONDS = 1;
 
 interface MutableNumber {
   current: number;

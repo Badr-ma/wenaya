@@ -20,9 +20,9 @@ const reducedMotion =
 type Pack = { level: string; name: string; pitch: string; features: string[] };
 
 const PACK_IMAGES = [
-  "/images/cours-ateliers/wellness.jpg",
-  "/images/business-meeting.jpg",
-  "/images/executive-team.jpg",
+  "/images/image00005.jpg",
+  "/images/image00012.jpg",
+  "/images/DSC09121.jpg",
 ];
 
 export default function PacksSection() {

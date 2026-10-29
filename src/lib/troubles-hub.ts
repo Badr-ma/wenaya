@@ -24,14 +24,16 @@
  * (backend page-walk) catalogue, linking only to detail routes. Errors tolerated
  * → both `null`.
  *
- * Failure policy: API error → `status: "error"` (page renders the error state);
- * zero visible records → `status: "empty"`. No fallback to static demo data.
+ * Failure policy: build/dev API errors → `status: "error"` (visible error
+ * state); production runtime errors propagate so ISR retains stale output.
+ * Zero visible records → `status: "empty"`. No static demo fallback.
  */
 import { getAllPratiques } from "./pratiques";
 import { getLiveSpecialists } from "./professionals";
 import { getSpecialtyOptions } from "./specialist-filters";
 import { getTroubles, getTroubleBySlug, type Trouble } from "./troubles";
 import { h, troubleDetailHref, type HrefLocale } from "./href";
+import { shouldPropagateApiFailure } from "./api/retry";
 
 export interface TroubleHubPractice {
   slug: string;
@@ -92,7 +94,8 @@ export async function getTroublesHub(): Promise<TroublesHubResult> {
     const items = await getTroubles();
     return { status: items.length === 0 ? "empty" : "ok", items };
   } catch (error) {
-    console.error("[troubles-hub] failed to load maux-troubles catalogue:", error);
+    console.error("[troubles-hub] backend unavailable");
+    if (shouldPropagateApiFailure()) throw error;
     return { status: "error", items: [] };
   }
 }
@@ -127,25 +130,20 @@ export async function getTroubleNeighbors(
 
 /**
  * Resolve a single backend-slug trouble (detail pages) with the same
- * locale-aware practice/pros resolution as the hub. Returns null when the
- * trouble is unknown OR the backend is unreachable (404 either way).
+ * locale-aware practice/pros resolution as the hub. Returns null only when
+ * the backend confirms the slug is missing; upstream failures propagate.
  */
 export async function getTroubleDetail(
   locale: "fr" | "en",
   slug: string
 ): Promise<TroubleHubItem | null> {
-  try {
-    const trouble = await getTroubleBySlug(slug);
-    if (!trouble) return null;
-    const { practiceBySlug, proSlugs } = await buildPracticeMaps(locale);
-    return {
-      ...trouble,
-      practices: resolvePractices(trouble, locale, practiceBySlug, proSlugs),
-    };
-  } catch (error) {
-    console.error(`[troubles-hub] failed to resolve trouble detail "${slug}":`, error);
-    return null;
-  }
+  const trouble = await getTroubleBySlug(slug);
+  if (!trouble) return null;
+  const { practiceBySlug, proSlugs } = await buildPracticeMaps(locale);
+  return {
+    ...trouble,
+    practices: resolvePractices(trouble, locale, practiceBySlug, proSlugs),
+  };
 }
 
 /**
@@ -199,6 +197,7 @@ export async function getClinicTroubleCards(
     return { status: items.length === 0 ? "empty" : "ok", items };
   } catch (error) {
     console.error("[troubles-hub] failed to load clinic trouble cards:", error);
+    if (shouldPropagateApiFailure()) throw error;
     return { status: "error", items: [] };
   }
 }

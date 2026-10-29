@@ -27,9 +27,9 @@ import { languageAlternates } from "@/lib/hreflang";
 const EntreprisesFooter = dynamic(() => import("@/components/entreprises/Footer"), { ssr: true });
 
 export const metadata: Metadata = {
-  title: "Corporate Wellness — Health & Prevention Programs",
+  title: "Wenaya Corporate Programs (WCP) — Corporate Wellness",
   description:
-    "Wenaya designs evidence-based corporate wellness programs in Morocco: mental health, physiotherapy, nutrition, prevention — on-site or remote. Measurable, tailored, certified.",
+    "Wenaya Corporate Programs (WCP) designs evidence-based corporate wellness programs in Morocco: mental health, physiotherapy, nutrition, prevention — on-site or remote. Measurable, tailored, certified.",
   keywords: [
     "corporate wellness Morocco",
     "workplace health program Casablanca",
@@ -47,16 +47,16 @@ export const metadata: Metadata = {
   openGraph: {
     ...OG_DEFAULTS,
     locale: "en_MA",
-    title: "Corporate Wellness — Health & Prevention Programs | Wenaya",
+    title: "Wenaya Corporate Programs (WCP) — Corporate Wellness | Wenaya",
     description:
-      "Wenaya designs evidence-based corporate wellness programs for Moroccan and international organizations. Mental health, physiotherapy, nutrition, prevention — measurable and tailored to your workforce.",
+      "Wenaya Corporate Programs (WCP) designs evidence-based corporate wellness programs for Moroccan and international organizations. Mental health, physiotherapy, nutrition, prevention — measurable and tailored to your workforce.",
     url: `${SITE_URL}/en/corporate`,
   },
   twitter: {
     ...TWITTER_DEFAULTS,
-    title: "Corporate Wellness — Health & Prevention Programs | Wenaya",
+    title: "Wenaya Corporate Programs (WCP) — Corporate Wellness | Wenaya",
     description:
-      "Wenaya designs evidence-based corporate wellness programs for Moroccan and international organizations. Mental health, physiotherapy, nutrition, prevention — measurable and tailored to your workforce.",
+      "Wenaya Corporate Programs (WCP) designs evidence-based corporate wellness programs for Moroccan and international organizations. Mental health, physiotherapy, nutrition, prevention — measurable and tailored to your workforce.",
   },
 };
 

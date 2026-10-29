@@ -10,6 +10,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import Image from "next/image";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
 
@@ -66,6 +67,18 @@ export default function ProblemSection() {
   return (
     <section ref={sectionRef} className="relative scroll-mt-20 overflow-hidden bg-[#F2EFE9] px-6 py-10 sm:py-13 lg:py-16">
       <div className="mx-auto max-w-5xl">
+        {/* Hub — Wenaya Corporate Programs logo */}
+        <div className="aa-hub flex justify-center mb-0">
+          <Image
+            src="/images/wenaya-corporate-programs.png"
+            alt="Wenaya Corporate Programs"
+            width={1441}
+            height={1092}
+            sizes="(max-width: 640px) 68vw, (max-width: 1024px) 40vw, 30vw"
+            className="h-auto w-full max-w-[240px] sm:max-w-[280px] lg:max-w-[320px]"
+          />
+        </div>
+
         <div className="pb-head mx-auto max-w-2xl text-center">
           <span className="mx-auto mb-4 block h-px w-8 bg-[#B88A5A]/40" aria-hidden />
           <h2 className="heading-serif text-[#0B1220] leading-[1.06]" style={{ fontSize: "clamp(1.75rem, 2.8vw, 2.4rem)" }}>

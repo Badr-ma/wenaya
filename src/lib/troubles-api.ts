@@ -18,7 +18,7 @@
  * specialties[] (full speciality records with `id`). No locale field exists —
  * content is French-only; the EN page renders it verbatim under EN chrome.
  */
-import { wenayaApiGet } from "./api/client";
+import { WenayaApiError, wenayaApiGet } from "./api/client";
 import type { LaravelEnvelope } from "./api/types";
 
 export const TROUBLES_API_ENDPOINT = "/api/v1/getAllPublicTroubles";
@@ -149,8 +149,8 @@ export async function fetchAllTroubles(): Promise<ApiTrouble[]> {
 }
 
 /**
- * Fetch a single trouble by its backend slug. Returns the record or null when
- * the backend reports error / an unrecognizable payload / or 404.
+ * Fetch a single trouble by its backend slug. Returns null only for an
+ * explicit upstream 404; transport and payload failures propagate.
  */
 export async function fetchTroubleBySlug(slug: string): Promise<ApiTroubleDetails | null> {
   const safeSlug = encodeURIComponent(slug);
@@ -160,9 +160,10 @@ export async function fetchTroubleBySlug(slug: string): Promise<ApiTroubleDetail
       revalidate: TROUBLES_API_REVALIDATE,
     });
 
-    if (!isValidDetailResponse(json)) return null;
+    if (!isValidDetailResponse(json)) throw new Error("Unexpected Wenaya trouble detail payload");
     return json.data;
-  } catch {
-    return null;
+  } catch (error) {
+    if (error instanceof WenayaApiError && error.status === 404) return null;
+    throw error;
   }
 }

@@ -43,3 +43,18 @@ dev-server-err.log
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+# dev/debug
+dev*.log
+out.txt
+pb*.mjs
+lighthouse-*
+*.report.html
+*.report.json
+
+# audit/docs
+wenaya-*-report.md
+
+# local media originals/source clips
+public/videos/**/*iStock-*.mov
+public/videos/homepage-hero/*first-6-seconds*.mp4
+public/videos/corporate-hero/*iStock-*.mov

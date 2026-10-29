@@ -8,10 +8,12 @@ import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
 export const metadata: Metadata = {
-  title: "Programmes Bien-être Labellisés pour Entreprises",
+  title: "Wenaya Corporate Programs (WCP) — Programmes Labellisés pour Entreprises",
   description:
-    "Découvrez nos 4 programmes certifiés pour entreprises : PCM (Process Communication Model), Leadership 360°, L'Art des Priorités et People Model Canvas. Des méthodes éprouvées pour améliorer la communication, le leadership, la gestion du stress et la stratégie RH de vos équipes.",
+    "Wenaya Corporate Programs (WCP) propose 4 programmes certifiés pour entreprises : PCM (Process Communication Model), Leadership 360°, L'Art des Priorités et People Model Canvas. Des méthodes éprouvées pour améliorer la communication, le leadership, la gestion du stress et la stratégie RH de vos équipes.",
   keywords: [
+    "Wenaya Corporate Programs",
+    "WCP",
     "programme bien-être entreprise",
     "PCM Maroc",
     "Process Communication Model entreprise",
@@ -29,16 +31,16 @@ export const metadata: Metadata = {
   },
   openGraph: {
     ...OG_DEFAULTS,
-    title: "Programmes Labellisés Bien-être en Entreprise | Wenaya",
+    title: "Wenaya Corporate Programs (WCP) — Programmes Labellisés pour Entreprises | Wenaya",
     description:
-      "4 programmes certifiés pour transformer la santé, la communication et la performance de vos équipes. PCM, Leadership 360°, Art des Priorités, People Model Canvas.",
+      "Wenaya Corporate Programs (WCP) — 4 programmes certifiés pour transformer la santé, la communication et la performance de vos équipes. PCM, Leadership 360°, Art des Priorités, People Model Canvas.",
     url: `${SITE_URL}/corporate/programmes`,
   },
   twitter: {
     ...TWITTER_DEFAULTS,
-    title: "Programmes Labellisés Bien-être en Entreprise | Wenaya",
+    title: "Wenaya Corporate Programs (WCP) — Programmes Labellisés pour Entreprises | Wenaya",
     description:
-      "4 programmes certifiés pour transformer la santé, la communication et la performance de vos équipes. PCM, Leadership 360°, Art des Priorités, People Model Canvas.",
+      "Wenaya Corporate Programs (WCP) — 4 programmes certifiés pour transformer la santé, la communication et la performance de vos équipes. PCM, Leadership 360°, Art des Priorités, People Model Canvas.",
   },
 };
 

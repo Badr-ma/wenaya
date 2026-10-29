@@ -420,19 +420,33 @@ function normalizeProgram(program: ApiGroupProgram, locale: GroupSessionLocale):
 export async function getActiveGroupSessions(
   locale: GroupSessionLocale = "fr"
 ): Promise<GroupSession[]> {
+  const result = await getActiveGroupSessionsResult(locale);
+  return result.sessions;
+}
+
+export interface ActiveGroupSessionsResult {
+  sessions: GroupSession[];
+  /** True only when a failed request was tolerated during build or development. */
+  loadError: boolean;
+}
+
+/** Resolve the feed while preserving the distinction between API failure and valid empty data. */
+export async function getActiveGroupSessionsResult(
+  locale: GroupSessionLocale = "fr"
+): Promise<ActiveGroupSessionsResult> {
   try {
     const programs = await fetchGroupPrograms();
     const mapped = programs
       .map((program) => normalizeProgram(program, locale))
       .filter((session): session is GroupSession => session !== null);
-    return mapped;
+    return { sessions: mapped, loadError: false };
   } catch (error) {
     console.warn(
       "[group-sessions-active] backend feed unreachable:",
       error instanceof Error ? error.message : error
     );
     if (shouldPropagateApiFailure()) throw error;
-    return [];
+    return { sessions: [], loadError: true };
   }
 }
 
@@ -473,8 +487,9 @@ export async function resolveRequestedSession(
  * Priority: a local editorial slug wins (deterministic, static, canonical via
  * `getCanonicalGroupSession`); otherwise the slug is interpreted as a LIVE
  * program slug (`jiu-jitsu-kids`, `group-training`, or derived `{title}-{id}`)
- * and resolved against the live backend feed. Returns undefined on ANY miss or
- * feed failure so the page can `notFound()` — never an invented detail page.
+ * and resolved against the live backend feed. A confirmed miss returns
+ * undefined so the page can `notFound()`; production runtime feed failures
+ * propagate so ISR retains the last successful page.
  */
 export async function resolveDetailSession(
   slug: string,
@@ -491,10 +506,8 @@ export async function resolveDetailSession(
     const program = programs.find((p) => p.id === programId);
     return program ? normalizeProgram(program, locale) ?? undefined : undefined;
   } catch (error) {
-    console.warn(
-      "[group-sessions-active] detail feed unreachable for live slug:",
-      error instanceof Error ? error.message : error
-    );
+    console.warn("[group-sessions-active] detail feed unavailable for live slug");
+    if (shouldPropagateApiFailure()) throw error;
     return undefined;
   }
 }
@@ -525,10 +538,8 @@ export async function getLiveRelatedSessions(
     const sessions = await getActiveGroupSessions(locale);
     return sessions.filter((s) => s.id !== currentId).slice(0, count);
   } catch (error) {
-    console.warn(
-      "[group-sessions-active] related feed unreachable, returning empty:",
-      error instanceof Error ? error.message : error
-    );
+    console.warn("[group-sessions-active] related feed unavailable");
+    if (shouldPropagateApiFailure()) throw error;
     return [];
   }
 }

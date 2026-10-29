@@ -593,8 +593,8 @@ const fr = {
   },
   entreprises: {
     hero: {
-      logoAlt: "Wenaya Corporate",
-      badge: "Wenaya pour l'entreprise",
+      logoAlt: "Wenaya Corporate Programs",
+      badge: "Wenaya Corporate Programs",
       heading1: "Cultivez le bien-être.",
       heading2: "Récoltez la performance.",
       desc: "Un partenaire santé pour vos équipes et vos enjeux RH.",
@@ -613,7 +613,7 @@ const fr = {
       },
     },
     programs: {
-      badge: "Notre programme",
+      badge: "Wenaya Corporate Programs",
       heading1: "Une approche",
       heading2: "sur mesure",
       sub: "Notre offre et nos thématiques phares.",
@@ -758,7 +758,7 @@ const fr = {
         { number: "7", label: "ans d'expérience" },
       ],
       comparison: {
-        heading: "Sans Wenaya / Avec Wenaya",
+        heading: "Sans WCP / Avec WCP",
         sub: "La différence d'une approche structurée de la santé.",
         without: [
           {
@@ -945,7 +945,7 @@ const fr = {
       ],
     },
     programmes: {
-      title: "Programmes labellisés",
+      title: "Wenaya Corporate Programs",
       subtitle: "Des méthodes éprouvées, adaptées à votre entreprise.",
       discoverLabel: "Découvrir",
       swipeLabel: "Glissez pour explorer",
@@ -1084,7 +1084,7 @@ const fr = {
           source: "Source : Deloitte (2022)",
         },
       ],
-      band: "Chez Wenaya : 35 thérapeutes certifiés · +2 000 collaborateurs accompagnés",
+      band: "Chez Wenaya Corporate : 35 thérapeutes certifiés · +2 000 collaborateurs accompagnés",
     },
     testimonials: {
       title: "Témoignages",
@@ -1094,7 +1094,7 @@ const fr = {
       items: [
         {
           quote:
-            "Un programme annuel Wenaya pour plus de 900 collaborateurs, adapté à nos contraintes multi-sites, avec une adhésion qui dépasse nos attentes.",
+            "Un programme annuel WCP pour plus de 900 collaborateurs, adapté à nos contraintes multi-sites, avec une adhésion qui dépasse nos attentes.",
           author:
             "DRH, multinationale du conseil (Big 4), +900 collaborateurs accompagnés",
         },
@@ -1144,7 +1144,7 @@ const fr = {
         },
         {
           q: "Comment s'articule l'intervention avec mon SIRH et mes prestataires existants ?",
-          a: "Wenaya complète votre écosystème RH ; connecteurs SIRH à venir.",
+          a: "Wenaya Corporate Programs complète votre écosystème RH ; connecteurs SIRH à venir.",
         },
         {
           q: "Quelles sont les modalités de facturation et de contractualisation ?",
@@ -1654,6 +1654,9 @@ const fr = {
       title: "Nos séances de groupe",
       sub: "Des ateliers et cours collectifs animés par nos spécialistes, pour chaque moment de votre vie.",
       cta: "Réserver une place",
+      loading: "Chargement des séances…",
+      unavailable: "Les séances sont momentanément indisponibles.",
+      retry: "Réessayer",
     },
     benefits: {
       title: "Pourquoi participer ?",

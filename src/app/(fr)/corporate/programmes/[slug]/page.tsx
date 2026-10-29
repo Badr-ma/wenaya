@@ -2,7 +2,7 @@
  * Programme Detail Page FR — /corporate/programmes/[slug]
  * Static generation over the 4 labelled corporate programmes (live-verbatim content
  * from src/lib/corporate-programmes.ts). Dynamic SEO metadata mirrors the live pages
- * (title "{name} | Wenaya Corporate | Wenaya", live description, self canonical,
+ * (title "{name} | Wenaya Corporate Programs (WCP) | Wenaya", live description, self canonical,
  * fr-MA/en-MA/x-default hreflang). Unknown slugs render a proper 404 via notFound().
  * Live pages carry no JSON-LD (and no hreflang) — this page adds a single light
  * WebPage node for sitewide schema consistency, alongside the visible Breadcrumbs.
@@ -23,7 +23,7 @@ interface Props {
 }
 
 /** Live meta descriptions (verbatim, captured 2026-09-09). */
-const SEOTitle = (name: string) => `${name} | Wenaya Corporate`;
+const SEOTitle = (name: string) => `${name} | Wenaya Corporate Programs (WCP) | Wenaya`;
 const SEODescriptions: Record<string, string> = {
   "leadership-360":
     "Cursus de développement managérial complet en 5 axes pour vos managers — connaissance de soi, relations, mission, efficacité et people management.",
@@ -53,13 +53,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: { canonical: url, languages: languageAlternates(`/corporate/programmes/${slug}`) },
     openGraph: {
       ...OG_DEFAULTS,
-      title: `${programme.name} | Wenaya Corporate`,
+      title: `${programme.name} | Wenaya Corporate Programs (WCP) | Wenaya`,
       description,
       url,
     },
     twitter: {
       ...TWITTER_DEFAULTS,
-      title: `${programme.name} | Wenaya Corporate`,
+      title: `${programme.name} | Wenaya Corporate Programs (WCP) | Wenaya`,
       description,
     },
   };

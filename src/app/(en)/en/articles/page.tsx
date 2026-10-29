@@ -8,6 +8,7 @@ import BlogHero from "@/components/blog/BlogHero";
 import BlogListClient from "@/components/blog/BlogListClient";
 import { getArticlesPage, blogApiErrorLabel } from "@/lib/blog-articles-api";
 import { toClientPost } from "@/lib/blog-mappers";
+import { shouldPropagateApiFailure } from "@/lib/api/retry";
 
 export const metadata: Metadata = {
   title: "Health & Wellness Blog — Tips, Studies & Guides",
@@ -44,11 +45,14 @@ export const metadata: Metadata = {
 
 export default async function EnglishBlogPage() {
   let posts: ReturnType<typeof toClientPost>[] = [];
+  let loadError = false;
   try {
     const { articles } = await getArticlesPage(1);
     posts = articles.map(toClientPost);
   } catch (error) {
     console.error(`[blog] article listing fetch failed: ${blogApiErrorLabel(error)}`);
+    if (shouldPropagateApiFailure()) throw error;
+    loadError = true;
     posts = [];
   }
   const latest = posts[0] ?? null;
@@ -59,7 +63,7 @@ export default async function EnglishBlogPage() {
       <main>
         <Breadcrumbs />
         <BlogHero latest={latest} />
-        <BlogListClient posts={posts} categories={[]} />
+        <BlogListClient posts={posts} categories={[]} initialLoadError={loadError} />
       </main>
       <div data-section-bg="dark"><Footer /></div>
     </div>

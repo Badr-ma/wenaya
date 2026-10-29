@@ -5,7 +5,7 @@
  */
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useCallback, useReducer } from "react";
 import { gsap } from "gsap";
 import Link from "next/link";
 import Image from "next/image";
@@ -15,6 +15,11 @@ import { BlogAuthorAvatar } from "@/components/blog/BlogAuthorAvatar";
 import { h } from "@/lib/href";
 import type { BlogContent } from "@/lib/homepage-types";
 import SubtitleSplit from "@/components/SubtitleSplit";
+import {
+  fetchBlogPosts,
+  homepageBlogFeedReducer,
+  initialHomepageBlogFeedState,
+} from "@/lib/homepage-blog-feed";
 
 
 function BlogCard({ post }: { post: PostWithAuthor }): React.JSX.Element {
@@ -72,11 +77,34 @@ function BlogCard({ post }: { post: PostWithAuthor }): React.JSX.Element {
   );
 }
 
-export default function BlogSection({ posts, content }: { posts: PostWithAuthor[]; content?: BlogContent }): React.JSX.Element {
+export default function BlogSection({ posts, content, initialLoadError = false }: { posts: PostWithAuthor[]; content?: BlogContent; initialLoadError?: boolean }): React.JSX.Element {
   const { t, locale } = useLocale();
+  const [feed, dispatch] = useReducer(homepageBlogFeedReducer, {
+    ...initialHomepageBlogFeedState,
+    status: initialLoadError ? "loading" : "ready",
+    posts,
+  });
+  const requestIdRef = useRef(0);
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  const loadPosts = useCallback(async () => {
+    const requestId = ++requestIdRef.current;
+    dispatch({ type: "start", requestId });
+    try {
+      const nextPosts = await fetchBlogPosts(locale);
+      if (requestId === requestIdRef.current) dispatch({ type: "success", requestId, posts: nextPosts });
+    } catch {
+      if (requestId === requestIdRef.current) dispatch({ type: "failure", requestId });
+    }
+  }, [locale]);
+
+  useEffect(() => {
+    if (!initialLoadError) return;
+    void loadPosts();
+    return () => { requestIdRef.current += 1; };
+  }, [initialLoadError, loadPosts]);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -117,13 +145,26 @@ export default function BlogSection({ posts, content }: { posts: PostWithAuthor[
           </Link>
         </div>
 
-        {posts.length === 0 ? (
+        {feed.status === "loading" ? (
+          <p role="status" aria-busy="true" className="py-12 text-center text-sm text-[#2B2F36]/55">
+            {locale === "en" ? "Loading articles…" : "Chargement des articles…"}
+          </p>
+        ) : feed.status === "error" ? (
+          <div className="py-12 text-center text-[#2B2F36]/55">
+            <p role="alert" className="text-sm">
+              {locale === "en" ? "The latest articles are temporarily unavailable." : "Les derniers articles sont momentanément indisponibles."}
+            </p>
+            <button type="button" onClick={() => void loadPosts()} className="mt-4 text-sm font-medium text-[#9A7242] underline underline-offset-4">
+              {locale === "en" ? "Try again" : "Réessayer"}
+            </button>
+          </div>
+        ) : feed.posts.length === 0 ? (
           <div className="text-center py-12 text-[#2B2F36]/40">
             <p className="text-sm">{t("blog.aucunArticle")}</p>
           </div>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {posts.map((post, i) => (
+            {feed.posts.map((post, i) => (
               <div key={post.slug} ref={(el) => { cardsRef.current[i] = el; }}>
                 <BlogCard post={post} />
               </div>

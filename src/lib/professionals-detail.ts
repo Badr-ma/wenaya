@@ -34,6 +34,7 @@ import type {
   ApiCaresAndPacks,
 } from "./professionals-detail-api";
 import { fetchProfessionalDetail, fetchProfessionalCaresAndPacks } from "./professionals-detail-api";
+import { WenayaApiError } from "./api/client";
 import { sanitizeSafeHtml, htmlToParagraphs } from "./sanitize-html";
 import { fetchProfessionalReviews } from "./professionals-reviews";
 import { getProfessionalSpecialtySlugs, specialtyDisplayToSlug } from "./specialist-filters";
@@ -261,10 +262,10 @@ function toDetailPackages(data: ApiCaresAndPacks): SpecialistPackage[] {
  * Resolve one professional detail page's data.
  *
  * LIVE API ONLY — no local/Redis/demo dataset. A slug resolves exclusively
- * through `getProfessionalBySlug`; anything else (unknown slug, corporate
- * account, or the API being unreachable) yields `undefined` and the page calls
- * `notFound()`. The legacy demo dataset is a non-overlapping slug set and is
- * never served, so a listing card always has a matching profile page.
+ * through `getProfessionalBySlug`; confirmed missing slugs and hidden accounts
+ * yield `undefined`, while API failures propagate to Next.js error handling.
+ * The legacy demo dataset is never served, so a listing card always has a
+ * matching profile page.
  *
  * Anything the endpoint does not carry is left at its safe empty default
  * (see `toDetailSpecialist`) — never invented.
@@ -365,11 +366,8 @@ export async function getLiveProfessionalBySlug(
     const userName = specialist.availabilityApi?.userName ?? slug;
     return withReviews(specialist, userName, specialist.reviews);
   } catch (error) {
-    console.warn(
-      `[professionals-detail] no live source for "${slug}":`,
-      error instanceof Error ? error.message : error
-    );
-    return undefined;
+    if (error instanceof WenayaApiError && error.status === 404) return undefined;
+    throw error;
   }
 }
 

@@ -55,6 +55,7 @@ export default async function PratiquesPage() {
             initialTotal={initial.total}
             initialHasMore={initial.hasMore}
             totalAll={initial.total}
+            initialLoadError={initial.loadError}
           />
         </main>
         <Footer />

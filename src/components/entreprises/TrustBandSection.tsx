@@ -34,22 +34,22 @@ const reducedMotion =
  * name or ordering is duplicated here. `width`/`height` are the true intrinsic
  * pixel dimensions, which lets Next reserve the exact box before decode.
  *
- * `className` only normalises optical size — every mark is rendered with
- * `object-contain`, never cropped, stretched, or recoloured. All five keep a
- * uniform rendered height so the wrapping row stays even despite the source
- * files ranging from a 224x224 square wordmark to 1600x900 wide marks.
+ * Each mark sits in the same fixed-size slot and uses `object-contain`, so
+ * mixed-aspect sources (a 224x224 square wordmark through a 1600x900 wide card)
+ * read at a consistent optical weight without being cropped, stretched or
+ * recoloured.
  *  - #1 PwC: 1600x900 wide wordmark card.
  *  - #2 Majorel: 500x300 wide logo on white.
  *  - #3 Webhelp: 1053x630 wide logo on white.
  *  - #4 unidentified: 1600x872 full-bleed dark card, white logotype.
  *  - #5 unidentified: 224x224 serif wordmark on white.
  */
-const PARTNER_LOGOS: { src: string; width: number; height: number; className: string }[] = [
-  { src: "/images/entreprises/partner-1.jpg", width: 1600, height: 900, className: "h-8 sm:h-10" },
-  { src: "/images/entreprises/partner-2.jpg", width: 500, height: 300, className: "h-8 sm:h-10" },
-  { src: "/images/entreprises/partner-3.jpg", width: 1053, height: 630, className: "h-8 sm:h-10" },
-  { src: "/images/entreprises/partner-4.jpg", width: 1600, height: 872, className: "h-8 sm:h-10" },
-  { src: "/images/entreprises/partner-5.jpg", width: 224, height: 224, className: "h-8 sm:h-10" },
+const PARTNER_LOGOS: { src: string; width: number; height: number }[] = [
+  { src: "/images/entreprises/partner-1.jpg", width: 1600, height: 900 },
+  { src: "/images/entreprises/partner-2.jpg", width: 500, height: 300 },
+  { src: "/images/entreprises/partner-3.jpg", width: 1053, height: 630 },
+  { src: "/images/entreprises/partner-4.jpg", width: 1600, height: 872 },
+  { src: "/images/entreprises/partner-5.jpg", width: 224, height: 224 },
 ];
 
 export default function TrustBandSection() {
@@ -75,18 +75,21 @@ export default function TrustBandSection() {
         <p className="text-[10px] uppercase tracking-[0.2em] text-[#B88A5A] text-center font-semibold">
           {t("entreprises.programs.ilsNousFontConfiance")}
         </p>
-        <ul className="mt-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-5 sm:gap-x-11 sm:gap-y-6">
+        <ul className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-5 sm:gap-x-8 sm:gap-y-6 lg:gap-x-10">
           {partners.map((name, i) => {
             const logo = PARTNER_LOGOS[i];
             if (!logo) return null;
             return (
-              <li key={`${i}-${name}`} className="flex items-center">
+              <li
+                key={`${i}-${name}`}
+                className="flex h-10 w-[96px] items-center justify-center sm:h-12 sm:w-[116px] lg:w-[140px]"
+              >
                 <Image
                   src={logo.src}
                   alt={`${name} logo`}
                   width={logo.width}
                   height={logo.height}
-                  className={`${logo.className} w-auto max-w-[190px] object-contain opacity-80 transition-opacity duration-300 hover:opacity-100`}
+                  className="h-full w-full object-contain opacity-80 transition-opacity duration-300 hover:opacity-100"
                 />
               </li>
             );

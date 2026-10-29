@@ -11,7 +11,7 @@ import "../globals.css";
 import Nav from "@/components/Nav";
 import GsapInit from "@/components/GsapInit";
 import LenisProvider from "@/components/LenisProvider";
-import CorporateConsultationWidget from "@/components/CorporateConsultationWidget";
+
 import ScrollToTop from "@/components/ScrollToTop";
 import CookieConsent from "@/components/CookieConsent";
 import { LanguageProvider } from "@/contexts/LanguageContext";
@@ -214,7 +214,7 @@ gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', { page_path: window.location.
               <LenisProvider>
                 <ScrollToTop />
                 {children}
-                <CorporateConsultationWidget />
+
               </LenisProvider>
             </ShopComingSoonProvider>
           </CartProvider>

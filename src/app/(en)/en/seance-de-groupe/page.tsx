@@ -6,7 +6,7 @@
 import type { Metadata } from "next";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import GroupSessionsPage from "@/components/seance-de-groupe/GroupSessionsPage";
-import { getActiveGroupSessions } from "@/lib/group-sessions-active";
+import { getActiveGroupSessionsResult } from "@/lib/group-sessions-active";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import en from "@/i18n/en";
 
@@ -71,7 +71,7 @@ function buildJsonLd(sessions: { title: string; description?: string }[]) {
 }
 
 export default async function GroupSessionsEnPage() {
-  const sessions = await getActiveGroupSessions("en");
+  const { sessions, loadError } = await getActiveGroupSessionsResult("en");
   const jsonLd = buildJsonLd(
     sessions.map((s) => ({ title: s.title, description: s.description }))
   );
@@ -85,7 +85,7 @@ export default async function GroupSessionsEnPage() {
             dangerouslySetInnerHTML={{ __html: JSON.stringify(block) }}
           />
         ))}
-        <GroupSessionsPage sessions={sessions} />
+        <GroupSessionsPage sessions={sessions} initialLoadError={loadError} />
       </div>
     </ErrorBoundary>
   );

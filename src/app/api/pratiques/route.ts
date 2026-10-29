@@ -36,11 +36,21 @@ export async function GET(req: NextRequest) {
       search,
     });
 
+    if (result.loadError) {
+      return NextResponse.json(
+        { error: "unable to load practices" },
+        { status: 503, headers: { "Cache-Control": "no-store" } }
+      );
+    }
+
     const res = NextResponse.json(result);
     res.headers.set("Cache-Control", "no-store");
     res.headers.set("X-Data-Source", result.dataSource);
     return res;
   } catch {
-    return NextResponse.json({ error: "unable to load practices" }, { status: 500 });
+    return NextResponse.json(
+      { error: "unable to load practices" },
+      { status: 503, headers: { "Cache-Control": "no-store" } }
+    );
   }
 }
