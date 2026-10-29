@@ -22,6 +22,7 @@ import assert from "node:assert/strict";
 import {
   AVATAR_MAX_ATTEMPTS,
   AVATAR_RETRY_DELAY_MS,
+  isAvatarImageOptimizable,
   avatarRetryInit,
   avatarRetryOnFailure,
   avatarRetryOnUrlChange,
@@ -33,6 +34,21 @@ const REAL_URL = "https://nbg1.your-objectstorage.com/westo/avatars/yasmine.jpg"
 const SECOND_URL = "https://nbg1.your-objectstorage.com/westo/avatars/mehdi.jpg";
 const DEAD_URL = "https://dev-api.wenaya.com/storage/uploads/avatars/20260904170906_3F89644E.png";
 const DUMMY_URL = "https://dev-api.wenaya.com/storage/uploads/users/dummy-man.png";
+
+test("optimizer eligibility follows configured Next image hosts", () => {
+  assert.equal(isAvatarImageOptimizable(REAL_URL), true);
+  assert.equal(isAvatarImageOptimizable("https://api.wenaya.com/storage/avatar.jpg"), true);
+  assert.equal(isAvatarImageOptimizable("https://dev-api.wenaya.com/storage/avatar.jpg"), true);
+  assert.equal(isAvatarImageOptimizable("/images/local-avatar.jpg"), true);
+
+  // API deployment-internal URLs remain direct requests and reach the existing
+  // onError/retry/initials flow instead of triggering an unconfigured-host error.
+  assert.equal(
+    isAvatarImageOptimizable("http://api:8000/storage/uploads/avatars/author.jpg"),
+    false
+  );
+  assert.equal(isAvatarImageOptimizable("https://unconfigured.example/avatar.jpg"), false);
+});
 
 test("constants: 3 total attempts, delay within the required 500-1000ms window", () => {
   assert.equal(AVATAR_MAX_ATTEMPTS, 3);

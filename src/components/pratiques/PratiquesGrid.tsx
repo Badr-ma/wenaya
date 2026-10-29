@@ -35,6 +35,11 @@ import {
   type PaginatedPratiques,
 } from "@/lib/pratiques";
 import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
+import {
+  fetchClientFeedPayload,
+  isPaginatedPracticesPayload,
+  shouldRecoverInitialFeed,
+} from "@/lib/client-feed-recovery";
 
 const bronzePalette: [number, number, number][] = [
   [184, 138, 90],
@@ -65,9 +70,10 @@ async function fetchPracticesProxy(query: ProxyQuery): Promise<PaginatedPratique
   if (query.category) params.set("category", query.category);
   if (query.search.trim()) params.set("search", query.search.trim());
 
-  const res = await fetch(`/api/pratiques?${params.toString()}`);
-  if (!res.ok) throw new Error(`pratiques proxy HTTP ${res.status}`);
-  return (await res.json()) as PaginatedPratiques;
+  return fetchClientFeedPayload(
+    `/api/pratiques?${params.toString()}`,
+    isPaginatedPracticesPayload,
+  );
 }
 
 interface PratiquesGridProps {
@@ -98,7 +104,9 @@ export default function PratiquesGrid({
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(initialHasMore ?? initialItems.length > 0);
   const [total, setTotal] = useState(initialTotal ?? initialItems.length);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(
+    shouldRecoverInitialFeed(initialItems.length, initialLoadError),
+  );
   const [loadError, setLoadError] = useState(initialLoadError);
 
   const [activeFilter, setActiveFilter] = useState("all");
@@ -201,19 +209,20 @@ export default function PratiquesGrid({
     }
   }, [locale, activeFilter, searchQuery]);
 
-  // Reset on filter/search changes. If SSR explicitly marked a tolerated
-  // build/dev failure, retry once on mount instead of treating it as empty data.
+  // Reset on filter/search changes. Retry once on mount when SSR returned an
+  // error OR an empty result, because a successful empty API response can be
+  // cached by ISR while the live feed becomes populated later.
   useEffect(() => {
     if (firstRunRef.current) {
       firstRunRef.current = false;
-      if (initialLoadError) {
+      if (shouldRecoverInitialFeed(initialItems.length, initialLoadError)) {
         const timer = window.setTimeout(() => void resetAndLoadFirst(), 0);
         return () => window.clearTimeout(timer);
       }
       return;
     }
     resetAndLoadFirst();
-  }, [activeFilter, searchQuery, initialLoadError, resetAndLoadFirst]);
+  }, [activeFilter, searchQuery, initialItems.length, initialLoadError, resetAndLoadFirst]);
 
   // External filter bar (Nav) → keeps this grid in sync.
   useEffect(() => {
@@ -407,6 +416,12 @@ export default function PratiquesGrid({
             );
           })}
         </div>
+
+        {!isLoadingMore && !loadError && items.length === 0 && (
+          <p className="py-8 text-center text-sm text-[#2B2F36]/55">
+            {t("pratiques.pagination.empty")}
+          </p>
+        )}
 
         {/* Infinite-scroll sentinel + status area */}
         <div ref={sentinelRef} aria-hidden="true" className="h-px" />

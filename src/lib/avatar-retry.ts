@@ -26,6 +26,35 @@ export const AVATAR_MAX_ATTEMPTS = 3;
 /** Delay between retries (ms). Within the required 500–1000 ms window. */
 export const AVATAR_RETRY_DELAY_MS = 700;
 
+/**
+ * Remote hosts currently allowed by `images.remotePatterns` in next.config.ts.
+ * Keep unsupported API-provided hosts (for example `http://api:8000`) on the
+ * direct-image path so Next Image does not throw for an unconfigured host.
+ */
+const NEXT_IMAGE_REMOTE_HOSTS = new Set([
+  "images.unsplash.com",
+  "nbg1.your-objectstorage.com",
+  "api.wenaya.com",
+  "dev-api.wenaya.com",
+]);
+
+/** Whether this source can safely use the configured Next.js image optimizer. */
+export function isAvatarImageOptimizable(src: string | null | undefined): boolean {
+  if (typeof src !== "string" || !src.trim()) return false;
+  const value = src.trim();
+
+  // Root-relative public assets are supported by the Next image loader.
+  if (value.startsWith("/") && !value.startsWith("//")) return true;
+
+  try {
+    const url = new URL(value);
+    if (url.protocol === "http:" && url.hostname === "localhost") return true;
+    return url.protocol === "https:" && NEXT_IMAGE_REMOTE_HOSTS.has(url.hostname);
+  } catch {
+    return false;
+  }
+}
+
 /** Whether `src` may be handed to the image loader at all. */
 export function isRenderableAvatarSrc(src: string | null | undefined): boolean {
   if (typeof src !== "string") return false;

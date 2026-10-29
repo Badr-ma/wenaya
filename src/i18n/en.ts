@@ -1563,6 +1563,7 @@ const en: Translations = {
       loadMore: "Load more",
       retry: "Try again",
       end: "You've seen all practices.",
+      empty: "No practices are available right now.",
     },
     items: [
       {
@@ -1640,6 +1641,7 @@ const en: Translations = {
       loading: "Loading sessions…",
       unavailable: "Sessions are temporarily unavailable.",
       retry: "Try again",
+      empty: "No group sessions are available right now.",
     },
     benefits: {
       title: "Why take part?",

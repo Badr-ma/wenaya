@@ -15,6 +15,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { useLocale } from "@/contexts/LanguageContext";
 import type { GroupSession } from "@/lib/group-sessions";
+import { fetchClientFeedPayload, shouldRecoverInitialFeed } from "@/lib/client-feed-recovery";
+
+interface GroupSessionsPayload {
+  sessions: GroupSession[];
+}
+
+function isGroupSessionsPayload(value: unknown): value is GroupSessionsPayload {
+  return !!value && typeof value === "object" && Array.isArray((value as { sessions?: unknown }).sessions);
+}
 
 export default function GroupSessionsList({
   sessions: initialSessions,
@@ -26,7 +35,7 @@ export default function GroupSessionsList({
   const { t, locale } = useLocale();
   const [sessions, setSessions] = useState(initialSessions);
   const [status, setStatus] = useState<"ready" | "loading" | "error">(
-    initialLoadError ? "loading" : "ready"
+    shouldRecoverInitialFeed(initialSessions.length, initialLoadError) ? "loading" : "ready"
   );
   const requestIdRef = useRef(0);
 
@@ -34,14 +43,12 @@ export default function GroupSessionsList({
     const requestId = ++requestIdRef.current;
     setStatus("loading");
     try {
-      const response = await fetch(`/api/seance-de-groupe?locale=${locale}`, { cache: "no-store" });
-      if (!response.ok) throw new Error("Group session feed unavailable");
-      const payload: unknown = await response.json();
-      if (!payload || typeof payload !== "object" || !Array.isArray((payload as { sessions?: unknown }).sessions)) {
-        throw new Error("Unexpected group session response");
-      }
+      const payload = await fetchClientFeedPayload(
+        `/api/seance-de-groupe?locale=${locale}`,
+        isGroupSessionsPayload,
+      );
       if (requestId === requestIdRef.current) {
-        setSessions((payload as { sessions: GroupSession[] }).sessions);
+        setSessions(payload.sessions);
         setStatus("ready");
       }
     } catch {
@@ -50,12 +57,13 @@ export default function GroupSessionsList({
   }, [locale]);
 
   useEffect(() => {
-    const timer = initialLoadError ? window.setTimeout(() => void reloadSessions(), 0) : undefined;
+    const shouldRecover = shouldRecoverInitialFeed(initialSessions.length, initialLoadError);
+    const timer = shouldRecover ? window.setTimeout(() => void reloadSessions(), 0) : undefined;
     return () => {
       if (timer !== undefined) window.clearTimeout(timer);
       requestIdRef.current += 1;
     };
-  }, [initialLoadError, reloadSessions]);
+  }, [initialLoadError, initialSessions.length, reloadSessions]);
 
   return (
     <section className="relative bg-[#F2EFE9] px-6 pb-4 sm:pb-6">
@@ -87,6 +95,11 @@ export default function GroupSessionsList({
               {t("seanceDeGroupe.list.retry")}
             </button>
           </div>
+        )}
+        {status === "ready" && sessions.length === 0 && (
+          <p className="py-8 text-center text-sm text-[#2B2F36]/55">
+            {t("seanceDeGroupe.list.empty")}
+          </p>
         )}
         {status === "ready" && <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
           {sessions.map((s) => (

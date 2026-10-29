@@ -1579,6 +1579,7 @@ const fr = {
       loadMore: "Afficher plus",
       retry: "Réessayer",
       end: "Vous avez vu toutes les pratiques.",
+      empty: "Aucune pratique n’est disponible pour le moment.",
     },
     items: [
       {
@@ -1657,6 +1658,7 @@ const fr = {
       loading: "Chargement des séances…",
       unavailable: "Les séances sont momentanément indisponibles.",
       retry: "Réessayer",
+      empty: "Aucune séance de groupe n’est disponible pour le moment.",
     },
     benefits: {
       title: "Pourquoi participer ?",

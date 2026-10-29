@@ -4,7 +4,8 @@
  * Shared blog author-avatar with a bounded retry state machine.
  *
  * Behaviour (see `@/lib/avatar-retry` for the pure transitions):
- * - Renders the author photo via `next/image` `unoptimized`.
+ * - Uses Next.js image optimization for local and configured remote sources;
+ *   unsupported API-provided hosts stay direct so failures reach `onError`.
  * - On `onError`: up to 3 total attempts (initial + 2 retries, 700 ms
  *   apart) re-requesting the EXACT same URL (a `key` bump remounts a
  *   fresh `<img>`; the URL is never mutated and the blog API / page are
@@ -27,6 +28,7 @@ import { useEffect, useRef, useState } from "react";
 
 import {
   AVATAR_RETRY_DELAY_MS,
+  isAvatarImageOptimizable,
   avatarRetryInit,
   avatarRetryOnFailure,
   avatarRetryOnUrlChange,
@@ -111,7 +113,7 @@ export function BlogAuthorAvatar({
       alt={authorName}
       width={size}
       height={size}
-      unoptimized
+      unoptimized={!isAvatarImageOptimizable(src)}
       onError={handleError}
       className={`shrink-0 ${imgClassName}`}
       style={{ width: size, height: size }}

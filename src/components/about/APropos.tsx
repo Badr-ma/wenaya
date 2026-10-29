@@ -157,7 +157,7 @@ const frEcosystem = {
       "Prendre soin des collaborateurs, c'est d'abord prendre soin des personnes.",
     cta: "Découvrir Wenaya Corporate",
     image:
-      "/images/Espace%20de%20travail%20chaleureux%20et%20collaboratif%20%281%29.png",
+      "/images/Espace%20de%20travail%20chaleureux%20et%20collaboratif%20(1).png",
     imageAlt:
       "Atelier bien-être en entreprise conduit par les équipes Wenaya Corporate",
   },
@@ -317,7 +317,7 @@ const enEcosystem = {
     highlight: "Taking care of employees starts with taking care of people.",
     cta: "Discover Wenaya Corporate",
     image:
-      "/images/Espace%20de%20travail%20chaleureux%20et%20collaboratif%20%281%29.png",
+      "/images/Espace%20de%20travail%20chaleureux%20et%20collaboratif%20(1).png",
     imageAlt: "Workplace wellness workshop led by the Wenaya Corporate teams",
   },
   technology: {
