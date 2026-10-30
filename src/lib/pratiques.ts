@@ -27,8 +27,8 @@
  *
  * `practice-content.ts` still backs the SYNCHRONOUS editorial helpers above
  * (`getAllPratiques` / `getPratiqueBySlug` / `getAllPratiqueSlugs`), which are
- * NOT a fallback: they supply the canonical slug universe and the FR article
- * body, neither of which the backend provides.
+ * NOT a fallback: they supply existing editorial content. Live consumers use
+ * the async API accessors, which also accept new backend practices.
  */
 import { practicesContent, type PracticeSection } from "./practice-content";
 import { EN_ARTICLE_DEMO } from "./en-translations";
@@ -58,6 +58,8 @@ export interface Pratique {
   /** Dev-only source traceability — never rendered. */
   liveId?: number;
   sourceUrl?: string;
+  /** Professional filtering uses the backend specialty label, which may differ from its URL slug. */
+  specialtySlug?: string;
 }
 
 // ─── Canonical slugs (display order) ───────────────────────────
@@ -199,8 +201,8 @@ function emptyPracticesPage(page: number, pageSize: number): PaginatedPratiques 
 }
 
 /**
- * Fetch the FULL remote dataset, normalize every record and drop any id the
- * local canonical map does not know. Shared by the filtered listing branch and
+ * Fetch the FULL remote dataset and normalize every valid visible record,
+ * including new backend IDs. Shared by the filtered listing branch and
  * the live "all practices" accessor so normalization never diverges.
  */
 async function fetchAllNormalized(locale: string): Promise<Pratique[]> {
@@ -208,6 +210,11 @@ async function fetchAllNormalized(locale: string): Promise<Pratique[]> {
   return all
     .map((raw) => normalizeApiSpeciality(raw, locale))
     .filter((p): p is Pratique => p !== null);
+}
+
+/** Strict live accessor for routes and relationships; failures must not become 404s. */
+export async function getLivePratiquesStrict(locale: string = "fr"): Promise<Pratique[]> {
+  return fetchAllNormalized(locale);
 }
 
 /**

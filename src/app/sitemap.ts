@@ -12,7 +12,7 @@ import type { MetadataRoute } from "next";
 import { fetchAllArticles, blogApiErrorLabel } from "@/lib/blog-articles-api";
 import { getLiveSpecialists } from "@/lib/professionals";
 import { getSpecialtyOptions } from "@/lib/specialist-filters";
-import { getAllPratiqueSlugs } from "@/lib/pratiques";
+import { getLivePratiquesStrict } from "@/lib/pratiques";
 import { getAllTroubleSlugs } from "@/lib/troubles";
 import { getAllProgrammeSlugs } from "@/lib/corporate-programmes";
 import { getAllGroupSessionSlugs } from "@/lib/group-sessions";
@@ -234,8 +234,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     dual(`/search/${slug}`, { changeFrequency: "monthly", priority: 0.8 })
   );
 
-  /** Practice detail page URLs — 19 FR + 19 EN */
-  const practiceSlugs = getAllPratiqueSlugs();
+  /** Practice detail URLs include every visible live practice in both locales. */
+  const practiceSlugs = (await getLivePratiquesStrict()).map((practice) => practice.slug);
   const practiceEntries = practiceSlugs.flatMap((slug) =>
     dual(`/pratiques/${slug}`, { changeFrequency: "monthly", priority: 0.7 })
   );

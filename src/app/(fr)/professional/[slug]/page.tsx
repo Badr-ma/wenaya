@@ -66,7 +66,7 @@ export default async function SpecialistPage({ params }: Props) {
   // Live relationship: derived from the professional's own API specialities
   // (canonical practice slugs), never the legacy demo map — so a profile can
   // never surface a stale practice↔professional pairing.
-  const practices = getSpecialistPractices(specialist, "fr");
+  const practices = await getSpecialistPractices(specialist, "fr");
 
   // Guarded JSON-LD — absent data is never emitted (no empty reviews,
   // no empty offer catalog, no zero-rating aggregates, no empty languages).

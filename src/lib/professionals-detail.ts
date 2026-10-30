@@ -38,7 +38,7 @@ import { WenayaApiError } from "./api/client";
 import { sanitizeSafeHtml, htmlToParagraphs } from "./sanitize-html";
 import { fetchProfessionalReviews } from "./professionals-reviews";
 import { getProfessionalSpecialtySlugs, specialtyDisplayToSlug } from "./specialist-filters";
-import { getAllPratiqueSlugs, getPratiqueBySlug, type Pratique } from "./pratiques";
+import { getLivePratiquesStrict, type Pratique } from "./pratiques";
 
 export { htmlToParagraphs } from "./sanitize-html";
 
@@ -378,19 +378,15 @@ export async function getLiveProfessionalBySlug(
  * map that used to live here wrongly tied `nadine-kita` to `kinesitherapie`,
  * while her live specialities are Naturopathie / Sophrologie / Psychothérapie).
  *
- * Each of the professional's specialty slugs (the canonical slugs set in
- * `toDetailSpecialist`) is kept ONLY when it exists in the canonical practice
- * set (`SLUG_ORDER`). Unknown or non-practice specialties are skipped — never
- * invented. Returns `[]` when the professional has no practice specialty, and
- * `SpecialistPractices` then renders nothing.
+ * Match the professional's specialty labels against the live practice feed,
+ * including practices added after deployment. Returns [] for no matching
+ * practice; an unavailable feed propagates so ISR can retain its last good page.
  */
-export function getSpecialistPractices(
+export async function getSpecialistPractices(
   specialist: Specialist,
   locale: ProfessionalLocale = "fr",
-): Pratique[] {
-  const canonical = new Set(getAllPratiqueSlugs());
-  return getProfessionalSpecialtySlugs(specialist)
-    .filter((slug) => canonical.has(slug))
-    .map((slug) => getPratiqueBySlug(slug, locale))
-    .filter((p): p is Pratique => Boolean(p));
+): Promise<Pratique[]> {
+  const practices = await getLivePratiquesStrict(locale);
+  const specialties = new Set(getProfessionalSpecialtySlugs(specialist));
+  return practices.filter((practice) => specialties.has(practice.specialtySlug || practice.slug));
 }

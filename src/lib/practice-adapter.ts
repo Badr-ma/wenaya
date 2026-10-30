@@ -11,16 +11,17 @@
  *   EN   → local translated content whenever `hasGenuineEn` is true (it is for
  *          all 19 practices) — the API stores French text in `en_name`/`en_slug`
  *          for several specialties, so we refuse to regress the EN UI.
- *   both → image always prefers the live API image; article stays purely local
- *          (practice-content.ts / EN demo translations).
+ *   both → image always comes from the API. Existing articles retain local
+ *          editorial content; new practices render backend details as text blocks.
  *
- * Items whose id has no local counterpart are logged and skipped — never
- * silently routed to a 404 detail page.
+ * New IDs are accepted without a local counterpart, using a readable slug plus
+ * the backend ID. Existing IDs retain their canonical URLs.
  */
 import { practicesContent, type PracticeSection } from "./practice-content";
 import { EN_ARTICLE_DEMO } from "./en-translations";
 import type { ApiSpeciality } from "./practices-api";
 import type { Pratique } from "./pratiques";
+import { specialtyDisplayToSlug } from "./specialist-filters";
 
 /**
  * backend id → canonical frontend slug (mirrors local `liveId`, practice-content.ts).
@@ -100,17 +101,32 @@ function firstNonEmpty(...values: (string | null | undefined)[]): string | undef
  * Returns null when the id has no local counterpart (unknown/offline-only data).
  */
 export function normalizeApiSpeciality(api: ApiSpeciality, locale: string): Pratique | null {
-  const slug = SLUG_BY_LIVE_ID[api.id];
-  if (!slug) {
-    console.warn(`[practice-adapter] unknown speciality id ${api.id} (${api.fr_slug}) — skipped`);
-    return null;
-  }
-
-  const content = practicesContent[slug];
+  if (!Number.isSafeInteger(api.id) || api.id <= 0 || api.is_visible === false) return null;
+  const knownSlug = SLUG_BY_LIVE_ID[api.id];
+  const content = knownSlug ? practicesContent[knownSlug] : undefined;
   if (!content) {
-    console.warn(`[practice-adapter] no local content for speciality id ${api.id} (slug ${slug}) — skipped`);
-    return null;
+    // Existing IDs retain their established URLs. New records need no local
+    // registration; prefer the backend slug, then name, then stable ID.
+    let slug = specialtyDisplayToSlug(firstNonEmpty(api.fr_slug, api.fr_name, api.en_slug, api.en_name) ?? "");
+    // Include the immutable ID so duplicate names/slugs never share a route.
+    slug = slug ? `${slug}-${api.id}` : `practice-${api.id}`;
+    const title = locale === "en"
+      ? firstNonEmpty(api.en_name, api.fr_name) ?? slug
+      : firstNonEmpty(api.fr_name, api.en_name) ?? slug;
+    const details = api.details
+      ? api.details.split(/<\/(?:p|div|h[1-6]|li)>|<br\s*\/?\s*>|\r?\n/i).map(decodeAndStrip).filter(Boolean)
+      : [];
+    return {
+      id: String(api.id), slug, title,
+      description: api.description ? decodeAndStrip(api.description) : "",
+      image: firstNonEmpty(api.image_web, api.image_mobile) ?? "",
+      category: api.category?.trim() ?? "",
+      article: details.length ? [{ body: details }] : undefined,
+      liveId: api.id,
+      specialtySlug: specialtyDisplayToSlug(firstNonEmpty(api.fr_name, api.en_name) ?? ""),
+    };
   }
+  const slug = knownSlug!;
 
   const isFr = locale !== "en";
   const article: PracticeSection[] | undefined = isFr ? content.articleFr : EN_ARTICLE_DEMO[slug];

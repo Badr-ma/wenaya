@@ -10,13 +10,14 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PratiqueDetail from "@/components/pratiques/PratiqueDetail";
 import Footer from "@/components/Footer";
-import { getPratiqueBySlug, getAllPratiqueSlugs, getRelatedPratiques } from "@/lib/pratiques";
+import { getLivePratiquesStrict } from "@/lib/pratiques";
+import { cache } from "react";
 import { getPracticeSpecialists } from "@/lib/professionals";
 import { resolvePracticeProfessionalsHref } from "@/lib/practice-professionals-link";
 import { getTranslations } from "@/i18n";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
-import { getLivePracticeImageMap } from "@/lib/practice-images";
+const getPractices = cache(() => getLivePratiquesStrict("fr"));
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -25,17 +26,18 @@ interface Props {
 export const revalidate = 3600;
 
 export function generateStaticParams() {
-  return getAllPratiqueSlugs().map((slug) => ({ slug }));
+  // On-demand ISR accepts practices added after deployment and uses runtime API configuration.
+  return [];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const pratique = getPratiqueBySlug(slug, "fr");
+  const pratique = (await getPractices()).find((practice) => practice.slug === slug);
   if (!pratique) return {};
 
   const title = pratique.title;
   const url = `${SITE_URL}/pratiques/${slug}`;
-  const image = (await getLivePracticeImageMap("fr"))[slug] ?? "";
+  const image = pratique.image;
   const imageUrl = image
     ? /^https?:\/\//.test(image)
       ? image
@@ -64,16 +66,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function PratiquePage({ params }: Props) {
   const { slug } = await params;
-  const basePratique = getPratiqueBySlug(slug, "fr");
-  if (!basePratique) notFound();
-
-  const image = (await getLivePracticeImageMap("fr"))[slug] ?? "";
-  const pratique = { ...basePratique, image };
+  const practices = await getPractices();
+  const pratique = practices.find((practice) => practice.slug === slug);
+  if (!pratique) notFound();
 
   const { t } = getTranslations("fr");
-  const related = getRelatedPratiques(slug, "fr", 6);
-  const specialists = await getPracticeSpecialists(slug);
-  const professionalHref = resolvePracticeProfessionalsHref("fr", slug, specialists);
+  const related = practices.filter((practice) => practice.slug !== slug).slice(0, 6);
+  const specialtySlug = pratique.specialtySlug || slug;
+  const specialists = await getPracticeSpecialists(specialtySlug);
+  const professionalHref = resolvePracticeProfessionalsHref("fr", specialtySlug, specialists);
   const labels = {
     eyebrow: t("pratiques.detail.eyebrow"),
     back: t("pratiques.detail.back"),
