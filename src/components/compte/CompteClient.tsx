@@ -26,7 +26,6 @@ import { h } from "@/lib/href";
 import {
   getPatientProfile,
   logoutPatient,
-  type PatientAuthFailure,
   type PatientProfileResult,
 } from "@/lib/patient-auth-client";
 import { PROFILE_DEV_FALLBACK_ENABLED, getDevFallbackProfile } from "@/lib/patient-auth/profile-dev-fallback";
@@ -154,8 +153,6 @@ export default function CompteClient({ devFallback = false }: { devFallback?: bo
   const initials = profile
     ? `${(profile.firstName || "")[0] ?? ""}${(profile.lastName || "")[0] ?? ""}`.toUpperCase()
     : "";
-  const firstName = profile?.firstName ?? "";
-  const greetingName = firstName || profile?.fullName || "";
 
   return (
     <div className="flex flex-col min-h-screen bg-[#FAF8F4]">

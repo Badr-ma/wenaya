@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
@@ -69,6 +70,8 @@ async function getHomeConfig(): Promise<HomepageConfig | null> {
 }
 
 export default async function Home() {
+  // Runtime API configuration may be unavailable while the Docker image builds.
+  await connection();
   const published = await getHomeConfig();
   const experts = await getHomepageSpecialists();
   const quickAccessImages = await getQuickAccessImages("fr");

@@ -13,11 +13,6 @@ export interface ClinicMetric {
   label: string;
 }
 
-export interface ClinicFeature {
-  title: string;
-  description: string;
-}
-
 export const clinicMetrics = (locale: "fr" | "en"): ClinicMetric[] =>
   locale === "en"
     ? [

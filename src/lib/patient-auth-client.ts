@@ -56,11 +56,6 @@ async function patientFetch<T = PatientAuthResult>(path: string, init: RequestIn
   return json as T;
 }
 
-/** Seed the Sanctum session cookie(s) for the current visitor. */
-export async function seedPatientCsrf(): Promise<PatientAuthResult> {
-  return patientFetch("/api/auth/csrf", { method: "GET" });
-}
-
 /** Resolve the current patient session; anonymous visitors get `unauthenticated`. */
 export async function getCurrentPatient(): Promise<PatientAuthResult> {
   return patientFetch("/api/auth/me", { method: "GET" });

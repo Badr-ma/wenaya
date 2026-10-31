@@ -66,7 +66,7 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-[80vh] sm:min-h-screen flex items-center overflow-hidden"
+      className="homepage-hero relative min-h-[80vh] sm:min-h-screen flex items-center overflow-hidden"
     >
       {/* ── Video background sequence — posters are the LCP/fallback layer ── */}
       <HeroVideoSequence

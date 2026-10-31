@@ -337,6 +337,18 @@ export default function HeroVideoSequence({
               willChange: isShown ? "opacity" : "auto",
             }}
           >
+            {/* Shared poster resource fills the mobile zoom-out edges without
+                decoding a second video. It dissolves with its matching clip. */}
+            <div className="hero-clip-backdrop">
+              <Image
+                src={clip.poster}
+                alt=""
+                fill
+                sizes="100vw"
+                style={{ objectPosition }}
+                className="object-cover"
+              />
+            </div>
             <div className="hero-clip-media" data-shown={isShown ? "true" : "false"}>
               <Image
                 src={clip.poster}

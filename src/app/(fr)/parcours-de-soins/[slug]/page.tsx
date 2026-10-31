@@ -10,7 +10,7 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import CareJourneyDetail from "@/components/care-journeys/CareJourneyDetail";
 import Footer from "@/components/Footer";
-import { getAllCareJourneySlugs, getCareJourneyBySlug } from "@/lib/care-journeys";
+import { getCareJourneyBySlug } from "@/lib/care-journeys";
 import { getLivePracticeImageMap } from "@/lib/practice-images";
 import { safeDecodeURI } from "@/lib/href";
 import { SITE_URL, OG_DEFAULTS, TWITTER_DEFAULTS } from "@/lib/site-config";
@@ -20,9 +20,8 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export function generateStaticParams() {
-  return getAllCareJourneySlugs().map((slug) => ({ slug }));
-}
+export const revalidate = 3600;
+export function generateStaticParams() { return []; }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const slug = safeDecodeURI((await params).slug);

@@ -145,8 +145,6 @@ function normalize(s: PathologySource, locale: Locale): PathologyTopic {
   };
 }
 
-export const pathologies: PathologyTopic[] = pathologySources.map((s) => normalize(s, "fr"));
-
 export function getPathologies(locale: Locale = "fr"): PathologyTopic[] {
   return pathologySources.map((s) => normalize(s, locale));
 }

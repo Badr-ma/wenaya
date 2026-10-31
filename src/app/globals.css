@@ -365,6 +365,26 @@ body {
   to   { transform: scale(1.045); }
 }
 
+.hero-clip-backdrop { display: none; }
+
+/* About 30% mobile zoom-out, keeping the video behind the original hero copy. */
+@media (width < 640px) {
+  .homepage-hero { background: #060a16; }
+  .homepage-hero .hero-clip-backdrop {
+    display: block;
+    position: absolute;
+    inset: -24px;
+    filter: blur(20px) brightness(0.8);
+  }
+  .homepage-hero .hero-clip-media {
+    top: 15%;
+    bottom: 15%;
+    transform: none;
+    animation: none;
+    mask-image: linear-gradient(to bottom, transparent, #000 5%, #000 95%, transparent);
+  }
+}
+
 @keyframes ch-scroll-hint {
   0%         { transform: translateY(-100%); }
   55%, 100%  { transform: translateY(300%); }

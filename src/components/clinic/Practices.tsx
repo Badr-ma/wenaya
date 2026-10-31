@@ -20,6 +20,7 @@
  * practice names and their links are present in the initial HTML (SEO intact).
  */
 import Link from "next/link";
+import { connection } from "next/server";
 import { getLivePratiques } from "@/lib/pratiques";
 import { h, type HrefLocale } from "@/lib/href";
 import { getTranslations } from "@/i18n";
@@ -56,6 +57,7 @@ export default async function ClinicPractices({
   locale: HrefLocale;
   lang: string;
 }): Promise<React.JSX.Element> {
+  await connection();
   const { t } = getTranslations(lang);
   const all = await getLivePratiques(locale);
 

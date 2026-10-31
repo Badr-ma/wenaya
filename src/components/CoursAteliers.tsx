@@ -9,7 +9,7 @@ import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
-import { h, groupSessionsHref } from "@/lib/href";
+import { groupSessionsHref } from "@/lib/href";
 import { getAllGroupSessions } from "@/lib/group-sessions";
 import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 import type { CoursAteliersContent } from "@/lib/homepage-types";

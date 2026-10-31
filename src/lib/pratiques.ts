@@ -11,7 +11,6 @@
  *   getAllPratiques(locale)          → Pratique[]
  *   getPratiqueBySlug(slug, locale)  → Pratique | undefined
  *   getAllPratiqueSlugs()            → string[]
- *   getRelatedPratiques(slug, loc)   → Pratique[]
  *   getPracticesPageAsync(query)     → Promise<PaginatedPratiques>  (UI entry point)
  *
  * Pagination model mirrors the established `/api/produits` contract
@@ -308,14 +307,15 @@ export async function getPracticesPageAsync(query: PratiquesQuery = {}): Promise
  * `Pratique`. Consumed by the Clinic "Nos Pratiques" section.
  *
  * API-ONLY: this never falls back to the local editorial dataset — the Clinic
- * section must reflect what the API actually provides. On any failure it
- * returns an empty array and the caller renders its honest empty state.
+ * section must reflect what the API actually provides. Runtime failures throw
+ * so they cannot replace good output; build/dev retain the empty-state policy.
  */
 export async function getLivePratiques(locale: string = "fr"): Promise<Pratique[]> {
   try {
     return await fetchAllNormalized(locale);
   } catch (error) {
-    console.warn("[pratiques] backend unavailable, returning no live practices:", error);
+    console.warn("[pratiques] live feed unavailable");
+    if (shouldPropagateApiFailure()) throw error;
     return [];
   }
 }
@@ -323,18 +323,4 @@ export async function getLivePratiques(locale: string = "fr"): Promise<Pratique[
 /** Get all practice slugs (for generateStaticParams) */
 export function getAllPratiqueSlugs(): string[] {
   return SLUG_ORDER;
-}
-
-/**
- * Get related practices for a practice — same-category practices first (real
- * category grouping), then the remaining practices, capped at `count`.
- */
-export function getRelatedPratiques(slug: string, locale: string = "fr", count = 6): Pratique[] {
-  const all = getAllPratiques(locale);
-  const current = all.find((p) => p.slug === slug);
-  const others = all.filter((p) => p.slug !== slug);
-  if (!current) return others.slice(0, count);
-  const sameCategory = others.filter((p) => p.category === current.category);
-  const rest = others.filter((p) => p.category !== current.category);
-  return [...sameCategory, ...rest].slice(0, count);
 }

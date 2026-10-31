@@ -8,17 +8,18 @@
  * Consumed by:
  *  - the care-journey "Pratiques recommandées" cards (RecommendedPractices)
  *  - the homepage "Accès directs" quick-access cards (QuickAccessSection)
- *  - the practice detail pages /pratiques/[slug] + /en/pratiques/[slug] hero
+ * Practice detail heroes use the strict live dataset directly.
  */
 import { getLivePratiques } from "@/lib/pratiques";
+import { shouldPropagateApiFailure } from "@/lib/api/retry";
 
 export type PracticeImageMap = Record<string, string>;
 
 /**
  * Map of canonical practice slug -> live API image URL for every practice the
  * dev-API serves right now. Strictly API-only: entries without an
- * `image_web`/`image_mobile` are omitted. Any failure returns {} — callers
- * then render the empty/hidden state (NEVER a local substitute).
+ * `image_web`/`image_mobile` are omitted. Runtime failures propagate to prevent
+ * caching failed lookups as empty images. Build/dev failures may return {}.
  */
 export async function getLivePracticeImageMap(
   locale: "fr" | "en" = "fr",
@@ -31,6 +32,7 @@ export async function getLivePracticeImageMap(
     }
     return map;
   } catch (error) {
+    if (shouldPropagateApiFailure()) throw error;
     console.warn(
       "[practice-images] backend unavailable, returning empty image map:",
       error,
