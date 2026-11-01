@@ -97,6 +97,22 @@ export async function fetchPatientMe(cookieHeader?: string): Promise<TransportRe
   return fetchUpstream(PATIENT_ME_PATH, {
     method: "GET",
     headers: baseHeaders({ cookieHeader }, "GET"),
+    cache: "no-store",
+  });
+}
+
+/** Patient-owned booking lists. Never accept a patient ID from the browser. */
+export function fetchPatientBookings(
+  cookieHeader: string | undefined,
+  kind: "appointments" | "groups",
+  page: number,
+  bucket: "today" | "upcoming" | "past",
+): Promise<TransportResult> {
+  const query = new URLSearchParams({ page: String(page) });
+  if (kind === "appointments") query.set("pageType", bucket === "upcoming" ? "upcomming" : bucket);
+  const endpoint = kind === "groups" ? "getAppointmentsGroupByCustomer" : "getAppointmentsByCustomer";
+  return fetchUpstream(`/api/v1/${endpoint}?${query}`, {
+    method: "GET", headers: baseHeaders({ cookieHeader }, "GET"), cache: "no-store",
   });
 }
 

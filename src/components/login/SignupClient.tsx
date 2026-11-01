@@ -6,8 +6,7 @@
  * `GET /api/auth/me`. Registration is enabled by default; if an admin disables
  * it (`PATIENT_REGISTER_ENABLED=false`) the server answers `not-enabled` and the
  * UI shows the unavailable notice. On success Laravel auto-authenticates (proven
- * on DEV), so the signup succeeds directly into a signed-in success state with
- * a CTA home.
+ * on DEV), so the signup opens the localized account page.
  *
  * Client-side validation is native (required / type=email); per-field server
  * validation errors render localized copy; unknown backend field keys fall back
@@ -18,7 +17,7 @@
  * sent them to sign in. On success (Laravel auto-authenticates) the client
  * returns to that exact URL so the chosen slot is restored. `safeReturnPath`
  * rejects anything that is not a root-relative internal path and never bounces
- * back to an auth route. Without a usable `returnTo` the success card is shown.
+ * back to an auth route. Without a usable `returnTo` the account page is opened.
  */
 "use client";
 
@@ -30,7 +29,6 @@ import { useLocale } from "@/contexts/LanguageContext";
 import { h } from "@/lib/href";
 import { safeReturnPath, withReturnTo } from "@/lib/safe-return-path";
 import {
-  getCurrentPatient,
   registerPatient,
   type PatientAuthResult,
 } from "@/lib/patient-auth-client";
@@ -48,12 +46,10 @@ export default function SignupClient({ returnTo }: { returnTo?: string }) {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
   const [notEnabled, setNotEnabled] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [successName, setSuccessName] = useState<string>();
   const [serverFields, setServerFields] = useState<Record<string, string>>();
   const [generalError, setGeneralError] = useState<string>();
 
-  /** Validated destination for the interrupted flow (null = show success card). */
+  /** Validated destination for the interrupted flow (null = open My account). */
   const back = safeReturnPath(returnTo, locale);
 
   const fieldError = (key: string): string | undefined => {
@@ -95,17 +91,8 @@ export default function SignupClient({ returnTo }: { returnTo?: string }) {
     }
 
     if (res.success) {
-      if (back) {
-        // Resume the interrupted flow (e.g. the booking panel restores its slot
-        // from the very same URL). No success card: the user is already signed in.
-        setSubmitting(false);
-        router.replace(back);
-        return;
-      }
-      const me = await getCurrentPatient();
-      if (me.success) setSuccessName(me.user?.name);
-      setSuccess(true);
-      setSubmitting(false);
+      // Resume the interrupted booking, otherwise open the localized account.
+      router.replace(back ?? h(locale, "/compte"));
       return;
     }
     if (res.type === "not-enabled") {
@@ -129,33 +116,6 @@ export default function SignupClient({ returnTo }: { returnTo?: string }) {
 
   const inputClass =
     "w-full h-12 rounded-xl border border-[#0B1220]/[0.08] bg-white px-4 text-sm text-[#0B1220] placeholder-[#0B1220]/25 outline-none transition-all duration-200 focus:border-[#B88A5A]/40 focus:shadow-[0_0_0_3px_rgba(184,138,90,0.08)]";
-
-  if (success) {
-    return (
-      <div className="flex flex-col min-h-screen bg-[#FAF8F4]">
-        <main className="flex-1 flex flex-col px-6 pt-28 pb-24 sm:pt-32">
-          <div className="mx-auto w-full max-w-[400px] flex-1 flex flex-col justify-center text-center">
-            <h1 className="heading-serif text-[#0B1220] text-[clamp(1.6rem,3.4vw,2.1rem)] leading-[1.15]">
-              {t("signup.successHeading")}
-            </h1>
-            <p className="mt-4 text-sm text-[#2B2F36]/60 leading-relaxed">
-              {successName ? `${successName} — ` : ""}
-              {t("signup.successBody")}
-            </p>
-            <Link
-              href={h(locale, "/")}
-              className="mt-8 inline-flex items-center justify-center w-full h-12 rounded-xl text-white text-sm font-semibold transition-opacity hover:opacity-90"
-              style={{
-                background: "linear-gradient(135deg, #B88A5A 0%, #9A7242 100%)",
-              }}
-            >
-              {t("signup.backHome")}
-            </Link>
-          </div>
-        </main>
-      </div>
-    );
-  }
 
   return (
     <div className="flex flex-col min-h-screen bg-[#FAF8F4]">

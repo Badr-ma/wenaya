@@ -79,7 +79,7 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
       <div
         className="absolute inset-0 pointer-events-none z-[2]"
         style={{
-          background: "linear-gradient(96deg, rgba(6,10,22,0.72) 0%, rgba(6,10,22,0.6) 26%, rgba(6,10,22,0.4) 48%, rgba(6,10,22,0.18) 66%, rgba(6,10,22,0.05) 82%, rgba(6,10,22,0.12) 100%)",
+          background: "linear-gradient(96deg, rgba(6,10,22,0.78) 0%, rgba(6,10,22,0.72) 48%, rgba(6,10,22,0.64) 100%)",
         }}
       />
       {/* Bottom weld so the hero melts into the section below */}
@@ -103,7 +103,7 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
             <p className="hero-eyebrow flex items-center gap-2.5 mb-7">
               <span className="w-1.5 h-1.5 rounded-full bg-[#B88A5A]" aria-hidden="true" />
               <span
-                className="text-[#B88A5A] text-[11px] sm:text-xs font-semibold tracking-[0.24em] uppercase"
+                className="text-[#F2CF9E] text-[11px] sm:text-xs font-semibold tracking-[0.24em] uppercase"
                 style={{ textShadow: "0 1px 10px rgba(6,10,22,0.6)" }}
               >
                 {content?.eyebrow ?? t("hero.eyebrow")}
@@ -125,9 +125,7 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
               <span className="hero-line block">
                 <span
                   style={{
-                    background: "linear-gradient(135deg, #D4A870 0%, #B88A5A 45%, #E8C99A 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
+                    color: "#F2CF9E",
                   }}
                 >
                   {content?.heading2 ?? t("hero.heading2")}
@@ -139,7 +137,7 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
             <p
               className="hero-sub mt-6 max-w-[560px] leading-[1.78]"
               style={{
-                color: "rgba(255,255,255,0.8)",
+                color: "rgba(255,255,255,0.95)",
                 textShadow: "0 1px 14px rgba(6,10,22,0.7)",
                 fontSize: "clamp(0.93rem, 1.4vw, 1.05rem)",
               }}
@@ -151,7 +149,7 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
             <div className="hero-cta flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-9">
               <a
                 href="#acces-directs"
-                className="inline-flex items-center justify-center h-11 px-7 rounded-xl text-white text-[13.5px] font-semibold transition-all duration-300 hover:-translate-y-px hover:brightness-110 active:translate-y-0"
+                className="inline-flex items-center justify-center h-11 px-7 rounded-xl text-[#0B1220] text-[13.5px] font-semibold transition-all duration-300 hover:-translate-y-px hover:brightness-110 active:translate-y-0"
                 style={{
                   background: "#B88A5A",
                 }}
@@ -184,7 +182,7 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
                 {s.value}
               </div>
               <div
-                className="text-[11.5px] text-white/60"
+                className="text-[11.5px] text-white/90"
                 style={{ textShadow: "0 1px 10px rgba(6,10,22,0.65)" }}
               >
                 {s.label}

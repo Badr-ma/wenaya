@@ -53,17 +53,17 @@ export default function CookieConsent() {
           <button
             onClick={decline}
             aria-label={t("cookieConsent.close")}
-            className="w-6 h-6 rounded-full flex items-center justify-center text-white/20 hover:text-white/50 hover:bg-white/[0.06] transition-all"
+            className="w-6 h-6 rounded-full flex items-center justify-center text-white/70 hover:text-white/50 hover:bg-white/[0.06] transition-all"
           >
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
-        <p className="text-sm text-white/60 leading-relaxed mb-3">
+        <p className="text-sm text-white/80 leading-relaxed mb-3">
           We use cookies to improve your experience on Wenaya.
         </p>
-        <p className="text-xs text-white/30 leading-relaxed mb-5">
+        <p className="text-xs text-white/75 leading-relaxed mb-5">
           By accepting, you allow us to personalize content and analyze our traffic.
         </p>
         <div className="flex items-center gap-2">
@@ -75,7 +75,7 @@ export default function CookieConsent() {
           </button>
           <button
             onClick={decline}
-            className="px-4 py-2.5 rounded-full text-xs font-medium text-white/40 hover:text-white/70 border border-white/[0.08] hover:border-white/[0.15] transition-all"
+            className="px-4 py-2.5 rounded-full text-xs font-medium text-white/80 hover:text-white/70 border border-white/[0.08] hover:border-white/[0.15] transition-all"
           >
             Decline
           </button>

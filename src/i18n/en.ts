@@ -2744,6 +2744,17 @@ const en: Translations = {
     footer: "Space reserved for Wenaya patients and practitioners",
   },
   compte: {
+    bookings: {
+      title: "My bookings", subtitle: "View your appointments, treatments and group-session registrations.",
+      appointments: "Appointments and treatments", groups: "Group sessions", today: "Today", upcoming: "Upcoming", past: "Past",
+      allGroups: "All your group-session registrations, in the order provided by the clinic.",
+      loading: "Loading your bookings…", error: "Your bookings are temporarily unavailable.",
+      empty: "No bookings in this list.", expired: "Your session has expired. Sign in again to view your bookings.",
+      login: "Sign in", retry: "Retry", appointment: "Appointment or treatment", group: "Group session",
+      unknownDate: "Date unavailable", with: "With", location: "Location", bookingStatus: "Booking status", eventStatus: "Session status",
+      reference: "Reference", details: "View details", previous: "Previous", next: "Next", page: "Page", of: "of",
+      statuses: { pending: "Pending", confirmed: "Confirmed", cancelled: "Cancelled", canceled: "Cancelled", completed: "Completed", active: "Active", finished: "Finished" },
+    },
     eyebrow: "My space",
     heading: "Hello 👋",
     welcomeBack: "Great to see you again.",

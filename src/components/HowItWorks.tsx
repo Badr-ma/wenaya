@@ -54,6 +54,7 @@ function useCountUp(target: number, durationMs: number): { ref: RefObject<HTMLDi
       (entries) => {
         for (const en of entries) {
           if (!en.isIntersecting) {
+            cancelAnimationFrame(raf);
             setValue(target);
             continue;
           }
@@ -71,7 +72,7 @@ function useCountUp(target: number, durationMs: number): { ref: RefObject<HTMLDi
       },
       { threshold: 0, rootMargin: "-8% 0px" }
     );
-    obs.observe(el);
+    obs.observe(el.closest("[data-method-replay]") ?? el);
     return () => {
       obs.disconnect();
       cancelAnimationFrame(raf);
@@ -299,6 +300,7 @@ function Card({
 }): React.JSX.Element {
   return (
     <div
+      data-method-replay=""
       className="relative flex flex-col rounded-2xl px-6 py-7 sm:px-7 sm:py-8 min-h-[280px] sm:min-h-[330px]"
       style={{
         background: "#E8E2D9",
@@ -309,7 +311,7 @@ function Card({
       <span
         aria-hidden
         className="absolute top-4 right-4 font-heading font-black leading-none select-none pointer-events-none"
-        style={{ fontSize: "54px", color: "rgba(11,18,32,0.04)" }}
+        style={{ fontSize: "54px", color: "rgba(11,18,32,0.5)" }}
       >
         0{index + 1}
       </span>
@@ -321,7 +323,7 @@ function Card({
       <h3 className="mb-1.5 shrink-0 font-heading text-[22px] font-bold leading-[1.15] text-[#0B1220] sm:text-[24px] lg:text-[26px]">
         {step.title}
       </h3>
-      <p className="mb-3.5 shrink-0 text-[12px] leading-relaxed text-[#2B2F36]/50">{step.short}</p>
+      <p className="mb-3.5 shrink-0 text-[12px] leading-relaxed text-[#2B2F36]/75">{step.short}</p>
 
       <div className="mhm-reveal flex min-h-[200px] flex-1 flex-col">
         {index === 0 && <AssessmentPanel label={visuals.pane1} dims={visuals.dims} />}
@@ -345,22 +347,22 @@ export default function HowItWorks({ content }: HowItWorksProps): React.JSX.Elem
     const el = sectionRef.current;
     if (!el) return;
 
-    el.classList.add("mhm-armed");
+    const targets = el.querySelectorAll<HTMLElement>("[data-method-replay]");
+    targets.forEach((target) => target.classList.add("mhm-armed"));
 
     const obs = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) {
-            el.classList.add("mhm-visible");
-          } else {
-            el.classList.remove("mhm-visible");
-          }
+          entry.target.classList.toggle("mhm-visible", entry.isIntersecting);
         }
       },
       { threshold: 0, rootMargin: "-8% 0px" }
     );
-    obs.observe(el);
-    return () => obs.disconnect();
+    targets.forEach((target) => obs.observe(target));
+    return () => {
+      obs.disconnect();
+      targets.forEach((target) => target.classList.remove("mhm-armed", "mhm-visible"));
+    };
   }, []);
 
   const steps = tRaw<HowItWorksStep[]>("howItWorks.steps");
@@ -379,7 +381,7 @@ export default function HowItWorks({ content }: HowItWorksProps): React.JSX.Elem
       />
 
       <div className="relative mx-auto max-w-7xl px-6 sm:px-10">
-        <div className="mhm-reveal mx-auto mb-10 max-w-xl text-center sm:mb-14">
+        <div data-method-replay="" className="mhm-reveal mx-auto mb-10 max-w-xl text-center sm:mb-14">
           <div className="mb-5 inline-flex items-center gap-2">
             <div className="h-px w-4 bg-[#B88A5A]/40" />
             <span className="text-[10.5px] font-bold uppercase tracking-[0.22em] text-[#B88A5A]">

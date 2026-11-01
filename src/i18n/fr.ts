@@ -2769,6 +2769,17 @@ const fr = {
     footer: "Espace réservé aux patients et praticiens Wenaya",
   },
   compte: {
+    bookings: {
+      title: "Mes rendez-vous", subtitle: "Retrouvez vos consultations, soins et inscriptions aux séances de groupe.",
+      appointments: "Consultations et soins", groups: "Séances de groupe", today: "Aujourd’hui", upcoming: "À venir", past: "Passés",
+      allGroups: "Toutes vos inscriptions aux séances de groupe, dans l’ordre fourni par la clinique.",
+      loading: "Chargement de vos rendez-vous…", error: "Vos rendez-vous sont momentanément indisponibles.",
+      empty: "Aucun rendez-vous dans cette liste.", expired: "Votre session a expiré. Reconnectez-vous pour consulter vos rendez-vous.",
+      login: "Se connecter", retry: "Réessayer", appointment: "Consultation ou soin", group: "Séance de groupe",
+      unknownDate: "Date non disponible", with: "Avec", location: "Lieu", bookingStatus: "Statut du rendez-vous", eventStatus: "Statut de la séance",
+      reference: "Référence", details: "Voir les détails", previous: "Précédent", next: "Suivant", page: "Page", of: "sur",
+      statuses: { pending: "En attente", confirmed: "Confirmé", cancelled: "Annulé", canceled: "Annulé", completed: "Terminé", active: "Active", finished: "Terminée" },
+    },
     eyebrow: "Mon espace",
     heading: "Bonjour 👋",
     welcomeBack: "Ravi de vous revoir.",

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { isRecoverableHeroPlaybackError, playHeroVideo, prepareHeroVideo } from "@/lib/hero-playback";
 
 export interface HeroClip {
   src: string;
@@ -99,6 +100,7 @@ export default function HeroVideoSequence({
   const startedRef = useRef(false);
   const reducedRef = useRef(false);
   const advancingRef = useRef(false);
+  const pendingRef = useRef<number | null>(null);
   const transitionTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -114,6 +116,7 @@ export default function HeroVideoSequence({
     if (!clipCount) return;
 
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let disposed = false;
     reducedRef.current = media.matches;
 
     const failTo = (index: number) => {
@@ -149,18 +152,19 @@ export default function HeroVideoSequence({
       if (failedRef.current.has(index)) return;
       const video = videoRefs.current[index];
       if (!video) return;
-      video.muted = true;
-      const attempt = video.play();
-      if (!attempt) return;
-      void attempt.catch(() => failTo(index));
+      void playHeroVideo(video, clips[index].src).catch((error: unknown) => {
+        if (disposed || index !== activeRef.current || isRecoverableHeroPlaybackError(error)) return;
+        failTo(index);
+      });
     };
 
     const stopAll = () => {
+      pendingRef.current = null;
       videoRefs.current.forEach((video) => video?.pause());
     };
 
     const start = () => {
-      if (startedRef.current || reducedRef.current) return;
+      if (reducedRef.current || document.hidden) return;
       startedRef.current = true;
       playActive();
     };
@@ -168,16 +172,22 @@ export default function HeroVideoSequence({
     const onMotionChange = () => {
       reducedRef.current = media.matches;
       if (media.matches) stopAll();
-      else if (startedRef.current) playActive();
+      else start();
     };
 
     const onVisibilityChange = () => {
       if (document.hidden) stopAll();
-      else if (startedRef.current && !reducedRef.current) playActive();
+      else start();
     };
 
     media.addEventListener("change", onMotionChange);
     document.addEventListener("visibilitychange", onVisibilityChange);
+    // Safari may reject autoplay in Low Power Mode. A later trusted gesture,
+    // bfcache restore or network recovery can retry the same healthy clip.
+    document.addEventListener("pointerup", start);
+    document.addEventListener("keydown", start);
+    window.addEventListener("pageshow", start);
+    window.addEventListener("online", start);
 
     let idleHandle: number | null = null;
     let idleIsTimeout = false;
@@ -191,8 +201,13 @@ export default function HeroVideoSequence({
     }
 
     return () => {
+      disposed = true;
       media.removeEventListener("change", onMotionChange);
       document.removeEventListener("visibilitychange", onVisibilityChange);
+      document.removeEventListener("pointerup", start);
+      document.removeEventListener("keydown", start);
+      window.removeEventListener("pageshow", start);
+      window.removeEventListener("online", start);
       if (idleHandle !== null) {
         if (idleIsTimeout) window.clearTimeout(idleHandle);
         else if (typeof cancelIdleCallback === "function") cancelIdleCallback(idleHandle);
@@ -200,12 +215,13 @@ export default function HeroVideoSequence({
       stopAll();
       startedRef.current = false;
       advancingRef.current = false;
+      pendingRef.current = null;
       if (transitionTimerRef.current !== null) {
         window.clearTimeout(transitionTimerRef.current);
         transitionTimerRef.current = null;
       }
     };
-  }, [clipCount]);
+  }, [clipCount, clips]);
 
   /* Whenever the active clip changes, play it and release the others. */
   useEffect(() => {
@@ -214,19 +230,9 @@ export default function HeroVideoSequence({
 
     const video = videoRefs.current[active];
     if (!video) return;
-    /* A looping clip that already ended must restart from frame 0, not sit on
-     * its last frame while the poster underneath is hidden. */
-    if (video.ended) {
-      try {
-        video.currentTime = 0;
-      } catch {
-        /* Some browsers throw before metadata is ready — play() restarts it. */
-      }
-    }
-    video.muted = true;
-    const attempt = video.play();
-    if (attempt) {
-      void attempt.catch(() => {
+    let cancelled = false;
+    void playHeroVideo(video, clips[active].src).catch((error: unknown) => {
+        if (cancelled || active !== activeRef.current || isRecoverableHeroPlaybackError(error)) return;
         const nextFailed = new Set(failedRef.current);
         nextFailed.add(active);
         failedRef.current = nextFailed;
@@ -252,7 +258,6 @@ export default function HeroVideoSequence({
           setActive(0);
         }
       });
-    }
 
     const settle = window.setTimeout(() => {
       videoRefs.current.forEach((candidate, index) => {
@@ -261,25 +266,36 @@ export default function HeroVideoSequence({
       });
     }, FADE_MS + 150);
 
-    return () => window.clearTimeout(settle);
-  }, [active, clipCount]);
+    return () => { cancelled = true; window.clearTimeout(settle); };
+  }, [active, clipCount, clips]);
 
   const advanceFrom = (index: number) => {
-    if (advancingRef.current || index !== activeRef.current) return;
+    if (advancingRef.current || pendingRef.current !== null || index !== activeRef.current) return;
     const nextIndex = findNextPlayable(index, failedRef.current, clipCount);
-    if (nextIndex === index) return;
-    commitTransition(
-      index,
-      nextIndex,
-      setPrevious,
-      setActive,
-      activeRef,
-      advancingRef,
-      transitionTimerRef,
-    );
+    if (nextIndex === index) {
+      const video = videoRefs.current[index];
+      if (video?.ended && !failedRef.current.has(index)) {
+        void playHeroVideo(video, clips[index].src).catch(() => { /* keep the poster/frame */ });
+      }
+      return;
+    }
+    const nextVideo = videoRefs.current[nextIndex];
+    if (!nextVideo) return;
+    // Keep the outgoing frame visible until the incoming clip actually plays.
+    pendingRef.current = nextIndex;
+    void playHeroVideo(nextVideo, clips[nextIndex].src).catch(() => {
+      if (pendingRef.current === nextIndex) pendingRef.current = null;
+      // A media error event skips genuinely broken clips. Autoplay rejection
+      // remains recoverable on the next gesture or visibility change.
+    });
   };
 
   const markStarted = (index: number) => {
+    if (pendingRef.current === index && !document.hidden && !reducedRef.current) {
+      pendingRef.current = null;
+      commitTransition(activeRef.current, index, setPrevious, setActive,
+        activeRef, advancingRef, transitionTimerRef);
+    }
     setStarted((prev) => {
       if (prev.has(index)) return prev;
       const next = new Set(prev);
@@ -293,14 +309,13 @@ export default function HeroVideoSequence({
     const duration = video.duration;
     if (!Number.isFinite(duration) || duration <= 0) return;
 
-    const nextIndex = (index + 1) % clipCount;
+    const nextIndex = findNextPlayable(index, failedRef.current, clipCount);
     const remaining = duration - video.currentTime;
 
     if (remaining <= PRELOAD_LEAD_SECONDS) {
       const nextVideo = videoRefs.current[nextIndex];
-      if (nextVideo && !failedRef.current.has(nextIndex) && nextVideo.preload !== "auto") {
-        nextVideo.preload = "auto";
-        nextVideo.load();
+      if (nextIndex !== index && nextVideo) {
+        prepareHeroVideo(nextVideo, clips[nextIndex].src);
       }
     }
 
@@ -364,7 +379,6 @@ export default function HeroVideoSequence({
                 ref={(element) => {
                   videoRefs.current[index] = element;
                 }}
-                src={clip.src}
                 muted
                 playsInline
                 preload="none"
@@ -387,6 +401,11 @@ export default function HeroVideoSequence({
                   nextFailed.add(index);
                   failedRef.current = nextFailed;
                   setFailed(nextFailed);
+                  if (pendingRef.current === index) {
+                    pendingRef.current = null;
+                    advanceFrom(activeRef.current);
+                    return;
+                  }
                   if (index === activeRef.current) {
                     const nextIndex = findNextPlayable(index, nextFailed, clipCount);
                     if (nextIndex !== index) {

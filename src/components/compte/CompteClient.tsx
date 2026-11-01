@@ -19,8 +19,10 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import Logo from "@/components/Logo";
+import PatientBookings from "./PatientBookings";
 import { useLocale } from "@/contexts/LanguageContext";
 import { h } from "@/lib/href";
 import {
@@ -43,6 +45,7 @@ const readonlyFieldBox =
 
 export default function CompteClient({ devFallback = false }: { devFallback?: boolean }) {
   const { locale, t } = useLocale();
+  const router = useRouter();
   const [screen, setScreen] = useState<Screen>({ name: "loading" });
   const [loggingOut, setLoggingOut] = useState(false);
   const [logoutError, setLogoutError] = useState<string>();
@@ -95,7 +98,7 @@ export default function CompteClient({ devFallback = false }: { devFallback?: bo
       const res = await logoutPatient();
       if (res.success) {
         setScreen({ name: "anonymous" });
-        setLoggingOut(false);
+        router.replace(h(locale, "/login"));
         return;
       }
       if (res.type === "not-enabled") {
@@ -241,6 +244,8 @@ export default function CompteClient({ devFallback = false }: { devFallback?: bo
                   )}
                 </div>
               </div>
+
+              <PatientBookings />
 
               {/* ── Personal information ──────────────────────────────────── */}
               <section aria-labelledby="compte-perso" className="mt-6">

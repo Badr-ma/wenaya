@@ -117,7 +117,7 @@ export default function QuickAccessSection({ content, images }: QuickAccessProps
           >
             <SubtitleSplit text={content?.heading ?? t("quickAccess.heading")} bronze={locale === "fr" ? "ce que vous cherchez ?" : "what you're looking for?"} darkClass="text-[#0B1220]" />
           </h2>
-          <p className="text-[#2B2F36]/50 text-[13px] sm:text-[14px] lg:text-[15px] leading-relaxed max-w-lg mx-auto mt-4">
+          <p className="text-[#2B2F36]/75 text-[13px] sm:text-[14px] lg:text-[15px] leading-relaxed max-w-lg mx-auto mt-4">
             {content?.sub ?? t("quickAccess.sub")}
           </p>
         </div>
@@ -156,7 +156,7 @@ export default function QuickAccessSection({ content, images }: QuickAccessProps
                 >
                   {link.title}
                 </h3>
-                <p className="text-[#2B2F36]/50 text-[13px] leading-[1.65] mt-2">
+                <p className="text-[#2B2F36]/75 text-[13px] leading-[1.65] mt-2">
                   {link.text}
                 </p>
 

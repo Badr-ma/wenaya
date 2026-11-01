@@ -60,7 +60,7 @@ export default function ExpertiseSection({ content, specialists = [] }: Expertis
               <SubtitleSplit text={content?.subtitle ?? t("expertiseSection.subtitle")} bronze={locale === "fr" ? "pour vous accompagner." : "to support you."} darkClass="text-[#0B1220]" />
             </h2>
 
-            <div id="es-text" className="text-[#2B2F36]/50 text-[13px] sm:text-[14px] lg:text-[15px] leading-relaxed mt-5">
+            <div id="es-text" className="text-[#2B2F36]/75 text-[13px] sm:text-[14px] lg:text-[15px] leading-relaxed mt-5">
               <p>{content?.p1 ?? t("expertiseSection.p1")}</p>
             </div>
           </div>

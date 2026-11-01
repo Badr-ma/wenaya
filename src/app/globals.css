@@ -497,8 +497,17 @@ body {
  * GSAP timeline (power2.out, arc 1.5s, dots 0.65 stagger, 0.34 pills, 0.16
  * milestones); total sequence ~2.6s. Under `prefers-reduced-motion`
  * everything renders statically visible. */
+.mhm-armed.mhm-reveal,
 .mhm-armed .mhm-reveal { opacity: 0; transform: translateY(16px); transition: opacity 1.15s ease, transform 1.15s cubic-bezier(0.22, 1, 0.36, 1); }
+.mhm-armed.mhm-visible.mhm-reveal,
 .mhm-armed.mhm-visible .mhm-reveal { opacity: 1; transform: translateY(0); }
+
+/* Reset immediately off-screen so a quick return replays the full sequence. */
+.mhm-armed:not(.mhm-visible):is(.mhm-reveal),
+.mhm-armed:not(.mhm-visible) :is(.mhm-reveal, .mhm-line-vert, .mhm-arc, .mhm-draw, .mhm-area, .mhm-node, .mhm-lbl, .mhm-pulse) {
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+}
 
 .mhm-armed .mhm-line-vert { transform: scaleY(0); transform-origin: top; transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 .mhm-armed.mhm-visible .mhm-line-vert { transform: scaleY(1); }
@@ -525,6 +534,7 @@ body {
 .mhm-armed.mhm-visible .mhm-pulse { opacity: 0.35; }
 
 @media (prefers-reduced-motion: reduce) {
+  .mhm-armed.mhm-reveal,
   .mhm-armed .mhm-reveal,
   .mhm-armed .mhm-line-vert,
   .mhm-armed .mhm-draw,
