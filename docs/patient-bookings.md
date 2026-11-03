@@ -14,7 +14,11 @@ legacy frontend's `/appointments` and `/appointments-group` bundles:
 - `GET /api/v1/getAppointmentsGroupByCustomer?page=`: paginator under `data`.
   Group rows use `title`, `event_date`, `event_time`, `event_status`,
   `professional` and `company`. There is no verified upcoming/past group filter,
-  so the group tab displays the paginated registrations in backend order.
+  so the BFF reads all pages (up to 100, failing rather than returning partial
+  results), filters by Casablanca date/time, sorts upcoming sessions first and
+  paginates the filtered list in groups of 10. Past dates and earlier start times
+  today are excluded. Today's sessions without a supplied time remain visible;
+  sessions without a valid date are excluded.
 
 Individual rows display their professional, `booking_date`, `booking_time`,
 `booking_status`, and practice business name when supplied. A treatment name is

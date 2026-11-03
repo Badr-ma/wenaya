@@ -2772,7 +2772,7 @@ const fr = {
     bookings: {
       title: "Mes rendez-vous", subtitle: "Retrouvez vos consultations, soins et inscriptions aux séances de groupe.",
       appointments: "Consultations et soins", groups: "Séances de groupe", today: "Aujourd’hui", upcoming: "À venir", past: "Passés",
-      allGroups: "Toutes vos inscriptions aux séances de groupe, dans l’ordre fourni par la clinique.",
+      allGroups: "Vos séances de groupe à venir, de la plus proche à la plus éloignée.",
       loading: "Chargement de vos rendez-vous…", error: "Vos rendez-vous sont momentanément indisponibles.",
       empty: "Aucun rendez-vous dans cette liste.", expired: "Votre session a expiré. Reconnectez-vous pour consulter vos rendez-vous.",
       login: "Se connecter", retry: "Réessayer", appointment: "Consultation ou soin", group: "Séance de groupe",

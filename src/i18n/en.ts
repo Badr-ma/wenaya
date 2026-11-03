@@ -2747,7 +2747,7 @@ const en: Translations = {
     bookings: {
       title: "My bookings", subtitle: "View your appointments, treatments and group-session registrations.",
       appointments: "Appointments and treatments", groups: "Group sessions", today: "Today", upcoming: "Upcoming", past: "Past",
-      allGroups: "All your group-session registrations, in the order provided by the clinic.",
+      allGroups: "Your upcoming group sessions, with the next session first.",
       loading: "Loading your bookings…", error: "Your bookings are temporarily unavailable.",
       empty: "No bookings in this list.", expired: "Your session has expired. Sign in again to view your bookings.",
       login: "Sign in", retry: "Retry", appointment: "Appointment or treatment", group: "Group session",

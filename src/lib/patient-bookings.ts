@@ -17,6 +17,20 @@ export interface PatientBookingsPage {
   total: number;
 }
 
+/** Backend session dates are clinic-local (Casablanca), not browser-local. */
+export function upcomingGroupBookings(items: PatientBooking[], now = new Date()): PatientBooking[] {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Africa/Casablanca", year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+  }).formatToParts(now);
+  const value = (type: string) => parts.find(part => part.type === type)?.value ?? "";
+  const today = `${value("year")}-${value("month")}-${value("day")}`;
+  const time = `${value("hour")}:${value("minute")}`;
+  return items.filter(item => item.date && (item.date > today ||
+    (item.date === today && (!item.time || item.time >= time))))
+    .sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
+}
+
 function object(value: unknown): Record<string, unknown> {
   return value !== null && typeof value === "object" && !Array.isArray(value)
     ? value as Record<string, unknown> : {};

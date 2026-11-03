@@ -1,9 +1,37 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { normalizePatientBookings } from "@/lib/patient-bookings";
+import { normalizePatientBookings, upcomingGroupBookings } from "@/lib/patient-bookings";
 import { readPatientBookings } from "@/lib/patient-bookings-server";
 
 process.env.WENAYA_API_URL = "https://api.example.test";
+
+test("upcoming groups use Casablanca time, exclude history and sort by start", () => {
+  const items = [
+    { id: "1", date: "2026-11-01", time: "23:00" },
+    { id: "2", date: "2026-11-03", time: "10:00" },
+    { id: "3", date: "2026-11-02", time: "10:00" },
+    { id: "4", date: "2026-11-02", time: "12:00" },
+    { id: "5", date: "", time: "" },
+  ];
+  assert.deepEqual(upcomingGroupBookings(items, new Date("2026-11-02T10:30:00Z")).map(x => x.id), ["4", "2"]);
+});
+
+test("upcoming groups scan later backend pages before filtering and paginating", async (t) => {
+  const seen = [];
+  t.mock.method(globalThis, "fetch", async (url) => {
+    seen.push(url);
+    if (url.endsWith("/customer")) return Response.json({ data: { id: 7 } });
+    const number = Number(new URL(url).searchParams.get("page"));
+    return Response.json({ data: { current_page: number, last_page: 2, total: 2,
+      data: [{ id: number, event_date: number === 1 ? "2000-01-01" : "2099-01-01", event_time: "10:00" }] } });
+  });
+  const result = await readPatientBookings("we_session=qa", "groups", 1, "upcoming");
+  assert.equal(result.status, 200);
+  assert.deepEqual(result.body.items.map(x => x.id), ["2"]);
+  assert.equal(result.body.total, 1);
+  assert.equal(result.body.totalPages, 1);
+  assert.equal(seen.length, 3);
+});
 const row = { id: 8, booking_date: "2026-11-04", booking_time: "10:30:00", booking_status: "pending",
   professional: { first_name: "QA", last_name: "Professional", email: "private@example.test" },
   practice: { business: "QA clinic" }, patient: { email: "private@example.test" }, payment: { token: "secret" } };
