@@ -69,10 +69,10 @@ export default function ConfiguratorComingSoon({ locale }: ConfiguratorComingSoo
             </Link>
           </div>
         </div>
-        <div className="hidden lg:block">
+        <div className="mt-10 lg:mt-0">
           <div className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-[#B88A5A]/25 shadow-[0_24px_60px_rgba(11,18,32,0.12)]">
             <Image
-              src="/images/cours-ateliers/wellness.jpg"
+              src="/images/configurator-ai-guidance.png"
               alt={t("configurator.imageAlt")}
               fill
               priority

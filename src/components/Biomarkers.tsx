@@ -9,6 +9,7 @@ import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
 import SubtitleSplit from "@/components/SubtitleSplit";
 import type { BiomarkersContent } from "@/lib/homepage-types";
+import { h } from "@/lib/href";
 
 interface BiomarkersProps {
   content?: BiomarkersContent;
@@ -151,7 +152,7 @@ export default function Biomarkers({ content }: BiomarkersProps): React.JSX.Elem
             {content?.bottom ?? t("biomarkers.bottom")}
           </p>
           <a
-            href="#method"
+            href={`${h(locale, "/contact-us")}?type=booking`}
             className="inline-flex items-center gap-2 text-[#B88A5A] text-sm font-semibold hover:gap-3 transition-all duration-300"
           >
             {content?.cta ?? t("biomarkers.cta")}
