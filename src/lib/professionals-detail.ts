@@ -363,8 +363,9 @@ export async function getLiveProfessionalBySlug(
     // Reviews from the dedicated endpoint (data-only §6): a valid response
     // (incl. zero reviews) is authoritative; on failure the profile keeps the
     // safe empty set from `toDetailSpecialist` (never invented).
-    const userName = specialist.availabilityApi?.userName ?? slug;
-    return withReviews(specialist, userName, specialist.reviews);
+    // This endpoint resolves the public profile slug. Availability uses the
+    // separate raw username; the two identifiers are not interchangeable.
+    return withReviews(specialist, specialist.slug, specialist.reviews);
   } catch (error) {
     if (error instanceof WenayaApiError && error.status === 404) return undefined;
     throw error;

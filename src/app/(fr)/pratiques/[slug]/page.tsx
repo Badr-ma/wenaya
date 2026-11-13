@@ -1,3 +1,4 @@
+import { relatedPractices, practiceSeo } from "@/lib/practice-editorial";
 /**
  * Pratique Detail Page FR — /pratiques/[slug]
  * Static generation via generateStaticParams; dynamic SEO metadata, WebPage +
@@ -35,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const pratique = (await getPractices()).find((practice) => practice.slug === slug);
   if (!pratique) return {};
 
-  const title = pratique.title;
+  const { title, description } = practiceSeo(pratique, 'fr');
   const url = `${SITE_URL}/pratiques/${slug}`;
   const image = pratique.image;
   const imageUrl = image
@@ -45,20 +46,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     : "";
 
   return {
-    title,
-    description: pratique.description,
+    title: slug === "neuropsychologie" ? { absolute: title } : title,
+    description,
     alternates: { canonical: url, languages: languageAlternates(`/pratiques/${slug}`) },
     openGraph: {
       ...OG_DEFAULTS,
       title: `${title} | Wenaya`,
-      description: pratique.description,
+      description,
       url,
       ...(imageUrl ? { images: [{ url: imageUrl, alt: pratique.title }] } : {}),
     },
     twitter: {
       ...TWITTER_DEFAULTS,
       title: `${title} | Wenaya`,
-      description: pratique.description,
+      description,
       ...(imageUrl ? { images: [imageUrl] } : {}),
     },
   };
@@ -71,7 +72,7 @@ export default async function PratiquePage({ params }: Props) {
   if (!pratique) notFound();
 
   const { t } = getTranslations("fr");
-  const related = practices.filter((practice) => practice.slug !== slug).slice(0, 6);
+  const related = relatedPractices(practices, pratique);
   const specialtySlug = pratique.specialtySlug || slug;
   const specialists = await getPracticeSpecialists(specialtySlug);
   const professionalHref = resolvePracticeProfessionalsHref("fr", specialtySlug, specialists);

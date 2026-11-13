@@ -3,31 +3,40 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocale } from "@/contexts/LanguageContext";
 
-const STORAGE_KEY = "wenaya-cookie-consent";
+import Link from "next/link";
+import { h } from "@/lib/href";
+import { CONSENT_KEY as STORAGE_KEY, CONSENT_EVENT } from "./ConsentAnalytics";
 
 export default function CookieConsent() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const [visible, setVisible] = useState(false);
   const [animIn, setAnimIn] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (localStorage.getItem(STORAGE_KEY)) return;
-    // Defer the visibility flip one frame so the effect body performs no
-    // synchronous setState. The double-rAF entrance animation is preserved.
-    const show = requestAnimationFrame(() => setVisible(true));
-    requestAnimationFrame(() => requestAnimationFrame(() => setAnimIn(true)));
-    return () => cancelAnimationFrame(show);
+    const open = () => { setVisible(true); setAnimIn(true); };
+    window.addEventListener('wenaya:open-cookie-settings', open);
+    let show = 0;
+    let animate = 0;
+    try {
+      if (!localStorage.getItem(STORAGE_KEY)) {
+        show = requestAnimationFrame(() => setVisible(true));
+        animate = requestAnimationFrame(() => setAnimIn(true));
+      }
+    } catch { show = requestAnimationFrame(open); }
+    return () => { cancelAnimationFrame(show); cancelAnimationFrame(animate); window.removeEventListener('wenaya:open-cookie-settings', open); };
   }, []);
 
   const accept = () => {
-    localStorage.setItem(STORAGE_KEY, "accepted");
+    try { localStorage.setItem(STORAGE_KEY, "accepted"); } catch { /* Analytics remains disabled. */ }
+    window.dispatchEvent(new Event(CONSENT_EVENT));
     setAnimIn(false);
     setTimeout(() => setVisible(false), 300);
   };
 
   const decline = () => {
-    localStorage.setItem(STORAGE_KEY, "declined");
+    try { localStorage.setItem(STORAGE_KEY, "declined"); } catch { /* Necessary cookies only. */ }
+    window.dispatchEvent(new Event(CONSENT_EVENT));
     setAnimIn(false);
     setTimeout(() => setVisible(false), 300);
   };
@@ -37,7 +46,7 @@ export default function CookieConsent() {
   return (
     <div
       ref={ref}
-      className="fixed bottom-6 right-6 z-[200] w-[340px] transition-all duration-300 ease-out"
+      className="fixed bottom-6 right-6 z-[200] w-[340px] max-w-[calc(100vw-3rem)] transition-all duration-300 ease-out"
       style={{
         transform: animIn ? "translateY(0) scale(1)" : "translateY(20px) scale(0.95)",
         opacity: animIn ? 1 : 0,
@@ -61,23 +70,24 @@ export default function CookieConsent() {
           </button>
         </div>
         <p className="text-sm text-white/80 leading-relaxed mb-3">
-          We use cookies to improve your experience on Wenaya.
+          {t("cookieConsent.title")}
         </p>
         <p className="text-xs text-white/75 leading-relaxed mb-5">
-          By accepting, you allow us to personalize content and analyze our traffic.
+          {t("cookieConsent.description")}
         </p>
+        <Link href={h(locale, "/privacy-policy")} className="block mb-4 text-xs text-white/75 underline underline-offset-4">{t("cookieConsent.privacy")}</Link>
         <div className="flex items-center gap-2">
           <button
             onClick={accept}
             className="flex-1 px-4 py-2.5 rounded-full text-xs font-semibold text-[#0B1220] bg-[#B88A5A] hover:bg-[#B88A5A]/90 transition-all active:scale-[0.98]"
           >
-            Accept
+            {t("cookieConsent.accept")}
           </button>
           <button
             onClick={decline}
             className="px-4 py-2.5 rounded-full text-xs font-medium text-white/80 hover:text-white/70 border border-white/[0.08] hover:border-white/[0.15] transition-all"
           >
-            Decline
+            {t("cookieConsent.decline")}
           </button>
         </div>
       </div>

@@ -1,0 +1,252 @@
+[
+  {
+    "oldUrl": "https://wenaya.com/",
+    "hops": [
+      {
+        "path": "/",
+        "status": 200,
+        "location": null
+      }
+    ]
+  },
+  {
+    "oldUrl": "https://wenaya.com/search/all/all",
+    "hops": [
+      {
+        "path": "/search/all/all",
+        "status": 301,
+        "location": "/search/all"
+      },
+      {
+        "path": "/search/all",
+        "status": 200,
+        "location": null
+      }
+    ]
+  },
+  {
+    "oldUrl": "https://wenaya.com/about-us",
+    "hops": [
+      {
+        "path": "/about-us",
+        "status": 200,
+        "location": null
+      }
+    ]
+  },
+  {
+    "oldUrl": "https://wenaya.com/soins",
+    "hops": [
+      {
+        "path": "/soins",
+        "status": 301,
+        "location": "/pratiques"
+      },
+      {
+        "path": "/pratiques",
+        "status": 200,
+        "location": null
+      }
+    ]
+  },
+  {
+    "oldUrl": "https://wenaya.com/maux-troubles",
+    "hops": [
+      {
+        "path": "/maux-troubles",
+        "status": 200,
+        "location": null
+      }
+    ]
+  },
+  {
+    "oldUrl": "https://wenaya.com/seance-de-groupe",
+    "hops": [
+      {
+        "path": "/seance-de-groupe",
+        "status": 200,
+        "location": null
+      }
+    ]
+  },
+  {
+    "oldUrl": "https://wenaya.com/evenements",
+    "hops": [
+      {
+        "path": "/evenements",
+        "status": 301,
+        "location": "/seance-de-groupe"
+      },
+      {
+        "path": "/seance-de-groupe",
+        "status": 200,
+        "location": null
+      }
+    ]
+  },
+  {
+    "oldUrl": "https://wenaya.com/pratiques",
+    "hops": [
+      {
+        "path": "/pratiques",
+        "status": 200,
+        "location": null
+      }
+    ]
+  },
+  {
+    "oldUrl": "https://wenaya.com/articles",
+    "hops": [
+      {
+        "path": "/articles",
+        "status": 200,
+        "location": null
+      }
+    ]
+  },
+  {
+    "oldUrl": "https://wenaya.com/contact-us",
+    "hops": [
+      {
+        "path": "/contact-us",
+        "status": 200,
+        "location": null
+      }
+    ]
+  },
+  {
+    "oldUrl": "https://wenaya.com/terms-and-conditions",
+    "hops": [
+      {
+        "path": "/terms-and-conditions",
+        "status": 200,
+        "location": null
+      }
+    ]
+  },
+  {
+    "oldUrl": "https://wenaya.com/privacy-policy",
+    "hops": [
+      {
+        "path": "/privacy-policy",
+        "status": 200,
+        "location": null
+      }
+    ]
+  },
+  {
+    "oldUrl": "https://wenaya.com/for-entreprise",
+    "hops": [
+      {
+        "path": "/for-entreprise",
+        "status": 301,
+        "location": "/corporate"
+      },
+      {
+        "path": "/corporate",
+        "status": 200,
+        "location": null
+      }
+    ]
+  },
+  {
+    "oldUrl": "https://wenaya.com/parcours-de-soins/grossesse-&-maternité",
+    "hops": [
+      {
+        "path": "/parcours-de-soins/grossesse-&-maternit%C3%A9",
+        "status": 301,
+        "location": "/parcours-de-soins/grossesse-&-maternite"
+      },
+      {
+        "path": "/parcours-de-soins/grossesse-&-maternite",
+        "status": 200,
+        "location": null
+      }
+    ]
+  },
+  {
+    "oldUrl": "https://wenaya.com/parcours-de-soins/les-troubles-de-l&apos;apprentissage",
+    "hops": [
+      {
+        "path": "/parcours-de-soins/les-troubles-de-l'apprentissage",
+        "status": 301,
+        "location": "/parcours-de-soins/les-troubles-de-l-apprentissage"
+      },
+      {
+        "path": "/parcours-de-soins/les-troubles-de-l-apprentissage",
+        "status": 200,
+        "location": null
+      }
+    ]
+  },
+  {
+    "oldUrl": "https://wenaya.com/parcours-de-soins/le-vertige-positionnel",
+    "hops": [
+      {
+        "path": "/parcours-de-soins/le-vertige-positionnel",
+        "status": 200,
+        "location": null
+      }
+    ]
+  },
+  {
+    "oldUrl": "https://wenaya.com/parcours-de-soins/la-maladie-d’Alzheimer",
+    "hops": [
+      {
+        "path": "/parcours-de-soins/la-maladie-d%E2%80%99Alzheimer",
+        "status": 301,
+        "location": "/parcours-de-soins/la-maladie-d-alzheimer"
+      },
+      {
+        "path": "/parcours-de-soins/la-maladie-d-alzheimer",
+        "status": 200,
+        "location": null
+      }
+    ]
+  },
+  {
+    "oldUrl": "https://wenaya.com/parcours-de-soins/santé-holistique",
+    "hops": [
+      {
+        "path": "/parcours-de-soins/sant%C3%A9-holistique",
+        "status": 301,
+        "location": "/parcours-de-soins/sante-holistique"
+      },
+      {
+        "path": "/parcours-de-soins/sante-holistique",
+        "status": 200,
+        "location": null
+      }
+    ]
+  },
+  {
+    "oldUrl": "https://wenaya.com/parcours-de-soins/tecar-thérapie",
+    "hops": [
+      {
+        "path": "/parcours-de-soins/tecar-th%C3%A9rapie",
+        "status": 301,
+        "location": "/parcours-de-soins/tecar-therapie"
+      },
+      {
+        "path": "/parcours-de-soins/tecar-therapie",
+        "status": 200,
+        "location": null
+      }
+    ]
+  },
+  {
+    "oldUrl": "https://wenaya.com/parcours-de-soins/kinésithérapie-&-avc",
+    "hops": [
+      {
+        "path": "/parcours-de-soins/kin%C3%A9sith%C3%A9rapie-&-avc",
+        "status": 301,
+        "location": "/parcours-de-soins/kinesitherapie-&-avc"
+      },
+      {
+        "path": "/parcours-de-soins/kinesitherapie-&-avc",
+        "status": 200,
+        "location": null
+      }
+    ]
+  }
+]

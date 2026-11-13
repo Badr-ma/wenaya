@@ -16,7 +16,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
-import { clinicHref, configuratorHref, h, type HrefLocale } from "@/lib/href";
+import { clinicHref, healthNeedsHref, h, type HrefLocale } from "@/lib/href";
 import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 import type { QuickLinksContent } from "@/lib/homepage-types";
 import SubtitleSplit from "@/components/SubtitleSplit";
@@ -37,7 +37,7 @@ interface QuickAccessProps {
  * leaving the navy frame.
  */
 const LINKS: { getHref: (locale: HrefLocale) => string; image: string | null }[] = [
-  { getHref: configuratorHref, image: null },
+  { getHref: healthNeedsHref, image: null },
   { getHref: (locale) => `${clinicHref(locale)}#pathologies`, image: null },
   { getHref: (locale) => h(locale, "/pratiques"), image: null },
   { getHref: (locale) => h(locale, "/search/all"), image: "/images/diverse-team.jpg" },

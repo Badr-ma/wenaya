@@ -38,6 +38,7 @@
  */
 "use client";
 
+import DataProtectionNotice from "@/components/legal/DataProtectionNotice";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type {
@@ -641,6 +642,7 @@ export default function BookingPanel({
                   </svg>
                 </span>
                 <p className="text-[11px] text-[#2B2F36]/40 text-center">{labels.payOnlineNote}</p>
+                <DataProtectionNotice locale={locale} />
               </div>
             </>
           )}

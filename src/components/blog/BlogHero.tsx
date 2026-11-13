@@ -33,7 +33,7 @@ export default function BlogHero({ latest }: { latest: PostWithAuthor | null }) 
               <span className="w-1.5 h-1.5 rounded-full bg-[#B88A5A]/50" />
               <span className="text-[10px] font-mono text-[#B88A5A]/60 tracking-wider uppercase">{t("blog.badge")}</span>
             </span>
-            <p className="mt-4 text-balance">
+            <h1 className="mt-4 text-balance">
               <span className="heading-serif block text-[clamp(2rem,3.6vw,3rem)] leading-[1.02] text-[#0B1220]">
                 {t("blog.subLead")}
               </span>{" "}
@@ -47,7 +47,7 @@ export default function BlogHero({ latest }: { latest: PostWithAuthor | null }) 
               >
                 {t("blog.subAccent")}
               </span>
-            </p>
+            </h1>
           </div>
         </div>
       </section>

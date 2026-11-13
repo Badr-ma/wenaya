@@ -17,6 +17,8 @@
  */
 "use client";
 
+import DataProtectionNotice from "@/components/legal/DataProtectionNotice";
+import { trackConversion } from "@/lib/analytics";
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLocale } from "@/contexts/LanguageContext";
@@ -43,6 +45,7 @@ function ContactFormInner({ isBooking = false, requestedSession }: ContactFormPr
   const slotTime = searchParams.get("time");
   const hasSlot = Boolean(slotId && slotDate && slotTime);
   const isRecruitment = subject === "recrutement" || subject === "recruitment";
+  const isAssessment = isBooking && subject === "bilans";
   // The server passes the recognised session title (editorial slug OR `api-{id}`
   // live program). When the prop is absent we fall back to the local editorial
   // resolution so any other render path keeps today's behaviour.
@@ -61,10 +64,11 @@ function ContactFormInner({ isBooking = false, requestedSession }: ContactFormPr
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [bookingCategory, setBookingCategory] = useState(
-    isBooking && requestedSessionTitle ? "group-session" : "",
+    isBooking && requestedSessionTitle ? "group-session" : isAssessment ? "assessment" : "",
   );
   const [message, setMessage] = useState(
     requestedSessionTitle ? `${t("contact.sessionPrefill")} ${requestedSessionTitle}.${slotLine}`
+    : isAssessment ? t("contact.assessmentPrefill")
     : isRecruitment ? t("contact.recruitmentPrefill")
     : "",
   );
@@ -104,6 +108,7 @@ const res = await fetch("/api/contact", {
       const data = (await res.json().catch(() => null)) as { success?: boolean } | null;
       if (!res.ok || data?.success !== true) throw new Error(t("contact.errorGeneric"));
       setSubmitted(true);
+      trackConversion(isBooking ? "booking_request_received" : "contact_request_received");
     } catch {
       setError(t("contact.errorGeneric"));
     } finally {
@@ -219,6 +224,7 @@ const res = await fetch("/api/contact", {
             />
           </div>
           {error && <p className="text-red-500/80 text-xs text-center" role="alert">{error}</p>}
+          <DataProtectionNotice locale={locale} />
           <button type="submit" disabled={loading}
             className="w-full h-11 rounded-xl text-white text-sm font-semibold transition-all duration-300 hover:-translate-y-px disabled:opacity-50 disabled:cursor-not-allowed"
             style={{

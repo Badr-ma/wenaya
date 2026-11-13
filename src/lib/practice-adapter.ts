@@ -69,11 +69,11 @@ function decodeEntities(input: string): string {
       const body = entity.slice(1);
       if (entity.startsWith("#x") || entity.startsWith("#X")) {
         const code = Number.parseInt(body, 16);
-        return Number.isFinite(code) && code > 0 ? String.fromCodePoint(code) : match;
+        return Number.isFinite(code) && code > 0 && code <= 0x10ffff ? String.fromCodePoint(code) : match;
       }
       if (entity.startsWith("#")) {
         const code = Number.parseInt(body, 10);
-        return Number.isFinite(code) && code > 0 ? String.fromCodePoint(code) : match;
+        return Number.isFinite(code) && code > 0 && code <= 0x10ffff ? String.fromCodePoint(code) : match;
       }
       return ENTITIES[entity] ?? match;
     }
@@ -82,7 +82,13 @@ function decodeEntities(input: string): string {
 
 /** decode HTML entities, then strip tags and collapse whitespace → plain text. */
 function decodeAndStrip(html: string): string {
-  return decodeEntities(html)
+  let decoded = html;
+  for (let pass = 0; pass < 3; pass++) {
+    const next = decodeEntities(decoded);
+    if (next === decoded) break;
+    decoded = next;
+  }
+  return decoded
     .replace(/<\/?[^>]+(>|$)/g, " ")
     .replace(/\s+/g, " ")
     .trim();

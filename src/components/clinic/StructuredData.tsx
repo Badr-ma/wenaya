@@ -1,3 +1,4 @@
+import { BUSINESS_INFO, CLINIC_OPENING_HOURS } from "@/lib/business-info";
 /**
  * ClinicStructuredData — page-level JSON-LD for the Clinic/B2C (/about) page.
  *
@@ -64,20 +65,13 @@ export default function ClinicStructuredData({
       "brand": { "@id": `${SITE_URL}/#organization` },
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "88 Rue De Jabal Azourki",
-        "addressLocality": "Casablanca",
-        "postalCode": "20930",
+        "streetAddress": BUSINESS_INFO.street,
+        "addressLocality": BUSINESS_INFO.city,
+        "postalCode": BUSINESS_INFO.postalCode,
         "addressCountry": "MA",
       },
-      "telephone": "+212666124035",
-      "openingHoursSpecification": [
-        {
-          "@type": "OpeningHoursSpecification",
-          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-          "opens": "08:00",
-          "closes": "20:00",
-        },
-      ],
+      "telephone": BUSINESS_INFO.phone,
+      "openingHoursSpecification": [CLINIC_OPENING_HOURS],
       "availableService": services,
     },
   ];

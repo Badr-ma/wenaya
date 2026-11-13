@@ -12,13 +12,14 @@
  */
 "use client";
 
+import { BUSINESS_INFO } from "@/lib/business-info";
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect } from "react";import { gsap } from "gsap";
 import { useIntersectionDeferred } from "@/hooks/useDeferredSetup";
 
 const WHATSAPP_HREF =
-  "https://wa.me/212666124035?text=Bonjour,%20je%20souhaite%20obtenir%20des%20informations%20sur%20les%20services%20de%20soins%20%C3%A0%20domicile%20%C3%A0%20Casablanca.";
+  `https://wa.me/${BUSINESS_INFO.phone.replace(/\D/g, "")}?text=Bonjour,%20je%20souhaite%20obtenir%20des%20informations%20sur%20les%20services%20de%20soins%20%C3%A0%20domicile%20%C3%A0%20Casablanca.`;
 
 export default function HomecareHero(): React.JSX.Element {
   const { elRef: sectionRef, ready } = useIntersectionDeferred();
@@ -126,7 +127,7 @@ export default function HomecareHero(): React.JSX.Element {
                     WebkitTextFillColor: "transparent",
                   }}
                 >
-                  à Casablanca – 24h/24
+                  à Casablanca
                 </span>
               </span>
             </h1>

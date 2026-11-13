@@ -7,6 +7,8 @@
 
 import { useRef, useEffect } from "react";
 import Image from "next/image";
+import { BUSINESS_INFO, SOCIAL_URLS } from "@/lib/business-info";
+import DataProtectionNotice from "@/components/legal/DataProtectionNotice";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
@@ -118,12 +120,8 @@ export default function EntreprisesFooter(): React.JSX.Element {
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
-                  {socialLinks.map((s) => {
-                    const urls: Record<string, string> = {
-                      LinkedIn: "https://linkedin.com/company/wenaya",
-                      Instagram: "https://instagram.com/wenaya",
-                      X: "https://x.com/wenaya",
-                    };
+                  {socialLinks.filter((s) => SOCIAL_URLS[s.label]).map((s) => {
+                    const urls = SOCIAL_URLS;
                     return (
                       <a
                         key={s.label}
@@ -191,13 +189,14 @@ export default function EntreprisesFooter(): React.JSX.Element {
                   {t("entreprises.footer.copyright").replace("{year}", String(new Date().getFullYear()))}
                 </p>
                 <p className="text-white/20 text-xs">
-                  {t("entreprises.footer.hours")}
+                  {BUSINESS_INFO.hours[locale]}
                 </p>
               </div>
             </div>
           </div>
         </div>
       </div>
+    <div className="max-w-7xl mx-auto px-6 pb-6 text-white/60"><DataProtectionNotice locale={locale} /><button type="button" onClick={() => window.dispatchEvent(new Event("wenaya:open-cookie-settings"))} className="mt-2 text-xs underline underline-offset-4">{locale === "fr" ? "Préférences cookies" : "Cookie preferences"}</button></div>
     </footer>
   );
 }

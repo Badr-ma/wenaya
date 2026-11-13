@@ -79,6 +79,7 @@ async function fetchPracticesProxy(query: ProxyQuery): Promise<PaginatedPratique
 interface PratiquesGridProps {
   /** SSR'd first batch — keeps the initial HTML crawlable (SEO). */
   initialItems?: Pratique[];
+  initialPage?: number;
   /** Total matching practices (full filtered dataset), from the same SSR query. */
   initialTotal?: number;
   /** Whether more pages exist beyond the SSR batch. */
@@ -91,6 +92,7 @@ interface PratiquesGridProps {
 
 export default function PratiquesGrid({
   initialItems = [],
+  initialPage = 1,
   initialTotal,
   initialHasMore,
   totalAll,
@@ -101,7 +103,7 @@ export default function PratiquesGrid({
 
   // ─── Pagination state ────────────────────────────────────────
   const [items, setItems] = useState<Pratique[]>(initialItems);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(initialPage);
   const [hasMore, setHasMore] = useState(initialHasMore ?? initialItems.length > 0);
   const [total, setTotal] = useState(initialTotal ?? initialItems.length);
   const [isLoadingMore, setIsLoadingMore] = useState(
@@ -447,12 +449,13 @@ export default function PratiquesGrid({
 
           {/* Accessibility fallback — same loadNextPage as the observer */}
           {hasMore && !isLoadingMore && !loadError && (
-            <button
-              onClick={() => loadNextPage()}
+            <a
+              href={`${h(locale, "/pratiques")}?page=${page + 1}`}
+              onClick={(event) => { event.preventDefault(); void loadNextPage(); }}
               className="inline-flex items-center gap-2 h-11 px-6 rounded-full text-[12.5px] font-medium text-[#2B2F36]/55 border border-[#2B2F36]/15 hover:border-[#B88A5A]/30 hover:text-[#B88A5A] transition-colors"
             >
               {t("pratiques.pagination.loadMore")}
-            </button>
+            </a>
           )}
 
           {/* End state */}

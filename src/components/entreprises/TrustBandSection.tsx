@@ -20,6 +20,7 @@
 
 import { useRef, useEffect } from "react";
 import Image from "next/image";
+import { APPROVED_CORPORATE_PARTNERS } from "@/lib/business-info";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
 
@@ -73,12 +74,12 @@ export default function TrustBandSection() {
     <section ref={sectionRef} className="relative bg-white px-6 py-8 sm:py-10 overflow-hidden scroll-mt-20">
       <div className="tb-band mx-auto max-w-5xl">
         <p className="text-[10px] uppercase tracking-[0.2em] text-[#B88A5A] text-center font-semibold">
-          {t("entreprises.programs.ilsNousFontConfiance")}
+          {t("entreprises.howItWorks.title")}
         </p>
         <ul className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-5 sm:gap-x-8 sm:gap-y-6 lg:gap-x-10">
           {partners.map((name, i) => {
             const logo = PARTNER_LOGOS[i];
-            if (!logo) return null;
+            if (!logo || !APPROVED_CORPORATE_PARTNERS.includes(name)) return null;
             return (
               <li
                 key={`${i}-${name}`}

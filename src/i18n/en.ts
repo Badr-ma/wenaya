@@ -1,3 +1,4 @@
+import { BUSINESS_INFO } from "@/lib/business-info";
 ﻿/**
  * English translations — secondary language for Wenaya.
  * Mirrors the French structure exactly; any missing keys fall back to French.
@@ -62,9 +63,9 @@ const en: Translations = {
     cta: "Find my path",
     ctaSecondary: "Book an appointment",
     stats: {
-      therapeutes: "certified therapists",
-      patients: "patients supported",
-      satisfaction: "of our users recommend their practitioner",
+      therapeutes: "complementary expertise",
+      patients: "personalized pathways",
+      satisfaction: "coordinated follow-up",
     },
   },
   howItWorks: {
@@ -181,7 +182,7 @@ const en: Translations = {
     },
     bottom:
       "Your results are only the beginning. The goal is not to accumulate data, but to transform it into clear priorities and concrete actions, with the support of Wenaya professionals.",
-    cta: "Discover Wenaya Assessments",
+    cta: "Request a Wenaya assessment",
   },
   quickAccess: {
     badge: "Quick Access",
@@ -211,48 +212,43 @@ const en: Translations = {
     ],
   },
   testimonialsSection: {
-    eyebrow: "TESTIMONIALS & PROOF",
-    heading1: "Real journeys.",
-    heading2: "Lived results.",
-    sub: "Every Wenaya journey is different. The testimonials and indicators presented here must reflect only real, verified and authorized experiences.",
-    testimonial1: {
-      quote:
-        "I came for chronic back pain and the physiotherapy and osteopathy team at Wenaya Clinic Casablanca gave me back a quality of life I had lost hope for. The coordinated follow-up between practitioners makes all the difference.",
-      name: "Fatima Z.",
-    },
-    award1: {
-      stat: "99%",
-      label: "of our patients recommend Wenaya Clinic to those around them",
-    },
-    testimonial2: {
-      quote:
-        "My child received psychomotor and speech therapy at Wenaya. The progress in just a few months exceeded our expectations. A remarkable multidisciplinary team in Casablanca for learning disorder support.",
-      name: "Karim B.",
-    },
-    award2: {
-      stat: "+148",
-      label: "Google 5-star reviews — the trust of our patients",
-    },
-    testimonial3: {
-      quote:
-        "I've been seeing a psychologist and nutritionist at Wenaya for six months. The holistic approach linking mental health and nutrition is exactly what I needed. The facilities are modern and the welcome is warm in central Casablanca.",
-      name: "Nadia R.",
-    },
-    award3: {
-      stat: "9 specialties",
-      label:
-        "physiotherapy, osteopathy, psychology, nutrition, speech therapy and more in one place",
-    },
-    testimonial4: {
-      quote:
-        "Osteopathy sessions with Khalid Ouazzani relieved me of chronic lower back pain that had lasted two years. The quality of care and listening are exceptional. Wenaya is much more than a practice: it is a true integrated health center.",
-      name: "Youssef L.",
-    },
-    award4: {
-      stat: "6/7",
-      label: "open Monday to Saturday from 8am to 8pm in Casablanca",
-    },
+  "eyebrow": "YOUR PATHWAY",
+  "heading1": "Understand your needs.",
+  "heading2": "Move forward together.",
+  "sub": "Steps adapted to your situation, with the professionals involved.",
+  "testimonial1": {
+    "quote": "An initial conversation helps clarify your needs and the next steps.",
+    "name": "Understand"
   },
+  "award1": {
+    "stat": "Assess",
+    "label": "review your needs"
+  },
+  "testimonial2": {
+    "quote": "Assessments are proposed according to your situation and the professional’s indications.",
+    "name": "Assess"
+  },
+  "award2": {
+    "stat": "Guide",
+    "label": "choose an appropriate professional"
+  },
+  "testimonial3": {
+    "quote": "Your pathway brings together relevant expertise based on your goals and professional recommendations.",
+    "name": "Support"
+  },
+  "award3": {
+    "stat": "Coordinate",
+    "label": "connect complementary expertise"
+  },
+  "testimonial4": {
+    "quote": "Follow-up provides an opportunity to discuss progress and adjust support where needed.",
+    "name": "Follow up"
+  },
+  "award4": {
+    "stat": "Talk",
+    "label": "contact our team for availability"
+  }
+},
   pricing: {
     eyebrow: "Prevent. Perform. Last.",
     heading1: "Invest in",
@@ -374,12 +370,12 @@ const en: Translations = {
     },
     contact: {
       title: "Contact",
-      phone: "+212 6 66 12 40 35",
+      phone: BUSINESS_INFO.phoneDisplay,
       contact: "Contact",
-      address: "88 Rue De Jabal Azourki, Casablanca 20930",
+      address: `${BUSINESS_INFO.street}, ${BUSINESS_INFO.city} ${BUSINESS_INFO.postalCode}`,
     },
     copyright: "© {year} Wenaya. All rights reserved.",
-    hours: "Monday to Saturday from 9am to 7pm",
+    hours: BUSINESS_INFO.hours.en,
     socials: ["LinkedIn", "Instagram", "Facebook", "TikTok"],
   },
   mauxTroubles: {
@@ -411,11 +407,11 @@ const en: Translations = {
       word1: "Heal.",
       word2: "Prevent.",
       word3: "Prolong.",
-      sub: "Longevity has no age: we support every generation.",
+      sub: "Assessments, professionals, care pathways and follow-up: coordinated support at every stage of life. Live your health!",
       audiences: ["Children", "Adults", "Seniors"],
       tagline:
         "A multidisciplinary team bringing together physiotherapy, osteopathy, psychology, nutrition and complementary therapies.",
-      ctaBook: "Book now",
+      ctaBook: "Choose a specialist",
       ctaDiscover: "Discover our practices",
     },
     trust: {
@@ -465,8 +461,8 @@ const en: Translations = {
     },
     practices: {
       badge: "Our Practices",
-      heading1: "Book your care",
-      heading2: "in just 2 clicks",
+      heading1: "Choose",
+      heading2: "your specialist",
       sub: "Each discipline is led by qualified and verified practitioners.",
       cta: "View all practices",
       ctaDetail: "Explore this practice",
@@ -568,7 +564,7 @@ const en: Translations = {
         "Carried out by our nursing team leader, to tailor the care to each medical and family situation",
       contactLabel: "Contact",
       contactValue: "Available 24/7",
-      contactSub: "0666-124035 · 88 Rue De Jabal Azourki, Casablanca 20930",
+      contactSub: `${BUSINESS_INFO.phoneDisplay} · ${BUSINESS_INFO.street}, ${BUSINESS_INFO.city} ${BUSINESS_INFO.postalCode}`,
       name: "Wenaya Homecare Services",
       tagline: "Care assistance & nursing care at home",
       city: "Casablanca",
@@ -603,8 +599,8 @@ const en: Translations = {
         "Boost engagement and productivity",
         "Attract and retain talent",
       ],
-      cta1: "Book a free audit",
-      cta2: "Download our catalog",
+      cta1: "Schedule a 30-minute conversation",
+      cta2: "Browse our resources",
       scrollHint: "Explore",
       stats: {
         therapeutes: "certified therapists",
@@ -728,35 +724,47 @@ const en: Translations = {
       ],
       featuredCallout: {
         title: "Prevention Program",
-        stat: "−40% absenteeism",
+        stat: "Prevention & follow-up",
         desc: "A complete prevention program combining individual assessments, group workshops and digital follow-up to sustainably reduce absenteeism.",
         longDesc:
           "Each employee receives a confidential initial assessment (physical, mental, nutritional), followed by a personalized roadmap of individual sessions, group workshops, and digital support — with anonymized HR impact reports every quarter.",
         link: "Learn more",
       },
       valueProps: [
-        {
-          title: "Multidisciplinary team",
-          desc: "35+ certified therapists in physiotherapy, psychology, nutrition and osteopathy for comprehensive care.",
-          stat: "35+ experts",
-        },
-        {
-          title: "Connected follow-up",
-          desc: "Dedicated digital platform with teleconsultations, personalized tracking and real-time HR reporting.",
-          stat: "100% digital",
-        },
-        {
-          title: "Proven results",
-          desc: "−40% absenteeism, +25% employee engagement — measured and documented results.",
-          stat: "−40% abs.",
-        },
-      ],
+  {
+    "title": "Multidisciplinary team",
+    "desc": "Complementary expertise tailored to your teams’ needs.",
+    "stat": "Coordination"
+  },
+  {
+    "title": "Personalized follow-up",
+    "desc": "Follow-up arrangements agreed with your organization.",
+    "stat": "Tailored"
+  },
+  {
+    "title": "Shared objectives",
+    "desc": "Objectives and indicators agreed at the start of the program.",
+    "stat": "Follow-up"
+  }
+],
       stats: [
-        { number: "35+", label: "certified therapists" },
-        { number: "+2,000", label: "employees supported" },
-        { number: "96%", label: "satisfaction rate" },
-        { number: "7", label: "years of experience" },
-      ],
+  {
+    "number": "Listen",
+    "label": "understand your needs"
+  },
+  {
+    "number": "Assess",
+    "label": "define priorities"
+  },
+  {
+    "number": "Support",
+    "label": "tailor the pathway"
+  },
+  {
+    "number": "Follow up",
+    "label": "adjust over time"
+  }
+],
       comparison: {
         heading: "Without WCP / With WCP",
         sub: "The difference a structured approach makes.",
@@ -780,7 +788,7 @@ const en: Translations = {
         ],
         with: [
           {
-            label: "−40% absenteeism",
+            label: "Prevention and follow-up",
             desc: "Proactive prevention that measurably reduces sick leave",
           },
           {
@@ -831,10 +839,10 @@ const en: Translations = {
       quote:
         "« We deploy an annual Wenaya program for over 900 employees. The team's ability to adapt formats to our field constraints — multi-site, overloaded schedules, variable time slots — makes all the difference. Adoption exceeds our expectations. »",
       quoteAttr: "HR Director, multinational consulting firm · +900 employees",
-      cta1: "Book a free audit",
+      cta1: "Schedule a 30-minute conversation",
       cta2: "Request a custom quote",
       contact:
-        "88 Rue De Jabal Azourki · Casablanca · Mon–Sat 8am–8pm · +212 6 66 12 40 35",
+        `${BUSINESS_INFO.street} · ${BUSINESS_INFO.city} · ${BUSINESS_INFO.phoneDisplay}`,
       newsletter: {
         heading: "Stay informed",
         sub: "Receive our news, case studies and wellness tips for your company.",
@@ -873,75 +881,70 @@ const en: Translations = {
       pricing: "Tailored pricing on request",
       ctaQuote: "Request a quote",
       tiers: [
-        {
-          title: "Discovery",
-          subtitle: "You test the approach",
-          ideal: "Wellbeing day, wellbeing week, team seminar.",
-          includes: "Talks, workshops, discussion circles, group classes.",
-          duration: "1 day to 1 week.",
-        },
-        {
-          title: "Annual Programme",
-          subtitle: "You build a long-term approach",
-          ideal:
-            "structuring a workplace wellbeing strategy and embedding wellbeing into everyday work.",
-          includes:
-            "monthly listening sessions, recurring workshops, weekly classes, anonymised follow-up.",
-          duration: "12 months, renewable.",
-        },
-        {
-          title: "Transformation",
-          subtitle: "You transform management culture",
-          ideal:
-            "developing leadership, improving communication, preventing burnout.",
-          includes:
-            "Label programmes (PCM, Leadership 360°, L'Art des Priorités), leadership support.",
-          duration: "6 to 18 months.",
-        },
-      ],
+  {
+    "title": "Discovery",
+    "subtitle": "Spark the change.",
+    "ideal": "Initiate a well-being approach",
+    "includes": "Talks, workshops, well-being days and shared experiences according to your needs.",
+    "duration": "Scope and frequency by quotation"
+  },
+  {
+    "title": "Annual Program",
+    "subtitle": "Make well-being last.",
+    "ideal": "Build ongoing support",
+    "includes": "Initial assessments, individual and group support, follow-up and adjustments within the agreed scope.",
+    "duration": "Annual program; frequency and inclusions specified in the contract"
+  },
+  {
+    "title": "Transformation",
+    "subtitle": "Evolve management practices.",
+    "ideal": "Support managers and teams",
+    "includes": "Training, leadership, communication, team cohesion and psychosocial risk prevention.",
+    "duration": "Duration and frequency by quotation"
+  }
+],
     },
     packs: {
       title: "Concrete examples.",
       subtitle: "Three ready-to-use packs.",
       cta: "Request a personalized quote",
       items: [
-        {
-          level: "Discovery Level",
-          name: "La Journée Bien-Être Wenaya",
-          pitch: "A turnkey format in a single day.",
-          features: [
-            "1 opening lecture (1h, 100 people)",
-            "2 parallel practical workshops",
-            "4 individual listening units",
-            "Optional: healthy meal",
-          ],
-          ideal: "Ideal for: wellness day, back to school, company event.",
-        },
-        {
-          level: "Annual Program Level",
-          name: "Wenaya Présence",
-          pitch: "Continuous support over 12 months.",
-          features: [
-            "Weekly listening units",
-            "1 collective workshop per month",
-            "4 themed lectures per year",
-            "Anonymized quarterly reporting",
-          ],
-          ideal: "Ideal for: building a lasting and structured approach.",
-        },
-        {
-          level: "Transformation Level",
-          name: "Leadership Wenaya",
-          pitch: "A ramp-up for your managers.",
-          features: [
-            "Manager cohort: PCM + Leadership 360°",
-            "Individual executive coaching (8 sessions)",
-            "Unlimited listening units",
-            "Transformation reviews",
-          ],
-          ideal: "Ideal for: sustainably transforming the management culture.",
-        },
-      ],
+  {
+    "level": "Discovery",
+    "name": "Discovery",
+    "pitch": "Spark the change.",
+    "features": [
+      "Talks and workshops tailored to your needs",
+      "Well-being days and shared experiences",
+      "Scope, duration and prices by quotation"
+    ],
+    "ideal": "To initiate a well-being approach."
+  },
+  {
+    "level": "Annual Program",
+    "name": "Annual Program",
+    "pitch": "Make well-being last.",
+    "features": [
+      "Initial assessments and individual goals within the agreed scope",
+      "Individual and group multidisciplinary support",
+      "Follow-up and adjustments throughout the program",
+      "Frequency, duration and pricing model agreed in the proposal"
+    ],
+    "ideal": "To build ongoing support."
+  },
+  {
+    "level": "Transformation",
+    "name": "Transformation",
+    "pitch": "Evolve management practices.",
+    "features": [
+      "Training and leadership",
+      "Communication, team cohesion and psychosocial risk prevention",
+      "Support and follow-up based on agreed objectives",
+      "Scope, duration and prices by quotation"
+    ],
+    "ideal": "To support organizational practices."
+  }
+],
     },
     programmes: {
       title: "Wenaya Corporate Programs",
@@ -957,8 +960,8 @@ const en: Translations = {
       othersLabel: "Explore our other programs",
       othersCta: "View all programs",
       ctaTitle: "Transform the health of your teams",
-      ctaDesc: "A free 30-minute audit to identify your needs.",
-      ctaPrimary: "Book a free audit",
+      ctaDesc: "A 30-minute conversation to discuss your needs and next steps.",
+      ctaPrimary: "Schedule a 30-minute conversation",
       ctaNote: "Response within 24 working hours. No commitment.",
       newTab: "opens in a new tab",
     },
@@ -1013,29 +1016,29 @@ const en: Translations = {
         ],
       },
       securite: {
-        title: "Security & Confidentiality",
+        title: "Confidentiality & data protection",
         items: [
-          {
-            title: "Anonymized data",
-            desc: "No individual health data is transmitted to the employer.",
-          },
-          {
-            title: "GDPR & Law 09-08",
-            desc: "GDPR and Moroccan law compliant.",
-          },
-          {
-            title: "Secure storage",
-            desc: "Data encrypted on secure servers in Morocco.",
-          },
-          {
-            title: "Explicit consent",
-            desc: "Informed consent before any data collection.",
-          },
-          {
-            title: "Independent audit",
-            desc: "Regular audit by an independent firm.",
-          },
-        ],
+  {
+    "title": "Individual information",
+    "desc": "Individual health information is not intended to be shared with employers."
+  },
+  {
+    "title": "Group reporting",
+    "desc": "Reporting arrangements must preserve individuals’ confidentiality."
+  },
+  {
+    "title": "Prior information",
+    "desc": "Purposes and recipients are specified before collection."
+  },
+  {
+    "title": "Your rights",
+    "desc": "See our privacy policy for contact information."
+  },
+  {
+    "title": "Program scope",
+    "desc": "Data processing arrangements are set out in the contractual documentation."
+  }
+],
       },
       footer:
         "The YOLO program is included in our Advanced and Premium plans. Contact us for a customized deployment.",
@@ -1054,55 +1057,50 @@ const en: Translations = {
       quote: "Employee well-being is not an expense, it's an investment.",
     },
     stickyCta: {
-      cta: "Audit your company for free",
+      cta: "Discuss your team’s needs",
     },
     stats: {
-      title: "Well-being, a worthwhile investment",
-      desc: "Figures that speak for themselves.",
+      title: "Objectives agreed together",
+      desc: "Follow-up tailored to the scope of the program.",
       items: [
-        {
-          value: "€3,500",
-          label: "annual cost of absenteeism per employee",
-          source: "Source: Malakoff Humanis",
-        },
-        {
-          value: "+13%",
-          label: "more productivity with fulfilled teams",
-          source: "Source: Oxford (2019)",
-        },
-        {
-          value: "× 5",
-          label: "per euro invested in mental health",
-          source: "Source: Deloitte (2022)",
-        },
-      ],
-      band: "At Wenaya Corporate: 35 certified therapists · +2,000 employees supported",
+  {
+    "value": "Initial assessment",
+    "label": "identify needs",
+    "source": "As agreed in the program"
+  },
+  {
+    "value": "Support",
+    "label": "combine individual and group formats",
+    "source": "Scope defined in the proposal"
+  },
+  {
+    "value": "Follow-up",
+    "label": "review and adjust",
+    "source": "Indicators agreed together"
+  }
+],
+      band: "One partner, complementary expertise, a program tailored to your teams.",
     },
     testimonials: {
-      title: "Testimonials",
-      subtitle: "Reports from HR directors, anonymized.",
-      prev: "Previous testimonial",
-      next: "Next testimonial",
-      items: [
-        {
-          quote:
-            "An annual WCP program for more than 900 employees, adapted to our multi-site constraints, with engagement that exceeds expectations.",
-          author:
-            "HR Director, consulting multinational (Big 4), +900 employees supported",
-        },
-        {
-          quote:
-            "A before-and-after for our executive committee: management tensions finally found a common frame of reference.",
-          author:
-            "HR Director, Moroccan subsidiary of an international group, ~200 employees",
-        },
-        {
-          quote:
-            "Without hiring or managing in-house, the annual program let us offer real support to our teams and a strong employer-brand argument.",
-          author: "HR Director, tech scale-up, ~80 employees",
-        },
-      ],
+  "title": "Our method",
+  "subtitle": "Support built together.",
+  "prev": "Previous step",
+  "next": "Next step",
+  "items": [
+    {
+      "quote": "Understand your organization’s needs and agree on objectives together.",
+      "author": "Initial assessment"
     },
+    {
+      "quote": "Combine individual and group formats within the agreed scope.",
+      "author": "Support"
+    },
+    {
+      "quote": "Review the agreed indicators and adjust the program.",
+      "author": "Follow-up"
+    }
+  ]
+},
     downloads: {
       title: "Resources for HR departments",
       subtitle: "Share internally.",
@@ -1122,35 +1120,35 @@ const en: Translations = {
     faq: {
       title: "Questions from HR departments",
       items: [
-        {
-          q: "How is the collected data protected?",
-          a: "End-to-end encryption and confidential sessions. HR teams receive only anonymized indicators. GDPR and Moroccan legislation compliant.",
-        },
-        {
-          q: "How do you guarantee employee engagement?",
-          a: "Everyone chooses what works: listening, workshops, content.",
-        },
-        {
-          q: "What results can I expect, and how soon?",
-          a: "First signals within 3 months, structural indicators over 12 months.",
-        },
-        {
-          q: "How does your intervention work with my HRIS and existing providers?",
-          a: "Wenaya Corporate Programs complements your HR ecosystem; HRIS connectors coming soon.",
-        },
-        {
-          q: "What are the billing and contractual terms?",
-          a: "One-off events per service; annual programs on a 12-month contract; label programs per cohort.",
-        },
-        {
-          q: "Can you work outside Casablanca and across multiple sites?",
-          a: "Yes, our therapists operate throughout Morocco, in person or by video.",
-        },
-        {
-          q: "How flexible are you if our needs evolve mid-year?",
-          a: "A 6-month readjustment clause; adaptable formats.",
-        },
-      ],
+  {
+    "q": "How is collected data protected?",
+    "a": "Individual health information is not intended to be shared with employers. Reporting arrangements must preserve individuals’ confidentiality. See our privacy policy and program terms."
+  },
+  {
+    "q": "How do you encourage participation?",
+    "a": "Formats are selected according to needs, and participation remains an individual choice."
+  },
+  {
+    "q": "What results can I expect, and when?",
+    "a": "Objectives, indicators and review dates are agreed at the outset. Results depend on context and participation; no numerical outcome is guaranteed."
+  },
+  {
+    "q": "How do you work with our existing providers?",
+    "a": "Scope and coordination are agreed before deployment."
+  },
+  {
+    "q": "What are the billing terms?",
+    "a": "The proposal specifies services, duration, frequency, price and adjustment terms."
+  },
+  {
+    "q": "Can you work across multiple sites?",
+    "a": "Geographic coverage and on-site or remote arrangements are confirmed with our team."
+  },
+  {
+    "q": "Can the program evolve?",
+    "a": "Available adjustments and their terms are specified in the contract."
+  }
+],
     },
     trustLogos: {
       title: "They trust us",
@@ -1162,11 +1160,11 @@ const en: Translations = {
       emailLabel: "Email",
       email: "corporate@wenaya.com",
       phoneLabel: "Phone",
-      phone: "+212 6 66 12 40 35",
+      phone: BUSINESS_INFO.phoneDisplay,
       addressLabel: "Address",
-      address: "88 Rue de Jabal Azourki, Casablanca 20930",
-      bookingCta: "Book a free audit",
-      bookingAria: "Book a free audit (opens in a new tab)",
+      address: `${BUSINESS_INFO.street}, ${BUSINESS_INFO.city} ${BUSINESS_INFO.postalCode}`,
+      bookingCta: "Schedule a 30-minute conversation",
+      bookingAria: "Schedule a 30-minute conversation (new tab)",
       quoteHeading: "Request a tailored quote",
       quoteSub: "We'll get back to you within one business day. No commitment.",
       companyNameLabel: "Company name",
@@ -1214,9 +1212,9 @@ const en: Translations = {
       close: "Close",
       alt: "Corporate wellness",
       heading: "Let's Build a Healthier Workplace",
-      body: "A free consultation with our specialists.",
-      cta: "Book Free Consultation",
-      pillAria: "Free consultation",
+      body: "A 30-minute conversation to discuss your teams’ needs.",
+      cta: "Schedule a 30-minute conversation",
+      pillAria: "30-minute conversation",
     },
     retreat: {
       badge: "Corporate Retreats",
@@ -1292,14 +1290,14 @@ const en: Translations = {
       resources: { title: "Resources", links: ["FAQ"] },
       contact: {
         title: "Contact",
-        phone: "+212 6 66 12 40 35",
-        address: "88 Rue De Jabal Azourki",
-        city: "Casablanca 20930",
+        phone: BUSINESS_INFO.phoneDisplay,
+        address: BUSINESS_INFO.street,
+        city: `${BUSINESS_INFO.city} ${BUSINESS_INFO.postalCode}`,
         email: "contact@wenaya.com",
       },
       aPropos: { title: "About", links: ["About us", "Our specialties"] },
       copyright: "© {year} Wenaya. All rights reserved.",
-      hours: "Monday to Saturday from 9am to 7pm",
+      hours: BUSINESS_INFO.hours.en,
     },
   },
   faq: {
@@ -1312,7 +1310,7 @@ const en: Translations = {
     },
     q2: {
       q: "How is the collected data protected?",
-      a: "Wenaya strictly complies with applicable regulations (GDPR, Moroccan Law 09-08). All health data is encrypted, stored on secure servers in Morocco and accessible only to authorized practitioners. You may consult our privacy policy for more details.",
+      a: "See our privacy policy for processing purposes, recipients and how to exercise your rights. Contact our team with questions about the scope of your program.",
     },
     q3: {
       q: "Do I need a prescription to consult?",
@@ -1340,7 +1338,7 @@ const en: Translations = {
     },
     q9: {
       q: "How do you ensure employee engagement in corporate programs?",
-      a: "Engagement relies on a progressive, non-intrusive approach: engaging internal communication, guaranteed anonymity, flexible formats (in-person/digital), and continuous adaptation based on employee feedback. We also support HR in program promotion.",
+      a: "Engagement relies on a progressive, non-intrusive approach: engaging internal communication, respect for confidentiality, flexible formats (in-person/digital), and continuous adaptation based on employee feedback. We also support HR in program promotion.",
     },
     q10: {
       q: "How does the intervention work with my existing HRIS?",
@@ -1360,7 +1358,7 @@ const en: Translations = {
     },
     q14: {
       q: "Where is Wenaya Clinic located and what are the hours?",
-      a: "Wenaya Clinic is located at 88 Rue De Jabal Azourki, Casablanca 20930. We are open Monday to Saturday from 8am to 8pm. Parking is available nearby. The clinic is accessible by public transport (tram, bus).",
+      a: `Wenaya Clinic is located at ${BUSINESS_INFO.street}, ${BUSINESS_INFO.city} ${BUSINESS_INFO.postalCode}. Opening hours: ${BUSINESS_INFO.hours.en}. Parking is available nearby. The clinic is accessible by public transport (tram, bus).`,
     },
   },
   blog: {
@@ -1406,16 +1404,16 @@ const en: Translations = {
     badge: "Contact",
     heading1: "Book an",
     heading2: "appointment",
-    sub: "Our team is available Monday to Saturday, 8am to 8pm.",
+    sub: `Our team is available ${BUSINESS_INFO.hours.en}.`,
     adresse: "Address",
     telephone: "Phone",
     email: "Email",
     horaires: "Hours",
-    addressLine1: "88 Rue De Jabal Azourki",
-    addressLine2: "Casablanca 20930",
-    phone: "+212 6 66 12 40 35",
+    addressLine1: BUSINESS_INFO.street,
+    addressLine2: `${BUSINESS_INFO.city} ${BUSINESS_INFO.postalCode}`,
+    phone: BUSINESS_INFO.phoneDisplay,
     emailAddr: "contact@wenaya.com",
-    hoursWeek: "Mon–Sat: 8:00am – 8:00pm",
+    hoursWeek: BUSINESS_INFO.hours.en,
     hoursClosed: "Closed on Sunday",
     formTitle: "Send us a message",
     prenom: "First name",
@@ -1443,20 +1441,22 @@ const en: Translations = {
     recruitmentJoin: "Join the Wenaya team",
     recruitmentPrefill:
       "Hello, I would like to join the Wenaya team as a practitioner.",
-    bookingHeading1: "Book",
-    bookingHeading2: "with Wenaya",
+    bookingHeading1: "Request",
+    bookingHeading2: "an appointment",
     bookingSub:
-      "Tell us what you're looking for and our team will help you find the right professional or service.",
+      "Send your request to our team. Your appointment will be confirmed after we check availability and discuss the details with you.",
     bookingFormTitle: "Your request",
-    bookingCategory: "What would you like to book?",
+    bookingCategory: "What support are you looking for?",
     bookingCategoryPlaceholder: "Select an option",
     bookingCategories: [
+      { value: "assessment", label: "A Wenaya assessment" },
       { value: "consultation", label: "A consultation with a specialist" },
       { value: "practice", label: "A practice / treatment" },
       { value: "group-session", label: "A session or workshop" },
       { value: "homecare", label: "Homecare services" },
       { value: "unsure", label: "I'm not sure yet" },
     ],
+    assessmentPrefill: "Hello, I would like to discuss a Wenaya assessment with your team.",
     bookingDetails: "Tell us what you need",
     bookingDetailsPlaceholder:
       "Tell us the practice, specialist, session, or any useful details.",
@@ -1465,8 +1465,13 @@ const en: Translations = {
       "Your request has been sent. Our team will contact you to guide you and confirm the next steps.",
   },
   cookieConsent: {
-    close: "Close",
-  },
+  "close": "Close",
+  "title": "Your privacy preferences",
+  "description": "Necessary cookies keep the site working. Audience measurement stays disabled unless you agree.",
+  "accept": "Accept analytics",
+  "decline": "Decline",
+  "privacy": "Privacy policy"
+},
   conditions: {
     badge: "Legal",
     heading1: "Terms",
@@ -1550,11 +1555,12 @@ const en: Translations = {
     cta: "Book an appointment",
     search: "Search practices…",
     filters: {
+      childDevelopment: "Child development",
       all: "All",
-      manualTherapies: "Manual Therapies",
-      mentalHealth: "Mental Health",
-      nutrition: "Nutrition",
-      holisticWellness: "Holistic Wellness",
+      manualTherapies: "Physical health & movement",
+      mentalHealth: "Mental & cognitive health",
+      nutrition: "Nutrition & metabolic health",
+      holisticWellness: "Performance & well-being",
       soins: "Nursing",
     },
     count: "practices",

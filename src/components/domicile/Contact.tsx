@@ -2,11 +2,12 @@
  * Homecare Contact — closing navy conversion band for /soins-a-domicile.
  * Server component. Exact live copy + exact WhatsApp destination + phone + hours.
  */
+import { BUSINESS_INFO } from "@/lib/business-info";
 import Link from "next/link";
 import HomecareSectionHeading from "./HomecareSectionHeading";
 
 const WHATSAPP_HREF =
-  "https://wa.me/212666124035?text=Bonjour,%20je%20souhaite%20obtenir%20des%20informations%20sur%20les%20services%20de%20soins%20%C3%A0%20domicile%20%C3%A0%20Casablanca.";
+  `https://wa.me/${BUSINESS_INFO.phone.replace(/\D/g, "")}?text=Bonjour,%20je%20souhaite%20obtenir%20des%20informations%20sur%20les%20services%20de%20soins%20%C3%A0%20domicile%20%C3%A0%20Casablanca.`;
 
 export default function HomecareContact(): React.JSX.Element {
   return (
@@ -29,7 +30,7 @@ export default function HomecareContact(): React.JSX.Element {
             📞 Contactez Wenaya Homecare Services – Casablanca
           </p>
           <p className="mt-1 text-[#B88A5A] text-sm font-semibold tracking-wide">
-            Disponible 24h/24 – 7j/7
+            Contactez notre équipe de coordination
           </p>
 
           <div className="mt-8">
@@ -59,11 +60,11 @@ export default function HomecareContact(): React.JSX.Element {
           </div>
 
           <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-white/12 pt-6 text-sm text-white/55">
-            <a href="tel:+212666124035" className="transition-colors hover:text-[#B88A5A]">
-              0666-124035
+            <a href={`tel:${BUSINESS_INFO.phone}`} className="transition-colors hover:text-[#B88A5A]">
+              {BUSINESS_INFO.phoneDisplay}
             </a>
-            <span>88 Rue De Jabal Azourki,</span>
-            <span>Casablanca 20930</span>
+            <span>{BUSINESS_INFO.street},</span>
+            <span>{BUSINESS_INFO.city} {BUSINESS_INFO.postalCode}</span>
           </div>
         </div>
       </div>

@@ -10,7 +10,10 @@
  */
 "use client";
 
+import { BUSINESS_INFO } from "@/lib/business-info";
 import { useRef, useEffect, useState } from "react";
+import DataProtectionNotice from "@/components/legal/DataProtectionNotice";
+import { trackConversion } from "@/lib/analytics";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
 
@@ -19,7 +22,7 @@ type FormStatus = "idle" | "sending" | "success" | "error";
 type SelectOption = { value: string; label: string };
 
 export default function ContactSection() {
-  const { t, tRaw } = useLocale();
+  const { t, tRaw, locale } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const [status, setStatus] = useState<FormStatus>("idle");
   const [companyName, setCompanyName] = useState("");
@@ -52,6 +55,8 @@ export default function ContactSection() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (status === "sending") return;
+    try {
     setStatus("sending");
     const res = await fetch("/api/contact", {
       method: "POST",
@@ -71,6 +76,7 @@ export default function ContactSection() {
     const data = (await res.json().catch(() => null)) as { success?: boolean } | null;
     if (res.ok && data?.success === true) {
       setStatus("success");
+      trackConversion("quote_request_received");
       setCompanyName("");
       setFirstName("");
       setLastName("");
@@ -80,6 +86,9 @@ export default function ContactSection() {
       setProgrammeLevel("");
       setDescription("");
     } else {
+      setStatus("error");
+    }
+    } catch {
       setStatus("error");
     }
   };
@@ -101,6 +110,7 @@ export default function ContactSection() {
         <select
           id={id}
           name={name}
+          required={name === "teamSize"}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className={`w-full h-[44px] appearance-none bg-white border border-[#0B1220]/[0.12] rounded-[10px] px-4 pr-10 text-sm outline-none transition-all duration-200 focus:border-[#B88A5A]/70 focus:bg-white focus-visible:ring-2 focus-visible:ring-[#B88A5A]/25 text-[#0B1220] ${value === "" ? "opacity-60" : ""}`}
@@ -173,7 +183,7 @@ export default function ContactSection() {
                 </span>
                 <div>
                   <p className="text-[#0B1220]/40 text-[11px] font-semibold uppercase tracking-[0.12em]">{t("entreprises.contactSection.phoneLabel")}</p>
-                  <a href="tel:+212666124035" className="text-[#0B1220] text-sm font-medium transition-colors hover:text-[#B88A5A]">
+                  <a href={`tel:${BUSINESS_INFO.phone}`} className="text-[#0B1220] text-sm font-medium transition-colors hover:text-[#B88A5A]">
                     {t("entreprises.contactSection.phone")}
                   </a>
                 </div>
@@ -227,6 +237,7 @@ export default function ContactSection() {
                 </label>
                 <input
                   id="ct-company"
+                  required
                   type="text"
                   autoComplete="organization"
                   value={companyName}
@@ -335,6 +346,7 @@ export default function ContactSection() {
               </div>
 
               <div>
+                <DataProtectionNotice locale={locale} />
                 <button
                   type="submit"
                   disabled={status === "sending"}

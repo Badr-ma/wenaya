@@ -44,6 +44,7 @@ export default function Hero(): React.JSX.Element {
     >
       {/* Ã¢â€â‚¬Ã¢â€â‚¬ Background Ã¢â‚¬â€ full-bleed video Ã¢â€â‚¬Ã¢â€â‚¬ */}
       <CorporateHeroVideo className="z-0" />
+      <div aria-hidden="true" className="absolute inset-0 z-0 pointer-events-none" style={{ background: "linear-gradient(90deg, rgba(11,18,32,.92), rgba(11,18,32,.88))" }} />
 
       {/* Ã¢â€â‚¬Ã¢â€â‚¬ Content Ã¢â‚¬â€ homepage container + centered copy Ã¢â€â‚¬Ã¢â€â‚¬ */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pt-8 sm:pt-12 pb-16 sm:pb-20">
@@ -149,7 +150,7 @@ export default function Hero(): React.JSX.Element {
                 <span className="whitespace-nowrap font-heading font-bold text-[22px] tracking-tight text-white/90">
                   {m.number}
                 </span>
-                <p className="mt-1.5 max-w-full text-[11.5px] leading-snug text-white/32">
+                <p className="mt-1.5 max-w-full text-[11.5px] leading-snug text-white/70">
                   {m.label}
                 </p>
               </div>

@@ -1,3 +1,4 @@
+import { BUSINESS_INFO } from "@/lib/business-info";
 ﻿/**
  * French translations — the primary/default language for Wenaya.
  * All UI text, SEO content, form labels, and marketing copy is defined here.
@@ -62,9 +63,9 @@ const fr = {
     cta: "Trouver mon parcours",
     ctaSecondary: "Prendre rendez-vous",
     stats: {
-      therapeutes: "thérapeutes certifiés",
-      patients: "patients accompagnés",
-      satisfaction: "de nos utilisateurs recommandent leur praticien",
+      therapeutes: "expertises complémentaires",
+      patients: "parcours personnalisés",
+      satisfaction: "suivi coordonné",
     },
   },
   howItWorks: {
@@ -182,7 +183,7 @@ const fr = {
     },
     bottom:
       "Vos r\u00e9sultats ne sont que le d\u00e9but. L\u2019objectif n\u2019est pas d\u2019accumuler des donn\u00e9es, mais de les transformer en priorit\u00e9s claires et en actions concr\u00e8tes, avec l\u2019accompagnement des professionnels Wenaya.",
-    cta: "D\u00e9couvrir les Bilans Wenaya",
+    cta: "Demander un bilan Wenaya",
   },
   quickAccess: {
     badge: "Acc\u00e8s directs",
@@ -212,48 +213,43 @@ const fr = {
     ],
   },
   testimonialsSection: {
-    eyebrow: "TÉMOIGNAGES & PREUVES",
-    heading1: "Des parcours réels.",
-    heading2: "Des résultats vécus.",
-    sub: "Chaque parcours Wenaya est différent. Les témoignages et indicateurs présentés ici doivent refléter uniquement des expériences réelles, vérifiées et autorisées.",
-    testimonial1: {
-      quote:
-        "Je suis venue pour des douleurs chroniques au dos et l'équipe de kinésithérapie et d'ostéopathie de Wenaya Clinic Casablanca m'a redonné une qualité de vie que je n'espérais plus. Le suivi coordonné entre praticiens fait toute la différence.",
-      name: "Fatima Z.",
-    },
-    award1: {
-      stat: "99%",
-      label: "de nos patients recommandent Wenaya Clinic à leur entourage",
-    },
-    testimonial2: {
-      quote:
-        "Mon enfant a été suivi en psychomotricité et orthophonie chez Wenaya. Les progrès en quelques mois ont dépassé nos attentes. Une équipe pluridisciplinaire remarquable à Casablanca pour la prise en charge des troubles de l'apprentissage.",
-      name: "Karim B.",
-    },
-    award2: {
-      stat: "+148",
-      label: "avis Google 5 étoiles — la confiance de nos patients",
-    },
-    testimonial3: {
-      quote:
-        "Je consulte en psychologie et nutrition chez Wenaya depuis six mois. L'approche globale qui lie santé mentale et alimentation est exactement ce dont j'avais besoin. Les locaux sont modernes et l'accueil est chaleureux au centre de Casablanca.",
-      name: "Nadia R.",
-    },
-    award3: {
-      stat: "9 spécialités",
-      label:
-        "kinésithérapie, ostéopathie, psychologie, nutrition, orthophonie et plus en un seul lieu",
-    },
-    testimonial4: {
-      quote:
-        "Les séances d'ostéopathie avec Khalid Ouazzani m'ont soulagé d'une lombalgie chronique qui durait depuis deux ans. La qualité des soins et l'écoute sont exceptionnelles. Wenaya est bien plus qu'un simple cabinet : c'est un véritable centre de santé intégré.",
-      name: "Youssef L.",
-    },
-    award4: {
-      stat: "6j/7",
-      label: "ouvert du lundi au samedi de 8h à 20h à Casablanca",
-    },
+  "eyebrow": "VOTRE PARCOURS",
+  "heading1": "Comprendre vos besoins.",
+  "heading2": "Avancer ensemble.",
+  "sub": "Des étapes adaptées à votre situation, en lien avec les professionnels concernés.",
+  "testimonial1": {
+    "quote": "Un premier échange permet de préciser votre demande et les prochaines étapes.",
+    "name": "Comprendre"
   },
+  "award1": {
+    "stat": "Évaluer",
+    "label": "faire le point sur vos besoins"
+  },
+  "testimonial2": {
+    "quote": "Les bilans sont proposés selon votre situation et les indications du professionnel.",
+    "name": "Évaluer"
+  },
+  "award2": {
+    "stat": "Orienter",
+    "label": "choisir un professionnel adapté"
+  },
+  "testimonial3": {
+    "quote": "Le parcours associe les expertises utiles selon vos objectifs et les recommandations des professionnels.",
+    "name": "Accompagner"
+  },
+  "award3": {
+    "stat": "Coordonner",
+    "label": "mettre les expertises en lien"
+  },
+  "testimonial4": {
+    "quote": "Le suivi permet de discuter de votre évolution et d’ajuster l’accompagnement si nécessaire.",
+    "name": "Suivre"
+  },
+  "award4": {
+    "stat": "Échanger",
+    "label": "contactez notre équipe pour les disponibilités"
+  }
+},
   pricing: {
     eyebrow: "Prévenir. Performer. Durer.",
     heading1: "Investissez dans",
@@ -372,12 +368,12 @@ const fr = {
     },
     contact: {
       title: "Contact",
-      phone: "+212 6 66 12 40 35",
+      phone: BUSINESS_INFO.phoneDisplay,
       contact: "Contact",
-      address: "88 Rue De Jabal Azourki, Casablanca 20930",
+      address: `${BUSINESS_INFO.street}, ${BUSINESS_INFO.city} ${BUSINESS_INFO.postalCode}`,
     },
     copyright: "© {year} Wenaya. Tous droits réservés.",
-    hours: "Du lundi au samedi de 9h à 19h",
+    hours: BUSINESS_INFO.hours.fr,
     socials: ["LinkedIn", "Instagram", "Facebook", "TikTok"],
   },
   mauxTroubles: {
@@ -410,11 +406,11 @@ const fr = {
       word1: "Soigner.",
       word2: "Prévenir.",
       word3: "Prolonger.",
-      sub: "La longévité n'a pas d'âge : nous accompagnons toutes les générations.",
+      sub: "Bilans, professionnels, parcours de soins et suivi : un accompagnement coordonné à chaque étape de la vie. Vivez votre santé !",
       audiences: ["Enfants", "Adultes", "Seniors"],
       tagline:
         "Une équipe pluridisciplinaire réunissant kinésithérapie, ostéopathie, psychologie, nutrition et thérapies complémentaires.",
-      ctaBook: "Réservez maintenant",
+      ctaBook: "Choisir un spécialiste",
       ctaDiscover: "Découvrir les pratiques",
     },
     trust: {
@@ -464,8 +460,8 @@ const fr = {
     },
     practices: {
       badge: "Nos Pratiques",
-      heading1: "Réserver votre soin",
-      heading2: "en 2 clics",
+      heading1: "Choisissez",
+      heading2: "votre spécialiste",
       sub: "Chaque discipline est portée par des praticiens diplômés et vérifiés.",
       cta: "Voir toutes les pratiques",
       ctaDetail: "Découvrir cette pratique",
@@ -494,7 +490,7 @@ const fr = {
       ctaDetail: "Découvrir",
     },
     healthNeeds: {
-      badge: "Symptèmes & besoins",
+      badge: "Symptômes & besoins",
       heading1: "Je sais ce que je ressens,",
       heading2: "pas vers qui aller",
       sub: "Décrivez votre besoin et découvrez les disciplines adaptées.",
@@ -568,7 +564,7 @@ const fr = {
         "Réalisée par notre chef d'équipe infirmier, pour adapter la prise en charge à chaque situation médicale et familiale",
       contactLabel: "Contact",
       contactValue: "Disponible 24h/24 – 7j/7",
-      contactSub: "0666-124035 · 88 Rue De Jabal Azourki, Casablanca 20930",
+      contactSub: `${BUSINESS_INFO.phoneDisplay} · ${BUSINESS_INFO.street}, ${BUSINESS_INFO.city} ${BUSINESS_INFO.postalCode}`,
       name: "Wenaya Homecare Services",
       tagline: "Garde malade & infirmier à domicile",
       city: "Casablanca",
@@ -603,8 +599,8 @@ const fr = {
         "Renforcer engagement et productivité",
         "Attirer et fidéliser les talents",
       ],
-      cta1: "Réserver un audit gratuit",
-      cta2: "Télécharger notre catalogue",
+      cta1: "Échanger pendant 30 minutes",
+      cta2: "Voir nos ressources",
       scrollHint: "Découvrir",
       stats: {
         therapeutes: "thérapeutes certifiés",
@@ -728,35 +724,47 @@ const fr = {
       ],
       featuredCallout: {
         title: "Programme Prévention",
-        stat: "−40% d'absentéisme",
-        desc: "Un programme complet de prévention santé qui combine bilans individuels, ateliers collectifs et suivi digital pour réduire durablement l'absentéisme.",
+        stat: "Prévention & suivi",
+        desc: "Un programme complet de prévention santé qui combine bilans individuels, ateliers collectifs et suivi digital pour soutenir la prévention et le suivi.",
         longDesc:
           "Chaque collaborateur reçoit un bilan initial confidentiel (physique, mental, nutritionnel), puis une feuille de route personnalisée mêlant séances individuelles, ateliers collectifs et suivi digital — avec des indicateurs RH anonymisés chaque trimestre.",
         link: "En savoir plus",
       },
       valueProps: [
-        {
-          title: "Équipe pluridisciplinaire",
-          desc: "35+ thérapeutes certifiés en kinésithérapie, psychologie, nutrition et ostéopathie pour une prise en charge globale.",
-          stat: "35+ experts",
-        },
-        {
-          title: "Suivi connecté",
-          desc: "Plateforme digitale dédiée avec téléconsultations, suivi personnalisé et reporting RH en temps réel.",
-          stat: "100% digital",
-        },
-        {
-          title: "Résultats prouvés",
-          desc: "−40% d'absentéisme, +25% d'engagement collaborateur — des résultats mesurés et documentés.",
-          stat: "−40% abs.",
-        },
-      ],
+  {
+    "title": "Équipe pluridisciplinaire",
+    "desc": "Des expertises complémentaires selon les besoins de vos équipes.",
+    "stat": "Coordination"
+  },
+  {
+    "title": "Suivi personnalisé",
+    "desc": "Des modalités de suivi définies avec votre organisation.",
+    "stat": "Sur mesure"
+  },
+  {
+    "title": "Objectifs partagés",
+    "desc": "Des objectifs et indicateurs définis au début du programme.",
+    "stat": "Suivi"
+  }
+],
       stats: [
-        { number: "35+", label: "thérapeutes certifiés" },
-        { number: "+2 000", label: "collaborateurs accompagnés" },
-        { number: "96%", label: "de satisfaction" },
-        { number: "7", label: "ans d'expérience" },
-      ],
+  {
+    "number": "Écouter",
+    "label": "comprendre vos besoins"
+  },
+  {
+    "number": "Évaluer",
+    "label": "définir les priorités"
+  },
+  {
+    "number": "Accompagner",
+    "label": "adapter le parcours"
+  },
+  {
+    "number": "Suivre",
+    "label": "ajuster dans le temps"
+  }
+],
       comparison: {
         heading: "Sans WCP / Avec WCP",
         sub: "La différence d'une approche structurée de la santé.",
@@ -780,8 +788,8 @@ const fr = {
         ],
         with: [
           {
-            label: "−40% d'absentéisme",
-            desc: "Une prévention proactive qui réduit les arrêts maladie",
+            label: "Prévention et suivi",
+            desc: "Une démarche de prévention avec des objectifs définis ensemble",
           },
           {
             label: "Santé mentale priorisée",
@@ -831,10 +839,10 @@ const fr = {
       quote:
         "« Nous déployons un programme annuel Wenaya pour plus de 900 collaborateurs. La capacité de l'équipe à adapter les formats à nos contraintes terrain — multi-sites, agendas surchargés, créneaux variables — fait toute la différence. L'adhésion dépasse nos attentes. »",
       quoteAttr: "DRH, multinationale du conseil · +900 collaborateurs",
-      cta1: "Réserver un audit gratuit",
+      cta1: "Échanger pendant 30 minutes",
       cta2: "Demander un devis personnalisé",
       contact:
-        "88 Rue De Jabal Azourki · Casablanca · Lun–Sam 8h–20h · +212 6 66 12 40 35",
+        `${BUSINESS_INFO.street} · ${BUSINESS_INFO.city} · ${BUSINESS_INFO.phoneDisplay}`,
       newsletter: {
         heading: "Restez informé",
         sub: "Recevez nos actualités, études de cas et conseils bien-être pour votre entreprise.",
@@ -873,76 +881,70 @@ const fr = {
       pricing: "Tarif sur devis personnalisé",
       ctaQuote: "Demander un devis",
       tiers: [
-        {
-          title: "Découverte",
-          subtitle: "Vous testez la démarche",
-          ideal: "journée QVT, semaine du bien-être, séminaire d'équipe.",
-          includes:
-            "conférences, ateliers, cercles de parole, cours collectifs.",
-          duration: "1 jour à 1 semaine.",
-        },
-        {
-          title: "Programme Annuel",
-          subtitle: "Vous installez une démarche durable",
-          ideal:
-            "structurer une politique QVT, faire vivre le bien-être au quotidien.",
-          includes:
-            "cellules d'écoute mensuelles, ateliers récurrents, cours hebdo, suivi anonymisé.",
-          duration: "12 mois reconductibles.",
-        },
-        {
-          title: "Transformation",
-          subtitle: "Vous transformez la culture managériale",
-          ideal:
-            "développer le leadership, fluidifier la communication, prévenir l'épuisement.",
-          includes:
-            "programmes Labels (PCM, Leadership 360°, L'Art des Priorités), accompagnement direction.",
-          duration: "6 à 18 mois.",
-        },
-      ],
+  {
+    "title": "Découverte",
+    "subtitle": "Déclencher le changement.",
+    "ideal": "Initier une démarche",
+    "includes": "Conférences, ateliers, journées bien-être et expériences collectives selon vos besoins.",
+    "duration": "Périmètre et fréquence sur devis"
+  },
+  {
+    "title": "Programme Annuel",
+    "subtitle": "Inscrire le bien-être dans la durée.",
+    "ideal": "Construire un accompagnement suivi",
+    "includes": "Bilans initiaux, accompagnement individuel et collectif, suivi et ajustements selon le périmètre convenu.",
+    "duration": "Programme annuel ; fréquence et inclusions précisées au contrat"
+  },
+  {
+    "title": "Transformation",
+    "subtitle": "Faire évoluer les pratiques.",
+    "ideal": "Accompagner les managers et les équipes",
+    "includes": "Formation, leadership, communication, cohésion et prévention des risques psychosociaux.",
+    "duration": "Durée et fréquence sur devis"
+  }
+],
     },
     packs: {
       title: "Des exemples concrets.",
       subtitle: "Trois packs prêts à l'emploi.",
       cta: "Demander un devis personnalisé",
       items: [
-        {
-          level: "Niveau Découverte",
-          name: "La Journée Bien-Être Wenaya",
-          pitch: "Un format clés en main en une journée.",
-          features: [
-            "1 conférence d'ouverture (1h, 100 pers.)",
-            "2 ateliers pratiques en parallèle",
-            "4 cellules d'écoute individuelles",
-            "Option : repas healthy",
-          ],
-          ideal: "Idéal pour : journée QVT, rentrée, événement entreprise.",
-        },
-        {
-          level: "Niveau Programme Annuel",
-          name: "Wenaya Présence",
-          pitch: "Un suivi continu sur 12 mois.",
-          features: [
-            "Cellules d'écoute hebdomadaires",
-            "1 atelier collectif par mois",
-            "4 conférences thématiques par an",
-            "Reporting trimestriel anonymisé",
-          ],
-          ideal: "Idéal pour : installer une démarche durable et structurée.",
-        },
-        {
-          level: "Niveau Transformation",
-          name: "Leadership Wenaya",
-          pitch: "Une montée en puissance pour vos managers.",
-          features: [
-            "Cohorte managers : PCM + Leadership 360°",
-            "Coaching individuel direction (8 séances)",
-            "Cellules d'écoute illimitées",
-            "Bilans de transformation",
-          ],
-          ideal: "Idéal pour : transformer durablement la culture managériale.",
-        },
-      ],
+  {
+    "level": "Niveau Découverte",
+    "name": "Découverte",
+    "pitch": "Déclencher une prise de conscience.",
+    "features": [
+      "Conférences et ateliers selon vos besoins",
+      "Journées bien-être et expériences collectives",
+      "Périmètre, durée et tarifs sur devis"
+    ],
+    "ideal": "Pour initier une démarche."
+  },
+  {
+    "level": "Programme Annuel",
+    "name": "Programme Annuel",
+    "pitch": "Inscrire le bien-être dans la durée.",
+    "features": [
+      "Bilans initiaux et objectifs individuels selon le périmètre convenu",
+      "Accompagnement pluridisciplinaire individuel et collectif",
+      "Suivi et ajustements pendant le programme",
+      "Fréquence, durée et modèle tarifaire définis sur devis"
+    ],
+    "ideal": "Pour construire une démarche suivie."
+  },
+  {
+    "level": "Niveau Transformation",
+    "name": "Transformation",
+    "pitch": "Faire évoluer les pratiques managériales.",
+    "features": [
+      "Formation et leadership",
+      "Communication, cohésion et prévention des risques psychosociaux",
+      "Accompagnement et suivi selon les objectifs convenus",
+      "Périmètre, durée et tarifs sur devis"
+    ],
+    "ideal": "Pour accompagner les pratiques de votre organisation."
+  }
+],
     },
     programmes: {
       title: "Wenaya Corporate Programs",
@@ -958,8 +960,8 @@ const fr = {
       othersLabel: "Découvrez les autres programmes",
       othersCta: "Voir tous les programmes",
       ctaTitle: "Transformez la santé de vos équipes",
-      ctaDesc: "Un audit gratuit de 30 minutes pour identifier vos besoins.",
-      ctaPrimary: "Réserver un audit gratuit",
+      ctaDesc: "Un échange de 30 minutes pour préciser vos besoins et les prochaines étapes.",
+      ctaPrimary: "Échanger pendant 30 minutes",
       ctaNote: "Réponse sous 24h ouvrées. Sans engagement.",
       newTab: "nouvel onglet",
     },
@@ -1020,29 +1022,29 @@ const fr = {
         ],
       },
       securite: {
-        title: "Sécurité & Confidentialité",
+        title: "Confidentialité & protection des données",
         items: [
-          {
-            title: "Données anonymisées",
-            desc: "Aucune donnée santé individuelle transmise à l'employeur.",
-          },
-          {
-            title: "RGPD & Loi 09-08",
-            desc: "Conformité RGPD et loi marocaine.",
-          },
-          {
-            title: "Stockage sécurisé",
-            desc: "Données chiffrées, serveurs sécurisés au Maroc.",
-          },
-          {
-            title: "Consentement explicite",
-            desc: "Consentement éclairé avant toute collecte.",
-          },
-          {
-            title: "Audit indépendant",
-            desc: "Audit régulier par un cabinet indépendant.",
-          },
-        ],
+  {
+    "title": "Informations individuelles",
+    "desc": "Les informations de santé individuelles ne sont pas destinées à être partagées avec l’employeur."
+  },
+  {
+    "title": "Reporting collectif",
+    "desc": "Les modalités de reporting doivent préserver la confidentialité des personnes."
+  },
+  {
+    "title": "Information préalable",
+    "desc": "Les finalités et les destinataires sont précisés avant la collecte."
+  },
+  {
+    "title": "Vos droits",
+    "desc": "Consultez notre politique de confidentialité pour les modalités de contact."
+  },
+  {
+    "title": "Périmètre du programme",
+    "desc": "Les modalités de traitement des données sont précisées dans la documentation contractuelle."
+  }
+],
       },
       footer:
         "Le programme YOLO est inclus dans nos formules Avancé et Premium. Contactez-nous pour un déploiement personnalisé.",
@@ -1062,55 +1064,50 @@ const fr = {
         "Le bien-être des collaborateurs n'est pas une dépense, c'est un investissement.",
     },
     stickyCta: {
-      cta: "Auditez votre entreprise gratuitement",
+      cta: "Échangeons sur vos besoins",
     },
     stats: {
-      title: "Le bien-être, un investissement rentable",
-      desc: "Des chiffres qui parlent d'eux-mêmes.",
+      title: "Des objectifs définis ensemble",
+      desc: "Un suivi adapté au périmètre du programme.",
       items: [
-        {
-          value: "3 500 €",
-          label: "coût de l'absentéisme par salarié/an",
-          source: "Source : Malakoff Humanis",
-        },
-        {
-          value: "+13 %",
-          label: "de productivité avec des équipes épanouies",
-          source: "Source : Oxford (2019)",
-        },
-        {
-          value: "× 5",
-          label: "par euro investi en santé mentale",
-          source: "Source : Deloitte (2022)",
-        },
-      ],
-      band: "Chez Wenaya Corporate : 35 thérapeutes certifiés · +2 000 collaborateurs accompagnés",
+  {
+    "value": "Bilan initial",
+    "label": "identifier les besoins",
+    "source": "Selon le programme convenu"
+  },
+  {
+    "value": "Accompagnement",
+    "label": "associer individuel et collectif",
+    "source": "Modalités définies sur devis"
+  },
+  {
+    "value": "Suivi",
+    "label": "faire le point et ajuster",
+    "source": "Indicateurs définis ensemble"
+  }
+],
+      band: "Un partenaire, plusieurs expertises, un programme adapté à vos équipes.",
     },
     testimonials: {
-      title: "Témoignages",
-      subtitle: "Retours de directions RH, anonymisés.",
-      prev: "Témoignage précédent",
-      next: "Témoignage suivant",
-      items: [
-        {
-          quote:
-            "Un programme annuel WCP pour plus de 900 collaborateurs, adapté à nos contraintes multi-sites, avec une adhésion qui dépasse nos attentes.",
-          author:
-            "DRH, multinationale du conseil (Big 4), +900 collaborateurs accompagnés",
-        },
-        {
-          quote:
-            "Un avant-après pour notre comité de direction : les tensions managériales ont enfin trouvé une grille de lecture commune.",
-          author:
-            "DRH, filiale marocaine d'un groupe international, ~200 collaborateurs",
-        },
-        {
-          quote:
-            "Sans recruter ni gérer en interne, le programme annuel nous a permis d'offrir un vrai accompagnement à nos équipes et un argument fort pour notre marque employeur.",
-          author: "DRH, scale-up tech, ~80 collaborateurs",
-        },
-      ],
+  "title": "Notre méthode",
+  "subtitle": "Un accompagnement construit avec vous.",
+  "prev": "Étape précédente",
+  "next": "Étape suivante",
+  "items": [
+    {
+      "quote": "Comprendre les besoins de votre organisation et définir les objectifs ensemble.",
+      "author": "Évaluation initiale"
     },
+    {
+      "quote": "Associer les formats individuels et collectifs selon le périmètre convenu.",
+      "author": "Accompagnement"
+    },
+    {
+      "quote": "Faire le point sur les indicateurs convenus et ajuster le programme.",
+      "author": "Suivi"
+    }
+  ]
+},
     downloads: {
       title: "Ressources pour les directions RH",
       subtitle: "À partager en interne.",
@@ -1130,35 +1127,35 @@ const fr = {
     faq: {
       title: "Les questions des directions RH",
       items: [
-        {
-          q: "Comment les données collectées sont-elles protégées ?",
-          a: "Chiffrement de bout en bout, échanges confidentiels. Les RH ne reçoivent que des indicateurs anonymisés. Conformité RGPD et loi marocaine.",
-        },
-        {
-          q: "Comment garantir l'adhésion des collaborateurs ?",
-          a: "Chacun choisit ce qui lui convient : écoute, ateliers, contenus.",
-        },
-        {
-          q: "Quels résultats puis-je attendre, et en combien de temps ?",
-          a: "Premiers signaux dès 3 mois, indicateurs structurants sous 12 mois.",
-        },
-        {
-          q: "Comment s'articule l'intervention avec mon SIRH et mes prestataires existants ?",
-          a: "Wenaya Corporate Programs complète votre écosystème RH ; connecteurs SIRH à venir.",
-        },
-        {
-          q: "Quelles sont les modalités de facturation et de contractualisation ?",
-          a: "Ponctuel : à la prestation. Annuel : contrat 12 mois. Labels : à la cohorte.",
-        },
-        {
-          q: "Pouvez-vous intervenir hors Casablanca et sur plusieurs sites ?",
-          a: "Oui, nos thérapeutes interviennent partout au Maroc, en présentiel ou en visio.",
-        },
-        {
-          q: "Quelle est la flexibilité si nos besoins évoluent en cours d'année ?",
-          a: "Clause de réajustement à 6 mois ; formats adaptables.",
-        },
-      ],
+  {
+    "q": "Comment les données collectées sont-elles protégées ?",
+    "a": "Les informations de santé individuelles ne sont pas destinées à être partagées avec l’employeur. Les modalités de reporting doivent préserver la confidentialité des personnes. Consultez notre politique de confidentialité et les conditions du programme."
+  },
+  {
+    "q": "Comment favoriser la participation des collaborateurs ?",
+    "a": "Les formats sont choisis selon les besoins et la participation reste une démarche individuelle."
+  },
+  {
+    "q": "Quels résultats puis-je attendre, et en combien de temps ?",
+    "a": "Les objectifs, les indicateurs et le calendrier de suivi sont définis au départ. Les résultats dépendent du contexte et de la participation ; aucun résultat chiffré n’est garanti."
+  },
+  {
+    "q": "Comment s’articule l’intervention avec nos prestataires ?",
+    "a": "Le périmètre et la coordination avec vos prestataires sont précisés avant le déploiement."
+  },
+  {
+    "q": "Quelles sont les modalités de facturation ?",
+    "a": "Le devis précise les prestations, la durée, la fréquence, le prix et les conditions de réajustement."
+  },
+  {
+    "q": "Pouvez-vous intervenir sur plusieurs sites ?",
+    "a": "La couverture géographique et les modalités sur site ou à distance sont confirmées avec notre équipe."
+  },
+  {
+    "q": "Le programme peut-il évoluer ?",
+    "a": "Les ajustements possibles et leurs conditions sont précisés dans le contrat."
+  }
+],
     },
     trustLogos: {
       title: "Ils nous font confiance",
@@ -1170,11 +1167,11 @@ const fr = {
       emailLabel: "Email",
       email: "corporate@wenaya.com",
       phoneLabel: "Téléphone",
-      phone: "+212 6 66 12 40 35",
+      phone: BUSINESS_INFO.phoneDisplay,
       addressLabel: "Adresse",
-      address: "88 Rue de Jabal Azourki, Casablanca 20930",
-      bookingCta: "Réserver un audit gratuit",
-      bookingAria: "Réserver un audit gratuit (s'ouvre dans un nouvel onglet)",
+      address: `${BUSINESS_INFO.street}, ${BUSINESS_INFO.city} ${BUSINESS_INFO.postalCode}`,
+      bookingCta: "Échanger pendant 30 minutes",
+      bookingAria: "Échanger pendant 30 minutes (nouvel onglet)",
       quoteHeading: "Demander un devis personnalisé",
       quoteSub: "Réponse sous 24h ouvrées. Sans engagement.",
       companyNameLabel: "Nom de l'entreprise",
@@ -1222,9 +1219,9 @@ const fr = {
       close: "Fermer",
       alt: "Bien-être en entreprise",
       heading: "Construisons un lieu de travail plus sain",
-      body: "Une consultation gratuite avec nos spécialistes.",
-      cta: "Réserver une consultation gratuite",
-      pillAria: "Consultation gratuite",
+      body: "Un échange de 30 minutes pour discuter des besoins de vos équipes.",
+      cta: "Échanger pendant 30 minutes",
+      pillAria: "Échange de 30 minutes",
     },
     retreat: {
       badge: "Corporate Retreats",
@@ -1304,9 +1301,9 @@ const fr = {
       resources: { title: "Resources", links: ["FAQ"] },
       contact: {
         title: "Contact",
-        phone: "+212 6 66 12 40 35",
-        address: "88 Rue De Jabal Azourki",
-        city: "Casablanca 20930",
+        phone: BUSINESS_INFO.phoneDisplay,
+        address: BUSINESS_INFO.street,
+        city: `${BUSINESS_INFO.city} ${BUSINESS_INFO.postalCode}`,
         email: "contact@wenaya.com",
       },
       aPropos: {
@@ -1314,7 +1311,7 @@ const fr = {
         links: ["Qui sommes-nous", "Nos spécialités"],
       },
       copyright: "© {year} Wenaya. Tous droits réservés.",
-      hours: "Du lundi au samedi de 9h à 19h",
+      hours: BUSINESS_INFO.hours.fr,
     },
   },
   faq: {
@@ -1327,7 +1324,7 @@ const fr = {
     },
     q2: {
       q: "Comment les données collectées sont-elles protégées ?",
-      a: "Wenaya respecte strictement les réglementations en vigueur (RGPD, loi 09-08 marocaine). Toutes les données de santé sont chiffrées, stockées sur des serveurs sécurisés au Maroc et accessibles uniquement aux praticiens autorisés. Vous pouvez consulter notre politique de confidentialité pour plus de détails.",
+      a: "Consultez notre politique de confidentialité pour connaître les finalités de traitement, les destinataires et les modalités d’exercice de vos droits. Contactez notre équipe pour toute question sur le périmètre du programme.",
     },
     q3: {
       q: "Dois-je avoir une ordonnance pour consulter ?",
@@ -1355,7 +1352,7 @@ const fr = {
     },
     q9: {
       q: "Comment garantir l'adhésion des collaborateurs en entreprise ?",
-      a: "L'adhésion repose sur une approche progressive et non intrusive : communication interne engageante, anonymat garanti, formats flexibles (présentiel/digital), et adaptation continue basée sur les retours des collaborateurs. Nous accompagnons également les RH dans la promotion des programmes.",
+      a: "L'adhésion repose sur une approche progressive et non intrusive : communication interne engageante, respect de la confidentialité, formats flexibles (présentiel/digital), et adaptation continue basée sur les retours des collaborateurs. Nous accompagnons également les RH dans la promotion des programmes.",
     },
     q10: {
       q: "Comment s'articule l'intervention avec mon SIRH existant ?",
@@ -1375,7 +1372,7 @@ const fr = {
     },
     q14: {
       q: "Où se situe Wenaya Clinic et quels sont les horaires ?",
-      a: "Wenaya Clinic est située au 88 Rue De Jabal Azourki, Casablanca 20930. Nous sommes ouverts du lundi au samedi de 8h à 20h. Un parking est disponible à proximité. La clinique est accessible en transport en commun (tramway, bus).",
+      a: `Wenaya Clinic est située au ${BUSINESS_INFO.street}, ${BUSINESS_INFO.city} ${BUSINESS_INFO.postalCode}. ${BUSINESS_INFO.hours.fr}. Un parking est disponible à proximité. La clinique est accessible en transport en commun (tramway, bus).`,
     },
   },
   blog: {
@@ -1421,16 +1418,16 @@ const fr = {
     badge: "Contact",
     heading1: "Prenez",
     heading2: "rendez-vous",
-    sub: "Notre équipe est à votre écoute du lundi au samedi, de 8h à 20h.",
+    sub: `Notre équipe est à votre écoute ${BUSINESS_INFO.hours.fr.toLowerCase()}.`,
     adresse: "Adresse",
     telephone: "Téléphone",
     email: "Email",
     horaires: "Horaires",
-    addressLine1: "88 Rue De Jabal Azourki",
-    addressLine2: "Casablanca 20930",
-    phone: "+212 6 66 12 40 35",
+    addressLine1: BUSINESS_INFO.street,
+    addressLine2: `${BUSINESS_INFO.city} ${BUSINESS_INFO.postalCode}`,
+    phone: BUSINESS_INFO.phoneDisplay,
     emailAddr: "contact@wenaya.com",
-    hoursWeek: "Lun–Sam : 8h00 – 20h00",
+    hoursWeek: BUSINESS_INFO.hours.fr,
     hoursClosed: "Fermé le dimanche",
     formTitle: "Envoyez-nous un message",
     prenom: "Prénom",
@@ -1459,20 +1456,22 @@ const fr = {
     recruitmentJoin: "Rejoindre l'équipe Wenaya",
     recruitmentPrefill:
       "Bonjour, je souhaite rejoindre l'équipe Wenaya en tant que praticien.",
-    bookingHeading1: "Réserver",
-    bookingHeading2: "avec Wenaya",
+    bookingHeading1: "Demander",
+    bookingHeading2: "un rendez-vous",
     bookingSub:
-      "Indiquez-nous ce que vous recherchez et notre équipe vous aidera à trouver le professionnel ou le service adapté.",
+      "Envoyez votre demande à notre équipe. Le rendez-vous sera confirmé après vérification des disponibilités et échange avec vous.",
     bookingFormTitle: "Votre demande",
-    bookingCategory: "Que souhaitez-vous réserver ?",
+    bookingCategory: "Quel accompagnement recherchez-vous ?",
     bookingCategoryPlaceholder: "Sélectionnez une option",
     bookingCategories: [
+      { value: "assessment", label: "Un bilan Wenaya" },
       { value: "consultation", label: "Une consultation avec un spécialiste" },
       { value: "practice", label: "Une pratique / un soin" },
       { value: "group-session", label: "Une séance ou un atelier" },
       { value: "homecare", label: "Soins à domicile" },
       { value: "unsure", label: "Je ne sais pas encore" },
     ],
+    assessmentPrefill: "Bonjour, je souhaite échanger avec votre équipe au sujet d’un bilan Wenaya.",
     bookingDetails: "Précisez votre besoin",
     bookingDetailsPlaceholder:
       "Indiquez la pratique, le spécialiste, la séance ou toute information utile.",
@@ -1481,8 +1480,13 @@ const fr = {
       "Votre demande a bien été envoyée. Notre équipe vous contactera pour vous orienter et confirmer les prochaines étapes.",
   },
   cookieConsent: {
-    close: "Fermer",
-  },
+  "close": "Fermer",
+  "title": "Vos préférences de confidentialité",
+  "description": "Les cookies nécessaires permettent le fonctionnement du site. La mesure d’audience reste désactivée sans votre accord.",
+  "accept": "Accepter la mesure d’audience",
+  "decline": "Refuser",
+  "privacy": "Politique de confidentialité"
+},
   conditions: {
     badge: "Légal",
     heading1: "Conditions Générales",
@@ -1566,11 +1570,12 @@ const fr = {
     cta: "Prendre rendez-vous",
     search: "Rechercher une pratique…",
     filters: {
+      childDevelopment: "Développement de l’enfant",
       all: "Toutes",
-      manualTherapies: "Thérapies manuelles",
-      mentalHealth: "Santé mentale",
-      nutrition: "Nutrition",
-      holisticWellness: "Bien-être holistique",
+      manualTherapies: "Santé physique & mouvement",
+      mentalHealth: "Santé mentale & cognitive",
+      nutrition: "Nutrition & santé métabolique",
+      holisticWellness: "Performance & bien-être",
       soins: "Soins",
     },
     count: "pratiques",

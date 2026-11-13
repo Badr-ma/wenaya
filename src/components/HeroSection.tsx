@@ -58,9 +58,9 @@ export default function HeroSection({ content }: HeroSectionProps): React.JSX.El
   }, []);
 
   const stats = [
-    { value: "35", label: t("hero.stats.therapeutes") },
-    { value: "+2 000", label: t("hero.stats.patients") },
-    { value: "99%", label: t("hero.stats.satisfaction") },
+    { value: locale === "fr" ? "Évaluer" : "Assess", label: t("hero.stats.therapeutes") },
+    { value: locale === "fr" ? "Accompagner" : "Support", label: t("hero.stats.patients") },
+    { value: locale === "fr" ? "Suivre" : "Follow up", label: t("hero.stats.satisfaction") },
   ];
 
   return (

@@ -1,0 +1,26 @@
+[
+  {
+    "url": "https://calendar.app.google/YyAirdPSc2ugGbnh9",
+    "status": 200,
+    "finalUrl": "https://calendar.google.com/calendar/appointments/schedules/AcZssZ1YY1K1Acx6MPNOD1J7Q_dw3dZV1kchZDHTzj7w60mfLMT4DpdhM3qeFtWqWCt0BRIevFBjbnf1",
+    "contentType": "text/html; charset=utf-8"
+  },
+  {
+    "url": "https://www.wenaya.com/downloads/wenaya-presentation-entreprise.pdf",
+    "status": 200,
+    "finalUrl": "https://wenaya.com/downloads/wenaya-presentation-entreprise.pdf",
+    "contentType": "application/pdf"
+  },
+  {
+    "url": "https://www.wenaya.com/downloads/wenaya-livre-blanc-cout-mal-etre.pdf",
+    "status": 200,
+    "finalUrl": "https://wenaya.com/downloads/wenaya-livre-blanc-cout-mal-etre.pdf",
+    "contentType": "application/pdf"
+  },
+  {
+    "url": "https://www.wenaya.com/sitemap.xml",
+    "status": 200,
+    "finalUrl": "https://wenaya.com/sitemap.xml",
+    "contentType": "text/xml; charset=utf-8"
+  }
+]

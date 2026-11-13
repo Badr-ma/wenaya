@@ -6,6 +6,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 
 interface MobileMenuProps {
   open: boolean;
@@ -28,10 +29,41 @@ export default function MobileMenu({
   authState,
   t,
 }: MobileMenuProps) {
+  const menuRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef(onClose);
+  useEffect(() => { closeRef.current = onClose; }, [onClose]);
+  useEffect(() => {
+    const menu = menuRef.current;
+    if (!open || !menu) return;
+    const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const links = () => Array.from(menu.querySelectorAll<HTMLAnchorElement>('a[href]'));
+    links()[0]?.focus({ preventScroll: true });
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') { event.preventDefault(); closeRef.current(); }
+      if (event.key !== 'Tab') return;
+      const items = links();
+      const first = items[0], last = items.at(-1);
+      if (!first || !last) return;
+      if (!menu.contains(document.activeElement) || (event.shiftKey && document.activeElement === first)) {
+        event.preventDefault(); (event.shiftKey ? last : first).focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault(); first.focus();
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      if (previous?.isConnected && !menu.contains(previous)) previous.focus({ preventScroll: true });
+    };
+  }, [open]);
   return (
     <div
+      id="mobile-navigation-menu"
+      ref={menuRef}
       role="dialog"
-      aria-modal="true"
+      aria-modal={open ? true : undefined}
+      aria-hidden={!open}
+      inert={!open}
       aria-label={t("nav.menuNav")}
       className={`fixed inset-0 bg-[#080E1C] z-40 transition-all duration-400 lg:hidden ${
         open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"

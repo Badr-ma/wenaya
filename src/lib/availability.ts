@@ -133,7 +133,7 @@ export function formatDateCompact(iso: string, locale: string): string {
   const localeTag = locale === "fr" ? "fr-FR" : "en-US";
   const weekday = date.toLocaleDateString(localeTag, { weekday: "short" });
   const monthShort = date.toLocaleDateString(localeTag, { month: "short" });
-  return `${weekday} ${monthShort}. ${day}`;
+  return `${weekday} ${monthShort} ${day}`;
 }
 
 /**

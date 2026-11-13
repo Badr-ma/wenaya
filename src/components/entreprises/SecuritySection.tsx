@@ -28,7 +28,7 @@ function Shield() {
 }
 
 export default function SecuritySection() {
-  const { t, tRaw } = useLocale();
+  const { t, tRaw, locale } = useLocale();
   const items = tRaw<SecurityItem[]>("entreprises.yolo.securite.items");
   const faqIntro = tRaw<Array<{ q: string; a: string }>>("entreprises.faq.items")[0]?.a ?? "";
   const learnMore = t("entreprises.approach.featuredCallout.link");
@@ -79,7 +79,7 @@ export default function SecuritySection() {
 
           {learnMore && (
             <a
-              href="#downloads"
+              href={locale === "en" ? "/en/privacy-policy" : "/privacy-policy"}
               className="sc-row group flex items-center justify-between gap-4 rounded-[6px] border border-[#B88A5A]/30 bg-[#B88A5A]/[0.06] px-5 py-5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B88A5A]"
             >
               <span className="text-sm font-semibold text-[#0B1220]">{learnMore}</span>

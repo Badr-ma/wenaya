@@ -11,7 +11,7 @@ import HomecareSectionHeading from "./HomecareSectionHeading";
 const faqs: { q: string; a: string }[] = [
   {
     q: "Quels sont les bénéfices concrets d'une prise en charge Wenaya ?",
-    a: "Amélioration de la stabilité médicale, réduction des complications et organisation claire du plan de soins.",
+    a: "L’accompagnement vise à soutenir la continuité des soins et le retour à domicile. Les objectifs et le plan de soins sont adaptés à chaque situation, sans garantie de résultat clinique.",
   },
   {
     q: "Proposez-vous des kinésithérapeutes et orthophonistes à domicile ?",
@@ -27,7 +27,7 @@ const faqs: { q: string; a: string }[] = [
   },
   {
     q: "Existe-t-il un support d'urgence ?",
-    a: "Nous assurons un support 24h/24 avec possibilité de mobilisation des professionnels adaptés.",
+    a: "La coordination des soins à domicile ne remplace pas un service d’urgence. En cas d’urgence médicale, contactez les services d’urgence locaux. Les modalités de disponibilité sont convenues avec notre équipe.",
   },
 ];
 

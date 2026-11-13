@@ -9,11 +9,11 @@ import HomecareSectionHeading from "./HomecareSectionHeading";
 const services = [
   {
     name: "Garde malade à domicile",
-    desc: "Présence continue et assuré de soins",
+    desc: "Aide aux gestes du quotidien et au confort",
   },
   {
     name: "Soins infirmiers à domicile",
-    desc: "Suivi médical complet",
+    desc: "Actes infirmiers selon qualifications et prescriptions",
   },
   {
     name: "Garde post-hospitalisation",
@@ -21,7 +21,7 @@ const services = [
   },
   {
     name: "Surveillance de nuit",
-    desc: "Prévention des incidents nocturnes",
+    desc: "Présence et accompagnement selon les besoins évalués",
   },
   {
     name: "Accompagnement des personnes âgées",

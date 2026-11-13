@@ -1,5 +1,6 @@
 "use client";
 
+import { trackConversion } from "@/lib/analytics";
 import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -74,6 +75,7 @@ export default function SpecialistDetail({ specialist, practices = [] }: { speci
   };
 
   const openBooking = () => {
+    trackConversion("booking_open");
     setBookingOpen(true);
     applyBookingToUrl(true);
   };

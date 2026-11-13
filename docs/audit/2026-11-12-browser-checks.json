@@ -1,0 +1,38 @@
+{
+  "checkedAt": "2026-11-12T22:06:36.310Z",
+  "mobile": {
+    "width": 390,
+    "height": 844,
+    "pagesWithoutHorizontalOverflow": [
+      "/",
+      "/corporate",
+      "/pratiques?page=2"
+    ],
+    "paginationPage2Records": 7,
+    "cookiePreferencesReopen": true,
+    "analyticsAbsentAfterRejection": true
+  },
+  "desktop": {
+    "width": 1440,
+    "height": 900,
+    "pagesWithoutHorizontalOverflow": [
+      "/corporate"
+    ],
+    "corporateH1Count": 1
+  },
+  "booking": {
+    "profile": "/professional/amine-bennani",
+    "opens": true,
+    "availabilityDate": "2026-11-13",
+    "liveSlotsLoaded": true,
+    "selectionEnablesContinue": true,
+    "informationStep": true,
+    "backPreservesSelection": true,
+    "closedWithoutSubmission": true
+  },
+  "limits": [
+    "GA4 not configured",
+    "No real submission or notifications",
+    "No performance score claimed"
+  ]
+}

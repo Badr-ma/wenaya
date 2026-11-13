@@ -1,11 +1,11 @@
 /**
- * Homecare Support — "Support professionnel disponible 24h/24 à Casablanca"
+ * Homecare Support — "Coordination des soins à domicile à Casablanca"
  * Server component. Navy band. Exact intro + 3 check items.
  */
 import HomecareSectionHeading from "./HomecareSectionHeading";
 
 const items = [
-  "une ligne de contact dédiée 24h/24",
+  "une ligne de contact dédiée selon les modalités convenues",
   "une coordination continue entre intervenants",
   "une adaptation rapide selon l'évolution du patient",
 ];
@@ -20,10 +20,10 @@ export default function HomecareSupport(): React.JSX.Element {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
           <div className="lg:col-span-6">
             <HomecareSectionHeading variant="dark" eyebrow="Disponibilité" style={{ fontSize: "clamp(1.8rem, 3.2vw, 2.9rem)" }}>
-              Support professionnel disponible 24h/24 à Casablanca
+              Coordination des soins à domicile à Casablanca
             </HomecareSectionHeading>
             <p className="mt-5 text-white/70 text-base lg:text-lg leading-relaxed">
-              Nos équipes assurent&nbsp;:
+              Le suivi est organisé selon les modalités convenues avec notre équipe. Ce service ne remplace pas les urgences médicales. En cas d’urgence, contactez les services d’urgence locaux.&nbsp;
             </p>
           </div>
           <ul className="lg:col-span-5 lg:col-start-8 space-y-5">

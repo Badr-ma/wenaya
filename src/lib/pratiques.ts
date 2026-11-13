@@ -128,6 +128,7 @@ export const PRACTICE_FILTER_KEYS = [
   "mentalHealth",
   "nutrition",
   "holisticWellness",
+  "childDevelopment",
   "soins",
 ] as const;
 
@@ -139,6 +140,7 @@ export const PRACTICE_CATEGORY_MAP: Record<string, string[]> = {
   mentalHealth: ["mentalHealth"],
   nutrition: ["nutrition"],
   holisticWellness: ["holisticWellness"],
+  childDevelopment: ["childDevelopment"],
   soins: ["soins"],
 };
 

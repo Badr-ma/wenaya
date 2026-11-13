@@ -43,7 +43,7 @@ function xmlEscapeUrl(value: string): string {
 /** Helper: creates a FR+EN pair of sitemap entries with alternates */
 function dual(frPath: string, opts: Partial<SitemapEntry> = {}): SitemapEntry[] {
   const enPath = `/en${frPath === "/" ? "" : frPath}`;
-  const alt = { "x-default": `${SITE_URL}${frPath}`, en: `${SITE_URL}${enPath}` };
+  const alt = { "x-default": `${SITE_URL}${frPath}`, "fr-MA": `${SITE_URL}${frPath}`, "en-MA": `${SITE_URL}${enPath}` };
   return [
     { url: `${SITE_URL}${frPath}`, alternates: { languages: alt }, ...opts },
     { url: `${SITE_URL}${enPath}`, alternates: { languages: alt }, ...opts },

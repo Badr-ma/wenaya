@@ -72,7 +72,7 @@ export const practicesContent: Record<string, PracticeContent> = {
   },
   "hasGenuineEn": true,
   "image": "/pratiques/coaching-sportif.jpg",
-  "category": "nutrition",
+  "category": "holisticWellness",
   "sourceUrl": "https://wenaya.com/pratiques/coaching-sportif",
   "liveId": 24,
   "articleFr": [
@@ -168,41 +168,25 @@ export const practicesContent: Record<string, PracticeContent> = {
   "sourceUrl": "https://wenaya.com/pratiques/cupping-therapy-hijama",
   "liveId": 9,
   "articleFr": [
-    {
-      "body": [
-        "Les ventouses peuvent être constituées de :"
-      ],
-      "list": [
-        "Verre",
-        "Bambou",
-        "Faïence",
-        "Silicone"
-      ]
-    },
-    {
-      "body": [
-        "La thérapie par ventouses est peut-être à la mode actuellement, mais elle n’est pas nouvelle. Cela remonte aux anciennes cultures égyptiennes, chinoises et du Moyen-Orient. L'un des manuels médicaux les plus anciens au monde, le Papyrus Ebers, décrit comment les anciens Égyptiens utilisaient la thérapie par ventouses en 1 550 avant JC."
-      ]
-    },
-    {
-      "heading": "Les types",
-      "body": [
-        "Il existe différentes méthodes de ventouses, notamment :"
-      ],
-      "list": [
-        "Sec",
-        "Mouillé"
-      ]
-    },
-    {
-      "body": [
-        "Lors des deux types de ventouses, votre thérapeute mettra une substance inflammable telle que de l'alcool, des herbes ou du papier dans une tasse et y mettra le feu. Lorsque le feu s'éteint, ils placent la coupe à l'envers sur votre peau.",
-        "En refroidissant, l’air à l’intérieur de la tasse crée un vide. Cela provoque un gonflement et une rougeur de votre peau à mesure que vos vaisseaux sanguins se dilatent.",
-        "Une version plus moderne des ventouses utilise une pompe en caoutchouc au lieu du feu pour créer le vide à l'intérieur de la tasse. Parfois, les thérapeutes utilisent des ventouses en silicone, qu'ils peuvent déplacer d'un endroit à l'autre sur votre peau pour un effet semblable à celui d'un massage.",
-        "Les ventouses humides créent une légère aspiration en laissant une ventouse en place pendant environ 3 minutes. Le thérapeute retire ensuite la coupe et utilise un petit scalpel pour faire de légères et petites coupures sur votre peau. Ensuite, ils effectuent une deuxième aspiration pour extraire une petite quantité de sang."
-      ]
-    }
-  ]
+  {
+    "heading": "Comprendre la pratique",
+    "body": [
+      "La cupping therapy, ou pratique des ventouses, est présentée parmi les pratiques complémentaires. Elle ne doit pas être présentée comme une promesse de guérison ou comme un remplacement d’un suivi médical."
+    ]
+  },
+  {
+    "heading": "Avant toute séance",
+    "body": [
+      "Discutez de votre besoin, des qualifications du professionnel, des modalités proposées, des limites et des risques éventuels. La pertinence de la séance doit être évaluée individuellement."
+    ]
+  },
+  {
+    "heading": "Choisir un professionnel",
+    "body": [
+      "Consultez les profils disponibles et contactez l’équipe pour préciser le déroulement, la durée et le tarif avant toute réservation."
+    ]
+  }
+]
 },
 "infirmerie": {
   "slug": "infirmerie",
@@ -362,9 +346,7 @@ export const practicesContent: Record<string, PracticeContent> = {
     {
       "heading": "Kinésithérapie: quelles sont les contre-indications ?",
       "body": [
-        "La kinésithérapie n’est pas faite pour tout le monde. Il existe quelques contre-indications.",
-        "Cette pratique n’est pas autorisée chez les personnes qui présentent un cancer. En effet, les techniques utilisées en kinésithérapie pourraient favoriser la dissémination des cellules cancéreuses rendant leur dépistage plus difficile.",
-        "Les personnes âgées présentant un risque d’ostéoporose ne sont pas non plus autorisées à faire une séance de kinésithérapie. Le risque de fracture des os est élevé alors, il faudra s’en prémunir. Pareil pour les cas de fracture.",
+        "La kinésithérapie n’est pas faite pour tout le monde. Il existe quelques contre-indications.",        "Les personnes âgées présentant un risque d’ostéoporose ne sont pas non plus autorisées à faire une séance de kinésithérapie. Le risque de fracture des os est élevé alors, il faudra s’en prémunir. Pareil pour les cas de fracture.",
         "La kiné respiratoire est déconseillée chez les personnes avec une fracture des côtes, un pneumothorax ou un spasme bronchique. Elle est également contre indiquée chez les patients qui portent un stimulateur cardiaque et ceux qui présentent une fièvre ou un état inflammatoire.",
         "Dans tous les cas, il convient de demander l’avis d’un professionnel de santé pour savoir si la pratique est autorisée ou pas pour vous.",
         "Pour finir, il faut rappeler que la kinésithérapie est une technique de soin très efficace contre les troubles mécaniques et fonctionnels du corps. Elle est notamment indiquée pour accompagner un patient, tout au long de sa maladie ou après sa guérison. Les bienfaits de la kinésithérapie sont nombreux. Il s’agit d’une thérapie complète qui couvre un large domaine d’action."
@@ -543,30 +525,45 @@ export const practicesContent: Record<string, PracticeContent> = {
   "sourceUrl": "https://wenaya.com/pratiques/neuropsychologie",
   "liveId": 7,
   "articleFr": [
-    {
-      "body": [
-        "Les neuropsychologues évaluent et traitent les personnes souffrant de divers types de troubles du système nerveux. Ils travaillent en étroite collaboration avec des médecins, notamment des neurologues.",
-        "Les maladies, les blessures et les maladies du cerveau et du système nerveux peuvent affecter la façon dont une personne se sent, pense et se comporte. Les symptômes qui peuvent nécessiter un neuropsychologue comprennent :"
-      ],
-      "list": [
-        "difficultés de mémoire",
-        "troubles de l'humeur",
-        "des difficultés d'apprentissage",
-        "dysfonctionnement du système nerveux"
-      ]
-    },
-    {
-      "body": [
-        "Si d’autres médecins ne parviennent pas à identifier la cause d’un symptôme, un neuropsychologue peut aider à établir un diagnostic. Si un diagnostic est déjà connu, une évaluation peut toujours être utile.",
-        "Un neuropsychologue peut vous aider à déterminer les déficiences dont vous pourriez souffrir et leur gravité. Voici des exemples de conditions qu’ils évaluent et traitent :",
-        "Un accident vasculaire cérébral peut affecter le comportement, la pensée, la mémoire et d’autres fonctions cérébrales de manière évidente ou subtile. Ils peuvent effectuer une évaluation pour aider à déterminer le degré de déficience liée à l’AVC.",
-        "La maladie de Parkinson, une maladie évolutive, peut entraîner plusieurs problèmes neurologiques. L’examen d’un neuropsychologue peut fournir une base de référence pour l’aider à déterminer la progression de la maladie et la diminution de la fonction.",
-        "La maladie d’Alzheimer et d’autres types de démence peuvent interférer avec la mémoire, la personnalité et les capacités cognitives. Un neuropsychologue peut effectuer un examen pour l’aider à l’identifier à un stade précoce.",
-        "Les traumatismes crâniens peuvent provoquer une grande variété de symptômes. Un neuropsychologue peut aider à déterminer comment une blessure affecte des fonctions telles que le raisonnement ou la résolution de problèmes.",
-        "Un neuropsychologue peut aider à déterminer lequel des nombreux types de troubles d'apprentissage présente une personne et à élaborer un plan de traitement."
-      ]
-    }
-  ]
+  {
+    "heading": "Mieux comprendre pour mieux accompagner",
+    "body": [
+      "Le bilan neuropsychologique explore le fonctionnement cognitif pour aider à orienter un accompagnement adapté. À Casablanca, échangez avec les professionnels Wenaya sur votre demande et le parcours proposé."
+    ]
+  },
+  {
+    "heading": "À qui s’adresse le bilan ?",
+    "body": [
+      "La demande peut concerner un enfant, un adulte ou une personne âgée. Le professionnel précise avec vous la pertinence et les objectifs de l’évaluation."
+    ]
+  },
+  {
+    "heading": "Quand consulter ?",
+    "body": [
+      "Vous pouvez discuter de difficultés de mémoire, d’attention ou d’apprentissage, ou d’une demande d’évaluation formulée par un professionnel de santé."
+    ]
+  },
+  {
+    "heading": "Comment se déroule le parcours ?",
+    "list": [
+      "Un premier échange pour préciser la demande et les informations utiles.",
+      "Une évaluation adaptée à la situation et aux objectifs convenus.",
+      "Une restitution pour discuter des observations et des pistes d’accompagnement."
+    ]
+  },
+  {
+    "heading": "Professionnels et coordination",
+    "body": [
+      "Selon les besoins identifiés, le parcours peut faire appel à des expertises complémentaires. Les recommandations sont discutées avec les professionnels concernés."
+    ]
+  },
+  {
+    "heading": "Préparer votre rendez-vous",
+    "body": [
+      "Consultez les profils ci-dessous. Avant de réserver, faites confirmer les étapes incluses, la durée, les tarifs et les modalités de restitution. Un bilan complet peut comporter plusieurs rendez-vous."
+    ]
+  }
+]
 },
 "nutrition": {
   "slug": "nutrition",
@@ -653,7 +650,7 @@ export const practicesContent: Record<string, PracticeContent> = {
   },
   "hasGenuineEn": true,
   "image": "/pratiques/orthophonie.jpg",
-  "category": "holisticWellness",
+  "category": "childDevelopment",
   "sourceUrl": "https://wenaya.com/pratiques/orthophonie",
   "liveId": 3,
   "articleFr": [
@@ -791,7 +788,7 @@ export const practicesContent: Record<string, PracticeContent> = {
   },
   "hasGenuineEn": true,
   "image": "/pratiques/psychomotricite.png",
-  "category": "holisticWellness",
+  "category": "childDevelopment",
   "sourceUrl": "https://wenaya.com/pratiques/psychomotricité",
   "liveId": 2,
   "articleFr": [

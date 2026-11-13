@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-11-13T10:21:52.536Z",
+  "submissionPerformed": false,
+  "results": [
+    {
+      "path": "/",
+      "status": 200,
+      "assessmentButtonCorrect": true
+    },
+    {
+      "path": "/en",
+      "status": 200,
+      "assessmentButtonCorrect": true
+    },
+    {
+      "path": "/contact-us?type=booking",
+      "status": 200,
+      "heading": "Demander un rendez-vous"
+    },
+    {
+      "path": "/en/contact-us?type=booking",
+      "status": 200,
+      "heading": "Request an appointment"
+    },
+    {
+      "path": "/contact-us?type=booking&subject=bilans",
+      "status": 200,
+      "heading": "Demander un rendez-vous",
+      "assessmentSelected": true,
+      "assessmentMessagePresent": true
+    },
+    {
+      "path": "/en/contact-us?type=booking&subject=bilans",
+      "status": 200,
+      "heading": "Request an appointment",
+      "assessmentSelected": true,
+      "assessmentMessagePresent": true
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "fetchedAt": "2026-11-12T21:57:44.613Z",
+  "source": "https://wenaya.com/sitemap.xml",
+  "sitemaps": [
+    {
+      "source": "https://wenaya.com/sitemap_static.xml",
+      "status": 200,
+      "urls": [
+        "https://wenaya.com/",
+        "https://wenaya.com/search/all/all",
+        "https://wenaya.com/about-us",
+        "https://wenaya.com/soins",
+        "https://wenaya.com/maux-troubles",
+        "https://wenaya.com/seance-de-groupe",
+        "https://wenaya.com/evenements",
+        "https://wenaya.com/pratiques",
+        "https://wenaya.com/articles",
+        "https://wenaya.com/contact-us",
+        "https://wenaya.com/terms-and-conditions",
+        "https://wenaya.com/privacy-policy",
+        "https://wenaya.com/for-entreprise",
+        "https://wenaya.com/parcours-de-soins/grossesse-&-maternité",
+        "https://wenaya.com/parcours-de-soins/les-troubles-de-l&apos;apprentissage",
+        "https://wenaya.com/parcours-de-soins/le-vertige-positionnel",
+        "https://wenaya.com/parcours-de-soins/la-maladie-d’Alzheimer",
+        "https://wenaya.com/parcours-de-soins/santé-holistique",
+        "https://wenaya.com/parcours-de-soins/tecar-thérapie",
+        "https://wenaya.com/parcours-de-soins/kinésithérapie-&-avc"
+      ]
+    },
+    {
+      "source": "https://wenaya.com/sitemap_articles.xml",
+      "status": 200,
+      "urls": []
+    },
+    {
+      "source": "https://wenaya.com/sitemap_practices.xml",
+      "status": 200,
+      "urls": []
+    },
+    {
+      "source": "https://wenaya.com/sitemap_troubles.xml",
+      "status": 200,
+      "urls": []
+    },
+    {
+      "source": "https://wenaya.com/sitemap_professionals.xml",
+      "status": 200,
+      "urls": []
+    },
+    {
+      "source": "https://wenaya.com/sitemap_search.xml",
+      "status": 200,
+      "urls": [
+        "https://wenaya.com/search/all/all"
+      ]
+    }
+  ]
+}

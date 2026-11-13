@@ -24,6 +24,7 @@ export default function SpecialistListItem({
   return (
     <Link
       id={`specialist-${specialist.slug}`}
+      aria-label={`${locale === "fr" ? "Voir le profil de" : "View profile of"} ${specialist.name}`}
       href={h(locale, `/professional/${specialist.slug}`)}
       onClick={onClick}
       onMouseEnter={() => onHover(specialist.slug)}
@@ -54,8 +55,8 @@ export default function SpecialistListItem({
           {specialist.specialty}
         </p>
         {specialist.specialtyTags.length > 0 && (
-          <p className="mt-1 text-[12px] text-[#2B2F36]/50 truncate">
-            {specialist.specialtyTags.slice(0, 2).join(", ")}
+          <p className="mt-1 text-[12px] text-[#2B2F36]/50">
+            {specialist.specialtyTags.join(", ")}
           </p>
         )}
       </div>

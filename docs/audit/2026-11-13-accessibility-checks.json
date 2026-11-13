@@ -1,0 +1,23 @@
+{
+  "checkedAt": "2026-11-13T10:46:08.349Z",
+  "booking": {
+    "namedDialog": true,
+    "initialFocus": "Close",
+    "shiftTabWrap": "Terms & Conditions",
+    "tabWrap": "Close",
+    "escapeCloses": true,
+    "focusRestored": "Book",
+    "closedPanelInert": true
+  },
+  "mobileMenu": {
+    "width": 390,
+    "height": 844,
+    "noHorizontalOverflow": true,
+    "initialFocus": "Home",
+    "shiftTabWrap": "My account",
+    "escapeCloses": true,
+    "focusRestored": "Menu",
+    "closedMenuInert": true
+  },
+  "submissionsPerformed": false
+}

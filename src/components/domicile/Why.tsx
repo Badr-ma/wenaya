@@ -6,8 +6,8 @@
 import HomecareSectionHeading from "./HomecareSectionHeading";
 
 const items = [
-  "Stabilité de l'état de santé du patient",
-  "Réduction des complications post-hospitalières",
+  "Contribuer à la continuité et au suivi des soins",
+  "Accompagner le retour à domicile après une hospitalisation",
   "Suivi structuré, coordonné et continu",
   "Sérénité et soutien pour les familles",
   "Accès à des professionnels expérimentés et supervisés",

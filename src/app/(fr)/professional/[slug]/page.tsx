@@ -1,3 +1,4 @@
+import DataProtectionNotice from "@/components/legal/DataProtectionNotice";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -135,6 +136,7 @@ export default async function SpecialistPage({ params }: Props) {
         <Breadcrumbs labels={{ [slug]: specialist.name }} />
         <SpecialistDetail specialist={specialist} practices={practices} />
       </main>
+      <footer className="px-6 py-6 bg-[#F2EFE9] text-[#0B1220]/70"><DataProtectionNotice locale="fr" /></footer>
     </>
   );
 }

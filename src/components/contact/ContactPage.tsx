@@ -13,6 +13,7 @@
  */
 "use client";
 
+import { BUSINESS_INFO } from "@/lib/business-info";
 import Link from "next/link";
 import { useLocale } from "@/contexts/LanguageContext";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -62,7 +63,7 @@ export default function ContactPage({
                 <p className="text-[#2B2F36]/50">{t("contact.addressLine2")}</p>
               </InfoCard>
               <InfoCard title={t("contact.telephone")} icon={<PhoneIcon />}>
-                <Link href="tel:+212666124035" className="text-[#159AA9] hover:text-[#1AB0C0] transition-colors">
+                <Link href={`tel:${BUSINESS_INFO.phone}`} className="text-[#159AA9] hover:text-[#1AB0C0] transition-colors">
                   {t("contact.phone")}
                 </Link>
               </InfoCard>

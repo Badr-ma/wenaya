@@ -1,29 +1,4 @@
-/**
- * Clinic Content — typed, API-ready data for the Clinic/B2C page.
- *
- * Sources: live wenaya.com homepage content (2026-09-03).
- * All copy is faithfully imported from the live site. Encoding cleaned,
- * spacing normalized, but medical meaning preserved as-is.
- *
- * Future: replace with API/CMS fetch. Components consume this adapter.
- */
-
-export interface ClinicMetric {
-  value: string;
-  label: string;
-}
-
-export const clinicMetrics = (locale: "fr" | "en"): ClinicMetric[] =>
-  locale === "en"
-    ? [
-        { value: "4,7 ★", label: "Google Maps reviews" },
-        { value: "+148", label: "Google reviews" },
-        { value: "9", label: "care disciplines" },
-        { value: "1", label: "multidisciplinary center" },
-      ]
-    : [
-        { value: "4,7 ★", label: "avis Google Maps" },
-        { value: "+148", label: "avis Google" },
-        { value: "9", label: "disciplines de soin" },
-        { value: "1", label: "centre pluridisciplinaire" },
-      ];
+export interface ClinicMetric { value: string; label: string; }
+export const clinicMetrics = (locale: 'fr' | 'en'): ClinicMetric[] => locale === 'fr'
+ ? [{value:'Évaluer',label:'comprendre vos besoins'},{value:'Orienter',label:'choisir un professionnel'},{value:'Accompagner',label:'construire votre parcours'},{value:'Suivre',label:'ajuster avec vous'}]
+ : [{value:'Assess',label:'understand your needs'},{value:'Guide',label:'choose a professional'},{value:'Support',label:'build your pathway'},{value:'Follow up',label:'adjust with you'}];

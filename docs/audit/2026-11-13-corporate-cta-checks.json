@@ -1,0 +1,16 @@
+[
+  {
+    "path": "/corporate",
+    "status": 200,
+    "resourcesLink": true,
+    "resourcesSection": true,
+    "oldClaimPresent": false
+  },
+  {
+    "path": "/en/corporate",
+    "status": 200,
+    "resourcesLink": true,
+    "resourcesSection": true,
+    "oldClaimPresent": false
+  }
+]

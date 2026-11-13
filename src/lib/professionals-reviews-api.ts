@@ -6,10 +6,10 @@
  * Transport: plain `fetch` against the dev API (same host as the professionals
  * listing/detail — dev-api.wenaya.com today).
  *
- * Endpoint: GET /api/v1/getReviewsByProfessionalSlug/{userName} (Laravel/Yolo
+ * Endpoint: GET /api/v1/getReviewsByProfessionalSlug/{slug} (Laravel/Yolo
  * backend). Verified behavior (2026-09-18, see `wenaya-professionals-reviews-report.md`):
- *   - `{userName}` accepts the listing slug OR the raw username (both share the
- *     same value on the roster, e.g. `khaoula-chah`)
+ *   - use the public profile slug (e.g. `amine-bennani`); raw usernames
+ *     such as `Aminebennani` return HTTP 400 (verified November 13, 2026)
  *   - HTTP header `company: 1` is sent (app-wide convention for the pro APIs);
  *     the reviews endpoints respond without it but we keep it for consistency
  *   - success envelope:

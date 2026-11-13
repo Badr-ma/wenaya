@@ -9,6 +9,10 @@ import type { Metadata } from "next";
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.wenaya.com").replace(/\/+$/, "");
 
 export const SITE_NAME = "Wenaya";
+/** Set WENAYA_INDEXABLE=false on staging; production keeps its public sitemap. */
+export const INDEXING_ENABLED = process.env.WENAYA_INDEXABLE !== 'false'
+  && (!process.env.VERCEL_ENV || process.env.VERCEL_ENV === 'production')
+  && !/(^|[.\/])(dev-website|localhost|127\.0\.0\.1)([.:\/]|$)/i.test(SITE_URL);
 
 /** Base Open Graph fields shared by every page — spread first, then override per page. */
 export const OG_DEFAULTS: NonNullable<Metadata["openGraph"]> = {

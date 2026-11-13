@@ -114,6 +114,11 @@ export async function POST(request: Request) {
     if (!upstream.ok) {
       return NextResponse.json({ success: false, reason: "api-error" }, { status: 502 });
     }
+    const result: unknown = await upstream.json().catch(() => null);
+    if (result && typeof result === "object" &&
+        (("error" in result && result.error === true) || ("success" in result && result.success === false))) {
+      return NextResponse.json({ success: false, reason: "api-error" }, { status: 502 });
+    }
     return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json({ success: false, reason: "api-error" }, { status: 502 });

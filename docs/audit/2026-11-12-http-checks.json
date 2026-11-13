@@ -1,0 +1,241 @@
+{
+  "checkedAt": "2026-11-12T22:03:01.724Z",
+  "mode": "production",
+  "results": [
+    {
+      "path": "/",
+      "status": 200,
+      "location": null,
+      "title": "Wenaya — Santé Intégrée &amp; Bien-être | Casablanca, Maroc",
+      "h1": 1,
+      "canonical": "https://www.wenaya.com",
+      "practiceLinks": [],
+      "paginationLinks": [],
+      "claims": []
+    },
+    {
+      "path": "/pratiques",
+      "status": 200,
+      "location": null,
+      "title": "Nos Pratiques — Kinésithérapie, Ostéopathie, Psychologie &amp; Nutrition | Wenaya",
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/pratiques",
+      "practiceLinks": [
+        "/pratiques/art-martial-therapie",
+        "/pratiques/coaching-sportif",
+        "/pratiques/cupping-therapy-hijama",
+        "/pratiques/infirmerie",
+        "/pratiques/kinesitherapie",
+        "/pratiques/massotherapie",
+        "/pratiques/meditation",
+        "/pratiques/naturopathie",
+        "/pratiques/neuropsychologie",
+        "/pratiques/nutrition",
+        "/pratiques/orthophonie",
+        "/pratiques/osteopathie"
+      ],
+      "paginationLinks": [
+        "/pratiques?page=2"
+      ],
+      "claims": []
+    },
+    {
+      "path": "/pratiques?page=2",
+      "status": 200,
+      "location": null,
+      "title": "Nos pratiques — Page 2 | Wenaya",
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/pratiques?page=2",
+      "practiceLinks": [
+        "/pratiques/psychologie",
+        "/pratiques/psychomotricite",
+        "/pratiques/psychotherapie",
+        "/pratiques/sexologie",
+        "/pratiques/sono-therapie",
+        "/pratiques/sophrologie",
+        "/pratiques/yoga"
+      ],
+      "paginationLinks": [],
+      "claims": []
+    },
+    {
+      "path": "/en/pratiques?page=2",
+      "status": 200,
+      "location": null,
+      "title": "Our practices — Page 2 | Wenaya",
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/pratiques?page=2",
+      "practiceLinks": [
+        "/en/pratiques/psychologie",
+        "/en/pratiques/psychomotricite",
+        "/en/pratiques/psychotherapie",
+        "/en/pratiques/sexologie",
+        "/en/pratiques/sono-therapie",
+        "/en/pratiques/sophrologie",
+        "/en/pratiques/yoga"
+      ],
+      "paginationLinks": [],
+      "claims": []
+    },
+    {
+      "path": "/pratiques/neuropsychologie",
+      "status": 200,
+      "location": null,
+      "title": "Bilan neuropsychologique à Casablanca | Wenaya Clinic",
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/pratiques/neuropsychologie",
+      "practiceLinks": [
+        "/pratiques/orthophonie",
+        "/pratiques/psychomotricite",
+        "/pratiques/psychologie",
+        "/pratiques/psychotherapie"
+      ],
+      "paginationLinks": [],
+      "claims": []
+    },
+    {
+      "path": "/en/pratiques/neuropsychologie",
+      "status": 200,
+      "location": null,
+      "title": "Neuropsychological Assessment in Casablanca | Wenaya Clinic",
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/pratiques/neuropsychologie",
+      "practiceLinks": [
+        "/en/pratiques/orthophonie",
+        "/en/pratiques/psychomotricite",
+        "/en/pratiques/psychologie",
+        "/en/pratiques/psychotherapie"
+      ],
+      "paginationLinks": [],
+      "claims": []
+    },
+    {
+      "path": "/professional/amine-bennani",
+      "status": 200,
+      "location": null,
+      "title": "Amine Bennani — Sexologie — Casablanca | Wenaya",
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/professional/amine-bennani",
+      "practiceLinks": [
+        "/pratiques/neuropsychologie",
+        "/pratiques/psychomotricite",
+        "/pratiques/sexologie"
+      ],
+      "paginationLinks": [],
+      "claims": [],
+      "publicPriceSnippets": [
+        " 5 (100 avis) 88 Rue De Jabal Azourki, Casablanca 20250, Morocco , Casablanca Réserver À propos Ma format",
+        "es &amp; tarifs Séance Psychomotricité 45 min 350 MAD bilan psychomoteur 90 min 750 MAD Restitution psy",
+        "chomotricité 60 min 500 MAD Séance initiale psychomotricité 60 min 500 MAD Sé",
+        "ance Neuropsychologie 45 min 350 MAD Bilan Neuropsychologie 90 min 1000 MAD Séance Ini",
+        "tiale 60 min 500 MAD Restitution neuropsychologique 60 min 500 MAD Séa",
+        "nce Psychologie 60 min 500 MAD Thérapie de couple 90 min 600 MAD Localisation 88",
+        " Rue De Jabal Azourki, Casablanca 20250, Morocco Casablanca Pratiques Pratiques proposées",
+        "de consultation Séance Psychomotricité 45 min 350 MAD bilan psychomoteur 90 min 750 MAD Restitution psy",
+        "chomotricité 60 min 500 MAD Séance initiale psychomotricité 60 min 500 MAD Sé",
+        "ance Neuropsychologie 45 min 350 MAD Bilan Neuropsychologie 90 min 1000 MAD Séance Ini",
+        "tiale 60 min 500 MAD Restitution neuropsychologique 60 min 500 MAD Séa",
+        "nce Psychologie 60 min 500 MAD Thérapie de couple 90 min 600 MAD Continuer Votre"
+      ]
+    },
+    {
+      "path": "/search/all",
+      "status": 200,
+      "location": null,
+      "title": "Nos Spécialistes — Wenaya Casablanca",
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/search/all",
+      "practiceLinks": [],
+      "paginationLinks": [],
+      "claims": []
+    },
+    {
+      "path": "/corporate",
+      "status": 200,
+      "location": null,
+      "title": "Wenaya Corporate Programs (WCP) — Bien-être en Entreprise | Wenaya",
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/corporate",
+      "practiceLinks": [],
+      "paginationLinks": [],
+      "claims": []
+    },
+    {
+      "path": "/soins-a-domicile",
+      "status": 200,
+      "location": null,
+      "title": "Soins à domicile — Garde malade &amp; infirmier à domicile à Casablanca | Wenaya",
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/soins-a-domicile",
+      "practiceLinks": [],
+      "paginationLinks": [],
+      "claims": []
+    },
+    {
+      "path": "/clinique/wenaya-casablanca",
+      "status": 200,
+      "location": null,
+      "title": "Wenaya Clinic — Centre de Santé Intégrée à Casablanca | Wenaya",
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/clinique/wenaya-casablanca",
+      "practiceLinks": [
+        "/pratiques/kinesitherapie",
+        "/pratiques/osteopathie",
+        "/pratiques/psychologie",
+        "/pratiques/nutrition",
+        "/pratiques/naturopathie",
+        "/pratiques/sophrologie",
+        "/pratiques/orthophonie",
+        "/pratiques/yoga"
+      ],
+      "paginationLinks": [],
+      "claims": []
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200,
+      "location": null,
+      "h1": 0,
+      "practiceLinks": [],
+      "paginationLinks": [],
+      "claims": []
+    },
+    {
+      "path": "/sitemap.xml",
+      "status": 200,
+      "location": null,
+      "h1": 0,
+      "practiceLinks": [],
+      "paginationLinks": [],
+      "claims": [],
+      "sitemapPracticeCount": 38
+    },
+    {
+      "path": "/parcours-de-soins/tecar-th%C3%A9rapie",
+      "status": 301,
+      "location": "/parcours-de-soins/tecar-therapie",
+      "h1": 0,
+      "practiceLinks": [],
+      "paginationLinks": [],
+      "claims": []
+    },
+    {
+      "path": "/parcours-de-soins/sant%C3%A9-holistique",
+      "status": 301,
+      "location": "/parcours-de-soins/sante-holistique",
+      "h1": 0,
+      "practiceLinks": [],
+      "paginationLinks": [],
+      "claims": []
+    },
+    {
+      "path": "/parcours-de-soins/grossesse-&-maternit%C3%A9",
+      "status": 301,
+      "location": "/parcours-de-soins/grossesse-&-maternite",
+      "h1": 0,
+      "practiceLinks": [],
+      "paginationLinks": [],
+      "claims": []
+    }
+  ]
+}

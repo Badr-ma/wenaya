@@ -1,3 +1,5 @@
+import { BUSINESS_INFO, CLINIC_OPENING_HOURS } from "@/lib/business-info";
+import ConsentAnalytics from "@/components/ConsentAnalytics";
 /**
  * Root Layout — wraps every page in the app.
  * Provides: fonts, global CSS, language context, smooth scroll (Lenis),
@@ -6,7 +8,6 @@
  */
 import type { Metadata } from "next";
 import { JetBrains_Mono, Manrope, Inter } from "next/font/google";
-import Script from "next/script";
 import "../globals.css";
 import Nav from "@/components/Nav";
 import GsapInit from "@/components/GsapInit";
@@ -17,7 +18,7 @@ import CookieConsent from "@/components/CookieConsent";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { CartProvider } from "@/contexts/CartContext";
 import { ShopComingSoonProvider } from "@/contexts/ShopComingSoonContext";
-import { SITE_URL, SITE_NAME } from "@/lib/site-config";
+import { INDEXING_ENABLED, SITE_URL, SITE_NAME } from "@/lib/site-config";
 
 /** Manrope — Wenaya heading/display font via --font-heading & --font-serif */
 const manrope = Manrope({
@@ -43,6 +44,7 @@ const jetbrains = JetBrains_Mono({
 
 /** Global SEO metadata — applied as defaults for all pages (individual pages can override title/description) */
 export const metadata: Metadata = {
+  ...(!INDEXING_ENABLED ? { robots: { index: false, follow: false } } : {}),
   metadataBase: new URL(SITE_URL),
   title: {
     default: "Wenaya — Plateforme de Santé Intégrée | Casablanca, Maroc",
@@ -148,24 +150,11 @@ export default function RootLayout({
                   "parentOrganization": { "@id": `${SITE_URL}/#organization` },
                   "address": {
                     "@type": "PostalAddress",
-                    "streetAddress": "88 Rue De Jabal Azourki",
-                    "addressLocality": "Casablanca",
+                    "streetAddress": BUSINESS_INFO.street,
+                    "addressLocality": BUSINESS_INFO.city,
                     "addressCountry": "MA",
                   },
-                  "openingHoursSpecification": [
-                    {
-                      "@type": "OpeningHoursSpecification",
-                      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
-                      "opens": "08:00",
-                      "closes": "20:00",
-                    },
-                  ],
-                  "aggregateRating": {
-                    "@type": "AggregateRating",
-                    "ratingValue": "4.7",
-                    "bestRating": "5",
-                    "ratingCount": "200",
-                  },
+                  "openingHoursSpecification": [CLINIC_OPENING_HOURS],
                   "availableService": [
                     { "@type": "MedicalTherapy", "name": "Kinésithérapie & Rééducation" },
                     { "@type": "MedicalTherapy", "name": "Psychologie Clinique & Santé Mentale" },
@@ -188,20 +177,7 @@ export default function RootLayout({
         />
       </head>
       <body>
-        {process.env.NEXT_PUBLIC_GA_ID && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-              strategy="afterInteractive"
-            />
-            <Script id="ga4-init" strategy="afterInteractive">
-              {`window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', { page_path: window.location.pathname });`}
-            </Script>
-          </>
-        )}
+        <ConsentAnalytics />
         {/* LanguageProvider — i18n context wrapping the entire app, enables useLocale() and t().
             Pinned to French so the FR route group server-renders French and does not re-detect
             English from localStorage/browser on the client (mirrors the EN layout). */}

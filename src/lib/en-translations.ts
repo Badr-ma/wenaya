@@ -92,29 +92,25 @@ export const EN_ARTICLE_DEMO: Record<string, PracticeSection[]> = {
   ],
 
   "cupping-therapy-hijama": [
-    {
-      body: ["Cupping can be made of:"],
-      list: ["Glass", "Bamboo", "Earthenware", "Silicone"],
-    },
-    {
-      body: [
-        "Cupping therapy may be trendy right now, but it is not new. It dates back to the ancient Egyptian, Chinese and Middle Eastern cultures. One of the oldest medical textbooks in the world, the Ebers Papyrus, describes how the ancient Egyptians used cupping therapy in 1550 BC.",
-      ],
-    },
-    {
-      heading: "The types",
-      body: ["There are different methods of cupping, including:"],
-      list: ["Dry", "Wet"],
-    },
-    {
-      body: [
-        "In both types of cupping, your therapist will put a flammable substance such as alcohol, herbs or paper in a cup and set fire to it. As the fire goes out, they put the cup upside down on your skin.",
-        "As it cools, the air inside the cup creates a vacuum. This causes your skin to swell and turn red as your blood vessels expand.",
-        "A more modern version of cupping uses a rubber pump instead of fire to create the vacuum inside the cup. Sometimes therapists use silicone cups, which they can move around on your skin for a massage-like effect.",
-        "Wet cupping creates a mild suction by leaving a cup in place for about 3 minutes. The therapist then removes the cup and uses a small scalpel to make light, small cuts on your skin. Afterwards, they perform a second suction to extract a small amount of blood.",
-      ],
-    },
-  ],
+  {
+    "heading": "Understanding the practice",
+    "body": [
+      "Cupping therapy is presented as a complementary practice. It must not be presented as a promise of a cure or a replacement for medical care."
+    ]
+  },
+  {
+    "heading": "Before a session",
+    "body": [
+      "Discuss your needs, the professional’s qualifications, the proposed method, limitations and possible risks. Suitability must be assessed individually."
+    ]
+  },
+  {
+    "heading": "Choose a professional",
+    "body": [
+      "Explore available profiles and contact the team to clarify the process, duration and fees before booking."
+    ]
+  }
+],
 
   infirmerie: [
     {
@@ -359,30 +355,45 @@ export const EN_ARTICLE_DEMO: Record<string, PracticeSection[]> = {
   ],
 
   neuropsychologie: [
-    {
-      body: [
-        "Neuropsychologists assess and treat people suffering from various types of nervous system disorders. They work closely with doctors, including neurologists.",
-        "Diseases, injuries and illnesses of the brain and nervous system can affect the way a person feels, thinks and behaves. Symptoms that may require a neuropsychologist include:",
-      ],
-      list: [
-        "memory difficulties",
-        "mood disorders",
-        "learning difficulties",
-        "nervous system dysfunction",
-      ],
-    },
-    {
-      body: [
-        "If other doctors cannot identify the cause of a symptom, a neuropsychologist can help establish a diagnosis. If a diagnosis is already known, an assessment can still be useful.",
-        "A neuropsychologist can help you determine the impairments you may be suffering from and their severity. Here are examples of conditions they assess and treat:",
-        "A stroke can affect behaviour, thinking, memory and other brain functions in obvious or subtle ways. They can carry out an assessment to help determine the degree of impairment linked to the stroke.",
-        "Parkinson's disease, a progressive disease, can cause several neurological problems. A neuropsychologist's examination can provide a baseline to help determine the progression of the disease and the decline in function.",
-        "Alzheimer's disease and other types of dementia can interfere with memory, personality and cognitive abilities. A neuropsychologist can carry out an examination to help identify it at an early stage.",
-        "Head injuries can cause a wide variety of symptoms. A neuropsychologist can help determine how an injury affects functions such as reasoning or problem solving.",
-        "A neuropsychologist can help determine which of the many types of learning disorders a person has and develop a treatment plan.",
-      ],
-    },
-  ],
+  {
+    "heading": "Understand cognitive functioning",
+    "body": [
+      "A neuropsychological assessment explores cognitive functioning to help guide appropriate support. Talk to Wenaya professionals in Casablanca about your needs and the proposed pathway."
+    ]
+  },
+  {
+    "heading": "Who is it for?",
+    "body": [
+      "An assessment request may concern a child, an adult or an older person. The professional discusses the relevance and objectives with you."
+    ]
+  },
+  {
+    "heading": "When to consult",
+    "body": [
+      "You can discuss memory, attention or learning difficulties, or an assessment request from a healthcare professional."
+    ]
+  },
+  {
+    "heading": "How the assessment works",
+    "list": [
+      "An initial conversation to clarify the request and relevant information.",
+      "An evaluation adapted to the situation and agreed objectives.",
+      "A feedback appointment to discuss observations and possible support."
+    ]
+  },
+  {
+    "heading": "Professionals and coordination",
+    "body": [
+      "Complementary expertise may be involved according to identified needs. Recommendations are discussed with the professionals concerned."
+    ]
+  },
+  {
+    "heading": "Prepare your appointment",
+    "body": [
+      "Explore the profiles below. Before booking, confirm the stages included, duration, fees and feedback arrangements. A full assessment may involve several appointments."
+    ]
+  }
+],
 
   nutrition: [
     {

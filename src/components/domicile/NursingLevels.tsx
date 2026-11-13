@@ -6,12 +6,12 @@ import HomecareSectionHeading from "./HomecareSectionHeading";
 
 const levels = [
   {
-    name: "Infirmiers garde malade à domicile",
-    desc: "Ces infirmiers assurent les soins quotidiens, la surveillance clinique, les pansements, la prise des constantes, l'administration de traitements et le confort général du patient à domicile.",
+    name: "Accompagnement du quotidien",
+    desc: "Les gardes-malades accompagnent les gestes de la vie quotidienne et le confort. Les actes infirmiers relèvent de professionnels qualifiés, selon leurs compétences et les prescriptions applicables.",
   },
   {
-    name: "Infirmiers polyvalents à domicile",
-    desc: "Professionnels issus de services hospitaliers spécialisés (réanimation, bloc opératoire), capables de gérer des situations complexes et des soins techniques plus avancés.",
+    name: "Soins infirmiers à domicile",
+    desc: "Les soins techniques sont organisés après évaluation du besoin, avec un infirmier disposant des qualifications adaptées. Les actes et modalités sont précisés avant toute intervention.",
   },
 ];
 
@@ -24,7 +24,7 @@ export default function HomecareNursingLevels(): React.JSX.Element {
       <div className="max-w-7xl mx-auto py-16 lg:py-24">
         <div className="max-w-3xl">
           <HomecareSectionHeading variant="dark" eyebrow="Nos infirmiers" style={{ fontSize: "clamp(1.9rem, 3.4vw, 3rem)" }}>
-            Nos infirmiers à domicile&nbsp;: deux niveaux d&apos;expertise
+            À domicile&nbsp;: des rôles complémentaires
           </HomecareSectionHeading>
         </div>
 

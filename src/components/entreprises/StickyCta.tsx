@@ -1,7 +1,7 @@
 /**
  * Sticky CTA — fixed bottom bar on the entreprises page that appears after scrolling.
- * Shows a "Book a Free Consultation" CTA button. Only visible on /corporate.
- * Auto-hides after 15 seconds or when user clicks the CTA.
+ * Offers to discuss team needs and scrolls to the contact section.
+ * Only visible on mobile after scrolling more than 600px.
  */
 "use client";
 

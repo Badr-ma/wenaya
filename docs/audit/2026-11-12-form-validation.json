@@ -1,0 +1,31 @@
+[
+  {
+    "path": "/api/contact",
+    "status": 400,
+    "body": {
+      "success": false,
+      "reason": "validation-error",
+      "fields": {
+        "fullname": "required",
+        "email": "required",
+        "message": "required"
+      }
+    }
+  },
+  {
+    "path": "/api/professionals/waiting-list",
+    "status": 400,
+    "body": {
+      "success": false,
+      "reason": "validation",
+      "fields": [
+        "customer_name",
+        "customer_email",
+        "customer_phone",
+        "user_id",
+        "booking_date",
+        "booking_time"
+      ]
+    }
+  }
+]

@@ -1,3 +1,5 @@
+import { BUSINESS_INFO, CLINIC_OPENING_HOURS } from "@/lib/business-info";
+import ConsentAnalytics from "@/components/ConsentAnalytics";
 /**
  * English Root Layout — wraps every page under the `(en)` route group (URL-invisible),
  * exposing the literal `/en` URL. Mirrors the French root layout but server-renders
@@ -6,7 +8,6 @@
  */
 import type { Metadata } from "next";
 import { JetBrains_Mono, Manrope, Inter } from "next/font/google";
-import Script from "next/script";
 import "../globals.css";
 import Nav from "@/components/Nav";
 import GsapInit from "@/components/GsapInit";
@@ -17,7 +18,7 @@ import CookieConsent from "@/components/CookieConsent";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { CartProvider } from "@/contexts/CartContext";
 import { ShopComingSoonProvider } from "@/contexts/ShopComingSoonContext";
-import { SITE_URL, SITE_NAME } from "@/lib/site-config";
+import { INDEXING_ENABLED, SITE_URL, SITE_NAME } from "@/lib/site-config";
 import { languageAlternates } from "@/lib/hreflang";
 
 const ENGLISH_HOME_URL = `${SITE_URL}/en`;
@@ -46,6 +47,7 @@ const jetbrains = JetBrains_Mono({
 
 /** English SEO metadata — defaults for English pages (individual pages can override title/description) */
 export const metadata: Metadata = {
+  ...(!INDEXING_ENABLED ? { robots: { index: false, follow: false } } : {}),
   metadataBase: new URL(SITE_URL),
   title: {
     default: "Wenaya — Integrated Health Platform | Casablanca, Morocco",
@@ -150,24 +152,11 @@ export default function EnglishRootLayout({
                   "parentOrganization": { "@id": `${SITE_URL}/#organization` },
                   "address": {
                     "@type": "PostalAddress",
-                    "streetAddress": "88 Rue De Jabal Azourki",
-                    "addressLocality": "Casablanca",
+                    "streetAddress": BUSINESS_INFO.street,
+                    "addressLocality": BUSINESS_INFO.city,
                     "addressCountry": "MA",
                   },
-                  "openingHoursSpecification": [
-                    {
-                      "@type": "OpeningHoursSpecification",
-                      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
-                      "opens": "08:00",
-                      "closes": "20:00",
-                    },
-                  ],
-                  "aggregateRating": {
-                    "@type": "AggregateRating",
-                    "ratingValue": "4.7",
-                    "bestRating": "5",
-                    "ratingCount": "200",
-                  },
+                  "openingHoursSpecification": [CLINIC_OPENING_HOURS],
                   "availableService": [
                     { "@type": "MedicalTherapy", "name": "Physiotherapy & Rehabilitation" },
                     { "@type": "MedicalTherapy", "name": "Clinical Psychology & Mental Health" },
@@ -190,20 +179,7 @@ export default function EnglishRootLayout({
         />
       </head>
       <body>
-        {process.env.NEXT_PUBLIC_GA_ID && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-              strategy="afterInteractive"
-            />
-            <Script id="ga4-init" strategy="afterInteractive">
-              {`window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', { page_path: window.location.pathname });`}
-            </Script>
-          </>
-        )}
+        <ConsentAnalytics />
         {/* LanguageProvider initialized to English — enables SSR'd English content via t() */}
         <LanguageProvider initialLocale="en">
           <CartProvider>

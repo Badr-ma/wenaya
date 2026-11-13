@@ -1,0 +1,42 @@
+{
+  "checkedAt": "2026-11-13T10:27:50.549Z",
+  "ownerCorrection": "Monday–Saturday, 09:00–19:00",
+  "results": [
+    {
+      "path": "/contact-us",
+      "status": 200,
+      "displayCorrect": true,
+      "schemaCorrect": true
+    },
+    {
+      "path": "/en/contact-us",
+      "status": 200,
+      "displayCorrect": true,
+      "schemaCorrect": true
+    },
+    {
+      "path": "/corporate",
+      "status": 200,
+      "displayCorrect": true,
+      "schemaCorrect": true
+    },
+    {
+      "path": "/en/corporate",
+      "status": 200,
+      "displayCorrect": true,
+      "schemaCorrect": true
+    },
+    {
+      "path": "/clinique/wenaya-casablanca",
+      "status": 200,
+      "displayCorrect": true,
+      "schemaCorrect": true
+    },
+    {
+      "path": "/en/clinic/wenaya-casablanca",
+      "status": 200,
+      "displayCorrect": true,
+      "schemaCorrect": true
+    }
+  ]
+}

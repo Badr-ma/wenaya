@@ -15,7 +15,7 @@ export default function HomecareCoordination(): React.JSX.Element {
               Coordination avec Wenaya Clinic
             </HomecareSectionHeading>
             <p className="mt-5 text-[#0B1220]/70 text-base lg:text-lg leading-relaxed max-w-2xl">
-              Notre lien avec Wenaya Clinic garantit une cohérence entre les
+              Notre lien avec Wenaya Clinic vise à assurer la cohérence entre les
               soins à domicile et les suivis cliniques spécialisés. Cela permet
               une prise en charge globale et mieux structurée.
             </p>

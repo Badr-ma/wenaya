@@ -352,7 +352,7 @@ export default function SessionsExplorer({
                 </h3>
               </Link>
 
-              <p className="mt-2 text-[#0B1220]/60 text-sm sm:text-[15px] leading-relaxed line-clamp-2">
+              <p className="mt-2 text-[#0B1220]/60 text-sm sm:text-[15px] leading-relaxed">
                 {s.summary}
               </p>
 

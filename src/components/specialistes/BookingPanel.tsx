@@ -1,6 +1,8 @@
 ﻿"use client";
 
-import { useState, useMemo, useEffect, useRef } from "react";
+import { trackConversion } from "@/lib/analytics";
+import DataProtectionNotice from "@/components/legal/DataProtectionNotice";
+import { useState, useMemo, useEffect, useRef, useId } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useLocale } from "@/contexts/LanguageContext";
@@ -11,7 +13,6 @@ import {
   buildMonthAvailability,
   buildMonthGrid,
   leadingBlanks,
-  MONTHS_FR,
   formatDateCaption,
   formatDateCompact,
   weekdayShortLabels,
@@ -102,6 +103,8 @@ export default function BookingPanel({
   const [submitError, setSubmitError] = useState(false);
   const submittingRef = useRef(false);
   const contentRef = useRef<HTMLDivElement | null>(null);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const dialogTitleId = useId();
   /** The patient profile is fetched at most once per mount (first open). */
   const profileRequestedRef = useRef(false);
   const [viewMonth, setViewMonth] = useState(() => {
@@ -125,7 +128,7 @@ export default function BookingPanel({
   // the visible month. Legacy specialists keep the local weekly-schedule
   // calendar (buildMonthAvailability) untouched.
   useEffect(() => {
-    if (!apiConfig) return;
+    if (!isOpen || !apiConfig) return;
     let cancelled = false;
     const anchor = `${viewMonth.year}-${String(viewMonth.month + 1).padStart(2, "0")}-01`;
     fetchClientUnavailableDates(apiConfig.userName, anchor).then((r) => {
@@ -133,7 +136,7 @@ export default function BookingPanel({
       setApiDates({ iso: anchor, closed: r.ok ? r.dates : [] });
     });
     return () => { cancelled = true; };
-  }, [apiConfig, viewMonth]);
+  }, [isOpen, apiConfig, viewMonth]);
 
   const onCloseRef = useRef(onClose);
   useEffect(() => {
@@ -145,9 +148,31 @@ export default function BookingPanel({
   // (re)opens (the panel stays mounted between opens, so it must scroll to top).
   useEffect(() => {
     if (!isOpen) return;
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const controls = () => Array.from(dialog.querySelectorAll<HTMLElement>(
+      'button:not(:disabled), a[href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex="-1"])'
+    )).filter((element) => element.tabIndex >= 0 && element.getClientRects().length > 0);
+    (controls()[0] ?? dialog).focus({ preventScroll: true });
 
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onCloseRef.current();
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onCloseRef.current();
+      }
+      if (e.key !== "Tab") return;
+      const elements = controls();
+      const first = elements[0];
+      const last = elements.at(-1);
+      if (!first || !last) { e.preventDefault(); dialog.focus(); return; }
+      if (!dialog.contains(document.activeElement) || (e.shiftKey && document.activeElement === first)) {
+        e.preventDefault();
+        (e.shiftKey ? last : first).focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
     document.addEventListener("keydown", onKey);
 
@@ -156,6 +181,7 @@ export default function BookingPanel({
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
+      if (previousFocus?.isConnected && !dialog.contains(previousFocus)) previousFocus.focus();
     };
   }, [isOpen]);
 
@@ -335,13 +361,9 @@ export default function BookingPanel({
     setSubmitting(true);
     setSubmitError(false);
     try {
-      // Legacy/local profiles have no backend user id: keep the demo
-      // (local-only) confirmation exactly as before.
+      // Never acknowledge a request that could not reach a backend.
       if (!apiConfig) {
-        onBookingConfirmed?.(bookingData);
-        setErrors({});
-        setSubmitAttempted(false);
-        setStep(3);
+        setSubmitError(true);
         return;
       }
 
@@ -368,6 +390,7 @@ export default function BookingPanel({
         return;
       }
 
+      trackConversion("booking_request_received");
       onBookingConfirmed?.(bookingData);
       setErrors({});
       setSubmitAttempted(false);
@@ -385,14 +408,16 @@ export default function BookingPanel({
     <>
       {/* Backdrop + centered booking card */}
       <div
+        inert={!isOpen}
+        aria-hidden={!isOpen}
         className={`fixed inset-0 z-50 flex flex-col justify-end sm:flex sm:items-center sm:justify-center bg-[#0B1220]/30 backdrop-blur-sm transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
         onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
       >
-        <div className={`w-full sm:w-[1000px] sm:max-w-[calc(100vw-2rem)] h-[85dvh] sm:h-auto sm:max-h-[calc(100dvh-2rem)] bg-white sm:border border-[#0B1220]/[0.08] rounded-t-2xl sm:rounded-2xl shadow-[0_2px_16px_rgba(11,18,32,0.06)] flex flex-col overflow-hidden transition-transform duration-400 ease-out ${isOpen ? "translate-y-0" : "translate-y-full"}`}>
+        <div ref={dialogRef} role="dialog" aria-modal={isOpen ? true : undefined} aria-labelledby={dialogTitleId} tabIndex={-1} className={`w-full sm:w-[1000px] sm:max-w-[calc(100vw-2rem)] h-[85dvh] sm:h-auto sm:max-h-[calc(100dvh-2rem)] bg-white sm:border border-[#0B1220]/[0.08] rounded-t-2xl sm:rounded-2xl shadow-[0_2px_16px_rgba(11,18,32,0.06)] flex flex-col overflow-hidden transition-transform duration-400 ease-out ${isOpen ? "translate-y-0" : "translate-y-full"}`}>
           {/* Header */}
           <div className="flex items-center justify-between px-6 py-5 sm:px-8 border-b border-[#0B1220]/[0.06]">
             <div>
-              <p className="font-heading font-semibold text-sm text-[#0B1220]">{t("specialistes.booking.title")}</p>
+              <p id={dialogTitleId} className="font-heading font-semibold text-sm text-[#0B1220]">{t("specialistes.booking.title")}</p>
               <p className="text-[11px] text-[#2B2F36]/35">{specialist.name}</p>
             </div>
             <button onClick={onClose} aria-label={t("specialistes.booking.close")} className="w-8 h-8 rounded-full bg-[#0B1220]/[0.04] flex items-center justify-center hover:bg-[#0B1220]/[0.08] transition-colors">
@@ -447,7 +472,7 @@ export default function BookingPanel({
                     <div className="flex items-center justify-between mb-3">
                       <span className="w-8" aria-hidden="true" />
                       <span className="flex-1 text-center font-heading font-bold text-[15px] text-[#0B1220]">
-                        {MONTHS_FR[viewMonth.month].toLowerCase()} {viewMonth.year}
+                        {new Date(viewMonth.year, viewMonth.month, 1).toLocaleDateString(locale === "en" ? "en-GB" : "fr-FR", { month: "long", year: "numeric" })}
                       </span>
                       <div className="flex items-center gap-1.5">
                         <button
@@ -661,6 +686,7 @@ export default function BookingPanel({
 
                 {/* Confirmation note + terms */}
                 <div className="mt-5">
+                  <DataProtectionNotice locale={locale} />
                   <p className="text-[11px] text-[#2B2F36]/50 leading-relaxed mb-3">{t("specialistes.booking.confirmNote")}</p>
                   <p className="text-[11px] text-[#2B2F36]/35 leading-relaxed mb-2">{t("specialistes.booking.termsNote")}</p>
                   <div className="flex flex-wrap items-center gap-3">

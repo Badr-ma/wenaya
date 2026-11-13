@@ -69,14 +69,12 @@ export default function TestimonialsSection() {
                 aria-hidden={!isActive}
                 className={`${isActive ? "" : "sr-only"} ${isActive ? "py-10 sm:py-12 px-6 sm:px-10 bg-[#0B1220] rounded-[6px]" : ""}`}
               >
-                <svg width="42" height="34" viewBox="0 0 42 34" fill="none" aria-hidden="true" className="text-[#D4A56A]">
-                  <path d="M0 34V19.4C0 8.7 5.6 2.2 17.2 0v6.2c-4.6 1.3-7.4 3.9-8.4 7.9h8.4V34H0zm24.1 0V19.4C24.1 8.7 29.7 2.2 41.3 0v6.2c-4.6 1.3-7.4 3.9-8.4 7.9h8.4V34H24.1z" fill="currentColor" />
-                </svg>
-                <blockquote className="mt-6">
+
+                <div className="mt-6">
                   <p className="heading-serif text-white leading-[1.3] text-xl sm:text-2xl lg:text-[1.65rem] lg:leading-[1.35] max-w-3xl">
                     {tm.quote}
                   </p>
-                </blockquote>
+                </div>
                 <figcaption className="mt-6 text-sm font-medium text-white/70">{tm.author}</figcaption>
               </figure>
             );

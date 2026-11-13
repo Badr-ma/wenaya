@@ -1,0 +1,3123 @@
+{
+  "checkedAt": "2026-11-13T10:42:22.641Z",
+  "base": "http://localhost:3000",
+  "shopExcluded": true,
+  "submissionsPerformed": false,
+  "sitemap": [
+    {
+      "path": "/",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com",
+      "noindex": false
+    },
+    {
+      "path": "/en",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en",
+      "noindex": false
+    },
+    {
+      "path": "/about-us",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/about-us",
+      "noindex": false
+    },
+    {
+      "path": "/en/about-us",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/about-us",
+      "noindex": false
+    },
+    {
+      "path": "/clinique/wenaya-casablanca",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/clinique/wenaya-casablanca",
+      "noindex": false
+    },
+    {
+      "path": "/en/clinic/wenaya-casablanca",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/clinic/wenaya-casablanca",
+      "noindex": false
+    },
+    {
+      "path": "/corporate",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/corporate",
+      "noindex": false
+    },
+    {
+      "path": "/corporate/programmes",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/corporate/programmes",
+      "noindex": false
+    },
+    {
+      "path": "/en/corporate",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/corporate",
+      "noindex": false
+    },
+    {
+      "path": "/en/corporate/programmes",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/corporate/programmes",
+      "noindex": false
+    },
+    {
+      "path": "/corporate/programmes/leadership-360",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/corporate/programmes/leadership-360",
+      "noindex": false
+    },
+    {
+      "path": "/en/corporate/programmes/leadership-360",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/corporate/programmes/leadership-360",
+      "noindex": false
+    },
+    {
+      "path": "/corporate/programmes/pcm",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/corporate/programmes/pcm",
+      "noindex": false
+    },
+    {
+      "path": "/en/corporate/programmes/pcm",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/corporate/programmes/pcm",
+      "noindex": false
+    },
+    {
+      "path": "/corporate/programmes/art-des-priorites",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/corporate/programmes/art-des-priorites",
+      "noindex": false
+    },
+    {
+      "path": "/en/corporate/programmes/art-des-priorites",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/corporate/programmes/art-des-priorites",
+      "noindex": false
+    },
+    {
+      "path": "/corporate/programmes/people-model-canvas",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/corporate/programmes/people-model-canvas",
+      "noindex": false
+    },
+    {
+      "path": "/en/corporate/programmes/people-model-canvas",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/corporate/programmes/people-model-canvas",
+      "noindex": false
+    },
+    {
+      "path": "/soins-a-domicile",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/soins-a-domicile",
+      "noindex": false
+    },
+    {
+      "path": "/pratiques",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/pratiques",
+      "noindex": false
+    },
+    {
+      "path": "/en/pratiques",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/pratiques",
+      "noindex": false
+    },
+    {
+      "path": "/parcours-de-soins",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/parcours-de-soins",
+      "noindex": false
+    },
+    {
+      "path": "/en/parcours-de-soins",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/parcours-de-soins",
+      "noindex": false
+    },
+    {
+      "path": "/maux-troubles",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/maux-troubles",
+      "noindex": false
+    },
+    {
+      "path": "/en/health-needs",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/health-needs",
+      "noindex": false
+    },
+    {
+      "path": "/en/seance-de-groupe",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/seance-de-groupe",
+      "noindex": false
+    },
+    {
+      "path": "/seance-de-groupe",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/seance-de-groupe",
+      "noindex": false
+    },
+    {
+      "path": "/search/all",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/search/all",
+      "noindex": false
+    },
+    {
+      "path": "/en/search/all",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/search/all",
+      "noindex": false
+    },
+    {
+      "path": "/articles",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/articles",
+      "noindex": false
+    },
+    {
+      "path": "/en/articles",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/articles",
+      "noindex": false
+    },
+    {
+      "path": "/contact-us",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/contact-us",
+      "noindex": false
+    },
+    {
+      "path": "/faq",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/faq",
+      "noindex": false
+    },
+    {
+      "path": "/en/faq",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/faq",
+      "noindex": false
+    },
+    {
+      "path": "/en/contact-us",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/contact-us",
+      "noindex": false
+    },
+    {
+      "path": "/en/privacy-policy",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/privacy-policy",
+      "noindex": false
+    },
+    {
+      "path": "/privacy-policy",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/privacy-policy",
+      "noindex": false
+    },
+    {
+      "path": "/terms-and-conditions",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/terms-and-conditions",
+      "noindex": false
+    },
+    {
+      "path": "/en/terms-and-conditions",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/terms-and-conditions",
+      "noindex": false
+    },
+    {
+      "path": "/en/articles/tda-h-chez-lenfant-et-si-la-sophrologie-devenait-son-meilleur-allie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/articles/tda-h-chez-lenfant-et-si-la-sophrologie-devenait-son-meilleur-allie",
+      "noindex": false
+    },
+    {
+      "path": "/articles/tda-h-chez-lenfant-et-si-la-sophrologie-devenait-son-meilleur-allie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/articles/tda-h-chez-lenfant-et-si-la-sophrologie-devenait-son-meilleur-allie",
+      "noindex": false
+    },
+    {
+      "path": "/articles/comment-le-mouvement-influence-t-il-lestime-de-soi",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/articles/comment-le-mouvement-influence-t-il-lestime-de-soi",
+      "noindex": false
+    },
+    {
+      "path": "/en/articles/comment-le-mouvement-influence-t-il-lestime-de-soi",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/articles/comment-le-mouvement-influence-t-il-lestime-de-soi",
+      "noindex": false
+    },
+    {
+      "path": "/articles/ma-vision-de-la-naturopathie-ecouter-le-vivant-pour-retrouver-lequilibre",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/articles/ma-vision-de-la-naturopathie-ecouter-le-vivant-pour-retrouver-lequilibre",
+      "noindex": false
+    },
+    {
+      "path": "/en/articles/ma-vision-de-la-naturopathie-ecouter-le-vivant-pour-retrouver-lequilibre",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/articles/ma-vision-de-la-naturopathie-ecouter-le-vivant-pour-retrouver-lequilibre",
+      "noindex": false
+    },
+    {
+      "path": "/articles/transformer-ses-croyances-limitantes-pour-transformer-sa-vie-avec-psychk",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/articles/transformer-ses-croyances-limitantes-pour-transformer-sa-vie-avec-psychk",
+      "noindex": false
+    },
+    {
+      "path": "/en/articles/transformer-ses-croyances-limitantes-pour-transformer-sa-vie-avec-psychk",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/articles/transformer-ses-croyances-limitantes-pour-transformer-sa-vie-avec-psychk",
+      "noindex": false
+    },
+    {
+      "path": "/articles/les-bienfaits-de-la-sophrologie-pendant-le-ramadan",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/articles/les-bienfaits-de-la-sophrologie-pendant-le-ramadan",
+      "noindex": false
+    },
+    {
+      "path": "/en/articles/les-bienfaits-de-la-sophrologie-pendant-le-ramadan",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/articles/les-bienfaits-de-la-sophrologie-pendant-le-ramadan",
+      "noindex": false
+    },
+    {
+      "path": "/articles/la-place-de-losteopathie-dans-le-handicap-invisible-en-entreprise-redonner-au-corps-sa-capacite-dadaptation",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/articles/la-place-de-losteopathie-dans-le-handicap-invisible-en-entreprise-redonner-au-corps-sa-capacite-dadaptation",
+      "noindex": false
+    },
+    {
+      "path": "/en/articles/la-place-de-losteopathie-dans-le-handicap-invisible-en-entreprise-redonner-au-corps-sa-capacite-dadaptation",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/articles/la-place-de-losteopathie-dans-le-handicap-invisible-en-entreprise-redonner-au-corps-sa-capacite-dadaptation",
+      "noindex": false
+    },
+    {
+      "path": "/articles/recuperation-du-coureur-letape-cle-pour-progresser-et-durer",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/articles/recuperation-du-coureur-letape-cle-pour-progresser-et-durer",
+      "noindex": false
+    },
+    {
+      "path": "/articles/prevenir-les-blessures-du-coureur-les-bons-reflexes-avant-quil-ne-soit-trop-tard",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/articles/prevenir-les-blessures-du-coureur-les-bons-reflexes-avant-quil-ne-soit-trop-tard",
+      "noindex": false
+    },
+    {
+      "path": "/en/articles/recuperation-du-coureur-letape-cle-pour-progresser-et-durer",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/articles/recuperation-du-coureur-letape-cle-pour-progresser-et-durer",
+      "noindex": false
+    },
+    {
+      "path": "/en/articles/prevenir-les-blessures-du-coureur-les-bons-reflexes-avant-quil-ne-soit-trop-tard",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/articles/prevenir-les-blessures-du-coureur-les-bons-reflexes-avant-quil-ne-soit-trop-tard",
+      "noindex": false
+    },
+    {
+      "path": "/articles/courir-plus-vite-et-plus-longtemps-les-cles-de-la-performance-du-coureur",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/articles/courir-plus-vite-et-plus-longtemps-les-cles-de-la-performance-du-coureur",
+      "noindex": false
+    },
+    {
+      "path": "/en/articles/courir-plus-vite-et-plus-longtemps-les-cles-de-la-performance-du-coureur",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/articles/courir-plus-vite-et-plus-longtemps-les-cles-de-la-performance-du-coureur",
+      "noindex": false
+    },
+    {
+      "path": "/articles/troubles-hormonaux-feminins-de-la-fertilite-a-la-menopause-linteret-dune-approche-integrative",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/articles/troubles-hormonaux-feminins-de-la-fertilite-a-la-menopause-linteret-dune-approche-integrative",
+      "noindex": false
+    },
+    {
+      "path": "/en/articles/troubles-hormonaux-feminins-de-la-fertilite-a-la-menopause-linteret-dune-approche-integrative",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/articles/troubles-hormonaux-feminins-de-la-fertilite-a-la-menopause-linteret-dune-approche-integrative",
+      "noindex": false
+    },
+    {
+      "path": "/articles/courir-sans-blessure-la-strategie-pprp-qui-change-la-saison-des-runners",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/articles/courir-sans-blessure-la-strategie-pprp-qui-change-la-saison-des-runners",
+      "noindex": false
+    },
+    {
+      "path": "/en/articles/courir-sans-blessure-la-strategie-pprp-qui-change-la-saison-des-runners",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/articles/courir-sans-blessure-la-strategie-pprp-qui-change-la-saison-des-runners",
+      "noindex": false
+    },
+    {
+      "path": "/articles/une-rentree-sous-le-signe-de-lequilibre",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/articles/une-rentree-sous-le-signe-de-lequilibre",
+      "noindex": false
+    },
+    {
+      "path": "/en/articles/une-rentree-sous-le-signe-de-lequilibre",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/articles/une-rentree-sous-le-signe-de-lequilibre",
+      "noindex": false
+    },
+    {
+      "path": "/articles/votre-premiere-seance-dosteopathie-guide-complet-pour-bien-vous-preparer",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/articles/votre-premiere-seance-dosteopathie-guide-complet-pour-bien-vous-preparer",
+      "noindex": false
+    },
+    {
+      "path": "/en/articles/votre-premiere-seance-dosteopathie-guide-complet-pour-bien-vous-preparer",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/articles/votre-premiere-seance-dosteopathie-guide-complet-pour-bien-vous-preparer",
+      "noindex": false
+    },
+    {
+      "path": "/articles/le-drainage-lymphatique-manuel",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/articles/le-drainage-lymphatique-manuel",
+      "noindex": false
+    },
+    {
+      "path": "/en/articles/le-drainage-lymphatique-manuel",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/articles/le-drainage-lymphatique-manuel",
+      "noindex": false
+    },
+    {
+      "path": "/en/articles/soulager-vos-douleurs-naturellement",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/articles/soulager-vos-douleurs-naturellement",
+      "noindex": false
+    },
+    {
+      "path": "/articles/soulager-vos-douleurs-naturellement",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/articles/soulager-vos-douleurs-naturellement",
+      "noindex": false
+    },
+    {
+      "path": "/articles/kinesitherapie-vs-physiotherapie-1",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/articles/kinesitherapie-vs-physiotherapie-1",
+      "noindex": false
+    },
+    {
+      "path": "/en/articles/kinesitherapie-vs-physiotherapie-1",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/articles/kinesitherapie-vs-physiotherapie-1",
+      "noindex": false
+    },
+    {
+      "path": "/articles/lapproche-holistique-en-sante-quest-ce-que-cela-signifie-pour-vous-1",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/articles/lapproche-holistique-en-sante-quest-ce-que-cela-signifie-pour-vous-1",
+      "noindex": false
+    },
+    {
+      "path": "/en/articles/lapproche-holistique-en-sante-quest-ce-que-cela-signifie-pour-vous-1",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/articles/lapproche-holistique-en-sante-quest-ce-que-cela-signifie-pour-vous-1",
+      "noindex": false
+    },
+    {
+      "path": "/en/articles/conseils-nutritionnels-pendant-le-ramadan-1",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/articles/conseils-nutritionnels-pendant-le-ramadan-1",
+      "noindex": false
+    },
+    {
+      "path": "/articles/conseils-nutritionnels-pendant-le-ramadan-1",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/articles/conseils-nutritionnels-pendant-le-ramadan-1",
+      "noindex": false
+    },
+    {
+      "path": "/en/professional/mehdi-sebti",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/professional/mehdi-sebti",
+      "noindex": false
+    },
+    {
+      "path": "/professional/mehdi-sebti",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/professional/mehdi-sebti",
+      "noindex": false
+    },
+    {
+      "path": "/professional/nadine-kita",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/professional/nadine-kita",
+      "noindex": false
+    },
+    {
+      "path": "/en/professional/nadine-kita",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/professional/nadine-kita",
+      "noindex": false
+    },
+    {
+      "path": "/professional/rose-mavoungou",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/professional/rose-mavoungou",
+      "noindex": false
+    },
+    {
+      "path": "/en/professional/rose-mavoungou",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/professional/rose-mavoungou",
+      "noindex": false
+    },
+    {
+      "path": "/professional/khaoula-chah",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/professional/khaoula-chah",
+      "noindex": false
+    },
+    {
+      "path": "/en/professional/khaoula-chah",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/professional/khaoula-chah",
+      "noindex": false
+    },
+    {
+      "path": "/professional/rayan-santana",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/professional/rayan-santana",
+      "noindex": false
+    },
+    {
+      "path": "/en/professional/rayan-santana",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/professional/rayan-santana",
+      "noindex": false
+    },
+    {
+      "path": "/professional/ghizlane-moukafih",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/professional/ghizlane-moukafih",
+      "noindex": false
+    },
+    {
+      "path": "/en/professional/ghizlane-moukafih",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/professional/ghizlane-moukafih",
+      "noindex": false
+    },
+    {
+      "path": "/en/professional/ghita-el-moubariky",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/professional/ghita-el-moubariky",
+      "noindex": false
+    },
+    {
+      "path": "/professional/ghita-el-moubariky",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/professional/ghita-el-moubariky",
+      "noindex": false
+    },
+    {
+      "path": "/professional/nour-bentounsi",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/professional/nour-bentounsi",
+      "noindex": false
+    },
+    {
+      "path": "/professional/wissal-tabit",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/professional/wissal-tabit",
+      "noindex": false
+    },
+    {
+      "path": "/en/professional/nour-bentounsi",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/professional/nour-bentounsi",
+      "noindex": false
+    },
+    {
+      "path": "/en/professional/wissal-tabit",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/professional/wissal-tabit",
+      "noindex": false
+    },
+    {
+      "path": "/professional/khaoula-essamadi",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/professional/khaoula-essamadi",
+      "noindex": false
+    },
+    {
+      "path": "/en/professional/khaoula-essamadi",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/professional/khaoula-essamadi",
+      "noindex": false
+    },
+    {
+      "path": "/professional/mohammed-wachoo",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/professional/mohammed-wachoo",
+      "noindex": false
+    },
+    {
+      "path": "/en/professional/mohammed-wachoo",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/professional/mohammed-wachoo",
+      "noindex": false
+    },
+    {
+      "path": "/professional/amine-bennani",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/professional/amine-bennani",
+      "noindex": false
+    },
+    {
+      "path": "/en/professional/amine-bennani",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/professional/amine-bennani",
+      "noindex": false
+    },
+    {
+      "path": "/professional/aida-ilias",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/professional/aida-ilias",
+      "noindex": false
+    },
+    {
+      "path": "/en/professional/aida-ilias",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/professional/aida-ilias",
+      "noindex": false
+    },
+    {
+      "path": "/professional/amer-hdidou",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/professional/amer-hdidou",
+      "noindex": false
+    },
+    {
+      "path": "/professional/thomas-0778-224759-sabrou",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/professional/thomas-0778-224759-sabrou",
+      "noindex": false
+    },
+    {
+      "path": "/en/professional/amer-hdidou",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/professional/amer-hdidou",
+      "noindex": false
+    },
+    {
+      "path": "/en/professional/thomas-0778-224759-sabrou",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/professional/thomas-0778-224759-sabrou",
+      "noindex": false
+    },
+    {
+      "path": "/professional/jamal-pro",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/professional/jamal-pro",
+      "noindex": false
+    },
+    {
+      "path": "/en/professional/flavia-gendre",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/professional/flavia-gendre",
+      "noindex": false
+    },
+    {
+      "path": "/professional/flavia-gendre",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/professional/flavia-gendre",
+      "noindex": false
+    },
+    {
+      "path": "/en/professional/jamal-pro",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/professional/jamal-pro",
+      "noindex": false
+    },
+    {
+      "path": "/professional/anass-medbouh",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/professional/anass-medbouh",
+      "noindex": false
+    },
+    {
+      "path": "/en/professional/anass-medbouh",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/professional/anass-medbouh",
+      "noindex": false
+    },
+    {
+      "path": "/professional/amira-naji",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/professional/amira-naji",
+      "noindex": false
+    },
+    {
+      "path": "/professional/zhor-bencheqroun",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/professional/zhor-bencheqroun",
+      "noindex": false
+    },
+    {
+      "path": "/en/professional/amira-naji",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/professional/amira-naji",
+      "noindex": false
+    },
+    {
+      "path": "/en/professional/zhor-bencheqroun",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/professional/zhor-bencheqroun",
+      "noindex": false
+    },
+    {
+      "path": "/professional/fadhel",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/professional/fadhel",
+      "noindex": false
+    },
+    {
+      "path": "/en/professional/fadhel",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/professional/fadhel",
+      "noindex": false
+    },
+    {
+      "path": "/professional/marouane-el-khattab",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/professional/marouane-el-khattab",
+      "noindex": false
+    },
+    {
+      "path": "/search/osteopathie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/search/osteopathie",
+      "noindex": false
+    },
+    {
+      "path": "/en/professional/marouane-el-khattab",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/professional/marouane-el-khattab",
+      "noindex": false
+    },
+    {
+      "path": "/search/sophrologie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/search/sophrologie",
+      "noindex": false
+    },
+    {
+      "path": "/en/search/osteopathie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/search/osteopathie",
+      "noindex": false
+    },
+    {
+      "path": "/en/search/sophrologie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/search/sophrologie",
+      "noindex": false
+    },
+    {
+      "path": "/search/naturopathie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/search/naturopathie",
+      "noindex": false
+    },
+    {
+      "path": "/en/search/naturopathie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/search/naturopathie",
+      "noindex": false
+    },
+    {
+      "path": "/search/psychotherapie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/search/psychotherapie",
+      "noindex": false
+    },
+    {
+      "path": "/en/search/psychotherapie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/search/psychotherapie",
+      "noindex": false
+    },
+    {
+      "path": "/search/kinesitherapie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/search/kinesitherapie",
+      "noindex": false
+    },
+    {
+      "path": "/en/search/kinesitherapie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/search/kinesitherapie",
+      "noindex": false
+    },
+    {
+      "path": "/en/search/massotherapie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/search/massotherapie",
+      "noindex": false
+    },
+    {
+      "path": "/search/massotherapie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/search/massotherapie",
+      "noindex": false
+    },
+    {
+      "path": "/search/nutrition",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/search/nutrition",
+      "noindex": false
+    },
+    {
+      "path": "/en/search/nutrition",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/search/nutrition",
+      "noindex": false
+    },
+    {
+      "path": "/search/coaching-sportif",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/search/coaching-sportif",
+      "noindex": false
+    },
+    {
+      "path": "/en/search/coaching-sportif",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/search/coaching-sportif",
+      "noindex": false
+    },
+    {
+      "path": "/search/cupping-therapy-hijama",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/search/cupping-therapy-hijama",
+      "noindex": false
+    },
+    {
+      "path": "/en/search/cupping-therapy-hijama",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/search/cupping-therapy-hijama",
+      "noindex": false
+    },
+    {
+      "path": "/search/psychologie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/search/psychologie",
+      "noindex": false
+    },
+    {
+      "path": "/en/search/psychologie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/search/psychologie",
+      "noindex": false
+    },
+    {
+      "path": "/search/orthophonie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/search/orthophonie",
+      "noindex": false
+    },
+    {
+      "path": "/en/search/orthophonie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/search/orthophonie",
+      "noindex": false
+    },
+    {
+      "path": "/search/sexologie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/search/sexologie",
+      "noindex": false
+    },
+    {
+      "path": "/en/search/sexologie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/search/sexologie",
+      "noindex": false
+    },
+    {
+      "path": "/search/psychomotricite",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/search/psychomotricite",
+      "noindex": false
+    },
+    {
+      "path": "/search/neuropsychologie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/search/neuropsychologie",
+      "noindex": false
+    },
+    {
+      "path": "/en/search/psychomotricite",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/search/psychomotricite",
+      "noindex": false
+    },
+    {
+      "path": "/en/search/neuropsychologie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/search/neuropsychologie",
+      "noindex": false
+    },
+    {
+      "path": "/search/jiu-jitsu",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/search/jiu-jitsu",
+      "noindex": false
+    },
+    {
+      "path": "/en/search/jiu-jitsu",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/search/jiu-jitsu",
+      "noindex": false
+    },
+    {
+      "path": "/en/search/art-martial-therapie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/search/art-martial-therapie",
+      "noindex": false
+    },
+    {
+      "path": "/search/yoga",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/search/yoga",
+      "noindex": false
+    },
+    {
+      "path": "/search/art-martial-therapie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/search/art-martial-therapie",
+      "noindex": false
+    },
+    {
+      "path": "/search/meditation",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/search/meditation",
+      "noindex": false
+    },
+    {
+      "path": "/en/search/yoga",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/search/yoga",
+      "noindex": false
+    },
+    {
+      "path": "/en/search/meditation",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/search/meditation",
+      "noindex": false
+    },
+    {
+      "path": "/search/sono-therapie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/search/sono-therapie",
+      "noindex": false
+    },
+    {
+      "path": "/search/infirmerie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/search/infirmerie",
+      "noindex": false
+    },
+    {
+      "path": "/en/search/sono-therapie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/search/sono-therapie",
+      "noindex": false
+    },
+    {
+      "path": "/en/search/infirmerie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/search/infirmerie",
+      "noindex": false
+    },
+    {
+      "path": "/pratiques/art-martial-therapie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/pratiques/art-martial-therapie",
+      "noindex": false
+    },
+    {
+      "path": "/en/pratiques/art-martial-therapie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/pratiques/art-martial-therapie",
+      "noindex": false
+    },
+    {
+      "path": "/pratiques/cupping-therapy-hijama",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/pratiques/cupping-therapy-hijama",
+      "noindex": false
+    },
+    {
+      "path": "/en/pratiques/coaching-sportif",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/pratiques/coaching-sportif",
+      "noindex": false
+    },
+    {
+      "path": "/pratiques/coaching-sportif",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/pratiques/coaching-sportif",
+      "noindex": false
+    },
+    {
+      "path": "/pratiques/infirmerie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/pratiques/infirmerie",
+      "noindex": false
+    },
+    {
+      "path": "/en/pratiques/cupping-therapy-hijama",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/pratiques/cupping-therapy-hijama",
+      "noindex": false
+    },
+    {
+      "path": "/en/pratiques/infirmerie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/pratiques/infirmerie",
+      "noindex": false
+    },
+    {
+      "path": "/pratiques/kinesitherapie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/pratiques/kinesitherapie",
+      "noindex": false
+    },
+    {
+      "path": "/en/pratiques/kinesitherapie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/pratiques/kinesitherapie",
+      "noindex": false
+    },
+    {
+      "path": "/pratiques/massotherapie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/pratiques/massotherapie",
+      "noindex": false
+    },
+    {
+      "path": "/en/pratiques/massotherapie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/pratiques/massotherapie",
+      "noindex": false
+    },
+    {
+      "path": "/pratiques/meditation",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/pratiques/meditation",
+      "noindex": false
+    },
+    {
+      "path": "/en/pratiques/meditation",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/pratiques/meditation",
+      "noindex": false
+    },
+    {
+      "path": "/pratiques/naturopathie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/pratiques/naturopathie",
+      "noindex": false
+    },
+    {
+      "path": "/pratiques/neuropsychologie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/pratiques/neuropsychologie",
+      "noindex": false
+    },
+    {
+      "path": "/en/pratiques/naturopathie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/pratiques/naturopathie",
+      "noindex": false
+    },
+    {
+      "path": "/en/pratiques/neuropsychologie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/pratiques/neuropsychologie",
+      "noindex": false
+    },
+    {
+      "path": "/pratiques/nutrition",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/pratiques/nutrition",
+      "noindex": false
+    },
+    {
+      "path": "/en/pratiques/nutrition",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/pratiques/nutrition",
+      "noindex": false
+    },
+    {
+      "path": "/pratiques/orthophonie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/pratiques/orthophonie",
+      "noindex": false
+    },
+    {
+      "path": "/pratiques/osteopathie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/pratiques/osteopathie",
+      "noindex": false
+    },
+    {
+      "path": "/en/pratiques/orthophonie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/pratiques/orthophonie",
+      "noindex": false
+    },
+    {
+      "path": "/en/pratiques/osteopathie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/pratiques/osteopathie",
+      "noindex": false
+    },
+    {
+      "path": "/pratiques/psychologie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/pratiques/psychologie",
+      "noindex": false
+    },
+    {
+      "path": "/en/pratiques/psychologie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/pratiques/psychologie",
+      "noindex": false
+    },
+    {
+      "path": "/pratiques/psychomotricite",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/pratiques/psychomotricite",
+      "noindex": false
+    },
+    {
+      "path": "/pratiques/psychotherapie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/pratiques/psychotherapie",
+      "noindex": false
+    },
+    {
+      "path": "/en/pratiques/psychomotricite",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/pratiques/psychomotricite",
+      "noindex": false
+    },
+    {
+      "path": "/pratiques/sexologie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/pratiques/sexologie",
+      "noindex": false
+    },
+    {
+      "path": "/en/pratiques/psychotherapie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/pratiques/psychotherapie",
+      "noindex": false
+    },
+    {
+      "path": "/en/pratiques/sexologie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/pratiques/sexologie",
+      "noindex": false
+    },
+    {
+      "path": "/pratiques/sono-therapie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/pratiques/sono-therapie",
+      "noindex": false
+    },
+    {
+      "path": "/en/pratiques/sono-therapie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/pratiques/sono-therapie",
+      "noindex": false
+    },
+    {
+      "path": "/pratiques/sophrologie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/pratiques/sophrologie",
+      "noindex": false
+    },
+    {
+      "path": "/en/pratiques/sophrologie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/pratiques/sophrologie",
+      "noindex": false
+    },
+    {
+      "path": "/pratiques/yoga",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/pratiques/yoga",
+      "noindex": false
+    },
+    {
+      "path": "/en/pratiques/yoga",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/pratiques/yoga",
+      "noindex": false
+    },
+    {
+      "path": "/seance-de-groupe/yoga-prenatal",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/seance-de-groupe/yoga-prenatal",
+      "noindex": false
+    },
+    {
+      "path": "/en/seance-de-groupe/yoga-prenatal",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/seance-de-groupe/yoga-prenatal",
+      "noindex": false
+    },
+    {
+      "path": "/seance-de-groupe/sophrologie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/seance-de-groupe/sophrologie",
+      "noindex": false
+    },
+    {
+      "path": "/en/seance-de-groupe/sophrologie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/seance-de-groupe/sophrologie",
+      "noindex": false
+    },
+    {
+      "path": "/seance-de-groupe/nutrition",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/seance-de-groupe/nutrition",
+      "noindex": false
+    },
+    {
+      "path": "/en/seance-de-groupe/nutrition",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/seance-de-groupe/nutrition",
+      "noindex": false
+    },
+    {
+      "path": "/en/seance-de-groupe/breathwork",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/seance-de-groupe/breathwork",
+      "noindex": false
+    },
+    {
+      "path": "/seance-de-groupe/breathwork",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/seance-de-groupe/breathwork",
+      "noindex": false
+    },
+    {
+      "path": "/seance-de-groupe/jiu-jitsu-bresilien",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/seance-de-groupe/jiu-jitsu-bresilien",
+      "noindex": false
+    },
+    {
+      "path": "/en/seance-de-groupe/jiu-jitsu-bresilien",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/seance-de-groupe/jiu-jitsu-bresilien",
+      "noindex": false
+    },
+    {
+      "path": "/seance-de-groupe/pilates-et-posture",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/seance-de-groupe/pilates-et-posture",
+      "noindex": false
+    },
+    {
+      "path": "/en/seance-de-groupe/pilates-et-posture",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/seance-de-groupe/pilates-et-posture",
+      "noindex": false
+    },
+    {
+      "path": "/parcours-de-soins/grossesse-&-maternite",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/parcours-de-soins/grossesse-&amp;-maternite",
+      "noindex": false
+    },
+    {
+      "path": "/en/parcours-de-soins/grossesse-&-maternite",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/parcours-de-soins/grossesse-&amp;-maternite",
+      "noindex": false
+    },
+    {
+      "path": "/parcours-de-soins/les-troubles-de-l-apprentissage",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/parcours-de-soins/les-troubles-de-l-apprentissage",
+      "noindex": false
+    },
+    {
+      "path": "/en/parcours-de-soins/les-troubles-de-l-apprentissage",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/parcours-de-soins/les-troubles-de-l-apprentissage",
+      "noindex": false
+    },
+    {
+      "path": "/parcours-de-soins/le-vertige-positionnel",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/parcours-de-soins/le-vertige-positionnel",
+      "noindex": false
+    },
+    {
+      "path": "/en/parcours-de-soins/le-vertige-positionnel",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/parcours-de-soins/le-vertige-positionnel",
+      "noindex": false
+    },
+    {
+      "path": "/parcours-de-soins/la-maladie-d-alzheimer",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/parcours-de-soins/la-maladie-d-alzheimer",
+      "noindex": false
+    },
+    {
+      "path": "/en/parcours-de-soins/la-maladie-d-alzheimer",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/parcours-de-soins/la-maladie-d-alzheimer",
+      "noindex": false
+    },
+    {
+      "path": "/parcours-de-soins/sante-holistique",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/parcours-de-soins/sante-holistique",
+      "noindex": false
+    },
+    {
+      "path": "/en/parcours-de-soins/sante-holistique",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/parcours-de-soins/sante-holistique",
+      "noindex": false
+    },
+    {
+      "path": "/parcours-de-soins/tecar-therapie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/parcours-de-soins/tecar-therapie",
+      "noindex": false
+    },
+    {
+      "path": "/en/parcours-de-soins/tecar-therapie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/parcours-de-soins/tecar-therapie",
+      "noindex": false
+    },
+    {
+      "path": "/parcours-de-soins/kinesitherapie-&-avc",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/parcours-de-soins/kinesitherapie-&amp;-avc",
+      "noindex": false
+    },
+    {
+      "path": "/maux-troubles/troubles-neurocognitifs-demence-vieillissement",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/maux-troubles/troubles-neurocognitifs-demence-vieillissement",
+      "noindex": false
+    },
+    {
+      "path": "/en/parcours-de-soins/kinesitherapie-&-avc",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/parcours-de-soins/kinesitherapie-&amp;-avc",
+      "noindex": false
+    },
+    {
+      "path": "/en/health-needs/troubles-neurocognitifs-demence-vieillissement",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/health-needs/troubles-neurocognitifs-demence-vieillissement",
+      "noindex": false
+    },
+    {
+      "path": "/maux-troubles/dyslexie-dyspraxie-dysorthographie-solutions-pour-troubles-dys-scolarite",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/maux-troubles/dyslexie-dyspraxie-dysorthographie-solutions-pour-troubles-dys-scolarite",
+      "noindex": false
+    },
+    {
+      "path": "/en/health-needs/dyslexie-dyspraxie-dysorthographie-solutions-pour-troubles-dys-scolarite",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/health-needs/dyslexie-dyspraxie-dysorthographie-solutions-pour-troubles-dys-scolarite",
+      "noindex": false
+    },
+    {
+      "path": "/maux-troubles/troubles-musculosquelettiques-articulaires-musculaires",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/maux-troubles/troubles-musculosquelettiques-articulaires-musculaires",
+      "noindex": false
+    },
+    {
+      "path": "/en/health-needs/troubles-musculosquelettiques-articulaires-musculaires",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/health-needs/troubles-musculosquelettiques-articulaires-musculaires",
+      "noindex": false
+    },
+    {
+      "path": "/maux-troubles/troubles-du-sommeil-fatigue-chronique-insomnie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/maux-troubles/troubles-du-sommeil-fatigue-chronique-insomnie",
+      "noindex": false
+    },
+    {
+      "path": "/maux-troubles/stress-anxiete-sante-mentale",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/maux-troubles/stress-anxiete-sante-mentale",
+      "noindex": false
+    },
+    {
+      "path": "/en/health-needs/troubles-du-sommeil-fatigue-chronique-insomnie",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/health-needs/troubles-du-sommeil-fatigue-chronique-insomnie",
+      "noindex": false
+    },
+    {
+      "path": "/en/health-needs/stress-anxiete-sante-mentale",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/health-needs/stress-anxiete-sante-mentale",
+      "noindex": false
+    },
+    {
+      "path": "/maux-troubles/troubles-digestifs-inconforts-digestifs-ballonnements-transit-intestin-irritable",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/maux-troubles/troubles-digestifs-inconforts-digestifs-ballonnements-transit-intestin-irritable",
+      "noindex": false
+    },
+    {
+      "path": "/en/health-needs/troubles-digestifs-inconforts-digestifs-ballonnements-transit-intestin-irritable",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/health-needs/troubles-digestifs-inconforts-digestifs-ballonnements-transit-intestin-irritable",
+      "noindex": false
+    },
+    {
+      "path": "/maux-troubles/douleurs-du-dos-lombalgies-troubles-du-dos",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/maux-troubles/douleurs-du-dos-lombalgies-troubles-du-dos",
+      "noindex": false
+    },
+    {
+      "path": "/en/health-needs/douleurs-du-dos-lombalgies-troubles-du-dos",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/health-needs/douleurs-du-dos-lombalgies-troubles-du-dos",
+      "noindex": false
+    },
+    {
+      "path": "/maux-troubles/maux-de-tete-cephalees-migraines",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/maux-troubles/maux-de-tete-cephalees-migraines",
+      "noindex": false
+    },
+    {
+      "path": "/en/health-needs/maux-de-tete-cephalees-migraines",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.wenaya.com/en/health-needs/maux-de-tete-cephalees-migraines",
+      "noindex": false
+    }
+  ],
+  "links": [
+    {
+      "target": "/",
+      "chain": [
+        {
+          "path": "/",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/clinique/wenaya-casablanca",
+      "chain": [
+        {
+          "path": "/clinique/wenaya-casablanca",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/about-us",
+      "chain": [
+        {
+          "path": "/about-us",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/corporate",
+      "chain": [
+        {
+          "path": "/corporate",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/contact-us?type=booking",
+      "chain": [
+        {
+          "path": "/contact-us?type=booking",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/contact-us?type=booking&subject=bilans",
+      "chain": [
+        {
+          "path": "/contact-us?type=booking&subject=bilans",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/maux-troubles",
+      "chain": [
+        {
+          "path": "/maux-troubles",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/pratiques",
+      "chain": [
+        {
+          "path": "/pratiques",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/search/all",
+      "chain": [
+        {
+          "path": "/search/all",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/professional/mehdi-sebti",
+      "chain": [
+        {
+          "path": "/professional/mehdi-sebti",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/professional/nadine-kita",
+      "chain": [
+        {
+          "path": "/professional/nadine-kita",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/professional/rose-mavoungou",
+      "chain": [
+        {
+          "path": "/professional/rose-mavoungou",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/professional/khaoula-chah",
+      "chain": [
+        {
+          "path": "/professional/khaoula-chah",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/professional/rayan-santana",
+      "chain": [
+        {
+          "path": "/professional/rayan-santana",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/professional/ghizlane-moukafih",
+      "chain": [
+        {
+          "path": "/professional/ghizlane-moukafih",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/seance-de-groupe",
+      "chain": [
+        {
+          "path": "/seance-de-groupe",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/faq",
+      "chain": [
+        {
+          "path": "/faq",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/privacy-policy",
+      "chain": [
+        {
+          "path": "/privacy-policy",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/terms-and-conditions",
+      "chain": [
+        {
+          "path": "/terms-and-conditions",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/contact-us",
+      "chain": [
+        {
+          "path": "/contact-us",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en",
+      "chain": [
+        {
+          "path": "/en",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/clinic/wenaya-casablanca",
+      "chain": [
+        {
+          "path": "/en/clinic/wenaya-casablanca",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/about-us",
+      "chain": [
+        {
+          "path": "/en/about-us",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/corporate",
+      "chain": [
+        {
+          "path": "/en/corporate",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/contact-us?type=booking",
+      "chain": [
+        {
+          "path": "/en/contact-us?type=booking",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/contact-us?type=booking&subject=bilans",
+      "chain": [
+        {
+          "path": "/en/contact-us?type=booking&subject=bilans",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/health-needs",
+      "chain": [
+        {
+          "path": "/en/health-needs",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/pratiques",
+      "chain": [
+        {
+          "path": "/en/pratiques",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/search/all",
+      "chain": [
+        {
+          "path": "/en/search/all",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/professional/mehdi-sebti",
+      "chain": [
+        {
+          "path": "/en/professional/mehdi-sebti",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/professional/nadine-kita",
+      "chain": [
+        {
+          "path": "/en/professional/nadine-kita",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/professional/rose-mavoungou",
+      "chain": [
+        {
+          "path": "/en/professional/rose-mavoungou",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/professional/khaoula-chah",
+      "chain": [
+        {
+          "path": "/en/professional/khaoula-chah",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/professional/rayan-santana",
+      "chain": [
+        {
+          "path": "/en/professional/rayan-santana",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/professional/ghizlane-moukafih",
+      "chain": [
+        {
+          "path": "/en/professional/ghizlane-moukafih",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/seance-de-groupe",
+      "chain": [
+        {
+          "path": "/en/seance-de-groupe",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/faq",
+      "chain": [
+        {
+          "path": "/en/faq",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/privacy-policy",
+      "chain": [
+        {
+          "path": "/en/privacy-policy",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/terms-and-conditions",
+      "chain": [
+        {
+          "path": "/en/terms-and-conditions",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/contact-us",
+      "chain": [
+        {
+          "path": "/en/contact-us",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/pratiques/kinesitherapie",
+      "chain": [
+        {
+          "path": "/pratiques/kinesitherapie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/pratiques/osteopathie",
+      "chain": [
+        {
+          "path": "/pratiques/osteopathie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/pratiques/psychologie",
+      "chain": [
+        {
+          "path": "/pratiques/psychologie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/pratiques/nutrition",
+      "chain": [
+        {
+          "path": "/pratiques/nutrition",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/pratiques/naturopathie",
+      "chain": [
+        {
+          "path": "/pratiques/naturopathie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/pratiques/sophrologie",
+      "chain": [
+        {
+          "path": "/pratiques/sophrologie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/pratiques/orthophonie",
+      "chain": [
+        {
+          "path": "/pratiques/orthophonie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/pratiques/yoga",
+      "chain": [
+        {
+          "path": "/pratiques/yoga",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/seance-de-groupe/atelier-se-decharger-des-emotions-798",
+      "chain": [
+        {
+          "path": "/seance-de-groupe/atelier-se-decharger-des-emotions-798",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/seance-de-groupe/group-training",
+      "chain": [
+        {
+          "path": "/seance-de-groupe/group-training",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/parcours-de-soins/grossesse-&-maternite",
+      "chain": [
+        {
+          "path": "/parcours-de-soins/grossesse-&-maternite",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/parcours-de-soins/les-troubles-de-l-apprentissage",
+      "chain": [
+        {
+          "path": "/parcours-de-soins/les-troubles-de-l-apprentissage",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/parcours-de-soins/le-vertige-positionnel",
+      "chain": [
+        {
+          "path": "/parcours-de-soins/le-vertige-positionnel",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/parcours-de-soins/la-maladie-d-alzheimer",
+      "chain": [
+        {
+          "path": "/parcours-de-soins/la-maladie-d-alzheimer",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/parcours-de-soins/sante-holistique",
+      "chain": [
+        {
+          "path": "/parcours-de-soins/sante-holistique",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/parcours-de-soins/tecar-therapie",
+      "chain": [
+        {
+          "path": "/parcours-de-soins/tecar-therapie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/parcours-de-soins/kinesitherapie-&-avc",
+      "chain": [
+        {
+          "path": "/parcours-de-soins/kinesitherapie-&-avc",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/professional/ghita-el-moubariky",
+      "chain": [
+        {
+          "path": "/professional/ghita-el-moubariky",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/professional/nour-bentounsi",
+      "chain": [
+        {
+          "path": "/professional/nour-bentounsi",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/maux-troubles/troubles-neurocognitifs-demence-vieillissement",
+      "chain": [
+        {
+          "path": "/maux-troubles/troubles-neurocognitifs-demence-vieillissement",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/maux-troubles/dyslexie-dyspraxie-dysorthographie-solutions-pour-troubles-dys-scolarite",
+      "chain": [
+        {
+          "path": "/maux-troubles/dyslexie-dyspraxie-dysorthographie-solutions-pour-troubles-dys-scolarite",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/maux-troubles/troubles-musculosquelettiques-articulaires-musculaires",
+      "chain": [
+        {
+          "path": "/maux-troubles/troubles-musculosquelettiques-articulaires-musculaires",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/maux-troubles/troubles-du-sommeil-fatigue-chronique-insomnie",
+      "chain": [
+        {
+          "path": "/maux-troubles/troubles-du-sommeil-fatigue-chronique-insomnie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/maux-troubles/stress-anxiete-sante-mentale",
+      "chain": [
+        {
+          "path": "/maux-troubles/stress-anxiete-sante-mentale",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/maux-troubles/troubles-digestifs-inconforts-digestifs-ballonnements-transit-intestin-irritable",
+      "chain": [
+        {
+          "path": "/maux-troubles/troubles-digestifs-inconforts-digestifs-ballonnements-transit-intestin-irritable",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/maux-troubles/douleurs-du-dos-lombalgies-troubles-du-dos",
+      "chain": [
+        {
+          "path": "/maux-troubles/douleurs-du-dos-lombalgies-troubles-du-dos",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/maux-troubles/maux-de-tete-cephalees-migraines",
+      "chain": [
+        {
+          "path": "/maux-troubles/maux-de-tete-cephalees-migraines",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/soins-a-domicile",
+      "chain": [
+        {
+          "path": "/soins-a-domicile",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/pratiques/kinesitherapie",
+      "chain": [
+        {
+          "path": "/en/pratiques/kinesitherapie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/pratiques/osteopathie",
+      "chain": [
+        {
+          "path": "/en/pratiques/osteopathie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/pratiques/psychologie",
+      "chain": [
+        {
+          "path": "/en/pratiques/psychologie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/pratiques/nutrition",
+      "chain": [
+        {
+          "path": "/en/pratiques/nutrition",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/pratiques/naturopathie",
+      "chain": [
+        {
+          "path": "/en/pratiques/naturopathie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/pratiques/sophrologie",
+      "chain": [
+        {
+          "path": "/en/pratiques/sophrologie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/pratiques/orthophonie",
+      "chain": [
+        {
+          "path": "/en/pratiques/orthophonie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/pratiques/yoga",
+      "chain": [
+        {
+          "path": "/en/pratiques/yoga",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/seance-de-groupe/atelier-se-decharger-des-emotions-798",
+      "chain": [
+        {
+          "path": "/en/seance-de-groupe/atelier-se-decharger-des-emotions-798",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/seance-de-groupe/group-training",
+      "chain": [
+        {
+          "path": "/en/seance-de-groupe/group-training",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/parcours-de-soins/grossesse-&-maternite",
+      "chain": [
+        {
+          "path": "/en/parcours-de-soins/grossesse-&-maternite",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/parcours-de-soins/les-troubles-de-l-apprentissage",
+      "chain": [
+        {
+          "path": "/en/parcours-de-soins/les-troubles-de-l-apprentissage",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/parcours-de-soins/le-vertige-positionnel",
+      "chain": [
+        {
+          "path": "/en/parcours-de-soins/le-vertige-positionnel",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/parcours-de-soins/la-maladie-d-alzheimer",
+      "chain": [
+        {
+          "path": "/en/parcours-de-soins/la-maladie-d-alzheimer",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/parcours-de-soins/sante-holistique",
+      "chain": [
+        {
+          "path": "/en/parcours-de-soins/sante-holistique",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/parcours-de-soins/tecar-therapie",
+      "chain": [
+        {
+          "path": "/en/parcours-de-soins/tecar-therapie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/parcours-de-soins/kinesitherapie-&-avc",
+      "chain": [
+        {
+          "path": "/en/parcours-de-soins/kinesitherapie-&-avc",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/professional/ghita-el-moubariky",
+      "chain": [
+        {
+          "path": "/en/professional/ghita-el-moubariky",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/professional/nour-bentounsi",
+      "chain": [
+        {
+          "path": "/en/professional/nour-bentounsi",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/health-needs/troubles-neurocognitifs-demence-vieillissement",
+      "chain": [
+        {
+          "path": "/en/health-needs/troubles-neurocognitifs-demence-vieillissement",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/health-needs/dyslexie-dyspraxie-dysorthographie-solutions-pour-troubles-dys-scolarite",
+      "chain": [
+        {
+          "path": "/en/health-needs/dyslexie-dyspraxie-dysorthographie-solutions-pour-troubles-dys-scolarite",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/health-needs/troubles-musculosquelettiques-articulaires-musculaires",
+      "chain": [
+        {
+          "path": "/en/health-needs/troubles-musculosquelettiques-articulaires-musculaires",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/health-needs/troubles-du-sommeil-fatigue-chronique-insomnie",
+      "chain": [
+        {
+          "path": "/en/health-needs/troubles-du-sommeil-fatigue-chronique-insomnie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/health-needs/stress-anxiete-sante-mentale",
+      "chain": [
+        {
+          "path": "/en/health-needs/stress-anxiete-sante-mentale",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/health-needs/troubles-digestifs-inconforts-digestifs-ballonnements-transit-intestin-irritable",
+      "chain": [
+        {
+          "path": "/en/health-needs/troubles-digestifs-inconforts-digestifs-ballonnements-transit-intestin-irritable",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/health-needs/douleurs-du-dos-lombalgies-troubles-du-dos",
+      "chain": [
+        {
+          "path": "/en/health-needs/douleurs-du-dos-lombalgies-troubles-du-dos",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/health-needs/maux-de-tete-cephalees-migraines",
+      "chain": [
+        {
+          "path": "/en/health-needs/maux-de-tete-cephalees-migraines",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/corporate/programmes/leadership-360",
+      "chain": [
+        {
+          "path": "/corporate/programmes/leadership-360",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/corporate/programmes/pcm",
+      "chain": [
+        {
+          "path": "/corporate/programmes/pcm",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/corporate/programmes/art-des-priorites",
+      "chain": [
+        {
+          "path": "/corporate/programmes/art-des-priorites",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/corporate/programmes/people-model-canvas",
+      "chain": [
+        {
+          "path": "/corporate/programmes/people-model-canvas",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/corporate/programmes/leadership-360",
+      "chain": [
+        {
+          "path": "/en/corporate/programmes/leadership-360",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/corporate/programmes/pcm",
+      "chain": [
+        {
+          "path": "/en/corporate/programmes/pcm",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/corporate/programmes/art-des-priorites",
+      "chain": [
+        {
+          "path": "/en/corporate/programmes/art-des-priorites",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/corporate/programmes/people-model-canvas",
+      "chain": [
+        {
+          "path": "/en/corporate/programmes/people-model-canvas",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/pratiques/neuropsychologie",
+      "chain": [
+        {
+          "path": "/pratiques/neuropsychologie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/pratiques/psychomotricite",
+      "chain": [
+        {
+          "path": "/pratiques/psychomotricite",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/pratiques/sexologie",
+      "chain": [
+        {
+          "path": "/pratiques/sexologie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/pratiques/neuropsychologie",
+      "chain": [
+        {
+          "path": "/en/pratiques/neuropsychologie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/pratiques/psychomotricite",
+      "chain": [
+        {
+          "path": "/en/pratiques/psychomotricite",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/pratiques/sexologie",
+      "chain": [
+        {
+          "path": "/en/pratiques/sexologie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/professional/amine-bennani",
+      "chain": [
+        {
+          "path": "/professional/amine-bennani",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/professional/aida-ilias",
+      "chain": [
+        {
+          "path": "/professional/aida-ilias",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/search/neuropsychologie",
+      "chain": [
+        {
+          "path": "/search/neuropsychologie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/pratiques/psychotherapie",
+      "chain": [
+        {
+          "path": "/pratiques/psychotherapie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/professional/amine-bennani",
+      "chain": [
+        {
+          "path": "/en/professional/amine-bennani",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/professional/aida-ilias",
+      "chain": [
+        {
+          "path": "/en/professional/aida-ilias",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/search/neuropsychologie",
+      "chain": [
+        {
+          "path": "/en/search/neuropsychologie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "target": "/en/pratiques/psychotherapie",
+      "chain": [
+        {
+          "path": "/en/pratiques/psychotherapie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    }
+  ],
+  "legacy": [
+    {
+      "oldUrl": "https://wenaya.com/",
+      "chain": [
+        {
+          "path": "/",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "oldUrl": "https://wenaya.com/search/all/all",
+      "chain": [
+        {
+          "path": "/search/all/all",
+          "status": 301,
+          "location": "/search/all"
+        },
+        {
+          "path": "/search/all",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "oldUrl": "https://wenaya.com/about-us",
+      "chain": [
+        {
+          "path": "/about-us",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "oldUrl": "https://wenaya.com/soins",
+      "chain": [
+        {
+          "path": "/soins",
+          "status": 301,
+          "location": "/pratiques"
+        },
+        {
+          "path": "/pratiques",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "oldUrl": "https://wenaya.com/maux-troubles",
+      "chain": [
+        {
+          "path": "/maux-troubles",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "oldUrl": "https://wenaya.com/seance-de-groupe",
+      "chain": [
+        {
+          "path": "/seance-de-groupe",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "oldUrl": "https://wenaya.com/evenements",
+      "chain": [
+        {
+          "path": "/evenements",
+          "status": 301,
+          "location": "/seance-de-groupe"
+        },
+        {
+          "path": "/seance-de-groupe",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "oldUrl": "https://wenaya.com/pratiques",
+      "chain": [
+        {
+          "path": "/pratiques",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "oldUrl": "https://wenaya.com/articles",
+      "chain": [
+        {
+          "path": "/articles",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "oldUrl": "https://wenaya.com/contact-us",
+      "chain": [
+        {
+          "path": "/contact-us",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "oldUrl": "https://wenaya.com/terms-and-conditions",
+      "chain": [
+        {
+          "path": "/terms-and-conditions",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "oldUrl": "https://wenaya.com/privacy-policy",
+      "chain": [
+        {
+          "path": "/privacy-policy",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "oldUrl": "https://wenaya.com/for-entreprise",
+      "chain": [
+        {
+          "path": "/for-entreprise",
+          "status": 301,
+          "location": "/corporate"
+        },
+        {
+          "path": "/corporate",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "oldUrl": "https://wenaya.com/parcours-de-soins/grossesse-&-maternité",
+      "chain": [
+        {
+          "path": "/parcours-de-soins/grossesse-&-maternit%C3%A9",
+          "status": 301,
+          "location": "/parcours-de-soins/grossesse-&-maternite"
+        },
+        {
+          "path": "/parcours-de-soins/grossesse-&-maternite",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "oldUrl": "https://wenaya.com/parcours-de-soins/les-troubles-de-l&apos;apprentissage",
+      "chain": [
+        {
+          "path": "/parcours-de-soins/les-troubles-de-l'apprentissage",
+          "status": 301,
+          "location": "/parcours-de-soins/les-troubles-de-l-apprentissage"
+        },
+        {
+          "path": "/parcours-de-soins/les-troubles-de-l-apprentissage",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "oldUrl": "https://wenaya.com/parcours-de-soins/le-vertige-positionnel",
+      "chain": [
+        {
+          "path": "/parcours-de-soins/le-vertige-positionnel",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "oldUrl": "https://wenaya.com/parcours-de-soins/la-maladie-d’Alzheimer",
+      "chain": [
+        {
+          "path": "/parcours-de-soins/la-maladie-d%E2%80%99Alzheimer",
+          "status": 301,
+          "location": "/parcours-de-soins/la-maladie-d-alzheimer"
+        },
+        {
+          "path": "/parcours-de-soins/la-maladie-d-alzheimer",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "oldUrl": "https://wenaya.com/parcours-de-soins/santé-holistique",
+      "chain": [
+        {
+          "path": "/parcours-de-soins/sant%C3%A9-holistique",
+          "status": 301,
+          "location": "/parcours-de-soins/sante-holistique"
+        },
+        {
+          "path": "/parcours-de-soins/sante-holistique",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "oldUrl": "https://wenaya.com/parcours-de-soins/tecar-thérapie",
+      "chain": [
+        {
+          "path": "/parcours-de-soins/tecar-th%C3%A9rapie",
+          "status": 301,
+          "location": "/parcours-de-soins/tecar-therapie"
+        },
+        {
+          "path": "/parcours-de-soins/tecar-therapie",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "oldUrl": "https://wenaya.com/parcours-de-soins/kinésithérapie-&-avc",
+      "chain": [
+        {
+          "path": "/parcours-de-soins/kin%C3%A9sith%C3%A9rapie-&-avc",
+          "status": 301,
+          "location": "/parcours-de-soins/kinesitherapie-&-avc"
+        },
+        {
+          "path": "/parcours-de-soins/kinesitherapie-&-avc",
+          "status": 200,
+          "location": null
+        }
+      ]
+    }
+  ],
+  "practices": {
+    "listingLinks": 19,
+    "sitemapFrenchLinks": 19,
+    "allDiscoverable": true
+  },
+  "forms": [
+    {
+      "path": "/api/contact",
+      "status": 400,
+      "success": false
+    },
+    {
+      "path": "/api/professionals/waiting-list",
+      "status": 400,
+      "success": false
+    }
+  ],
+  "issues": []
+}

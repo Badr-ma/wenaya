@@ -19,6 +19,7 @@ function FaqItem({ q, a, isOpen, onClick, id }: { q: string; a: string; isOpen: 
   return (
     <div className="border-b border-[#0B1220]/[0.08]">
       <button
+        id={`faq-${id}-trigger`}
         onClick={onClick}
         aria-expanded={isOpen}
         aria-controls={panelId}
@@ -40,6 +41,9 @@ function FaqItem({ q, a, isOpen, onClick, id }: { q: string; a: string; isOpen: 
       <div
         id={panelId}
         role="region"
+        aria-labelledby={`faq-${id}-trigger`}
+        inert={!isOpen}
+        aria-hidden={!isOpen}
         className={`grid transition-[grid-template-rows] duration-300 ease-in-out motion-reduce:transition-none ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
       >
         <div className="overflow-hidden">

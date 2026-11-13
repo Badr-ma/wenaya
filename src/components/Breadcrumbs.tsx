@@ -77,8 +77,13 @@ export default function Breadcrumbs({ labels }: { labels?: Record<string, string
   for (const segment of segments) {
     if (segment === "en" && path === "/en") continue;
     path += `/${segment}`;
+    // These segments group clinic routes but have no index page of their own.
+    if (path === "/clinique" || path === "/en/clinic") continue;
     const label = labels?.[segment] || routeLabels[locale]?.[segment] || segment;
-    items.push({ label, href: path });
+    const href = path === "/professional" || path === "/en/professional"
+      ? `${locale === "en" ? "/en" : ""}/search/all`
+      : path;
+    items.push({ label, href });
   }
 
   if (items.length === 0) return null;

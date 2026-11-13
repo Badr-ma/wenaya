@@ -322,6 +322,7 @@ export default function Nav(): React.JSX.Element {
 
               <Link
                 href={`${h(locale, "/contact-us")}?type=booking`}
+                aria-label={`${t("nav.reserver")} : ${t("contact.bookingHeading1")} ${t("contact.bookingHeading2")}`}
                 className="hidden sm:inline-flex items-center justify-center px-5 py-1.5 rounded-full text-sm font-semibold text-[#0B1220] transition-all duration-300 hover:-translate-y-px active:translate-y-0"
                 style={{
                   background: "#B88A5A",
@@ -334,6 +335,7 @@ export default function Nav(): React.JSX.Element {
               <div className="flex items-center gap-1.5 lg:hidden">
                 <Link
                   href={`${h(locale, "/contact-us")}?type=booking`}
+                  aria-label={`${t("nav.reserver")} : ${t("contact.bookingHeading1")} ${t("contact.bookingHeading2")}`}
                   className="flex items-center justify-center h-[34px] px-2 sm:px-3 rounded-full text-[12px] sm:text-xs font-semibold text-[#0B1220] whitespace-nowrap transition-all duration-300 active:scale-95"
                   style={{ background: "#B88A5A" }}
                 >
@@ -345,6 +347,8 @@ export default function Nav(): React.JSX.Element {
                   onClick={() => setMobileOpen(!mobileOpen)}
                   className={`lg:hidden relative flex flex-col items-center justify-center w-11 h-11 rounded-xl transition-colors ${isDark ? "hover:bg-white/[0.06]" : "hover:bg-black/[0.06]"}`}
                   aria-label={t("nav.menu")}
+                  aria-expanded={mobileOpen}
+                  aria-controls="mobile-navigation-menu"
                 >
                   <span className={`block w-[17px] h-[1.5px] rounded-full transition-all duration-300 origin-center ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "rotate-45 translate-y-[3px]" : ""}`} />
                   <span className={`block w-[17px] h-[1.5px] rounded-full mt-[5px] transition-all duration-300 ${isDark ? "bg-white/75" : "bg-[#0B1220]/60"} ${mobileOpen ? "opacity-0 scale-x-0" : ""}`} />
