@@ -94,7 +94,6 @@ export async function fetchProfessionals(): Promise<ApiProfessional[]> {
         signal: controller.signal,
         next: { revalidate: PROFESSIONALS_API_REVALIDATE },
       });
-      console.log("fetchProfessionals response", res);
 
       if (!res.ok) {
         throw new WenayaApiError(
@@ -104,6 +103,7 @@ export async function fetchProfessionals(): Promise<ApiProfessional[]> {
       }
 
       const json = await res.json();
+      console.log("fetchProfessionals response", json);
 
       if (!isValidResponse(json)) {
         throw new Error("Unexpected professionals API payload shape");
