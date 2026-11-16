@@ -13,9 +13,9 @@
  *   - response is NOT paginated — flat array in `data`
  *   - response shape: `{ error: boolean, data: Professional[] }`
  *   - query params `?page=` and `?per_page=` are ignored
- *   - no Authorization header required 
+ *   - no Authorization header required
  */
- 
+
 
 
 import { getProfessionalsApiBase } from "./professionals/config";
@@ -94,6 +94,7 @@ export async function fetchProfessionals(): Promise<ApiProfessional[]> {
         signal: controller.signal,
         next: { revalidate: PROFESSIONALS_API_REVALIDATE },
       });
+      console.log("fetchProfessionals response", res);
 
       if (!res.ok) {
         throw new WenayaApiError(
