@@ -176,6 +176,7 @@ export async function getHomepageSpecialists(limit = 6): Promise<Specialist[]> {
 
     return featured;
   } catch (error) {
+    console.log("error", error);
     console.warn(
       "[professionals] homepage featured fetch failed:",
       error instanceof Error ? error.message : error
