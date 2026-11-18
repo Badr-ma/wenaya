@@ -86,7 +86,11 @@ function toQueryString(query?: WenayaApiRequestOptions["query"]): string {
 
 /** Merge the caller's headers over `Accept: application/json` (both HeadersInit forms). */
 function buildFetchHeaders(extra?: HeadersInit): Headers {
-  const headers = new Headers({ Accept: "application/json" });
+  const headers = new Headers({
+    Accept: "application/json",
+    "User-Agent": "wenaya-website/1.0 (+https://www.wenaya.com)",
+    company: "1",
+  });
   if (extra) {
     for (const [key, value] of new Headers(extra)) {
       headers.set(key, value);

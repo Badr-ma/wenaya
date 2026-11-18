@@ -90,12 +90,21 @@ export async function fetchProfessionals(): Promise<ApiProfessional[]> {
       const url = `${getProfessionalsApiBase()}${PROFESSIONALS_API_PATH}`;
       const res = await fetch(url, {
         method: "GET",
-        headers: { Accept: "application/json" },
+        headers: {
+          Accept: "application/json",
+          "User-Agent": "wenaya-website/1.0 (+https://www.wenaya.com)",
+          company: "1",
+        },
         signal: controller.signal,
         next: { revalidate: PROFESSIONALS_API_REVALIDATE },
       });
 
       if (!res.ok) {
+        const body = await res.text().catch(() => "");
+        console.warn(
+          `Professionals API HTTP ${res.status} body:`,
+          body.slice(0, 500)
+        );
         throw new WenayaApiError(
           `Professionals API HTTP ${res.status}`,
           res.status

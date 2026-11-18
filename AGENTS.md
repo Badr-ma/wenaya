@@ -1779,3 +1779,11 @@ Audited `src/lib/group-sessions-active.ts` + `src/lib/group-sessions-api.ts` for
 **Rejected as non-bugs:** `isTodayOrFuture` UTC-vs-Casablanca 1h skew (UTC+1, UTC+0 in Ramadan); `computeLiveFacts` calling `activeChildren` 3× (CPU only); `buildDek` code-unit slicing (cosmetic surrogate-split risk); unused `coachAvatar` (data-model only, never rendered); `liveProgramIdBySlug` trailing-`-{id}` fetch on any such slug (harmless when unresolved).
 
 **Gotchas:** (1) Under `node --test`, `NODE_ENV !== "production"`, so `getActiveGroupSessions` swallows failures to `[]` — tests must assert resolved content, never merely "did not throw". (2) `normalizeProgram` uses `BACKEND_PROGRAM_DESC.en` for locale `"en"`; entity/decode tests must request `"fr"`. (3) PowerShell 5.1 lacks `&&`, `tail` and heredocs — write `.mjs` probes under `$env:TEMP\opencode` and run with node.
+
+### 2026-11-18 — Deployment API 403 diagnostic patch (main/server)
+
+Server deployment on 91.99.18.222 returned `WenayaApiError: Professionals API HTTP 403` from `api.wenaya.com` while local/dev tests returned HTTP 200. Added `User-Agent` and `company: "1"` headers to the shared server API client and the professionals listing fetch to match the legacy frontend convention, and added response-body logging on non-2xx for diagnosis. The 403 is an upstream/WAF rejection of the server request signature; if headers do not resolve it, the server IP must be whitelisted by the backend owner.
+
+**Files changed:** `src/lib/api/client.ts` (default headers), `src/lib/professionals-api.ts` (headers + 403 body log).
+
+**Gates:** `npx tsc --noEmit` clean.
