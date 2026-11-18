@@ -1787,3 +1787,11 @@ Server deployment on 91.99.18.222 returned `WenayaApiError: Professionals API HT
 **Files changed:** `src/lib/api/client.ts` (default headers), `src/lib/professionals-api.ts` (headers + 403 body log).
 
 **Gates:** `npx tsc --noEmit` clean.
+
+### 2026-11-18 — API 403 follow-up: propagate User-Agent + company headers to all upstream fetch sites (main/server)
+
+The initial professionals-listing fix resolved that endpoint, but other direct upstream `fetch` calls were still missing the `User-Agent` and `company: "1"` headers the legacy Wenaya SPA sent. Applied the same header set to every remaining server-side upstream fetch site: professional detail/cares/packages/availability, reviews, products, contact submission, group-session booking, professional waiting-list, product purchase, patient addresses, patient-auth transport, and admin Bearer client. The shared `wenayaApiGet` client already carries the headers from the previous patch.
+
+**Files changed:** `src/lib/professionals-detail-api.ts`, `src/lib/professionals-reviews-api.ts`, `src/lib/products/api-adapter.ts`, `src/lib/contact/contact-submit.ts`, `src/lib/patient-auth/transport.ts`, `src/lib/api-http.ts`, `src/app/api/products/purchase/route.ts`, `src/app/api/patient/addresses/route.ts`, `src/app/api/professionals/waiting-list/route.ts`, `src/app/api/group-sessions/booking/route.ts`.
+
+**Gates:** `npx tsc --noEmit` clean. One pre-existing eslint error in `src/app/api/patient/addresses/route.ts` (`prefer-const`) unchanged; one pre-existing unused-import warning in `src/lib/products/api-adapter.ts` unchanged.

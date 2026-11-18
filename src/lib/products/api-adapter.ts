@@ -180,7 +180,11 @@ export async function fetchPublicProducts(): Promise<BackendPublicProduct[]> {
 
   const res = await fetch(url, {
     method: "GET",
-    headers: { Accept: "application/json" },
+    headers: {
+      Accept: "application/json",
+      "User-Agent": "wenaya-website/1.0 (+https://www.wenaya.com)",
+      company: "1",
+    },
     next: { revalidate: 60 },
   });
 
@@ -200,7 +204,11 @@ export async function fetchPublicProductBySlug(
 
   const res = await fetch(url, {
     method: "GET",
-    headers: { Accept: "application/json" },
+    headers: {
+      Accept: "application/json",
+      "User-Agent": "wenaya-website/1.0 (+https://www.wenaya.com)",
+      company: "1",
+    },
     next: { revalidate: 60 },
   });
 

@@ -336,6 +336,7 @@ async function forward(payload: LegacyContactPayload): Promise<ContactSubmitResu
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        "User-Agent": "wenaya-website/1.0 (+https://www.wenaya.com)",
         company: "1",
       },
       body: JSON.stringify(payload),
@@ -405,6 +406,7 @@ async function postUpstreamEmail<T>(
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
       Accept: "application/json",
+      "User-Agent": "wenaya-website/1.0 (+https://www.wenaya.com)",
       // The deployed axios instance injected this header on every call; keep it
       // so the backend resolves company 1 exactly as it did in production.
       company: "1",

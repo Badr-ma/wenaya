@@ -36,6 +36,8 @@ async function forwardPurchase(
     const headers = new Headers({
       Accept: "application/json",
       "Content-Type": "application/json",
+      "User-Agent": "wenaya-website/1.0 (+https://www.wenaya.com)",
+      company: "1",
     });
     if (cookieHeader) headers.set("Cookie", cookieHeader);
     if (xsrfToken) headers.set("X-XSRF-TOKEN", xsrfToken);
@@ -74,6 +76,8 @@ async function forwardGuestPurchase(
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        "User-Agent": "wenaya-website/1.0 (+https://www.wenaya.com)",
+        company: "1",
       },
       body: JSON.stringify(body),
       signal: controller.signal,

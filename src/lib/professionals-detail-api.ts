@@ -221,7 +221,11 @@ export async function fetchProfessionalDetail(slug: string): Promise<ApiProfessi
     const url = `${getProfessionalsApiBase()}${PROFESSIONALS_DETAIL_PATH}/${encodeURIComponent(slug)}`;
     const res = await fetch(url, {
       method: "GET",
-      headers: { Accept: "application/json" },
+      headers: {
+        Accept: "application/json",
+        "User-Agent": "wenaya-website/1.0 (+https://www.wenaya.com)",
+        company: "1",
+      },
       signal: controller.signal,
       next: { revalidate: PROFESSIONALS_DETAIL_REVALIDATE },
     });
@@ -262,7 +266,11 @@ export async function fetchProfessionalCaresAndPacks(
     const url = `${getProfessionalsApiBase()}${CARES_PACKS_PATH}/${userId}`;
     const res = await fetch(url, {
       method: "GET",
-      headers: { Accept: "application/json" },
+      headers: {
+        Accept: "application/json",
+        "User-Agent": "wenaya-website/1.0 (+https://www.wenaya.com)",
+        company: "1",
+      },
       signal: controller.signal,
       next: { revalidate: PROFESSIONALS_DETAIL_REVALIDATE },
     });
@@ -394,7 +402,11 @@ async function fetchAvailabilityJson(
     const url = `${getProfessionalsApiBase()}${path}/${encodeURIComponent(slugOrId)}/${dateIso}`;
     const res = await fetch(url, {
       method: "GET",
-      headers: { Accept: "application/json", ...COMPANY_HEADER },
+      headers: {
+        Accept: "application/json",
+        ...COMPANY_HEADER,
+        "User-Agent": "wenaya-website/1.0 (+https://www.wenaya.com)",
+      },
       signal: controller.signal,
       next: { revalidate },
     });

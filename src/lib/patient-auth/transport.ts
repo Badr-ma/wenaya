@@ -75,6 +75,7 @@ async function fetchUpstream(path: string, init: RequestInit): Promise<Transport
 function baseHeaders(opts: ForwardOptions, method: "GET" | "POST"): Headers {
   const headers = new Headers();
   headers.set("Accept", "application/json");
+  headers.set("User-Agent", "wenaya-website/1.0 (+https://www.wenaya.com)");
   if (method === "POST") headers.set("Content-Type", "application/json");
   if (opts.cookieHeader) headers.set("Cookie", opts.cookieHeader);
   if (opts.xsrfHeader) headers.set("X-XSRF-TOKEN", opts.xsrfHeader);

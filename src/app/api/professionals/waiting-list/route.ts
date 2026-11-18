@@ -104,6 +104,7 @@ export async function POST(request: Request) {
         Accept: "application/json",
         "Content-Type": "application/json",
         "X-Requested-With": "XMLHttpRequest",
+        "User-Agent": "wenaya-website/1.0 (+https://www.wenaya.com)",
         company: "1",
       },
       body: JSON.stringify(payload),

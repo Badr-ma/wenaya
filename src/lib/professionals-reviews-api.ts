@@ -112,7 +112,11 @@ export async function fetchProfessionalReviewsApi(
     const url = `${getProfessionalsApiBase()}${REVIEWS_API_PATH}/${encoded}?page=1`;
     const res = await fetch(url, {
       method: "GET",
-      headers: { Accept: "application/json", company: "1" },
+      headers: {
+        Accept: "application/json",
+        "User-Agent": "wenaya-website/1.0 (+https://www.wenaya.com)",
+        company: "1",
+      },
       signal: controller.signal,
       next: { revalidate: REVIEWS_API_REVALIDATE },
     });

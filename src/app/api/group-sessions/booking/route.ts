@@ -335,6 +335,7 @@ async function postJoin(
           Accept: "application/json",
           "Content-Type": "application/json",
           "X-Requested-With": "XMLHttpRequest",
+          "User-Agent": "wenaya-website/1.0 (+https://www.wenaya.com)",
           company: "1",
           ...(cookie ? { Cookie: cookie } : {}),
           ...(xsrf ? { "X-XSRF-TOKEN": xsrf } : {}),

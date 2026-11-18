@@ -9,6 +9,7 @@ export async function apiFetch(url: string, token: string, init?: RequestInit) {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
+      "User-Agent": "wenaya-website/1.0 (+https://www.wenaya.com)",
       ...init?.headers,
     },
   });

@@ -44,7 +44,10 @@ async function forward(
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
   try {
-    const headers = new Headers({ Accept: "application/json" });
+    const headers = new Headers({
+      Accept: "application/json",
+      "User-Agent": "wenaya-website/1.0 (+https://www.wenaya.com)",
+    });
     if (method === "POST") headers.set("Content-Type", "application/json");
     if (cookieHeader) headers.set("Cookie", cookieHeader);
     if (xsrfToken) headers.set("X-XSRF-TOKEN", xsrfToken);
