@@ -89,7 +89,7 @@ The `/forgot-password` + `/reset-password` hooks forms are unused dead variants.
 
 | Method+Path | Class | Frontend target |
 |---|---|---|
-| GET `{v}/homePageSearch?{query}` | SAFE_READ (shape unknown → NEEDS_BACKEND_CONFIRMATION) | search adapter (future global search) |
+| GET `{v}/search/getResults?{query}` | SAFE_READ | Current global search. The old `homePageSearch` URL is a compatibility alias. |
 | GET `{v}/search/getSpecialities` | SAFE_READ | search autocomplete |
 | GET `{v}/search/getLocations` | SAFE_READ | search autocomplete |
 | GET `{v}/search/getResults?{queryParams}` | SAFE_READ | search results page |
@@ -170,7 +170,7 @@ The `/forgot-password` + `/reset-password` hooks forms are unused dead variants.
 | GET `{v}/getAppointmentsGroupBySlug/{slug}` | SAFE_READ | class detail |
 | GET `{v}/getAppointmentsGroupByCustomer?{queryParams}` · `GetUpcommingAppointmentGroup` · `…/getAppointmentGroupByParent/{id}` | AUTH_READ | patient's classes |
 | GET `{v}/getAppointmentGroupFilterAttributes` | SAFE_READ | class filter metadata |
-| POST `{v}/joinPatientToGroupAppointment` | `{ event:<classId>, participants:[{id, joined_at:<unix>, from:"client", paid:0, transaction:null, type:"online"}] }` | WRITE_PRODUCTION_SIDE_EFFECT (registers to a real class) | join class |
+| POST `{v}/dashboard/group-appointments/participants` (staff) | `{ event:<classId>, participants:[{id, joined_at:<unix>, from:"client", paid:0, transaction:null, type:"online"}] }` | WRITE_PRODUCTION_SIDE_EFFECT (registers to a real class) | join class |
 | POST `{v}/checkIfUserHasValidPack` | `{ patient, patientType:"online", care, professional, duration }` | AUTH_READ (pure check, no mutation) | pack eligibility check |
 
 ### B.10 Events (doc §6.9)
@@ -503,9 +503,7 @@ PENDING (backend appointment status)
 - **Waiting list (guest-compatible):** `POST api/v1/waiting-lists` — capture name/email/phone/
   user_id?, notes, date/time, status "pending". This is the only booking-adjacent mutation a guest
   may trigger; it stays behind the BFF and is labeled a *request*, not a reservation.
-- **Group classes:** `checkIfUserHasValidPack` (cover check) → `joinPatientToGroupAppointment`
-  (with pack `participants[]`, `type:"online"`, `from:"client"`) or
-  `createOrGetCustomerGroupOrder` (order → NAPS) — both AUTH + WRITE; never guest.
+- **Group classes:** The customer portal uses `joinCustomerToGroupAppointment` for pay-later registration and `createOrGetCustomerGroupOrder` for NAPS checkout. Staff use `POST {v}/dashboard/group-appointments/participants` with company authorization.
 - **Transition rules not in the doc** (confirm in §J): whether PENDING expires, what happens on
   pay-over-other-session, NAPS callback reconciling orderid→appointment, wallet fallback only for
   `payCustomerAppointmentByWallet`.

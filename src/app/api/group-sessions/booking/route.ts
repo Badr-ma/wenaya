@@ -111,16 +111,9 @@ const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const TIME_RE = /^\d{2}:\d{2}$/;
 
 /**
- * Group-class registration endpoint.
- *
- * NOT documented. `API_DOCUMENTATION (1).md` §6.8 documents a DIFFERENT group
- * join route, `joinPatientToGroupAppointment` ("join a class (with pack)"),
- * and never mentions this one. This endpoint is nonetheless verified to EXIST —
- * it is a real registered route (an unsupported method answers 405 "Supported
- * methods: POST") — but its body contract is undocumented, so it cannot be
- * changed on the assumption that it behaves like the documented route. It is
- * used here because it serves the pack-less "pay later" registration this route
- * performs; the documented route is pack-gated.
+ * Customer-portal group registration used by the pay-later flow.
+ * The staff endpoint, POST /api/v1/dashboard/group-appointments/participants,
+ * uses company authorization and has its own contract.
  */
 const JOIN_PATH = "/api/v1/joinCustomerToGroupAppointment";
 
