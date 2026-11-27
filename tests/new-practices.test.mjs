@@ -1,3 +1,4 @@
+import { mockHttp } from "./helpers/mock-http.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { normalizeApiSpeciality } from "@/lib/practice-adapter";
@@ -55,7 +56,7 @@ test("missing English or image data uses available text without inventing an ima
 });
 
 test("new practices on later API pages reach detail lookup, search, filters and professional links", async (t) => {
-  t.mock.method(globalThis, "fetch", async (url) => {
+  mockHttp(t, async (url) => {
     const p = new URL(url).searchParams.get("page");
     return p === "2" ? page(2, 2, [record]) : page(1, 2, [{ ...record, id: practicesContent.nutrition.liveId }]);
   });
@@ -68,6 +69,6 @@ test("new practices on later API pages reach detail lookup, search, filters and 
 });
 
 test("detail access propagates upstream failures rather than claiming a missing practice", async (t) => {
-  t.mock.method(globalThis, "fetch", async () => new Response("unavailable", { status: 503 }));
+  mockHttp(t, async () => new Response("unavailable", { status: 503 }));
   await assert.rejects(getLivePratiquesStrict("fr"), /HTTP 503/);
 });

@@ -1,3 +1,4 @@
+import { httpRequest } from "@/lib/http-request";
 /**
  * Public product API adapter — server-side only.
  *
@@ -178,7 +179,7 @@ export async function fetchPublicProducts(): Promise<BackendPublicProduct[]> {
   const base = getApiBaseUrl().replace(/\/+$/, "");
   const url = `${base}/api/v2/${PUBLIC_SHOP_COMPANY_SLUG}/public/products?limit=100`;
 
-  const res = await fetch(url, {
+  const res = await httpRequest(url, {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -202,7 +203,7 @@ export async function fetchPublicProductBySlug(
   const base = getApiBaseUrl().replace(/\/+$/, "");
   const url = `${base}/api/v2/${PUBLIC_SHOP_COMPANY_SLUG}/public/products/${encodeURIComponent(slug)}`;
 
-  const res = await fetch(url, {
+  const res = await httpRequest(url, {
     method: "GET",
     headers: {
       Accept: "application/json",

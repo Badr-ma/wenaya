@@ -1,3 +1,4 @@
+import { mockHttp } from "./helpers/mock-http.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { normalizePatientBookings, upcomingGroupBookings } from "@/lib/patient-bookings";
@@ -18,7 +19,7 @@ test("upcoming groups use Casablanca time, exclude history and sort by start", (
 
 test("upcoming groups scan later backend pages before filtering and paginating", async (t) => {
   const seen = [];
-  t.mock.method(globalThis, "fetch", async (url) => {
+  mockHttp(t, async (url) => {
     seen.push(url);
     if (url.endsWith("/customer")) return Response.json({ data: { id: 7 } });
     const number = Number(new URL(url).searchParams.get("page"));
@@ -74,7 +75,7 @@ test("a valid empty paginator is an empty success, while impossible dates are no
 
 test("an expired session is rejected before any booking list is requested", async (t) => {
   let calls = 0;
-  t.mock.method(globalThis, "fetch", async () => { calls++; return Response.json({}, { status: 401 }); });
+  mockHttp(t, async () => { calls++; return Response.json({}, { status: 401 }); });
   const result = await readPatientBookings("we_session=expired", "appointments", 1, "upcoming");
   assert.equal(result.status, 401);
   assert.equal(result.body.type, "unauthenticated");
@@ -83,7 +84,7 @@ test("an expired session is rejected before any booking list is requested", asyn
 
 test("authenticated reads forward the session without caching and use the backend spelling", async (t) => {
   const seen = [];
-  t.mock.method(globalThis, "fetch", async (url, init) => {
+  mockHttp(t, async (url, init) => {
     seen.push({ url, init });
     return Response.json(seen.length === 1 ? { data: { id: 7 } } : appointmentResponse([row]));
   });
@@ -100,7 +101,7 @@ test("authenticated reads forward the session without caching and use the backen
 
 test("an upstream group failure is an error, not an empty list", async (t) => {
   let calls = 0;
-  t.mock.method(globalThis, "fetch", async () => ++calls === 1
+  mockHttp(t, async () => ++calls === 1
     ? Response.json({ data: { id: 7 } }) : Response.json({}, { status: 503 }));
   const result = await readPatientBookings("we_session=qa", "groups", 1, "upcoming");
   assert.equal(result.status, 502);
@@ -109,7 +110,7 @@ test("an upstream group failure is an error, not an empty list", async (t) => {
 });
 
 test("responses stay scoped to the current session across consecutive requests", async (t) => {
-  t.mock.method(globalThis, "fetch", async (url, init) => {
+  mockHttp(t, async (url, init) => {
     const id = init.headers.get("Cookie").includes("second") ? 22 : 11;
     return Response.json(url.endsWith("/customer") ? { data: { id } }
       : appointmentResponse([{ ...row, id }]));

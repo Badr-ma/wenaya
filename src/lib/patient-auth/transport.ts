@@ -1,3 +1,4 @@
+import { httpRequest } from "@/lib/http-request";
 /**
  * Patient Sanctum auth transport — server-to-server forwarding to Laravel.
  *
@@ -51,7 +52,7 @@ async function fetchUpstream(path: string, init: RequestInit): Promise<Transport
   let networkError = false;
   let headers: Headers | undefined;
   try {
-    const res = await fetch(`${getPatientApiBase()}${path}`, { ...init, signal: controller.signal });
+    const res = await httpRequest(`${getPatientApiBase()}${path}`, { ...init, signal: controller.signal });
     status = res.status;
     headers = res.headers;
     const text = await res.text();

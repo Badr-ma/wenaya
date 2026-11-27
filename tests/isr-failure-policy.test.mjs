@@ -1,3 +1,4 @@
+import { mockHttp } from "./helpers/mock-http.mjs";
 /**
  * ISR failure-policy tests — src/lib/api/retry.ts#shouldPropagateApiFailure
  * wired through the rethrowing listing/detail adapters
@@ -86,7 +87,7 @@ function http400() {
 /** Install a fetch stub that always returns `action()`; returns { calls }. */
 function stubFetchAlways(t, action) {
   const state = { calls: 0 };
-  t.mock.method(globalThis, "fetch", async () => {
+  mockHttp(t, async () => {
     state.calls += 1;
     return action();
   });

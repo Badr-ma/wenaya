@@ -29,25 +29,36 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ success: false, type: "invalid-payload" }, { status: 400 });
   }
 
+  if (body.profile_type === "child") {
+    delete body.email;
+    delete body.country_code;
+    delete body.phone_number;
+  }
   const result = await forwardPatientProfileRequest({
     method: "POST",
     path: "/api/v1/createProfile",
     cookieHeader: browserCookieHeader(request),
     xsrfToken: readXsrfHeaderFromCookie(request),
     body,
+    bodyFormat: "json",
+    companyId: "1",
   });
   const upstream = result.json && typeof result.json === "object" && !Array.isArray(result.json)
     ? result.json as Record<string, unknown>
     : null;
-  const failed = result.status < 200 || result.status >= 300 || upstream?.error === true;
+  const failed = result.status < 200 || result.status >= 300 || !upstream || upstream.error === true;
   const status = failed
     ? result.status === 401 || result.status === 403 ? result.status
       : result.status === 422 ? 422
         : result.status >= 400 && result.status < 500 ? result.status : 502
     : 200;
+  const legacyFields = upstream?.error === true && upstream.message !== null &&
+    typeof upstream.message === "object" && !Array.isArray(upstream.message)
+    ? upstream.message
+    : undefined;
   const response = NextResponse.json(
     failed
-      ? { success: false, type: status === 401 ? "unauthenticated" : status === 422 ? "validation-error" : "request-failed", fields: upstream?.errors, message: readUpstreamMessage(result.json) }
+      ? { success: false, type: status === 401 ? "unauthenticated" : status === 422 ? "validation-error" : "request-failed", fields: upstream?.errors ?? legacyFields, message: readUpstreamMessage(result.json) }
       : { success: true, message: readUpstreamMessage(result.json) },
     { status },
   );

@@ -1,5 +1,7 @@
 "use client";
 
+import { httpRequest } from "@/lib/http-request";
+
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
@@ -111,9 +113,9 @@ export default function PatientProfileForm({
       setLoading(true);
       setPageError("");
       try {
-        const requests: Promise<Response>[] = [fetch("/api/patient/profile-sources", { cache: "no-store" })];
+        const requests: Promise<Response>[] = [httpRequest("/api/patient/profile-sources", { cache: "no-store" })];
         if (mode === "edit" && profileId) {
-          requests.push(fetch(`/api/patient/profiles/${encodeURIComponent(profileId)}`, { cache: "no-store" }));
+          requests.push(httpRequest(`/api/patient/profiles/${encodeURIComponent(profileId)}`, { cache: "no-store" }));
         }
         const [sourceResponse, profileResponse] = await Promise.all(requests);
         const sourceResult = await sourceResponse.json() as ApiResult;
@@ -195,7 +197,7 @@ export default function PatientProfileForm({
     setPageError("");
     setSuccessMessage("");
     try {
-      const response = await fetch(isEdit ? `/api/patient/profiles/${encodeURIComponent(profileId ?? "")}` : "/api/patient/profiles", {
+      const response = await httpRequest(isEdit ? `/api/patient/profiles/${encodeURIComponent(profileId ?? "")}` : "/api/patient/profiles", {
         method: isEdit ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

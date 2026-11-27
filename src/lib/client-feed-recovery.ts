@@ -1,3 +1,4 @@
+import { httpRequest } from "@/lib/http-request";
 import type { PaginatedPratiques } from "@/lib/pratiques";
 
 /** Decide whether an empty server-rendered feed needs one client refresh. */
@@ -27,7 +28,7 @@ export async function fetchClientFeedPayload<T>(
   url: string,
   isPayload: (value: unknown) => value is T,
 ): Promise<T> {
-  const response = await fetch(url, { cache: "no-store" });
+  const response = await httpRequest(url, { cache: "no-store" });
   if (!response.ok) throw new Error(`Feed request failed (${response.status})`);
 
   const payload: unknown = await response.json();

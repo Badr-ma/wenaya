@@ -1,3 +1,4 @@
+import { httpRequest } from "@/lib/http-request";
 /**
  * Client-side fetcher for the group-session booking BFF
  * `/api/group-sessions/booking` (see
@@ -47,7 +48,7 @@ export async function submitGroupSessionBooking(
   request: GroupSessionBookingRequest
 ): Promise<GroupSessionBookingResult> {
   try {
-    const res = await fetch(ENDPOINT, {
+    const res = await httpRequest(ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(request),

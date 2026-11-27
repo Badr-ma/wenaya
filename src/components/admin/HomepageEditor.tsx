@@ -1,5 +1,7 @@
 "use client";
 
+import { httpRequest } from "@/lib/http-request";
+
 import { useState, useEffect } from "react";
 import type { HomepageConfig, HomepageSection, SectionType } from "@/lib/homepage-types";
 import { SECTION_META } from "@/lib/homepage-types";
@@ -33,7 +35,7 @@ export default function HomepageEditor({ token }: Props) {
       try {
         const [draftRes, pubRes] = await Promise.all([
           apiFetch("/api/admin/homepage", token),
-          fetch("/api/homepage"),
+          httpRequest("/api/homepage"),
         ]);
         const draftJson = await draftRes.json();
         const pubJson = await pubRes.json();

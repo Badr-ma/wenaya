@@ -17,6 +17,8 @@
  */
 "use client";
 
+import { httpRequest } from "@/lib/http-request";
+
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLocale } from "@/contexts/LanguageContext";
@@ -81,7 +83,7 @@ function ContactFormInner({ isBooking = false, requestedSession }: ContactFormPr
     }
     setLoading(true);
     try {
-const res = await fetch("/api/contact", {
+const res = await httpRequest("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

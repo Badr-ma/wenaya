@@ -1,7 +1,8 @@
+import { httpRequest } from "../src/lib/http-request.ts";
 const BASE = "https://dev-api.wenaya.com";
 
 async function main() {
-  const listRes = await fetch(`${BASE}/api/v1/getAllPublicTroubles?page=1`);
+  const listRes = await httpRequest(`${BASE}/api/v1/getAllPublicTroubles?page=1`);
   const listJson = await listRes.json();
   const all = listJson.data.data;
   console.log(`TOTAL: ${all.length}`);

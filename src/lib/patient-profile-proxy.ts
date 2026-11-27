@@ -1,3 +1,4 @@
+import { httpRequest } from "@/lib/http-request";
 /** Server-only proxy for the legacy patient medical-profile endpoints. */
 import { getApiBaseUrl } from "@/lib/api-base";
 import {
@@ -18,6 +19,8 @@ type RequestOptions = {
   cookieHeader?: string;
   xsrfToken?: string | null;
   body?: unknown;
+  bodyFormat?: "json";
+  companyId?: string;
 };
 
 async function requestUpstream(options: RequestOptions): Promise<ProfileProxyResult> {
@@ -25,35 +28,40 @@ async function requestUpstream(options: RequestOptions): Promise<ProfileProxyRes
   const timer = setTimeout(() => controller.abort(), 12_000);
   try {
     const headers = new Headers({ Accept: "application/json" });
+    if (options.companyId) headers.set("company", options.companyId);
     if (options.cookieHeader) headers.set("Cookie", options.cookieHeader);
     if (options.xsrfToken) headers.set("X-XSRF-TOKEN", options.xsrfToken);
 
-    // Wenaya's createProfile/updateProfile endpoints accept multipart FormData.
-    // Keep the browser-facing BFF JSON contract, then convert it here so the
-    // backend receives the format used by the legacy patient-profile forms.
-    const formData = new FormData();
-    if (options.body && typeof options.body === "object" && !Array.isArray(options.body)) {
-      for (const [key, value] of Object.entries(options.body as Record<string, unknown>)) {
-        if (value === null || value === undefined) continue;
-        if (key === "address" && typeof value === "object" && !Array.isArray(value)) {
-          for (const [addressKey, addressValue] of Object.entries(value as Record<string, unknown>)) {
-            if (typeof addressValue === "string") formData.append(`address[${addressKey}]`, addressValue);
+    let body: BodyInit | undefined;
+    if (options.bodyFormat === "json") {
+      headers.set("Content-Type", "application/json");
+      body = JSON.stringify(options.body);
+    } else if (options.method !== "GET") {
+      const formData = new FormData();
+      if (options.body && typeof options.body === "object" && !Array.isArray(options.body)) {
+        for (const [key, value] of Object.entries(options.body as Record<string, unknown>)) {
+          if (value === null || value === undefined) continue;
+          if (key === "address" && typeof value === "object" && !Array.isArray(value)) {
+            for (const [addressKey, addressValue] of Object.entries(value as Record<string, unknown>)) {
+              if (typeof addressValue === "string") formData.append(`address[${addressKey}]`, addressValue);
+            }
+            continue;
           }
-          continue;
-        }
-        if (typeof value === "string" || typeof value === "number") {
-          formData.append(key, String(value));
-        } else if (typeof value === "boolean") {
-          formData.append(key, value ? "1" : "0");
+          if (typeof value === "string" || typeof value === "number") {
+            formData.append(key, String(value));
+          } else if (typeof value === "boolean") {
+            formData.append(key, value ? "1" : "0");
+          }
         }
       }
+      body = formData;
     }
 
-    const response = await fetch(`${getApiBaseUrl()}${options.path}`, {
+    const response = await httpRequest(`${getApiBaseUrl()}${options.path}`, {
       method: options.method,
       headers,
       ...(options.method === "GET" ? { cache: "no-store" as const } : {}),
-      ...(options.method === "GET" ? {} : { body: formData }),
+      body,
       signal: controller.signal,
     });
     const text = await response.text();

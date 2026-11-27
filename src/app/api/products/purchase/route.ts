@@ -1,3 +1,4 @@
+import { httpRequest } from "@/lib/http-request";
 /**
  * Product purchase BFF — forwards purchase requests to the Laravel V2 API.
  *
@@ -42,7 +43,7 @@ async function forwardPurchase(
     if (cookieHeader) headers.set("Cookie", cookieHeader);
     if (xsrfToken) headers.set("X-XSRF-TOKEN", xsrfToken);
 
-    const response = await fetch(`${getApiBaseUrl()}${upstreamPath}`, {
+    const response = await httpRequest(`${getApiBaseUrl()}${upstreamPath}`, {
       method: "POST",
       headers,
       body: JSON.stringify(body),
@@ -71,7 +72,7 @@ async function forwardGuestPurchase(
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
   try {
-    const response = await fetch(`${getApiBaseUrl()}${GUEST_UPSTREAM_PATH}`, {
+    const response = await httpRequest(`${getApiBaseUrl()}${GUEST_UPSTREAM_PATH}`, {
       method: "POST",
       headers: {
         Accept: "application/json",

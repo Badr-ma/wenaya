@@ -1,3 +1,4 @@
+import { httpRequest } from "@/lib/http-request";
 import { NextResponse } from "next/server";
 import { getProfessionalsApiBase } from "@/lib/professionals/config";
 
@@ -98,7 +99,7 @@ export async function POST(request: Request) {
   };
 
   try {
-    const upstream = await fetch(`${getProfessionalsApiBase()}/api/v1/waiting-lists`, {
+    const upstream = await httpRequest(`${getProfessionalsApiBase()}/api/v1/waiting-lists`, {
       method: "POST",
       headers: {
         Accept: "application/json",

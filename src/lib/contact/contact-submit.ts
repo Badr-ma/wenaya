@@ -1,3 +1,4 @@
+import { httpRequest } from "@/lib/http-request";
 /**
  * Contact submission writer — normalizes caller payloads into the backend
  * contract, forwards to the DEV contact API through the server config, and maps
@@ -331,7 +332,7 @@ async function forward(payload: LegacyContactPayload): Promise<ContactSubmitResu
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), CONTACT_TIMEOUT_MS);
   try {
-    const res = await fetch(`${getContactApiBase()}${CONTACT_API_PATH}`, {
+    const res = await httpRequest(`${getContactApiBase()}${CONTACT_API_PATH}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -413,7 +414,7 @@ async function postUpstreamEmail<T>(
     };
     if (csrf.cookieHeader) headers.Cookie = csrf.cookieHeader;
     if (csrf.xsrfToken) headers["X-XSRF-TOKEN"] = csrf.xsrfToken;
-    const res = await fetch(`${getContactApiBase()}${path}`, {
+    const res = await httpRequest(`${getContactApiBase()}${path}`, {
       method: "POST",
       headers,
       body: JSON.stringify(payload),

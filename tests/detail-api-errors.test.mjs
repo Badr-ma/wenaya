@@ -1,3 +1,4 @@
+import { mockHttp } from "./helpers/mock-http.mjs";
 /** Regression coverage for 404 versus unavailable detail API responses. */
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -16,7 +17,7 @@ function stubFetch(t, result) {
     if (result instanceof Error) throw result;
     return result;
   };
-  t.mock.method(globalThis, "fetch", fetchStub);
+  mockHttp(t, fetchStub);
 }
 
 test("trouble detail: explicit upstream 404 remains not found", async (t) => {

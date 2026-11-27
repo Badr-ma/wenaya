@@ -1,3 +1,4 @@
+import { mockHttp } from "./helpers/mock-http.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
@@ -28,7 +29,7 @@ function emptyPracticesResponse() {
 }
 
 test("practices: a successful empty API result is not tagged as a loading failure", async (t) => {
-  t.mock.method(globalThis, "fetch", async () => emptyPracticesResponse());
+  mockHttp(t, async () => emptyPracticesResponse());
   const result = await withEnv({ NODE_ENV: "production", NEXT_PHASE: undefined }, () =>
     getPracticesPageAsync({ page: 1 })
   );
@@ -37,7 +38,7 @@ test("practices: a successful empty API result is not tagged as a loading failur
 });
 
 test("practices: failed initial build fetch is flagged for client recovery", async (t) => {
-  t.mock.method(globalThis, "fetch", async () => new Response("unavailable", { status: 503 }));
+  mockHttp(t, async () => new Response("unavailable", { status: 503 }));
   t.mock.method(console, "warn", () => {});
   const result = await withEnv(
     { NODE_ENV: "production", NEXT_PHASE: "phase-production-build" },
@@ -48,7 +49,7 @@ test("practices: failed initial build fetch is flagged for client recovery", asy
 });
 
 test("practices: production ISR failure propagates instead of replacing cached output", async (t) => {
-  t.mock.method(globalThis, "fetch", async () => new Response("unavailable", { status: 503 }));
+  mockHttp(t, async () => new Response("unavailable", { status: 503 }));
   t.mock.method(console, "warn", () => {});
   await withEnv({ NODE_ENV: "production", NEXT_PHASE: undefined }, () =>
     assert.rejects(getPracticesPageAsync({ page: 1 }), /HTTP 503/)

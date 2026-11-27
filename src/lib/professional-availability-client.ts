@@ -1,3 +1,4 @@
+import { httpRequest } from "@/lib/http-request";
 /**
  * Client-side fetcher for the availability BFF proxy
  * `/api/professionals/availability` (see `src/app/api/professionals/availability/route.ts`).
@@ -75,7 +76,7 @@ export async function fetchClientUnavailableDates(
 ): Promise<ClientUnavailableDates> {
   const url = `${ENDPOINT}?type=unavailable-dates&userName=${encodeURIComponent(userName)}&date=${encodeURIComponent(date)}`;
   try {
-    const res = await fetch(url, { cache: "no-store" });
+    const res = await httpRequest(url, { cache: "no-store" });
     const json = await res.json();
     if (!res.ok || !json || json.error !== false) {
       return { ok: false, dates: [], hasClasses: false };
@@ -100,7 +101,7 @@ export async function fetchClientDay(
 ): Promise<ClientDay> {
   const url = `${ENDPOINT}?type=available-times&professionalId=${professionalId}&date=${encodeURIComponent(date)}`;
   try {
-    const res = await fetch(url, { cache: "no-store" });
+    const res = await httpRequest(url, { cache: "no-store" });
     const json = await res.json();
     if (!res.ok || !json || json.error !== false) {
       return { ok: false };

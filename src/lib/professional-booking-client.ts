@@ -1,3 +1,4 @@
+import { httpRequest } from "@/lib/http-request";
 /**
  * Client-side fetcher for the professional booking submission BFF
  * `/api/professionals/waiting-list` (see
@@ -27,7 +28,7 @@ export async function submitWaitingListRequest(
   payload: WaitingListPayload
 ): Promise<{ ok: boolean }> {
   try {
-    const res = await fetch(ENDPOINT, {
+    const res = await httpRequest(ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),

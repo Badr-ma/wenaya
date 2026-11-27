@@ -11,6 +11,8 @@
  */
 "use client";
 
+import { httpRequest } from "@/lib/http-request";
+
 import { useEffect, useRef, useState } from "react";
 import { useLocale } from "@/contexts/LanguageContext";
 
@@ -49,7 +51,7 @@ const INITIAL_FORM: RecruitmentForm = {
  * endpoint here when one exists.
  */
 function submitPractitionerApplication(payload: PractitionerApplication): Promise<Response> {
-  return fetch("/api/contact", {
+  return httpRequest("/api/contact", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),

@@ -1,3 +1,4 @@
+import { httpRequest } from "@/lib/http-request";
 import type { PostWithAuthor } from "./blog-utils";
 
 export type HomepageBlogFeedState = {
@@ -37,7 +38,7 @@ export function homepageBlogFeedReducer(
 export async function fetchBlogPosts(
   locale: string,
   view: "home" | "listing" = "home",
-  fetcher: typeof fetch = fetch
+  fetcher: typeof httpRequest = httpRequest
 ): Promise<PostWithAuthor[]> {
   const query = new URLSearchParams({ locale });
   if (view === "listing") query.set("view", "listing");

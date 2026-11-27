@@ -8,6 +8,8 @@
  */
 "use client";
 
+import { httpRequest } from "@/lib/http-request";
+
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -78,7 +80,7 @@ export default function CheckoutView() {
     setAuthState("ready");
 
     try {
-      const res = await fetch("/api/patient/addresses", {
+      const res = await httpRequest("/api/patient/addresses", {
         method: "GET",
         credentials: "same-origin",
       });
@@ -125,7 +127,7 @@ export default function CheckoutView() {
     setAddressFormState("saving");
 
     try {
-      const res = await fetch("/api/patient/addresses", {
+      const res = await httpRequest("/api/patient/addresses", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "same-origin",
@@ -216,7 +218,7 @@ export default function CheckoutView() {
     setOrderState("submitting");
 
     try {
-      const res = await fetch("/api/products/purchase", {
+      const res = await httpRequest("/api/products/purchase", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "same-origin",

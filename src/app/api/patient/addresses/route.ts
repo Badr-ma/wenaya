@@ -1,3 +1,4 @@
+import { httpRequest } from "@/lib/http-request";
 /**
  * Patient address BFF — relays the authenticated patient's addresses between
  * the shop checkout and the Laravel customer API.
@@ -52,7 +53,7 @@ async function forward(
     if (cookieHeader) headers.set("Cookie", cookieHeader);
     if (xsrfToken) headers.set("X-XSRF-TOKEN", xsrfToken);
 
-    const response = await fetch(`${getApiBaseUrl()}${upstreamPath}`, {
+    const response = await httpRequest(`${getApiBaseUrl()}${upstreamPath}`, {
       method,
       headers,
       ...(method === "POST" ? { body } : {}),
@@ -66,7 +67,7 @@ async function forward(
 }
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
-  let cookieHeader = browserCookieHeader(request);
+  const cookieHeader = browserCookieHeader(request);
 
   const result = await forward(GET_UPSTREAM_PATH, "GET", cookieHeader, null);
 

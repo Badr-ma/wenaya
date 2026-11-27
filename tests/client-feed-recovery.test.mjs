@@ -1,5 +1,8 @@
+import { mockHttp } from "./helpers/mock-http.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
+
+globalThis.location = new URL("http://localhost/");
 
 const { fetchClientFeedPayload, isPaginatedPracticesPayload, shouldRecoverInitialFeed } = await import(
   "@/lib/client-feed-recovery"
@@ -16,7 +19,7 @@ function isPracticesPayload(value) {
 test("empty SSR group feed qualifies for recovery and the fetch helper returns sessions", async (t) => {
   const session = { id: "api-922", title: "Group training", path: "/seance-de-groupe/group-training" };
   let calls = 0;
-  t.mock.method(globalThis, "fetch", async (url, options) => {
+  mockHttp(t, async (url, options) => {
     calls += 1;
     assert.equal(url, "/api/seance-de-groupe?locale=fr");
     assert.equal(options.cache, "no-store");
@@ -38,7 +41,7 @@ test("empty SSR group feed qualifies for recovery and the fetch helper returns s
 
 test("a valid empty API response stays empty and is not treated as a failure", async (t) => {
   let calls = 0;
-  t.mock.method(globalThis, "fetch", async () => {
+  mockHttp(t, async () => {
     calls += 1;
     return Response.json({
       items: [], total: 0, page: 1, pageSize: 12, totalPages: 0,
@@ -56,7 +59,7 @@ test("a valid empty API response stays empty and is not treated as a failure", a
 
 test("empty practices SSR batches fetch populated FR and EN proxy responses", async (t) => {
   const urls = [];
-  t.mock.method(globalThis, "fetch", async (url) => {
+  mockHttp(t, async (url) => {
     urls.push(url);
     const locale = url.includes("locale=en") ? "en" : "fr";
     return Response.json({
@@ -90,7 +93,7 @@ test("empty practices SSR batches fetch populated FR and EN proxy responses", as
 });
 
 test("a failed client request remains an error instead of becoming an empty success", async (t) => {
-  t.mock.method(globalThis, "fetch", async () =>
+  mockHttp(t, async () =>
     new Response("unavailable", { status: 503 }),
   );
 
@@ -102,7 +105,7 @@ test("a failed client request remains an error instead of becoming an empty succ
 
 test("network, malformed JSON, and invalid payload failures are rejected", async (t) => {
   let fetchResponse = async () => { throw new TypeError("network unavailable"); };
-  t.mock.method(globalThis, "fetch", (...args) => fetchResponse(...args));
+  mockHttp(t, (...args) => fetchResponse(...args));
   await assert.rejects(
     fetchClientFeedPayload("/api/seance-de-groupe?locale=fr", isSessionsPayload),
     /network unavailable/,
@@ -137,7 +140,7 @@ test("network, malformed JSON, and invalid payload failures are rejected", async
 
 test("successful recovery works with both localized API routes", async (t) => {
   const urls = [];
-  t.mock.method(globalThis, "fetch", async (url) => {
+  mockHttp(t, async (url) => {
     urls.push(url);
     return Response.json({ sessions: [{ id: `session-${urls.length}` }] });
   });

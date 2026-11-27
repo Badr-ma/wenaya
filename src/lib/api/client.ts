@@ -1,3 +1,4 @@
+import { httpRequest } from "@/lib/http-request";
 /**
  * Shared server-side GET-only client for the public Wenaya (Laravel) API.
  *
@@ -146,7 +147,7 @@ export async function wenayaApiGet<T = unknown>(
 
   try {
     const base = options.baseUrl?.replace(/\/+$/, "") ?? getWenayaApiBase();
-    const response = await fetch(`${base}${path}${toQueryString(options.query)}`, init);
+    const response = await httpRequest(`${base}${path}${toQueryString(options.query)}`, init);
 
     if (!response.ok) {
       throw new WenayaApiError(`Wenaya API HTTP ${response.status} for ${path}`, response.status);

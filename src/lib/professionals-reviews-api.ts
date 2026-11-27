@@ -1,3 +1,4 @@
+import { httpRequest } from "@/lib/http-request";
 /**
  * Professional reviews API client — typed access to the Wenaya backend
  * reviews endpoint. Server-side only: consumed by SSR during prerender/ISR,
@@ -110,7 +111,7 @@ export async function fetchProfessionalReviewsApi(
   try {
     const encoded = encodeURIComponent(userName);
     const url = `${getProfessionalsApiBase()}${REVIEWS_API_PATH}/${encoded}?page=1`;
-    const res = await fetch(url, {
+    const res = await httpRequest(url, {
       method: "GET",
       headers: {
         Accept: "application/json",

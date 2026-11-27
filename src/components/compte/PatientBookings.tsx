@@ -1,5 +1,7 @@
 "use client";
 
+import { httpRequest } from "@/lib/http-request";
+
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useLocale } from "@/contexts/LanguageContext";
@@ -39,7 +41,7 @@ export default function PatientBookings() {
     const params = new URLSearchParams({ kind: query.kind, bucket: query.bucket, page: String(query.page) });
     void (async () => {
       try {
-        const response = await fetch(`/api/account/bookings?${params}`, {
+        const response = await httpRequest(`/api/account/bookings?${params}`, {
           credentials: "same-origin", cache: "no-store", signal: controller.signal,
         });
         const body = await response.json();

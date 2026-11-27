@@ -1,3 +1,4 @@
+import { mockHttp } from "./helpers/mock-http.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
@@ -31,7 +32,7 @@ function emptyPaginator() {
 
 test("troubles hub: valid empty response stays empty; runtime failure propagates", async (t) => {
   let apiResponse = emptyPaginator();
-  t.mock.method(globalThis, "fetch", async () => apiResponse);
+  mockHttp(t, async () => apiResponse);
   const empty = await withEnv({ NODE_ENV: "production", NEXT_PHASE: undefined }, () => getTroublesHub());
   assert.deepEqual(empty, { status: "empty", items: [] });
 
@@ -43,7 +44,7 @@ test("troubles hub: valid empty response stays empty; runtime failure propagates
 });
 
 test("troubles hub: build failure is an explicit error state, not valid empty", async (t) => {
-  t.mock.method(globalThis, "fetch", async () => new Response("unavailable", { status: 503 }));
+  mockHttp(t, async () => new Response("unavailable", { status: 503 }));
   t.mock.method(console, "error", () => {});
   const result = await withEnv(
     { NODE_ENV: "production", NEXT_PHASE: "phase-production-build" },
@@ -54,7 +55,7 @@ test("troubles hub: build failure is an explicit error state, not valid empty", 
 
 test("clinic trouble cards: valid empty remains empty and runtime failures propagate", async (t) => {
   let apiResponse = emptyPaginator();
-  t.mock.method(globalThis, "fetch", async () => apiResponse);
+  mockHttp(t, async () => apiResponse);
   const empty = await withEnv(
     { NODE_ENV: "production", NEXT_PHASE: undefined },
     () => getClinicTroubleCards("fr")
@@ -69,7 +70,7 @@ test("clinic trouble cards: valid empty remains empty and runtime failures propa
 });
 
 test("clinic trouble cards: build failure keeps its explicit error status", async (t) => {
-  t.mock.method(globalThis, "fetch", async () => new Response("unavailable", { status: 503 }));
+  mockHttp(t, async () => new Response("unavailable", { status: 503 }));
   t.mock.method(console, "error", () => {});
   const result = await withEnv(
     { NODE_ENV: "production", NEXT_PHASE: "phase-production-build" },
@@ -80,7 +81,7 @@ test("clinic trouble cards: build failure keeps its explicit error status", asyn
 
 test("group sessions: valid empty feed is distinct from a build-time failure", async (t) => {
   let apiResponse = emptyPaginator();
-  t.mock.method(globalThis, "fetch", async () => apiResponse);
+  mockHttp(t, async () => apiResponse);
   const empty = await withEnv(
     { NODE_ENV: "production", NEXT_PHASE: undefined },
     () => getActiveGroupSessionsResult("fr")

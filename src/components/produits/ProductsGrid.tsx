@@ -5,6 +5,8 @@
  */
 "use client";
 
+import { httpRequest } from "@/lib/http-request";
+
 import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import { useLocale } from "@/contexts/LanguageContext";
 import { MinimalDropdown } from "./FilterDropdown";
@@ -123,7 +125,7 @@ export default function ProductsGrid({ initial }: { initial?: ApiResponse }): Re
       if (f.selectedGoals?.length) params.set("goals", f.selectedGoals.join(","));
       if (f.selectedTopics?.length) params.set("topics", f.selectedTopics.join(","));
 
-      const res = await fetch(`/api/produits?${params}`);
+      const res = await httpRequest(`/api/produits?${params}`);
       const data: ApiResponse = await res.json();
       return data;
     } finally {

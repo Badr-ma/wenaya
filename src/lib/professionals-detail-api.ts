@@ -1,3 +1,4 @@
+import { httpRequest } from "@/lib/http-request";
 /**
  * Professional detail API client — typed access to the Wenaya backend
  * professional detail endpoint. Server-side only: consumed by SSR during
@@ -219,7 +220,7 @@ export async function fetchProfessionalDetail(slug: string): Promise<ApiProfessi
 
   try {
     const url = `${getProfessionalsApiBase()}${PROFESSIONALS_DETAIL_PATH}/${encodeURIComponent(slug)}`;
-    const res = await fetch(url, {
+    const res = await httpRequest(url, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -264,7 +265,7 @@ export async function fetchProfessionalCaresAndPacks(
 
   try {
     const url = `${getProfessionalsApiBase()}${CARES_PACKS_PATH}/${userId}`;
-    const res = await fetch(url, {
+    const res = await httpRequest(url, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -400,7 +401,7 @@ async function fetchAvailabilityJson(
 
   try {
     const url = `${getProfessionalsApiBase()}${path}/${encodeURIComponent(slugOrId)}/${dateIso}`;
-    const res = await fetch(url, {
+    const res = await httpRequest(url, {
       method: "GET",
       headers: {
         Accept: "application/json",

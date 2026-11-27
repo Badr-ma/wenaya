@@ -1,5 +1,7 @@
 "use client";
 
+import { httpRequest } from "@/lib/http-request";
+
 import { useState, useEffect, useCallback } from "react";
 import HomepageEditor from "@/components/admin/HomepageEditor";
 import { apiFetch } from "@/lib/api-http";
@@ -61,7 +63,7 @@ function LoginForm({
     setAuthError("");
     setLoading(true);
     try {
-      const res = await fetch("/api/admin/auth", {
+      const res = await httpRequest("/api/admin/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),

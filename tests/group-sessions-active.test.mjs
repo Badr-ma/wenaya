@@ -1,3 +1,4 @@
+import { mockHttp } from "./helpers/mock-http.mjs";
 /**
  * Regression tests for the live group-session adapter
  * (`src/lib/group-sessions-active.ts` + `src/lib/group-sessions-api.ts`).
@@ -114,7 +115,7 @@ function paginator(programs) {
 
 /** Install a single-page, always-200 fetch stub for the duration of a test. */
 function stubFetch(t, payload) {
-  t.mock.method(globalThis, "fetch", async () => {
+  mockHttp(t, async () => {
     return new Response(JSON.stringify(payload), {
       status: 200,
       headers: { "Content-Type": "application/json" },

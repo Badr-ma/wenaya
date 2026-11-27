@@ -1,3 +1,4 @@
+import { httpRequest } from "@/lib/http-request";
 import { NextResponse } from "next/server";
 import { getApiBaseUrl } from "@/lib/api-base";
 
@@ -20,7 +21,7 @@ const LEGACY_SOURCES = [
 
 export async function GET(): Promise<NextResponse> {
   try {
-    const response = await fetch(`${getApiBaseUrl()}/api/v1/getSourceParrainage`, {
+    const response = await httpRequest(`${getApiBaseUrl()}/api/v1/getSourceParrainage`, {
       headers: { Accept: "application/json" },
       cache: "no-store",
       signal: AbortSignal.timeout(10_000),

@@ -1,3 +1,4 @@
+import { httpRequest } from "@/lib/http-request";
 /**
  * Patient-auth client helpers.
  *
@@ -40,7 +41,7 @@ export type PatientProfileResult =
 async function patientFetch<T = PatientAuthResult>(path: string, init: RequestInit): Promise<T> {
   let res: Response;
   try {
-    res = await fetch(path, { credentials: "same-origin", ...init });
+    res = await httpRequest(path, { credentials: "same-origin", ...init });
   } catch {
     return { success: false, type: "backend-error" } as T;
   }

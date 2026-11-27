@@ -10,6 +10,8 @@
  */
 "use client";
 
+import { httpRequest } from "@/lib/http-request";
+
 import { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { useLocale } from "@/contexts/LanguageContext";
@@ -53,7 +55,7 @@ export default function ContactSection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("sending");
-    const res = await fetch("/api/contact", {
+    const res = await httpRequest("/api/contact", {
       method: "POST",
       body: JSON.stringify({
         companyName,

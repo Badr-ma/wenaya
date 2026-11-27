@@ -14,6 +14,8 @@
  */
 "use client";
 
+import { httpRequest } from "@/lib/http-request";
+
 import { useState } from "react";
 import Link from "next/link";
 import { useLocale } from "@/contexts/LanguageContext";
@@ -53,7 +55,7 @@ export default function WaitingListForm({ source }: WaitingListFormProps) {
 
     setSubmitting(true);
     try {
-      const res = await fetch("/api/waiting-list", {
+      const res = await httpRequest("/api/waiting-list", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.trim(), source, locale, consented: true }),

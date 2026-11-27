@@ -1,3 +1,4 @@
+import { httpRequest } from "@/lib/http-request";
 import { NextResponse, type NextRequest } from "next/server";
 import { getWenayaApiBase } from "@/lib/api/client";
 import { fetchGroupPrograms, type ApiGroupProgram } from "@/lib/group-sessions-api";
@@ -322,7 +323,7 @@ async function postJoin(
 
     let upstream: Response;
     try {
-      upstream = await fetch(`${getWenayaApiBase()}${JOIN_PATH}`, {
+      upstream = await httpRequest(`${getWenayaApiBase()}${JOIN_PATH}`, {
         method: "POST",
         headers: {
           Accept: "application/json",

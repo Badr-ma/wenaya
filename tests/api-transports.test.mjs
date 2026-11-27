@@ -1,3 +1,4 @@
+import { mockHttp } from "./helpers/mock-http.mjs";
 /**
  * Transport-level tests for the bounded-retry wiring in
  * src/lib/professionals-api.ts and src/lib/group-sessions-api.ts.
@@ -74,7 +75,7 @@ function stubFetch(t, script) {
     if (!action) throw new Error(`fetch stub exhausted at call ${state.calls}`);
     return action();
   };
-  t.mock.method(globalThis, "fetch", impl);
+  mockHttp(t, impl);
   return state;
 }
 

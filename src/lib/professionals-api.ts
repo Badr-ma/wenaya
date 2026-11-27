@@ -1,3 +1,4 @@
+import { httpRequest } from "@/lib/http-request";
 /**
  * Professionals API client — typed access to the Wenaya backend professional
  * listing endpoint. Server-side only: consumed by SSR during prerender/ISR,
@@ -88,7 +89,7 @@ export async function fetchProfessionals(): Promise<ApiProfessional[]> {
 
     try {
       const url = `${getProfessionalsApiBase()}${PROFESSIONALS_API_PATH}`;
-      const res = await fetch(url, {
+      const res = await httpRequest(url, {
         method: "GET",
         headers: {
           Accept: "application/json",
